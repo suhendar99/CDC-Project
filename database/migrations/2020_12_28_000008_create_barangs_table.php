@@ -15,6 +15,7 @@ class CreateBarangsTable extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->timestamps();
         });
     }
