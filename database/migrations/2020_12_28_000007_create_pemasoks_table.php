@@ -15,7 +15,10 @@ class CreatePemasoksTable extends Migration
     {
         Schema::create('pemasoks', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
             $table->string('kode_pemasok',20);
+            $table->text('alamat')->nullable();
+            $table->string('telepon',20)->nullable();
             $table->foreignId('barang_id')->nullable()->constrained('barangs')->onDelete('cascade');
             $table->timestamps();
         });

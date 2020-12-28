@@ -20,8 +20,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('alamat')->nullable();
-            $table->string('telepon',20)->nullable();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('karyawan_id')->nullable()->constrained('karyawans')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
