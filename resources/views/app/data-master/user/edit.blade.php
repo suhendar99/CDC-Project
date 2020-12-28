@@ -44,8 +44,14 @@
                                 @method('PUT')
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Nama <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->name }}" placeholder="Enter Nama">
+                                        <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
+                                        <select name="role" id="" class="form-control">
+                                            <option value="Null">-- Pilih Role --</option>
+                                            <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : ''}}>Pelanggan</option>
+                                            <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : ''}}> Karyawan</option>
+                                            <option value="bank" {{$data->bank_id != null ? 'selected' : ''}}>Bank</option>
+                                            <option value="pemasok" {{$data->pemasok_id != null ? 'selected' : ''}}>Pemasok</option>
+                                        </select>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -53,6 +59,17 @@
                                         @enderror
                                     </div>
                                 </div>
+                                {{-- <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Nama <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->karyawan_id) ? Auth::user()->karyawan->nama :(isset(Auth::user()->bank_id) ? Auth::user()->bank->nama : (isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : ''))) }}" placeholder="Enter Nama">
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Username <small class="text-success">*Boleh tidak diisi</small></label>

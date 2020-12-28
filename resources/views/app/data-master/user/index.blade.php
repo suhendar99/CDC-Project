@@ -24,7 +24,6 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Action</th>
@@ -43,7 +42,6 @@
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
-            "stripeClasses": [ 'table-borderless' ],
             processing : true,
             serverSide : true,
             responsive: true,
@@ -52,7 +50,6 @@
             ajax : "{{ route('user.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'name', name: 'name'},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
                 {data : 'action', name: 'action'}

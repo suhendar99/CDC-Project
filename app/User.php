@@ -53,6 +53,6 @@ class User extends Authenticatable
     }
     public function getData()
     {
-        return static::orderBy('id','desc')->get();
+        return static::with('pemasok','karyawan','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();
     }
 }

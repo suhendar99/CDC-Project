@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
+use App\Models\Karyawan;
+use App\Models\Pelanggan;
+use App\Models\Pemasok;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +60,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'name' => 'required|string|max:20',
+            'nama' => 'required|string|max:20',
             'username' => 'nullable|string|max:20',
             'email' => 'required|email|unique:users,email,',
             'password' => 'required|string|min:8',
@@ -64,9 +68,51 @@ class UserController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $data = User::create(array_merge($request->only('name','username','email'),[
-                'password' => Hash::make($request->password)
-            ]));
+            $pin = mt_rand(100, 999)
+                    .mt_rand(100, 999);
+            $date = date("Y");
+            $kode = "SP".$date.$pin;
+
+            if ($request->role == 'pelanggan') {
+                $pelanggan = Pelanggan::create([
+                    'nama' => $request->nama
+                ]);
+
+                User::create(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    'pelanggan_id' => $pelanggan->id
+                ]));
+            } elseif ($request->role == 'karyawan') {
+                $karyawan = Karyawan::create([
+                    'nama' => $request->nama
+                ]);
+
+                User::create(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    'karyawan_id' => $karyawan->id
+                ]));
+            } elseif ($request->role == 'bank') {
+                $bank = Bank::create([
+                    'nama' => $request->nama
+                ]);
+
+                User::create(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    'bank_id' => $bank->id
+                ]));
+            } elseif ($request->role == 'pemasok') {
+                $pemasok = Pemasok::create([
+                    'nama' => $request->nama,
+                    'kode_pemasok' => $kode
+                ]);
+
+                User::create(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    'pemasok_id' => $pemasok->id
+                ]));
+            } else {
+                return back()->with('failed', "Mohon Pilih Kembali Role !");
+            }
         }
         return back()->with('success',$this->alert.'Disimpan !');
     }
@@ -104,7 +150,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
-            'name' => 'required|string|max:20',
+            // 'name' => 'required|string|max:20',
             'username' => 'nullable|string|max:20',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'nullable|string|min:8',
@@ -112,9 +158,47 @@ class UserController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $data = User::findOrFail($id)->update(array_merge($request->only('name','username','email'),[
-                'password' => Hash::make($request->password)
-            ]));
+            $user = User::find($id);
+
+            if ($request->role == 'pelanggan') {
+                // $pelanggan = Pelanggan::create([
+                //     'nama' => $request->nama
+                // ]);
+
+                $user->update(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    // 'pelanggan_id' => $pelanggan->id
+                ]));
+            } elseif ($request->role == 'karyawan') {
+                // $karyawan = Karyawan::create([
+                //     'nama' => $request->nama
+                // ]);
+
+                $user->update(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    // 'karyawan_id' => $karyawan->id
+                ]));
+            } elseif ($request->role == 'bank') {
+                // $bank = Bank::create([
+                //     'nama' => $request->nama
+                // ]);
+
+                $user->update(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    // 'bank_id' => $bank->id
+                ]));
+            } elseif ($request->role == 'pemasok') {
+                // $pemasok = Pemasok::create([
+                //     'nama' => $request->nama,
+                // ]);
+
+                $user->update(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    // 'pemasok_id' => $pemasok->id
+                ]));
+            } else {
+                return back()->with('failed', "Mohon Pilih Kembali Role !");
+            }
         }
         return back()->with('success',$this->alert.'Diedit !');
     }

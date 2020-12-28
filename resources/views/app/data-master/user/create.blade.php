@@ -43,9 +43,26 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Nama <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Enter Nama">
+                                        <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
+                                        <select name="role" id="" class="form-control">
+                                            <option value="Null">-- Pilih Role --</option>
+                                            <option value="pelanggan" {{old('role') == 'pelanggan' ? 'selected' : ''}}>Pelanggan</option>
+                                            <option value="karyawan" {{old('role') == 'karyawan' ? 'selected' : ''}}> Karyawan</option>
+                                            <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option>
+                                            <option value="pemasok" {{old('role') == 'pemasok' ? 'selected' : ''}}>Pemasok</option>
+                                        </select>
                                         @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Nama <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Enter Nama">
+                                        @error('nama')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -77,7 +94,7 @@
                                   <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Password <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

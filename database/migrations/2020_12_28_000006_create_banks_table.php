@@ -16,7 +16,7 @@ class CreateBanksTable extends Migration
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->year('tahun_berdiri');
+            $table->year('tahun_berdiri')->nullable();
             $table->text('alamat')->nullable();
             $table->string('telepon',20)->nullable();
             $table->foreignId('permintaan_id')->nullable()->constrained('permintaans')->onDelete('cascade');
