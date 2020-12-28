@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
+    // User
+    Route::resource('user', 'UserController');
+});
