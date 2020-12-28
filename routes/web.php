@@ -22,9 +22,25 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['admin']], function () {
+
+    });
+    Route::group(['middleware' => ['pemasok']], function () {
+        Route::resource('barang', 'BarangController');
+    });
+    Route::group(['middleware' => ['bank']], function () {
+
+    });
+    Route::group(['middleware' => ['pelanggan']], function () {
+
+    });
+    Route::group(['middleware' => ['karyawan']], function () {
+
+    });
     // User
     Route::resource('user', 'UserController');
     // Pemasok
     Route::resource('pemasok', 'PemasokController');
+    // Barang
 });
