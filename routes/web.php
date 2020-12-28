@@ -25,4 +25,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
     // User
     Route::resource('user', 'UserController');
+    // Pemasok
+    Route::resource('pemasok', 'PemasokController');
 });
