@@ -19,9 +19,7 @@ class CreatePelanggansTable extends Migration
             $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('cascade');
             $table->text('alamat')->nullable();
             $table->string('telepon',20)->nullable();
-            $table->string('fax');
-            $table->string('website');
-            $table->string('npwp');
+            $table->enum('jenis_kelamin',['Pria','Wanita'])->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();
         });
