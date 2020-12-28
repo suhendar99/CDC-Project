@@ -1,0 +1,168 @@
+<?php
+
+namespace App\Http\Controllers\v1;
+
+use App\Http\Controllers\Controller;
+use App\Models\Barang;
+use App\Models\Kategori;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
+
+class BarangController extends Controller
+{
+    public function __construct()
+    {
+        $this->Data = new Barang();
+
+        $this->path = 'app.data-master.barang.';
+        $this->alert = 'Data Berhasil ';
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        if($request->ajax()){
+            $data = $this->Data->getData();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                })
+                ->make(true);
+        }
+        return view($this->path.'index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $kategori = Kategori::all();
+        return view($this->path.'create',compact('kategori'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'nama_barang' => 'required|string|max:20',
+            'harga_barang' => 'required|string|max:20',
+            'satuan' => 'required|string|max:10',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'kategori_id' => 'required|exists:kategoris,id'
+        ]);
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $pin = mt_rand(100, 999)
+                    .mt_rand(100, 999);
+            $date = date("Y");
+            $kode = "BG".$date.$pin;
+            if ($request->file('foto')) {
+                $name = $request->file('foto');
+                $foto = time()."_".$name->getClientOriginalName();
+                $request->foto->move(public_path("upload/foto/barang"), $foto);
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                    'foto' => 'upload/foto/barang/'.$foto,
+                    'kode_barang' => $kode,
+                    'pemasok_id' => Auth::user()->pemasok_id,
+                    'kategori_id' => $request->kategori_id
+                ]));
+            } else {
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                    'kode_barang' => $kode,
+                    'pemasok_id' => Auth::user()->pemasok_id,
+                    'kategori_id' => $request->kategori_id
+                ]));
+            }
+        }
+        return back()->with('success',$this->alert.'Disimpan !');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $kategori = Kategori::all();
+        $data = Barang::find($id);
+        return view($this->path.'edit',compact('kategori','data'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $v = Validator::make($request->all(),[
+            'nama_barang' => 'required|string|max:20',
+            'harga_barang' => 'required|string|max:20',
+            'satuan' => 'required|string|max:10',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'kategori_id' => 'required|exists:kategoris,id'
+        ]);
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $barang = Barang::find($id);
+            if ($request->file('foto')) {
+                $name = $request->file('foto');
+                $foto = time()."_".$name->getClientOriginalName();
+                $request->foto->move(public_path("upload/foto/barang"), $foto);
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                    'foto' => 'upload/foto/barang/'.$foto,
+                    'kategori_id' => $request->kategori_id
+                ]));
+            } else {
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                    'kategori_id' => $request->kategori_id
+                ]));
+            }
+        }
+        return back()->with('success',$this->alert.'Diedit !');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $this->Data->deleteData($id);
+
+        return back();
+    }
+}
