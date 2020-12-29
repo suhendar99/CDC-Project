@@ -1,0 +1,48 @@
+.MultiCarousel { 
+	float: left; 
+	overflow: hidden; 
+	padding: 15px; 
+	width: 100%; 
+	position:relative; 
+}
+    
+.MultiCarousel .MultiCarousel-inner { 
+	transition: 1s ease all; 
+	float: left; 
+}
+.MultiCarousel .MultiCarousel-inner .item {
+	float: left;
+}
+.MultiCarousel .MultiCarousel-inner .item > div { 
+	text-align: center; 
+	padding:10px; 
+	margin:10px !important; 
+	background: #fff;
+	color:#666;
+}
+.MultiCarousel .leftLst, .MultiCarousel .rightLst { 
+	font-size: 24px; 
+	position:absolute; 
+	border:0;
+	background: transparent; 
+	color: #C6C6C6; 
+	top:calc(50% - 20px); 
+}
+.MultiCarousel .leftLst { 
+	left:0; 
+}
+.MultiCarousel .rightLst { 
+	right:0; 
+}
+    
+.MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { 
+	pointer-events: none; 
+}
+
+.carousel-card-title{
+	font-size: 12px;
+}
+.carousel-card-subtitle{
+	font-size: 10px;
+	color: #C6C6C6;
+}

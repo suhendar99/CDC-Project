@@ -22,7 +22,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+	//Dashboard
+	Route::get('dashboard','DashboardController@index')->name('dashboard');
+
     // User
     Route::resource('user', 'UserController');
 });

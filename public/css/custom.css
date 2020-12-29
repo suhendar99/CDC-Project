@@ -1,0 +1,183 @@
+.card {
+	border : 0;
+}
+
+.h-40 {
+	height: 40px;
+}
+
+.avatar{
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+}
+
+img .scale-down{
+	width: auto;
+	object-fit: scale-down;
+}
+
+.bg-my-primary{
+	background: #7CBFFC;
+	color: #fff;
+}
+.bg-my-warning{
+	background: #FFA723;
+	color: #fff;
+}
+.bg-my-danger{
+	background: #FF5C5C;
+	color: #fff;
+}
+.bg-my-success{
+	background: #02DDBD;
+	color: #fff;
+}
+
+.btn.bg-my-warning-outline{
+	background: transparent;
+	color: #FFA723;
+	border: 1px solid #FFA723;
+	padding: 0 5px 0 5px;
+	margin: 5px;
+}
+
+.btn.bg-my-danger-outline{
+	background: transparent;
+	color: #FF5C5C;
+	border: 1px solid #FF5C5C;
+	padding: 0 5px 0 5px;
+	margin: 5px;
+}
+
+.form-control.rounded-40{
+	border-radius:  40px !important;
+	border: 0;
+	padding-left:  20px;
+}
+
+.avatar-text{
+	font-size: 1rem !important;	
+}
+
+
+.form-group .icon-search {
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.pointer{
+	cursor:  pointer ;
+}
+
+.text-sm-left{
+	text-align: left
+}
+
+.hi-100{
+	height: 100px;
+}
+
+.h-200{
+	height: 200px;
+}
+
+.line-strip{
+	position: absolute;
+	z-index: 2;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: .5rem;
+	border-radius: 5px 5px 0 0;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.rightLst:hover{
+	color: #7CBFFC;
+}
+
+.card-img-top{
+	height: 100px;
+	object-fit: cover;
+}
+
+.item .card .card-body{
+	padding: .2rem;
+}
+
+.item .card{
+	/*border: .5px solid #C6C6C6;*/
+}
+
+.text-my-primary{
+	color: #7CBFFC;
+}
+.text-my-warning{
+	color: #FFA723;
+}
+.text-my-danger{
+	color: #FF5C5C;
+}
+.text-my-success{
+	color: #02DDBD;
+}
+.text-my-subtitle{
+	/*color: #7CBFFC;*/
+	font-size: 10px;
+}
+.text-10{
+	font-size: 10px;
+}
+
+.p-0{
+	padding: 0 !important;
+}
+
+.strip-primary{
+	position: absolute;
+	bottom: 5px;
+	width: 100px;
+	height: 5px;
+	background: #7CBFFC;
+	border-radius:  5px;
+}
+
+.log-title{
+	font-size: 	14px !important ;
+}
+
+.log-detail{
+	font-size: 	14px !important ;
+}
+
+.log-things{
+	font-size: 	12px !important ;
+}
+
+.log-price{
+	font-size: 	14px !important ;
+}
+.log-buyer{
+	font-size: 	12px !important ;	
+}
+
+
+
+@media (max-width: 768px) {
+	.text-sm-center{
+		text-align: center
+	}
+}
