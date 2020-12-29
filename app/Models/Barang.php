@@ -21,8 +21,4 @@ class Barang extends Model
     {
         return static::with('kategori','pemasok')->orderBy('id','desc')->get();
     }
-    public function deleteData($id)
-    {
-        return static::find($id)->delete();
-    }
 }
