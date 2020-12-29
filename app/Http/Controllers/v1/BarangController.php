@@ -38,7 +38,27 @@ class BarangController extends Controller
         }
         return view($this->path.'index');
     }
-
+    public function getBarangByPelanggan(Request $request)
+    {
+        if ($request->has('search') && $request->search !== '') {
+            $search = trim($request->search);
+            if($search == ''){
+               $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(9);
+            }else{
+           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')
+                ->where('nama_barang','LIKE',"%".$search."%")
+                ->orWhere('harga_barang','LIKE',"%".$search."%")
+                // ->orWhere('','LIKE',"%".$search."%")
+                ->paginate(9);
+            }
+        } else {
+           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(9);
+        }
+        $else = $request->search;
+        //$barang = Barang::where('sarpras_id',$id)->get();
+        // $data = SaranaPrasaranaUptd::find($id);
+        return view($this->path.'pelanggan.index',compact('barang','else'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -101,7 +121,11 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Barang::with('pemasok','kategori')->where('id',$id)->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
@@ -166,7 +190,7 @@ class BarangController extends Controller
         $data = $this->Data->find($id);
         File::delete($data->foto);
         $data->delete();
-        
+
         return back();
     }
 }
