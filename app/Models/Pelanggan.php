@@ -13,4 +13,13 @@ class Pelanggan extends Model
     {
         return $this->hasMany('App\User');
     }
+    public function order()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
+
+    public function getData()
+    {
+        return static::orderBy('id','desc')->get();
+    }
 }

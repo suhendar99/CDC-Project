@@ -26,12 +26,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Edit Data User</h5>
+                                <h5>Tambah Data Barang</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('user.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('barang.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -39,70 +39,68 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('user.update',$data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('barang.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
-                                        <select name="role" id="" class="form-control">
-                                            <option value="Null">-- Pilih Role --</option>
-                                            <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : ''}}>Pelanggan</option>
-                                            <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : ''}}> Karyawan</option>
-                                            <option value="bank" {{$data->bank_id != null ? 'selected' : ''}}>Bank</option>
-                                            <option value="pemasok" {{$data->pemasok_id != null ? 'selected' : ''}}>Pemasok</option>
-                                        </select>
-                                        @error('name')
+                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Enter nama barang">
+                                        @error('nama_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Nama <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->karyawan_id) ? Auth::user()->karyawan->nama :(isset(Auth::user()->bank_id) ? Auth::user()->bank->nama : (isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : ''))) }}" placeholder="Enter Nama">
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Username <small class="text-success">*Boleh tidak diisi</small></label>
-                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ $data->username }}" placeholder="Enter Username">
-                                        @error('username')
+                                        <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
+                                        @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                  </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Email <small class="text-success">*Harus diisi</small></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $data->email }}" placeholder="Enter email">
-                                        @error('email')
+                                        <label>Kategori Barang <small class="text-success">*Harus diisi</small></label>
+                                        <select name="kategori_id" id="" class="form-control">
+                                            <option value="0">--Pilih Kategori--</option>
+                                            @foreach ($kategori as $item)
+                                                <option value="{{$item->id}}" {{ old('kategori_id') == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                  </div>
-                                  <div class="form-group">
+                                </div>
+                                <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Password <small class="text-success">*Boleh tidak diisi</small></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
-                                        @error('password')
+                                        <label>Satuan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan') }}" placeholder="Enter satuan">
+                                        @error('satuan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                  </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Foto Barang <small class="text-success">*Boleh Tidak diisi</small></label>
+                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}" placeholder="Enter foto">
+                                        @error('foto')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">
@@ -119,3 +117,6 @@
     </div>
 </div>
 @endsection
+@push('script')
+
+@endpush

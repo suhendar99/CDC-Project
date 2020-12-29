@@ -26,12 +26,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Tambah Data User</h5>
+                                <h5>Edit Data Pemasok</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('user.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('pemasok.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -39,29 +39,13 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('user.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('pemasok.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
-                                        <select name="role" id="" class="form-control">
-                                            <option value="Null">-- Pilih Role --</option>
-                                            <option value="pelanggan" {{old('role') == 'pelanggan' ? 'selected' : ''}}>Pelanggan</option>
-                                            <option value="karyawan" {{old('role') == 'karyawan' ? 'selected' : ''}}> Karyawan</option>
-                                            <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option>
-                                            <option value="pemasok" {{old('role') == 'pemasok' ? 'selected' : ''}}>Pemasok</option>
-                                        </select>
-                                        @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                @method('PUT')
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Enter Nama">
+                                        <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $data->nama }}" placeholder="Enter Nama">
                                         @error('nama')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -71,9 +55,9 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Username <small class="text-success">*Boleh tidak diisi</small></label>
-                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Enter Username">
-                                        @error('username')
+                                        <label>Telepon <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $data->telepon }}" placeholder="Enter Telepon">
+                                        @error('telepon')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -82,20 +66,9 @@
                                   </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Email <small class="text-success">*Harus diisi</small></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Enter email">
-                                        @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Password <small class="text-success">*Harus diisi</small></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
-                                        @error('password')
+                                        <label>Alamat <small class="text-success">*Harus diisi</small></label>
+                                        <textarea name="alamat" id="" cols="30" rows="10" class="form-control @error('alamat') is-invalid @enderror">{{ $data->alamat}}</textarea>
+                                        @error('alamat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

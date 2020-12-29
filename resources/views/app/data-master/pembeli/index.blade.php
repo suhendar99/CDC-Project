@@ -9,12 +9,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Data User</h5>
+                                <h5>Data Pembeli</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('user.create')}}" class="btn btn-primary btn-sm">Tambah Data User</a>
+                                <a href="{{route('pelanggan.create')}}" class="btn btn-primary btn-sm">Tambah Data Pembeli</a>
                             </div>
                         </div>
                     </div>
@@ -24,8 +24,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Username</th>
-                                <th>Email</th>
+                                <th>Nama Pembeli</th>
+                                <th>Alamat</th>
+                                <th>Telepon</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Foto</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,18 +50,37 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('user.index') }}",
+            ajax : "{{ route('pelanggan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'username', name: 'username'},
-                {data : 'email', name: 'email'},
+                {data : 'nama', name: 'nama'},
+                {data : 'alamat', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+                    }
+                },
+                {data : 'telepon', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+                    }
+                },
+                {data : 'jenis_kelamin', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+                    }
+                },
+                {data : 'foto', render: function (data, type, full, meta) {
+                        if(data == null){
+                            return "Foto Tidak Ada !"
+                        }else{
+                            return "<img src=\"{{ asset('') }}" + data + "\" height=\"50px\"width=\"50px\">";
+                        }
+                    }
+                },
                 {data : 'action', name: 'action'}
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/user/'+id
+            formDelete.action = '/v1/pelanggan/'+id
 
             const Toast = Swal.mixin({
             toast: true,

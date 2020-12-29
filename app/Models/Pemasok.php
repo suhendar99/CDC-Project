@@ -11,6 +11,18 @@ class Pemasok extends Model
 
     public function user()
     {
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\User','pemasok_id');
+    }
+    public function barang()
+    {
+        return $this->hasMany('App\Models\Barang','pemasok_id');
+    }
+    public function getData()
+    {
+        return static::orderBy('id','desc')->get();
+    }
+    public function deleteData($id)
+    {
+        return static::find($id)->delete();
     }
 }

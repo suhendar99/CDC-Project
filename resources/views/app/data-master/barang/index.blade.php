@@ -9,12 +9,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Data User</h5>
+                                <h5>Data Barang</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('user.create')}}" class="btn btn-primary btn-sm">Tambah Data User</a>
+                                <a href="{{route('barang.create')}}" class="btn btn-primary btn-sm">Tambah Data Barang</a>
                             </div>
                         </div>
                     </div>
@@ -24,8 +24,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Username</th>
-                                <th>Email</th>
+                                <th>Nama Barang</th>
+                                <th>Kode Barang</th>
+                                <th>Harga Barang</th>
+                                <th>Kategori</th>
+                                <th>Satuan</th>
+                                <th>Foto</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,18 +51,29 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('user.index') }}",
+            ajax : "{{ route('barang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'username', name: 'username'},
-                {data : 'email', name: 'email'},
-                {data : 'action', name: 'action'}
+                {data : 'nama_barang', name: 'nama_barang'},
+                {data : 'kode_barang', name: 'kode_barang'},
+                {data : 'harga_barang', name: 'harga_barang'},
+                {data : 'kategori.nama', name: 'kategori_id'},
+                {data : 'satuan', name: 'satuan'},
+                {data : 'foto', render: function (data, type, full, meta) {
+                        if(data == null){
+                            return "Foto Tidak Ada !"
+                        }else{
+                            return "<img src=\"{{ asset('') }}" + data + "\" height=\"50px\"width=\"50px\">";
+                        }
+                    }
+                },
+                {data : 'action', name: 'action'},
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/user/'+id
+            formDelete.action = '/v1/barang/'+id
 
             const Toast = Swal.mixin({
             toast: true,

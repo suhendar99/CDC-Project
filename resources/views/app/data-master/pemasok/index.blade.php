@@ -9,12 +9,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Data User</h5>
+                                <h5>Data Pemasok</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('user.create')}}" class="btn btn-primary btn-sm">Tambah Data User</a>
+                                <a href="{{route('pemasok.create')}}" class="btn btn-primary btn-sm">Tambah Data Pemasok</a>
                             </div>
                         </div>
                     </div>
@@ -24,8 +24,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Username</th>
-                                <th>Email</th>
+                                <th>Nama</th>
+                                <th>Kode Pemasok</th>
+                                <th>Alamat</th>
+                                <th>Telepon</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,18 +49,26 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('user.index') }}",
+            ajax : "{{ route('pemasok.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'username', name: 'username'},
-                {data : 'email', name: 'email'},
+                {data : 'nama', name: 'nama'},
+                {data : 'kode_pemasok', name: 'kode_pemasok'},
+                {data : 'alamat', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+                    }
+                },
+                {data : 'telepon', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+                    }
+                },
                 {data : 'action', name: 'action'}
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/user/'+id
+            formDelete.action = '/v1/pemasok/'+id
 
             const Toast = Swal.mixin({
             toast: true,
