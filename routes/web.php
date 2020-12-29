@@ -24,23 +24,24 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
     Route::group(['middleware' => ['admin']], function () {
-
+        // User
+        Route::resource('user', 'UserController');
+        // Pemasok
+        Route::resource('pemasok', 'PemasokController');
+        // Pembeli
+        Route::resource('pelanggan', 'PelangganController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
+        // Barang
         Route::resource('barang', 'BarangController');
     });
     Route::group(['middleware' => ['bank']], function () {
 
     });
     Route::group(['middleware' => ['pelanggan']], function () {
-
+        Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {
 
     });
-    // User
-    Route::resource('user', 'UserController');
-    // Pemasok
-    Route::resource('pemasok', 'PemasokController');
-    // Barang
 });
