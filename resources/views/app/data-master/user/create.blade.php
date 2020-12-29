@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Data User</h5>
+                                <h5>Tambah Data User</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
