@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'bank' => \App\Http\Middleware\BankMiddleware::class,
         'karyawan' => \App\Http\Middleware\KaryawanMiddleware::class,
         'pelanggan' => \App\Http\Middleware\PelangganMiddleware::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 }
