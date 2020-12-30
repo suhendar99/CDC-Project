@@ -19,15 +19,13 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
 	//Dashboard
-	Route::get('dashboard','DashboardController@index')->name('dashboard');
+    Route::get('dashboard','DashboardController@index')->name('dashboard');
 
-    // User
-    Route::resource('user', 'UserController');
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');
@@ -35,8 +33,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemasok', 'PemasokController');
         // Pembeli
         Route::resource('pelanggan', 'PelangganController');
+        // Gudang
+        Route::resource('gudang', 'GudangController');
     });
-    Route::group(['middleware' => ['pemasok']], function () {
+    Route::group(['middleware' => ['pemasok',]], function () {
         // Barang
         Route::resource('barang', 'BarangController');
     });
@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     });
     Route::group(['middleware' => ['pelanggan']], function () {
+        // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {

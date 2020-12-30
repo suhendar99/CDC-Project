@@ -105,10 +105,10 @@
               </div>
           </div>
         </div>
-        <div class="modal-footer">
+        {{-- <div class="modal-footer">
           <a href="#" class="btn btn-warning btn-progress" id="btn-edit">Edit</a>
           <button type="submit" class="btn btn-danger btn-progress" id="btn-delete">Delete</button>
-        </div>
+        </div> --}}
       </div>
     </div>
 </div>

@@ -3,21 +3,19 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pelanggan;
-use App\User;
+use App\Models\Gudang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class PelangganController extends Controller
+class GudangController extends Controller
 {
     public function __construct()
     {
-        $this->Data = new Pelanggan;
+        $this->Data = new Gudang;
 
-        $this->path = 'app.data-master.pembeli.';
+        $this->path = 'app.data-master.gudang.';
         $this->alert = 'Data Berhasil ';
     }
     /**
@@ -32,7 +30,7 @@ class PelangganController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/pelanggan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
@@ -58,10 +56,15 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
+            'lat' => 'required',
+            'long' => 'required',
             'nama' => 'required|string|max:50',
+            'kontak' => 'required|string|regex:/(08)[0-9]{9}/',
+            'hari' => 'required|',
+            'jam_buka' => 'required|',
+            'jam_tutup' => 'required|',
             'alamat' => 'required|string|max:200',
-            'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
-            'jenis_kelamin' => 'required',
+            'kapasitas' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($v->fails()) {
@@ -70,40 +73,13 @@ class PelangganController extends Controller
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
-                $pelanggan = Pelanggan::create([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'foto' => 'upload/foto/pelanggan/'.$foto,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
-                $numRand = mt_rand(100, 999);
-                $nama = $request->nama;
-                $subStr = explode(' ',trim($nama));
-                User::create([
-                    'username' => $subStr[0].$numRand,
-                    'email' => $subStr[0].$numRand."@gmail.com",
-                    'password' => Hash::make('12341234'),
-                    'pelanggan_id' => $pelanggan->id
-                ]);
+                $request->foto->move(public_path("upload/foto/gudang"), $foto);
+                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari'),[
+                    'foto' => 'upload/foto/gudang/'.$foto
+                ]));
 
             } else {
-                $pelanggan = Pelanggan::create([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
-                $numRand = mt_rand(100, 999);
-                $nama = $request->nama;
-                $subStr = explode(' ',trim($nama));
-                User::create([
-                    'username' => $subStr[0].$numRand,
-                    'email' => $subStr[0].$numRand."@gmail.com",
-                    'password' => Hash::make('12341234'),
-                    'pelanggan_id' => $pelanggan->id
-                ]);
+                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari')));
             }
         }
         return back()->with('success',$this->alert.'Disimpan !');
@@ -117,7 +93,11 @@ class PelangganController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Gudang::where('id',$id)->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
@@ -128,7 +108,7 @@ class PelangganController extends Controller
      */
     public function edit($id)
     {
-        $data = Pelanggan::find($id);
+        $data = Gudang::find($id);
         return view($this->path.'edit',compact('data'));
     }
 
@@ -143,37 +123,32 @@ class PelangganController extends Controller
     {
         $v = Validator::make($request->all(),[
             'nama' => 'required|string|max:50',
+            'lat' => 'required',
+            'long' => 'required',
             'alamat' => 'required|string|max:200',
-            'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
-            'jenis_kelamin' => 'required',
+            'kontak' => 'required|string|regex:/(08)[0-9]{9}/',
+            'kapasitas' => 'required|numeric',
+            'jam_buka' => 'required|',
+            'jam_tutup' => 'required|',
+            'hari' => 'required|',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $pelanggan = Pelanggan::find($id);
+            $data = Gudang::find($id);
             if ($request->file('foto')) {
-                File::delete($pelanggan->foto);
+                File::delete($data->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
-                $pelanggan->update([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'foto' => 'upload/foto/pelanggan/'.$foto,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
+                $request->foto->move(public_path("upload/foto/gudang"), $foto);
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari'),[
+                    'foto' => 'upload/foto/gudang/'.$foto
+                ]));
+
             } else {
-                $pelanggan->update([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari')));
             }
-
-
         }
         return back()->with('success',$this->alert.'Diedit !');
     }

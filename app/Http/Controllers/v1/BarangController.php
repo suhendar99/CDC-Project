@@ -43,16 +43,16 @@ class BarangController extends Controller
         if ($request->has('search') && $request->search !== '') {
             $search = trim($request->search);
             if($search == ''){
-               $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(9);
+               $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(8);
             }else{
            $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')
                 ->where('nama_barang','LIKE',"%".$search."%")
                 ->orWhere('harga_barang','LIKE',"%".$search."%")
                 // ->orWhere('','LIKE',"%".$search."%")
-                ->paginate(9);
+                ->paginate(8);
             }
         } else {
-           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(9);
+           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(8);
         }
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
