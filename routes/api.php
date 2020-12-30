@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/v1/getBarang/{id}','v1\BarangController@show');
+Route::get('/v1/getGudang/{id}','v1\GudangController@show');
