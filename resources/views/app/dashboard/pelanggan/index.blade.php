@@ -2,7 +2,7 @@
         $pageTitle = 'Dashboard Pelanggan';
         $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
         $dashboard = true;
-        $pemasok = admin;
+        $pelanggan = true;
 @endphp
 @extends('layouts.dashboard.header')
 

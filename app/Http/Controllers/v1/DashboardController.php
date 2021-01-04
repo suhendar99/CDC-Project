@@ -19,7 +19,6 @@ class DashboardController extends Controller
     {
 		$auth = Auth::user();
     	if ($auth->pemasok_id != null) {
-    		dd($auth);
     		return view($this->pathPemasok.'index');	
     	} elseif ($auth->karyawan_id != null) {
     		return view($this->pathKaryawan.'index');	

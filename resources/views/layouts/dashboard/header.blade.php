@@ -49,6 +49,7 @@
             {{-- Rightbar --}}
             @if(isset($admin) || isset($pemasok) || isset($karyawan))
             @include('layouts.dashboard.rightbar')
+            @elseif(isset($pelanggan))
             @endif  
         </div>
     </div>

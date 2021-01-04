@@ -57,7 +57,7 @@ img .scale-down{
 }
 
 .avatar-text{
-	font-size: 1rem !important;	
+	font-size: .8rem !important;	
 }
 
 
@@ -179,7 +179,7 @@ img .scale-down{
 }
 
 .dropdown-menu.show{
-    left: 30px !important;
+    left: 20px !important;
     top: -10px !important;
 }
 
