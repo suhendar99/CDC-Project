@@ -174,7 +174,14 @@ img .scale-down{
 	font-size: 	12px !important ;	
 }
 
+.h-30{
+	height: 30px;
+}
 
+.dropdown-menu.show{
+    left: 30px !important;
+    top: -10px !important;
+}
 
 @media (max-width: 768px) {
 	.text-sm-center{
