@@ -24,8 +24,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
                                 <th>Kode Pemasok</th>
+                                <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Telepon</th>
                                 <th>Action</th>
@@ -52,8 +52,8 @@
             ajax : "{{ route('pemasok.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama', name: 'nama'},
                 {data : 'kode_pemasok', name: 'kode_pemasok'},
+                {data : 'nama', name: 'nama'},
                 {data : 'alamat', render:function(data,a,b,c){
                         return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
                     }

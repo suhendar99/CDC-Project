@@ -21,7 +21,6 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Pemasok',
             'email' => 'pemasok@makerindo.com',
             'username' => 'pemasok',
             'password' => Hash::make('12341234'),
@@ -29,18 +28,16 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Karyawan',
             'email' => 'karyawan@makerindo.com',
             'username' => 'pemasok',
-            'password' => Hash::make('12341234'), 
+            'password' => Hash::make('12341234'),
             'karyawan_id' => 1
         ]);
 
-        User::create([
-            'name' => 'Pelanggan',
+        User::create([  
             'email' => 'pelanggan@makerindo.com',
             'username' => 'pemasok',
-            'password' => Hash::make('12341234'), 
+            'password' => Hash::make('12341234'),
             'pelanggan_id' => 1
         ]);
     }
