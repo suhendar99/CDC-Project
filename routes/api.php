@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/v1/getBarang/{id}','v1\BarangController@show');
+Route::get('/v1/getGudang/{id}','v1\GudangController@show');

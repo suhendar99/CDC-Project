@@ -14,13 +14,42 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function (){
+	return redirect('v1/dashboard');
+})->name('home');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+	//Dashboard
+    Route::get('dashboard','DashboardController@index')->name('dashboard');
+
+    Route::group(['middleware' => ['admin']], function () {
+        // User
+        Route::resource('user', 'UserController');
+        // Pemasok
+        Route::resource('pemasok', 'PemasokController');
+        // Pembeli
+        Route::resource('pelanggan', 'PelangganController');
+        // Gudang
+        Route::resource('gudang', 'GudangController');
+    });
+    Route::group(['middleware' => ['pemasok',]], function () {
+        // Barang
+        Route::resource('barang', 'BarangController');
+    });
+    Route::group(['middleware' => ['bank']], function () {
+
+    });
+    Route::group(['middleware' => ['pelanggan']], function () {
+        // Barang funtuk pembeli
+        Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
+    });
+    Route::group(['middleware' => ['karyawan']], function () {
+
+    });
+});

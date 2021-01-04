@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -15,9 +15,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -36,4 +34,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function pelanggan()
+    {
+        return $this->belongsTo('App\Models\Pelanggan');
+    }
+    public function karyawan()
+    {
+        return $this->belongsTo('App\Models\Karyawan');
+    }
+    public function bank()
+    {
+        return $this->belongsTo('App\Models\Bank');
+    }
+    public function pemasok()
+    {
+        return $this->belongsTo('App\Models\Pemasok');
+    }
+    public function getData()
+    {
+        return static::with('pemasok','karyawan','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();
+    }
 }
