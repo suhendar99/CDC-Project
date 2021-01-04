@@ -57,7 +57,7 @@ img .scale-down{
 }
 
 .avatar-text{
-	font-size: 1rem !important;	
+	font-size: .8rem !important;	
 }
 
 
@@ -174,7 +174,14 @@ img .scale-down{
 	font-size: 	12px !important ;	
 }
 
+.h-30{
+	height: 30px;
+}
 
+.dropdown-menu.show{
+    left: 20px !important;
+    top: -10px !important;
+}
 
 @media (max-width: 768px) {
 	.text-sm-center{

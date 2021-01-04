@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{asset('images/logo-cdc.png')}}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -34,62 +35,22 @@
     <div id="app">
         <div class="wrapper">
             <!-- Sidebar  -->
-            @include('layouts.dashboard.sidebar')
+            <div id="sidebar">
+                @include('layouts.dashboard.sidebar')
+            </div>
 
             <!-- Page Content  -->
             <div id="content">
 
-                <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
-                    <div class="container-fluid">
-
-                        <button type="button" id="sidebarCollapse" class="btn btn-sm bg-my-primary">
-                            <i class="material-icons md-24">format_align_left</i>
-                        </button>
-                        <button type="button" id="rightbarCollapse" class="btn btn-sm bg-my-warning d-inline-block ml-auto">
-                            <i class="material-icons md-24">format_align_right</i>
-                        </button>                    
-                    </div>
-                </nav>
-                <div class="container-fluid mt-3">
-                    <div class=" row"> 
-                        <div class=" col-12"> 
-                            <div class=" row"> 
-                                <div class=" col-md-8 col-sm-12"> 
-                                    <div class=" row">  
-                                        <div class="col-md-2 col-sm-4 text-md-left text-sm-center">
-                                            <img src=" {{asset('images/logo-cdc.png')}}" class=" h-40 scale-down">
-                                        </div>
-                                        <div class=" col-md-10 col-sm-8 text-md-left text-sm-center"> 
-                                            <h4 class="pl-2 py-1"> {{$pageTitle}}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" col-md-4 col-sm-12">  
-                                    <div class=" row"> 
-                                        <div class=" col-md-12 col-sm-12"> 
-                                            <div class=" form-group"> 
-                                                <i class="material-icons md-24 icon-search">search</i>
-                                                <input type=" text" name="search" class=" form-control rounded-40" placeholder=" Cari Barang ...">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                    <div class=" row"> 
-                        <div class=" col-12"> 
-                            @yield('content')
-                        </div>
-                    </div>   
-                </div>
+                @include('layouts.dashboard.navbar')
 
             </div>
 
             {{-- Rightbar --}}
-            @if($dashboard == true)
+            @if(isset($admin) || isset($pemasok) || isset($karyawan))
             @include('layouts.dashboard.rightbar')
-            @endif
+            @elseif(isset($pelanggan))
+            @endif  
         </div>
     </div>
 </body>
@@ -98,11 +59,11 @@
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <!-- Popper.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
