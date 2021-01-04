@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Tambah Data Pemasok</h5>
+                                <h5>Tambah Data Gudang</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
