@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/v1/getBarang/{id}','v1\BarangController@show');
 Route::get('/v1/getGudang/{id}','v1\GudangController@show');
+Route::get('/v1/getPemasok/{id}','v1\PemasokController@show');
+Route::get('/v1/getKabupaten/{id}','v1\DashboardController@getKabupaten');
+Route::get('/v1/getKecamatan/{id}','v1\DashboardController@getKecamatan');
+Route::get('/v1/getDesa/{id}','v1\DashboardController@getDesa');

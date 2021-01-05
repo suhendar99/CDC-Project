@@ -46,11 +46,11 @@
                                     <div class="col-md-12">
                                         <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
                                         <select name="role" id="" class="form-control">
-                                            <option value="Null">-- Pilih Role --</option>
-                                            <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : ''}}>Pelanggan</option>
-                                            <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : ''}}> Karyawan</option>
-                                            <option value="bank" {{$data->bank_id != null ? 'selected' : ''}}>Bank</option>
-                                            <option value="pemasok" {{$data->pemasok_id != null ? 'selected' : ''}}>Pemasok</option>
+                                            <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : 'disabled'}}>Pelanggan</option>
+                                            <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : 'disabled'}}> Karyawan</option>
+                                            <option value="bank" {{$data->bank_id != null ? 'selected' : 'disabled'}}>Bank</option>
+                                            <option value="pemasok" {{$data->pemasok_id != null ? 'selected' : 'disabled'}}>Pemasok</option>
+                                            <option value="pengurus gudang" {{$data->pengurus_gudang_id != null ? 'selected' : 'disabled'}}>Pengurus Gudang</option>
                                         </select>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">

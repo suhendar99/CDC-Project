@@ -23,14 +23,19 @@ Route::get('/home', function (){
 	return redirect('v1/dashboard');
 })->name('home');
 
-
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
-	//Dashboard
+    //Dashboard
     Route::get('dashboard','DashboardController@index')->name('dashboard');
+    // Complete Akun
+    Route::post('completeAkun/{id}','DashboardController@complete')->name('complete.akun');
+    //Approval
+    Route::get('approval', 'DashboardController@approval')->name('approval');
 
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');
+        Route::get('/user/{id}/approve', 'UserController@approve')->name('admin.users.approve');
+        Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Pembeli

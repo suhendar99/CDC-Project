@@ -20,6 +20,10 @@ class CreateBanksTable extends Migration
             $table->text('alamat')->nullable();
             $table->string('telepon',20)->nullable();
             $table->foreignId('permintaan_id')->nullable()->constrained('permintaans')->onDelete('cascade');
+            $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
+            $table->foreignId('kecamatan_id')->nullable()->constrained('kecamatans')->onDelete('set null');
+            $table->foreignId('kabupaten_id')->nullable()->constrained('kabupatens')->onDelete('set null');
+            $table->foreignId('provinsi_id')->nullable()->constrained('provinsis')->onDelete('set null');
             $table->timestamps();
         });
     }

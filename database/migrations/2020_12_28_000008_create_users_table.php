@@ -20,10 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('status')->default(0);
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('karyawan_id')->nullable()->constrained('karyawans')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
+            $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
+            $table->timestamp('approved_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
