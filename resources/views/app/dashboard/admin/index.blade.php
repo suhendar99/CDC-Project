@@ -3,6 +3,7 @@
         $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
         $dashboard = true;
         $admin = true;
+        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -36,15 +37,15 @@
             <div class="card-body pb-2">
                 <div class="row"> 
                   <div class="col-4">
-                    <i class="material-icons md-48 text-my-warning">local_shipping</i>
+                    <i class="material-icons md-48 text-my-warning">house_siding</i>
                   </div>
                   <div class="col-8">
                     <div class="row">
                       <div class="col-12">
-                        <div class="float-right text-my-warning">200 Kali</div>
+                        <div class="float-right text-my-warning">200 </div>
                       </div>
                       <div class="col-12"> 
-                        <div class="float-right text-my-subtitle">Pengiriman</div>
+                        <div class="float-right text-my-subtitle">Gudang</div>
                       </div>
                     </div>
                   </div>
@@ -58,15 +59,15 @@
             <div class="card-body pb-2">
                 <div class="row"> 
                   <div class="col-4">
-                    <i class="material-icons md-48 text-my-danger">receipt_long</i>
+                    <i class="material-icons md-48 text-my-danger">people</i>
                   </div>
                   <div class="col-8">
                     <div class="row">
                       <div class="col-12">
-                        <div class="float-right text-my-danger">200 Kali</div>
+                        <div class="float-right text-my-danger">2000 Akun</div>
                       </div>
                       <div class="col-12"> 
-                        <div class="float-right text-my-subtitle">Transaksi</div>
+                        <div class="float-right text-my-subtitle">Pelanggan</div>
                       </div>
                     </div>
                   </div>
@@ -80,15 +81,15 @@
             <div class="card-body pb-2">
                 <div class="row"> 
                   <div class="col-4">
-                    <i class="material-icons md-48 text-my-success">move_to_inbox</i>
+                    <i class="material-icons md-48 text-my-success">extension</i>
                   </div>
                   <div class="col-8">
                     <div class="row">
                       <div class="col-12">
-                        <div class="float-right text-my-success">10.000.000</div>
+                        <div class="float-right text-my-success">100 Orang</div>
                       </div>
                       <div class="col-12"> 
-                        <div class="float-right text-my-subtitle">Pemasukan (Rp)</div>
+                        <div class="float-right text-my-subtitle">Pemasok</div>
                       </div>
                     </div>
                   </div>
