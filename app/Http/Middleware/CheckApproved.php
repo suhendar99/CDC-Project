@@ -3,9 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class CheckApproved
 {
     /**
      * Handle an incoming request.
@@ -16,10 +15,9 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->name != null) {
-            return $next($request);
+        if (!auth()->user()->approved_at) {
+            return redirect()->route('approval');
         }
-        // return redirect()->route('dashboard');
-        return abort(401);
+        return $next($request);
     }
 }

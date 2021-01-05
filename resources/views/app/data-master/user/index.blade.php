@@ -1,9 +1,20 @@
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            @if (session('message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -26,6 +37,7 @@
                                 <th>No</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -41,6 +53,28 @@
 </form>
 @push('script')
     <script>
+        $('.disabled').click(function(e){
+            e.preventDefault();
+        })
+        //  const user = @json(Auth::user());
+        //  console.log(user.approved_at)
+        // let columns =  [
+        //     {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+        //     {data : 'username', name: 'username'},
+        //     {data : 'email', name: 'email'},
+        //     {data : 'action', name: 'action'},
+        //   ]
+        // if (user.approved_at == null) {
+        //     columns.push({data : 'approve', name: 'approve'})
+        // }
+        // let table = $('#data_table').DataTable({
+        //     processing : true,
+        //     serverSide : true,
+        //     ordering : false,
+        //     pageLength : 10,
+        //     ajax : "{{ route('user.index') }}",
+        //     columns : columns
+        // });
         let table = $('#data_table').DataTable({
             processing : true,
             serverSide : true,
@@ -52,6 +86,7 @@
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
+                {data : 'status', name: 'status'},
                 {data : 'action', name: 'action'}
             ]
         });

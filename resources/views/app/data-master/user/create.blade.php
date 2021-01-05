@@ -48,8 +48,9 @@
                                             <option value="Null">-- Pilih Role --</option>
                                             <option value="pelanggan" {{old('role') == 'pelanggan' ? 'selected' : ''}}>Pelanggan</option>
                                             <option value="karyawan" {{old('role') == 'karyawan' ? 'selected' : ''}}> Karyawan</option>
-                                            <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option>
+                                            {{-- <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option> --}}
                                             <option value="pemasok" {{old('role') == 'pemasok' ? 'selected' : ''}}>Pemasok</option>
+                                            <option value="pengurus gudang" {{old('role') == 'pengurus gudang' ? 'selected' : ''}}>Pengurus Gudang</option>
                                         </select>
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">

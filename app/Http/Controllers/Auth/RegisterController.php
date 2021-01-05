@@ -7,6 +7,8 @@ use App\Models\Bank;
 use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
+use App\Models\PengurusGudang;
+use App\Notifications\NewUser;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -59,8 +61,6 @@ class RegisterController extends Controller
             'username' => ['required', 'string','alpha_dash', 'unique:users','max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'alamat' =>['required', 'string','max:225'],
-            'telepon' =>['required', 'string','regex:/(08)[0-9]{9}/'],
         ]);
     }
 
@@ -75,8 +75,6 @@ class RegisterController extends Controller
         if ($data['role'] == 'pelanggan') {
             $pelanggan = Pelanggan::create([
                 'nama' => $data['nama'],
-                'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
             ]);
 
             return User::create([
@@ -92,8 +90,6 @@ class RegisterController extends Controller
             $kode = "SP".$date.$pin;
             $pemasok = Pemasok::create([
                 'nama' => $data['nama'],
-                'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
                 'kode_pemasok' => $kode
             ]);
 
@@ -101,33 +97,40 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pelanggan_id' => $pemasok->id
+                'pemasok_id' => $pemasok->id
             ]);
         } elseif ($data['role'] == 'karyawan') {
             $karyawan = Karyawan::create([
                 'nama' => $data['nama'],
-                'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
             ]);
 
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pelanggan_id' => $karyawan->id
+                'karyawan_id' => $karyawan->id
             ]);
         } elseif ($data['role'] == 'bank') {
             $bank = Bank::create([
                 'nama' => $data['nama'],
-                'alamat' => $data['alamat'],
-                'telepon' => $data['telepon'],
             ]);
 
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pelanggan_id' => $bank->id
+                'bank_id' => $bank->id
+            ]);
+        } elseif ($data['role'] == 'gudang') {
+            $pengurusGudang = PengurusGudang::create([
+                'nama' => $data['nama'],
+            ]);
+
+            return User::create([
+                'username' => $data['username'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'pengurus_gudang_id' => $pengurusGudang->id
             ]);
         } else {
             return back()->with('failed', 'Mohon pilih role terlebih dahulu !');
