@@ -71,6 +71,17 @@
                                 @method('PUT')
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang" value="{{ $data->kode_barang }}" placeholder="Enter nama barang">
+                                        @error('kode_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ $data->nama_barang }}" placeholder="Enter nama barang">
                                         @error('nama_barang')
