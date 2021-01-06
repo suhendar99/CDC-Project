@@ -37,41 +37,41 @@ class DashboardController extends Controller
             if ($auth->pemasok->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
             }
-            if ($auth->status == 0) {
-                return view('approval');
-            }
+            // if ($auth->status == 0) {
+            //     return view('approval');
+            // }
             return view($this->pathPemasok.'index');
     	} elseif ($auth->karyawan_id != null) {
             if ($auth->karyawan->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
             }
-            if ($auth->status == 0) {
-                return view('approval');
-            }
+            // if ($auth->status == 0) {
+            //     return view('approval');
+            // }
             return view($this->pathKaryawan.'index');
     	} elseif ($auth->pelanggan_id != null) {
             if ($auth->pelanggan->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
             }
-            if ($auth->status == 0) {
-                return view('approval');
-            }
+            // if ($auth->status == 0) {
+            //     return view('approval');
+            // }
             return view($this->pathPelanggan.'index');
     	}elseif ($auth->bank_id != null) {
             if ($auth->bank->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
             }
-            if ($auth->status == 0) {
-                return view('approval');
-            }
+            // if ($auth->status == 0) {
+            //     return view('approval');
+            // }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
             if ($auth->pengurusGudang->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
             }
-            if ($auth->status == 0) {
-                return view('approval');
-            }
+            // if ($auth->status == 0) {
+            //     return view('approval');
+            // }
             return view($this->pathPengurusGudang.'index');
     	} else {
     		return view($this->pathAdmin.'index');

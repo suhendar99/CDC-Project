@@ -48,6 +48,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -61,6 +62,7 @@ class RegisterController extends Controller
             'username' => ['required', 'string','alpha_dash', 'unique:users','max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email_verified_at' => ['nullable'],
         ]);
     }
 
@@ -81,7 +83,8 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pelanggan_id' => $pelanggan->id
+                'pelanggan_id' => $pelanggan->id,
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } elseif ($data['role'] == 'pemasok') {
             $pin = mt_rand(100, 999)
@@ -97,7 +100,8 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pemasok_id' => $pemasok->id
+                'pemasok_id' => $pemasok->id,
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } elseif ($data['role'] == 'karyawan') {
             $karyawan = Karyawan::create([
@@ -108,7 +112,8 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'karyawan_id' => $karyawan->id
+                'karyawan_id' => $karyawan->id,
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } elseif ($data['role'] == 'bank') {
             $bank = Bank::create([
@@ -119,7 +124,8 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'bank_id' => $bank->id
+                'bank_id' => $bank->id,
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } elseif ($data['role'] == 'gudang') {
             $pengurusGudang = PengurusGudang::create([
@@ -130,10 +136,16 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'pengurus_gudang_id' => $pengurusGudang->id
+                'pengurus_gudang_id' => $pengurusGudang->id,
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } else {
             return back()->with('failed', 'Mohon pilih role terlebih dahulu !');
         }
+    }
+    public function verify()
+    {
+        
+        return view('auth.verify');
     }
 }

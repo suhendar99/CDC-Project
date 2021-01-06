@@ -11,7 +11,10 @@ class PemasokSeeder extends Seeder
      */
     public function run()
     {
-    	$kode = 'PM'.date('YmdHis');
+    	$pin = mt_rand(100, 999)
+                .mt_rand(100, 999);
+        $date = date("Y");
+        $kode = "PMSK".$date.$pin;
         $akun = [
         	'nama' => 'Pak Pemasok',
             'kode_pemasok' => $kode,

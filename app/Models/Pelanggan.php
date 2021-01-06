@@ -17,6 +17,18 @@ class Pelanggan extends Model
     {
         return $this->hasMany('App\Models\Order');
     }
+    public function desa()
+    {
+        return $this->belongsTo('App\Models\Desa');
+    }
+    public function kecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan');
+    }
+    public function kabupaten()
+    {
+        return $this->belongsTo('App\Models\Kabupaten');
+    }
 
     public function getData()
     {
