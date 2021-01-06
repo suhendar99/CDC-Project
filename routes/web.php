@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/verification','Auth\RegisterController@verify');
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', function (){

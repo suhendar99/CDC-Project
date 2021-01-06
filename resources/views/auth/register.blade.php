@@ -27,7 +27,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
+                        <input type="hidden" name="email_verified_at" value="">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
