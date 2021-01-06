@@ -73,7 +73,7 @@
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
                         <span class="text-my-danger">200 Akun</span><br>
-                        <span class="text-my-subtitle">Pelanggan</span>
+                        <span class="text-my-subtitle">Pembeli</span>
                     </div>
                   </div>
                 </div>
@@ -99,22 +99,66 @@
         </div>
     </div>
 </div>
-<div class="row my-2">
-  <div class="col-md-8">
+<div class="row">
+  <div class="col-md-8 my-2">
     <div style="width: 100%; height: 350px ;" id="mapid"></div>
   </div>
-  <div class="col-md-4">
-    <div class="card">
+  <div class="col-md-4 my-2">
+    <div class="card shadow" style="height: 350px;">
       <div class="card-body">
-        
+        <div class="valign-center">
+            <i class="material-icons md-36 pointer text-my-warning">people</i>
+            <span class="ml-2">Persentase Pengguna</span>
+        </div>
+        {{-- <hr> --}}
+        <div id="chart"></div>
       </div>
     </div>
   </div>
 </div>
+<div class="row" style="height: 1000px;">
+  
+</div>
 @endsection
 @push('script')
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script><script src="https://leaflet.github.io/Leaflet.Editable/src/Leaflet.Editable.js"></script>
+{{-- Chart Section --}}
+<script type="text/javascript">
+  var options = {
+        series: [44, 55, 41],
+        labels: ['Pemasok','Gudang','Pembeli'],
+        chart: {
+            type: 'donut',
+            height: 260
+        },
+        plotOptions: {
+            pie: {
+              donut: {
+                size: '50%'
+              }
+            }
+        },
+        legend: {
+          show: true,
+          position: 'bottom',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                  width: 300
+                },
+                legend: {
+                  position: 'bottom'
+                }
+            }
+        }]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    chart.render();
+</script>
+{{--  --}}
+{{-- Map Section --}}
 <script>
     var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="">Badan Perencanaan Pembangunan Daerah Kabupaten Bekasi</a>',
@@ -146,4 +190,5 @@
     });
     L.control.layers(baseLayers).addTo(map);
 </script>
+{{--  --}}
 @endpush

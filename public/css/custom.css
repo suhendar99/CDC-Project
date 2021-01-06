@@ -52,7 +52,7 @@ img .scale-down{
 
 .form-control.rounded-40{
 	border-radius:  40px !important;
-	border: 0;
+	/*border: 0;*/
 	padding-left:  20px;
 }
 
