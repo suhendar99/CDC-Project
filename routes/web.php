@@ -47,8 +47,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
-        Route::resource('barang', 'BarangController');
     });
+    Route::resource('barang', 'BarangController');
     Route::group(['middleware' => ['bank']], function () {
 
     });
