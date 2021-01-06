@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
     <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-sm btn-info bg-my-primary">
-            <i class="material-icons md-24">format_align_left</i>
+        <button type="button" id="sidebarCollapse" class="btn btn-sm btn-transparent">
+            <i class="material-icons md-24 text-my-primary">dehaze</i>
         </button>
         <div class="d-inline-block float-right valign-center">
             <img src="{{asset('images/logo-cdc.png')}}" class="rounded-circle avatar"> 
@@ -26,8 +26,8 @@
 <div class="d-my-none">
     <div class=" row valign-center mb-4"> 
         <div class="col-md-6 col-sm-12 valign-center">
-            <button type="button" id="sidebarCollapsed" class="btn btn-sm btn-info bg-my-primary">
-                <i class="material-icons md-24">format_align_left</i>
+            <button type="button" id="sidebarCollapsed" class="btn btn-sm btn-transparent">
+                <i class="material-icons md-24 text-my-primary">dehaze</i>
             </button> 
         </div>
         <div class="col-md-6">

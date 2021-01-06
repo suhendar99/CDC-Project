@@ -29,7 +29,7 @@ a:focus {
     background: #fff;
     border: none;
     border-radius: 0;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     /*box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);*/
 }
 
@@ -56,34 +56,39 @@ a:focus {
     align-items: stretch;
 }
 
-#sidebar {
+#sidebar-child {
+    position: fixed;
     min-width: 200px;
     max-width: 200px;
     background: #7cbffc;
     color: #fff;
-    transition: all 0.3s;
     height: 100vh;
     overflow-y: auto;
+}
+#sidebar {
+    min-width: 200px;
+    max-width: 200px;
+    transition: all 0.3s;
 }
 
 /*
  *  STYLE 2
  */
 
-#sidebar::-webkit-scrollbar-track
+#sidebar-child::-webkit-scrollbar-track
 {
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);*/
   /*border-radius: 5px;*/
   background-color: #7cbffc;
 }
 
-#sidebar::-webkit-scrollbar
+#sidebar-child::-webkit-scrollbar
 {
   width: 6px;
   background-color: #7cbffc;
 }
 
-#sidebar::-webkit-scrollbar-thumb
+#sidebar-child::-webkit-scrollbar-thumb
 {
   border-radius: 5px;
   background-color: #ffffff99;
@@ -91,39 +96,45 @@ a:focus {
 }
 
 
-#sidebar.active {
+#sidebar-child.active {
     margin-left: -200px;
 }
 
-#sidebar .sidebar-header {
-    padding: 20px;
+#sidebar-child .sidebar-header {
+    padding: .5rem;
     background: #7cbffc;
 }
 
-#sidebar ul.components {
-    padding: 20px 0;
+#sidebar-child ul.components {
+    padding: .5rem 0;
     /*border-bottom: 1px solid #47748b;*/
 }
 
-#sidebar ul p {
+#sidebar-child ul p {
     color: #fff;
     padding: 10px;
 }
 
-#sidebar ul li a {
+#sidebar-child ul li a {
     padding: 10px;
     font-size: .9rem;
     display: block;
 }
 
-#sidebar ul li a:hover {
-    color: #fff;
-    background: #6eaae1;
+#sidebar-child ul li a:hover {
+    color: #7cbffc;
+    background: #ffffffE6;
 }
 
-#sidebar ul li.active {
+#sidebar-child ul li.active {
     color: #7cbffc;
     background: #fff;
+}
+
+#sidebar-child ul li ul li.active > a {
+    color: #7cbffc;
+    background: #fff;
+    box-shadow: inset 0 0.2rem .2rem rgba(0, 0, 0, 0.15) !important;
 }
 
 a[data-toggle="collapse"] {
@@ -142,6 +153,7 @@ ul ul a {
     font-size: 0.8rem !important;
     padding-left: 50px !important;
     background: #6eaae1;
+    color: #fff;
 }
 
 .valign-center {
@@ -166,13 +178,13 @@ ul ul a {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-    #sidebar {
+    #sidebar-child {
         margin-left: -200px;
     }
-    #sidebar.active {
+    #sidebar-child.active {
         margin-left: 0;
     }
-    #sidebarCollapse span {
+    #sidebar-childCollapse span {
         display: none;
     }
 }
