@@ -1,5 +1,5 @@
 @php
-        $icon = 'dashboard';
+        $icon = 'storage';
         $pageTitle = 'Edit Data Pembeli';
         $dashboard = true;
         $admin = true;

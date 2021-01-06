@@ -54,7 +54,7 @@
                                             <option value="pelanggan">Pembeli</option>
                                             <option value="pemasok">Resseler</option>
                                             <option value="karyawan">Karyawan</option>
-                                            {{-- <option value="bank">Bank</option> --}}
+                                            <option value="bank">Bank</option>
                                             <option value="gudang">Pengurus Gudang</option>
                                         </select>
 

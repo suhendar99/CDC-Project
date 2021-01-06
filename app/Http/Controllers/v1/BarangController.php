@@ -35,7 +35,7 @@ class BarangController extends Controller
                     return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('barcode', function($data){
-                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1.5,55,array(0,0,0), true).'" alt="barcode" />';
+                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,65,array(0,0,0), true).'" alt="barcode" />';
                 })
                 ->rawColumns(['barcode','action'])
                 ->make(true);

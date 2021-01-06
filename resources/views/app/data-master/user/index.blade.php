@@ -5,7 +5,7 @@
     }
 </style>
 @php
-        $icon = 'dashboard';
+        $icon = 'storage';
         $pageTitle = 'Data User';
         $dashboard = true;
         $admin = true;
