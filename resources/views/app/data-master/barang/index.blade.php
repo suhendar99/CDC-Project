@@ -1,7 +1,6 @@
 @php
-        $icon = 'dashboard';
-        $pageTitle = 'Dashboard Admin';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+        $icon = 'storage';
+        $pageTitle = 'Data Barang';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -16,6 +15,8 @@
           <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Barang</a>
           </div>
@@ -43,12 +44,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Barang</th>
+                                <th>Kode Barang / Barcode</th>
                                 <th>Nama Barang</th>
                                 <th>Harga Barang</th>
                                 <th>Kategori</th>
@@ -80,10 +82,13 @@
             ajax : "{{ route('barang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode_barang', name: 'kode_barang'},
+                {data : 'barcode', name: 'barcode'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'harga_barang', name: 'harga_barang'},
-                {data : 'kategori.nama', name: 'kategori_id'},
+                {data : 'kategori.nama', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Kosong !" : data;
+                    }
+                },
                 {data : 'satuan', name: 'satuan'},
                 {data : 'foto', render: function (data, type, full, meta) {
                         if(data == null){

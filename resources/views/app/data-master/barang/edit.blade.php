@@ -1,7 +1,6 @@
 @php
-        $icon = 'dashboard';
-        $pageTitle = 'Dashboard Admin';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+        $icon = 'storage';
+        $pageTitle = 'Edit Data Barang';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -17,7 +16,11 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14"></a>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Barang</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Edit Data</a>
           </div>
         </div>
     </div>
@@ -50,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Edit Data Barang</h5>
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -66,6 +69,17 @@
                             <form action="{{route('barang.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang" value="{{ $data->kode_barang }}" placeholder="Enter nama barang">
+                                        @error('kode_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>

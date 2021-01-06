@@ -112,7 +112,7 @@
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li>
                     <li>
-                        <a href="#" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
+                        <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>
                 </ul>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bank;
 use App\Models\Desa;
 use App\Models\Kabupaten;
 use App\Models\Karyawan;
@@ -14,6 +15,7 @@ use App\Models\Provinsi;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
@@ -24,11 +26,12 @@ class DashboardController extends Controller
 		$this->pathPelanggan = 'app.dashboard.pelanggan.';
 		$this->pathKaryawan = 'app.dashboard.karyawan.';
         $this->pathAdmin = 'app.dashboard.admin.';
+        $this->pathBank = 'app.dashboard.bank.';
         $this->pathPengurusGudang = 'app.dashboard.pengurusGudang.';
 
         $this->pathCompleteAkun = 'app.managementAkun.completeAkun.';
 	}
-    
+
     public function index()
     {
         $auth = Auth::user();
@@ -37,41 +40,46 @@ class DashboardController extends Controller
             if ($auth->pemasok->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
             }
-            // if ($auth->status == 0) {
-            //     return view('approval');
-            // }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/');
+            }
             return view($this->pathPemasok.'index');
     	} elseif ($auth->karyawan_id != null) {
             if ($auth->karyawan->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
             }
-            // if ($auth->status == 0) {
-            //     return view('approval');
-            // }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/');
+            }
             return view($this->pathKaryawan.'index');
     	} elseif ($auth->pelanggan_id != null) {
             if ($auth->pelanggan->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
             }
-            // if ($auth->status == 0) {
-            //     return view('approval');
-            // }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/');
+            }
             return view($this->pathPelanggan.'index');
     	}elseif ($auth->bank_id != null) {
-            if ($auth->bank->nik == null) {
+            if ($auth->bank->tahun_berdiri == null) {
                 return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
             }
-            // if ($auth->status == 0) {
-            //     return view('approval');
-            // }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/');
+            }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
             if ($auth->pengurusGudang->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
             }
-            // if ($auth->status == 0) {
-            //     return view('approval');
-            // }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/');
+            }
             return view($this->pathPengurusGudang.'index');
     	} else {
     		return view($this->pathAdmin.'index');
@@ -286,6 +294,45 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id')));
                     } else {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
+                    }
+                }
+            }
+        } elseif ($auth->bank_id != null) {
+            $date = Carbon::now()->format('Y');
+            $v = Validator::make($request->all(),[
+                'nama' => 'required|string|max:100',
+                'alamat' => 'required|string|max:200',
+                'tahun_berdiri' => 'required|integer|min:1900|max:'.$date,
+                'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
+                'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+                'desa_id' => 'nullable',
+                'kecamatan_id' => 'nullable',
+                'kabupaten_id' => 'nullable',
+                'provinsi_id' => 'nullable',
+            ]);
+            if ($v->fails()) {
+                // dd($v->errors()->all());
+                return back()->withErrors($v)->withInput();
+            } else {
+                $set = Bank::find($data->bank_id);
+                if ($request->file('foto')) {
+                    $name = $request->file('foto');
+                    $foto = time()."_".$name->getClientOriginalName();
+                    $request->foto->move(public_path("upload/foto/bank"), $foto);
+                    if ($request->desa_id == null) {
+                        $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','kecamatan_id','kabupaten_id','provinsi_id'),[
+                            'foto' => 'upload/foto/bank/'.$foto
+                        ]));
+                    } else {
+                        $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','desa_id','kecamatan_id','kabupaten_id','provinsi_id'),[
+                            'foto' => 'upload/foto/bank/'.$foto
+                        ]));
+                    }
+                } else {
+                    if ($request->desa_id == null) {
+                        $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','kecamatan_id','kabupaten_id','provinsi_id')));
+                    } else {
+                        $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
             }

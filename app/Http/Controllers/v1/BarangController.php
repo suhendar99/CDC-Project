@@ -34,6 +34,10 @@ class BarangController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('barcode', function($data){
+                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,65,array(0,0,0), true).'" alt="barcode" />';
+                })
+                ->rawColumns(['barcode','action'])
                 ->make(true);
         }
         return view($this->path.'index');
@@ -81,6 +85,7 @@ class BarangController extends Controller
         $v = Validator::make($request->all(),[
             'nama_barang' => 'required|string|max:20',
             'harga_barang' => 'required|string|max:20',
+            'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
@@ -88,23 +93,23 @@ class BarangController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $pin = mt_rand(100, 999)
-                    .mt_rand(100, 999);
-            $date = date("Y");
-            $kode = "BG".$date.$pin;
+            // $pin = mt_rand(100, 999)
+            //         .mt_rand(100, 999);
+            // $date = date("Y");
+            // $kode = "BG".$date.$pin;
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
                 Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
                     'foto' => 'upload/foto/barang/'.$foto,
-                    'kode_barang' => $kode,
+                    'kode_barang' => $request->kode_barang,
                     'pemasok_id' => Auth::user()->pemasok_id,
                     'kategori_id' => $request->kategori_id
                 ]));
             } else {
                 Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
-                    'kode_barang' => $kode,
+                    'kode_barang' => $request->kode_barang,
                     'pemasok_id' => Auth::user()->pemasok_id,
                     'kategori_id' => $request->kategori_id
                 ]));
@@ -153,6 +158,7 @@ class BarangController extends Controller
         $v = Validator::make($request->all(),[
             'nama_barang' => 'required|string|max:20',
             'harga_barang' => 'required|string|max:20',
+            'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
@@ -168,11 +174,13 @@ class BarangController extends Controller
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
                 $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
                     'foto' => 'upload/foto/barang/'.$foto,
+                    'kode_barang' => $request->kode_barang,
                     'kategori_id' => $request->kategori_id
                 ]));
             } else {
                 $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
-                    'kategori_id' => $request->kategori_id
+                    'kategori_id' => $request->kategori_id,
+                    'kode_barang' => $request->kode_barang,
                 ]));
             }
         }
