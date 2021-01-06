@@ -12,7 +12,7 @@
         <div class="card shadow">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body pb-2">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4">
                     <i class="material-icons md-48 text-my-primary">work</i>
                   </div>
@@ -21,7 +21,7 @@
                       <div class="col-12">
                         <div class="float-right text-my-primary">20 Jenis</div>
                       </div>
-                      <div class="col-12"> 
+                      <div class="col-12">
                         <div class="float-right text-my-subtitle">Barang</div>
                       </div>
                     </div>
@@ -34,7 +34,7 @@
         <div class="card shadow">
             <div class="line-strip bg-my-warning"></div>
             <div class="card-body pb-2">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4">
                     <i class="material-icons md-48 text-my-warning">archive</i>
                   </div>
@@ -43,7 +43,7 @@
                       <div class="col-12">
                         <div class="float-right text-my-warning">200 Kali</div>
                       </div>
-                      <div class="col-12"> 
+                      <div class="col-12">
                         <div class="float-right text-my-subtitle">Barang Masuk</div>
                       </div>
                     </div>
@@ -56,7 +56,7 @@
         <div class="card shadow">
             <div class="line-strip bg-my-danger"></div>
             <div class="card-body pb-2">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4">
                     <i class="material-icons md-48 text-my-danger">unarchive</i>
                   </div>
@@ -65,7 +65,7 @@
                       <div class="col-12">
                         <div class="float-right text-my-danger">100 Kali</div>
                       </div>
-                      <div class="col-12"> 
+                      <div class="col-12">
                         <div class="float-right text-my-subtitle">Barang Keluar</div>
                       </div>
                     </div>
@@ -78,7 +78,7 @@
         <div class="card shadow">
             <div class="line-strip bg-my-success"></div>
             <div class="card-body pb-2">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4">
                     <i class="material-icons md-48 text-my-success">credit_card</i>
                   </div>
@@ -87,7 +87,7 @@
                       <div class="col-12">
                         <div class="float-right text-my-success">10.000.000</div>
                       </div>
-                      <div class="col-12"> 
+                      <div class="col-12">
                         <div class="float-right text-my-subtitle">Pemasukan (Rp)</div>
                       </div>
                     </div>

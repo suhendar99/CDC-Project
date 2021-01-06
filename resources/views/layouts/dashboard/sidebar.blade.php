@@ -15,19 +15,19 @@
                         <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
                         <ul class="collapse list-unstyled " id="dataSubmenu">
                             <li>
-                                <a href="#">Akun</a>
+                                <a href="{{route('user.index')}}">Akun</a>
                             </li>
                             <li>
-                                <a href="#">Pemasok</a>
+                                <a href="{{route('pemasok.index')}}">Pemasok</a>
                             </li>
                             <li>
-                                <a href="#">Barang</a>
+                                <a href="{{route('barang.index')}}">Barang</a>
                             </li>
                             <li>
-                                <a href="#">Pembeli</a>
+                                <a href="{{route('pelanggan.index')}}">Pembeli</a>
                             </li>
                             <li>
-                                <a href="#">Gudang</a>
+                                <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
                             <li>
                                 <a href="#">Storage</a>
