@@ -1,7 +1,6 @@
 @php
         $icon = 'dashboard';
-        $pageTitle = 'Dashboard Admin';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+        $pageTitle = 'Tambah Data Pembeli';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -17,7 +16,11 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14"></a>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Pembeli</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Tambah Data Pembeli</a>
           </div>
         </div>
     </div>
@@ -50,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Tambah Data Pembeli</h5>
+                                <h5></h5>
                             </div>
                         </div>
                         <div class="col-md-6">
