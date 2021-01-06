@@ -96,7 +96,7 @@ img .scale-down{
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: .5rem;
+	height: 5px;
 	border-radius: 5px 5px 0 0;
 }
 
@@ -198,6 +198,10 @@ img .scale-down{
 
 .form-control {
 	font-size: .85rem;
+}
+
+#calendar{
+	font-size: .8rem;
 }
 
 /*.dropdown-menu.show{
