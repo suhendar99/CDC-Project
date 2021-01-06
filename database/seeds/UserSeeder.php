@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'karyawan@makerindo.com',
-            'username' => 'pemasok',
+            'username' => 'karyawan',
             'password' => Hash::make('12341234'),
             'karyawan_id' => 1,
             'approved_at' => now(),
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'pelanggan@makerindo.com',
-            'username' => 'pemasok',
+            'username' => 'pelanggan',
             'password' => Hash::make('12341234'),
             'pelanggan_id' => 1,
             'approved_at' => now(),

@@ -13,4 +13,8 @@ class Kecamatan extends Model
     {
         return $this->hasMany('App\Models\Pemasok');
     }
+    public function pelanggan()
+    {
+        return $this->hasMany('App\Models\Pelanggan');
+    }
 }
