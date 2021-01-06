@@ -1,5 +1,5 @@
 @php
-        $icon = 'dashboard';
+        $icon = 'storage';
         $pageTitle = 'Data Gudang';
         $dashboard = true;
         $admin = true;

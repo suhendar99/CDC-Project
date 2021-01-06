@@ -1,5 +1,5 @@
 @php
-        $icon = 'dashboard';
+        $icon = 'storage';
         $pageTitle = 'Edit Data User';
         $dashboard = true;
         $admin = true;
