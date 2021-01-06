@@ -37,15 +37,15 @@ $(document).ready(function () {
 
 
             if (bodyWidth >= 1200) {
-                incno = itemsSplit[1];
+                incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
             else if (bodyWidth >= 992) {
-                incno = itemsSplit[1];
+                incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
             else if (bodyWidth >= 768) {
-                incno = itemsSplit[2];
+                incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
             else {

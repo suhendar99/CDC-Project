@@ -10,7 +10,7 @@
 
 @section('content')
 <div class="row valign-center mb-2">
-    <div class="col-md-6 col-sm-12 valign-center py-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
         <div>
           <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
@@ -21,7 +21,7 @@
           </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12 valign-center py-2">
+    <div class="col-md-4 col-sm-12 valign-center py-2">
         @include('layouts.dashboard.search')
     </div>
 </div>
