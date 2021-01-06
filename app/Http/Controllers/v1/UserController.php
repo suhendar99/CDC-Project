@@ -7,8 +7,10 @@ use App\Models\Bank;
 use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
+use App\Models\PengurusGudang;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -36,9 +38,35 @@ class UserController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/user/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('status', function($data){
+                    if ($data->status == 1) {
+                        $disabled = '';
+                        $disable = 'disabled';
+                    } else{
+                        $disabled = 'disabled';
+                        $disable = '';
+                    }
+                    return '<a href="/v1/user/'.$data->id.'/approve" class="btn btn-success btn-sm '.$disable.'">Aktifkan</a>&nbsp;<a href="/v1/user/'.$data->id.'/unapprove" class="btn btn-danger btn-sm '.$disabled.'">Non-Aktifkan</a>';
+                })
+                ->rawColumns(['action','status'])
                 ->make(true);
         }
         return view($this->path.'index');
+    }
+
+    public function approve($id)
+    {
+        $user = User::findOrFail($id);
+        $user->update(['approved_at' => now(),'status' => 1]);
+
+        return redirect()->back()->withMessage('User diaktifkan');
+    }
+    public function unapprove($id)
+    {
+        $user = User::findOrFail($id);
+        $user->update(['status' => 0]);
+
+        return redirect()->back()->withMessage('User di non-aktifkan !');
     }
 
     /**
@@ -80,7 +108,8 @@ class UserController extends Controller
 
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
-                    'pelanggan_id' => $pelanggan->id
+                    'pelanggan_id' => $pelanggan->id,
+
                 ]));
             } elseif ($request->role == 'karyawan') {
                 $karyawan = Karyawan::create([
@@ -89,7 +118,8 @@ class UserController extends Controller
 
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
-                    'karyawan_id' => $karyawan->id
+                    'karyawan_id' => $karyawan->id,
+
                 ]));
             } elseif ($request->role == 'bank') {
                 $bank = Bank::create([
@@ -98,7 +128,8 @@ class UserController extends Controller
 
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
-                    'bank_id' => $bank->id
+                    'bank_id' => $bank->id,
+
                 ]));
             } elseif ($request->role == 'pemasok') {
                 $pemasok = Pemasok::create([
@@ -108,7 +139,19 @@ class UserController extends Controller
 
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
-                    'pemasok_id' => $pemasok->id
+                    'pemasok_id' => $pemasok->id,
+
+                ]));
+            } elseif ($request->role == 'pengurus gudang') {
+                $pengurusGudang = PengurusGudang::create([
+                    'nama' => $request->nama,
+                    // 'kode_pemasok' => $kode
+                ]);
+
+                User::create(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    'pengurus_gudang_id' => $pengurusGudang->id,
+
                 ]));
             } else {
                 return back()->with('failed', "Mohon Pilih Kembali Role !");
@@ -195,6 +238,15 @@ class UserController extends Controller
                 $user->update(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
                     // 'pemasok_id' => $pemasok->id
+                ]));
+            } elseif ($request->role == 'pengurus gudang') {
+                // $pengurusGudang = PengurusGudang::create([
+                //     'nama' => $request->nama,
+                // ]);
+
+                $user->update(array_merge($request->only('username','email'),[
+                    'password' => Hash::make($request->password),
+                    // 'pengurus_gudang_id' => $pengurusGudang->id
                 ]));
             } else {
                 return back()->with('failed', "Mohon Pilih Kembali Role !");

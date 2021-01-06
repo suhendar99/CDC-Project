@@ -19,6 +19,7 @@ class AdminMiddleware
         if (Auth::user()->name != null) {
             return $next($request);
         }
+        // return redirect()->route('dashboard');
         return abort(401);
     }
 }

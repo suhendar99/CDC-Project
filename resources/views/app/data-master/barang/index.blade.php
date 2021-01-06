@@ -24,8 +24,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Barang</th>
                                 <th>Kode Barang</th>
+                                <th>Nama Barang</th>
                                 <th>Harga Barang</th>
                                 <th>Kategori</th>
                                 <th>Satuan</th>
@@ -54,8 +54,8 @@
             ajax : "{{ route('barang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'kode_barang', name: 'kode_barang'},
+                {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'harga_barang', name: 'harga_barang'},
                 {data : 'kategori.nama', name: 'kategori_id'},
                 {data : 'satuan', name: 'satuan'},

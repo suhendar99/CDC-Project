@@ -17,6 +17,18 @@ class Pemasok extends Model
     {
         return $this->hasMany('App\Models\Barang','pemasok_id');
     }
+    public function desa()
+    {
+        return $this->belongsTo('App\Models\Desa');
+    }
+    public function kecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan');
+    }
+    public function kabupaten()
+    {
+        return $this->belongsTo('App\Models\Kabupaten');
+    }
     public function getData()
     {
         return static::orderBy('id','desc')->get();

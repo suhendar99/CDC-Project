@@ -68,5 +68,7 @@ class Kernel extends HttpKernel
         'karyawan' => \App\Http\Middleware\KaryawanMiddleware::class,
         'pelanggan' => \App\Http\Middleware\PelangganMiddleware::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'approved' => \App\Http\Middleware\CheckApproved::class,
+        'adminCheck' => \App\Http\Middleware\Admin::class,
     ];
 }
