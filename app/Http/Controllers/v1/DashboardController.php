@@ -28,7 +28,7 @@ class DashboardController extends Controller
 
         $this->pathCompleteAkun = 'app.managementAkun.completeAkun.';
 	}
-    
+
     public function index()
     {
         $auth = Auth::user();
