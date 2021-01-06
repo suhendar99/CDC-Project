@@ -204,6 +204,11 @@ img .scale-down{
 	font-size: .8rem;
 }
 
+small, .small {
+    font-size: 65%;
+    font-weight: 300;
+}
+
 /*.dropdown-menu.show{
     left: 20px !important;
     top: -10px !important;

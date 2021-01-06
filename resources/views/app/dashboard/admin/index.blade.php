@@ -3,8 +3,6 @@
         $pageTitle = 'Dashboard Admin';
         $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
         $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -116,9 +114,9 @@
     </div>
   </div>
 </div>
-<div class="row" style="height: 1000px;">
+{{-- <div class="row" style="height: 1000px;">
   
-</div>
+</div> --}}
 @endsection
 @push('script')
 {{-- Chart Section --}}

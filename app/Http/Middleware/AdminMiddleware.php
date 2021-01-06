@@ -19,7 +19,8 @@ class AdminMiddleware
         if (Auth::user()->name != null) {
             return $next($request);
         }
+        return redirect('v1/dashboard')->with('error','Anda Tidak Memiliki Akses!!!');
         // return redirect()->route('dashboard');
-        return abort(401);
+        // return abort(401);
     }
 }
