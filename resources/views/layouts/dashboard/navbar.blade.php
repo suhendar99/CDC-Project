@@ -24,7 +24,7 @@
     </div>
 </nav>
 <div class="d-my-none">
-    <div class=" row valign-center mb-4"> 
+    <div class=" row valign-center mb-1"> 
         <div class="col-md-6 col-sm-12 valign-center">
             <button type="button" id="sidebarCollapsed" class="btn btn-sm btn-transparent">
                 <i class="material-icons md-24 text-my-primary">dehaze</i>
