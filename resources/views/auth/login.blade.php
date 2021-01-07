@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row fullscreen">
+        <div class="col-md-7">
             @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i data-feather="check-circle"></i>
@@ -21,15 +21,16 @@
                 </button>
             </div>
             @endif
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+            <div class="card shadow">
+                <div class="ml-4 p-2 font"><i class="fas fa-sign-in-alt text-warning"></i> <small>{{ __('Login') }}</small></div>
+                <hr class="m-0">
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username Or Email') }}</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username or Email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
@@ -71,7 +72,8 @@
                             <div class="col-md-8 offset-md-4 float-right">
                                 <button type="submit" class="btn btn-primary btn-sm">
                                     {{ __('Login') }}
-                                </button>
+                                </button> or
+                                <a href="{{route('register')}}">Register</a>
 
                                 {{-- @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
