@@ -42,7 +42,7 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
             }
             return view($this->pathPemasok.'index');
     	} elseif ($auth->karyawan_id != null) {
@@ -51,7 +51,7 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
             }
             return view($this->pathKaryawan.'index');
     	} elseif ($auth->pelanggan_id != null) {
@@ -60,7 +60,7 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
             }
             return view($this->pathPelanggan.'index');
     	}elseif ($auth->bank_id != null) {
@@ -69,7 +69,7 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
             }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
@@ -78,7 +78,7 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/');
+                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
             }
             return view($this->pathPengurusGudang.'index');
     	} else {

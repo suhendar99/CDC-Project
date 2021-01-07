@@ -57,6 +57,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
     // End Pengaturan Akun User
 
+    // Penerimaan Barang Pada Pelanggan
+    Route::resource('penerimaan', 'PenerimaanController');
+    // Pembelian Barang
+    Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
+    // Route::resource('pembelian', 'PembelianController');
+
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');

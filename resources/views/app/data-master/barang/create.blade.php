@@ -70,17 +70,6 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang" value="{{ old('kode_barang') }}" placeholder="Enter nama barang">
-                                        @error('kode_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Enter nama barang">
                                         @error('nama_barang')
@@ -92,9 +81,31 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
                                         @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" placeholder="Enter nama barang">
+                                        @error('jumlah')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Total harga <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ old('harga_total') }}" placeholder="Enter nama barang">
+                                        @error('harga_total')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

@@ -84,7 +84,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'pelanggan_id' => $pelanggan->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } elseif ($data['role'] == 'pemasok') {
             $pin = mt_rand(100, 999)
@@ -101,7 +102,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'pemasok_id' => $pemasok->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } elseif ($data['role'] == 'karyawan') {
             $karyawan = Karyawan::create([
@@ -113,7 +115,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'karyawan_id' => $karyawan->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } elseif ($data['role'] == 'bank') {
             $bank = Bank::create([
@@ -125,7 +128,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'bank_id' => $bank->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } elseif ($data['role'] == 'gudang') {
             $pengurusGudang = PengurusGudang::create([
@@ -145,7 +149,7 @@ class RegisterController extends Controller
     }
     public function verify()
     {
-        
+
         return view('auth.verify');
     }
 }
