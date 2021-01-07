@@ -1,5 +1,5 @@
-@php 
-    if(!isset(Auth::user()->pelanggan_id) && !isset(Auth::user()->karyawan_id) && !isset(Auth::user()->bank_id) && !isset(Auth::user()->pemasok_id)) {
+@php
+    if(!isset(Auth::user()->pelanggan_id) && !isset(Auth::user()->karyawan_id) && !isset(Auth::user()->bank_id) && !isset(Auth::user()->pemasok_id) && !isset(Auth::user()->pengurus_gudang_id)) {
         $admin = true;
     } elseif (isset(Auth::user()->karyawan_id)) {
         $karyawan = true;
@@ -9,6 +9,8 @@
         $pemasok = true;
     } elseif (isset(Auth::user()->pelanggan_id)) {
         $pelanggan = true;
+    } elseif (isset(Auth::user()->petugas_gudang_id)) {
+        $petugasGudang = true;
     }
 
     $set = App\Models\PengaturanAplikasi::find(1);
@@ -60,7 +62,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
-    
+
 </head>
 <body>
     @if(isset($shop))
@@ -85,8 +87,8 @@
                 <!-- Page Content  -->
                 <div class="container-fluid">
                     @include('layouts.dashboard.navbar')
-                    <div class=" row"> 
-                        <div class=" col-12"> 
+                    <div class=" row">
+                        <div class=" col-12">
                             @yield('content')
                             <!-- Copyright -->
                             <div class="footer-copyright text-center pt-4 text-dark fixed">
@@ -97,7 +99,7 @@
                             </div>
                             <!-- Copyright -->
                         </div>
-                    </div>   
+                    </div>
                 </div>
             </div>
             @if(isset($rightbar))
@@ -125,7 +127,7 @@
     $(document).ready(function () {
         $('.card').delay(1000).addClass('stop');
         $('.alert').delay(1000).fadeOut(1000, function () {
-           $('.alert').remove(); 
+           $('.alert').remove();
         });
         // $('.alert').delay(5000).remove();
         $('#sidebarCollapse').on('click', function () {

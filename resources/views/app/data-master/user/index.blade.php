@@ -63,6 +63,7 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Role</th>
+                                <th>NIK</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -115,6 +116,7 @@
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
                 {data : 'role', name: 'role'},
+                {data : 'nik', name: 'nik'},
                 {data : 'status', name: 'status'},
                 {data : 'action', name: 'action'}
             ]
