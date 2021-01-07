@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\StorageIn;
+use App\Models\Gudang;
+use App\Models\Barang;
 
 class StorageInController extends Controller
 {
@@ -31,6 +33,29 @@ class StorageInController extends Controller
         return view('app.data-master.storage.in.index');
     }
 
+    public function checkBarang($kode)
+    {
+        try {
+            $barang = Barang::with('kategori', 'pemasok')->where('kode_barang', $kode)->first();
+
+            if (!$barang) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $barang
+                ], 200);
+                # code...
+            }
+            
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,7 +63,8 @@ class StorageInController extends Controller
      */
     public function create()
     {
-        //
+        $gudang = Gudang::all();
+        return view('app.data-master.storage.in.create', compact('gudang'));
     }
 
     /**
@@ -49,7 +75,30 @@ class StorageInController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $v = Validator::make($request->all(),[
+            'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+            'gudang_id' => 'required|exists:barangs,id',
+            'jumlah' => 'required|numeric',
+            'satuan' => 'required|string'
+            // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+
+        $faker = \Faker\Factory::create('id_ID');
+
+        $kode = $faker->unique()->ean13;
+
+        StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
+            'kode' => $kode,
+            'user_id' => auth()->user()->id,
+            'waktu' => now('Asia/Jakarta')
+        ]);
+
+        return back()->with('success', __( 'Storage In!' ));
     }
 
     /**

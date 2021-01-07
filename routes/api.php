@@ -25,3 +25,4 @@ Route::get('/v1/getPelanggan/{id}','v1\PelangganController@show');
 Route::get('/v1/getKabupaten/{id}','v1\DashboardController@getKabupaten');
 Route::get('/v1/getKecamatan/{id}','v1\DashboardController@getKecamatan');
 Route::get('/v1/getDesa/{id}','v1\DashboardController@getDesa');
+Route::get('/v1/storage/barang/{kode}', 'v1\StorageInController@checkBarang');
