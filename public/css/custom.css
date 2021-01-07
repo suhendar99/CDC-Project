@@ -222,7 +222,7 @@ small, .small {
 
 body .card{
 	font-size: .8rem !important;
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; 
 	overflow-x: hidden;
 }
 
@@ -230,7 +230,7 @@ body .dropdown-item{
 	font-size: .8rem !important;
 }
 
-.card::after{
+/* .card::after{
 	position: absolute;
 	content: '';
 	z-index: 100;
@@ -245,8 +245,8 @@ body .dropdown-item{
 	    -ms-transition: all 1s ease;
 	     -o-transition: all 1s ease;
 	        transition: all 1s ease;
-}
-.card::before {
+} */
+/* .card::before {
     content: '';
     display: block;
     position: absolute;
@@ -257,7 +257,7 @@ body .dropdown-item{
     width: 150px;
     background: linear-gradient(to right, transparent 0%, #E8E8E8 50%, transparent 100%);
     animation: load 2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-}
+} */
 
 @keyframes load {
     from {
@@ -281,7 +281,7 @@ body .dropdown-item{
 }
 
 .fr-absolute {
-	position:  absolute; 
+	position:  absolute;
 	float:  right;
 	right:  0;
 }
