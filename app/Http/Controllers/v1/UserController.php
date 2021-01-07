@@ -49,19 +49,44 @@ class UserController extends Controller
                     return '<a href="/v1/user/'.$data->id.'/approve" class="btn btn-success btn-sm '.$disable.'">Aktifkan</a>&nbsp;<a href="/v1/user/'.$data->id.'/unapprove" class="btn btn-danger btn-sm '.$disabled.'">Non-Aktifkan</a>';
                 })
                 ->addColumn('role', function($data){
-                    if(!isset($data->pelanggan_id) && !isset($data->karyawan_id) && !isset($data->bank_id) && !isset($data->pemasok_id)) {
-                        return 'Admin';
-                    } elseif (isset($data->karyawan_id)) {
+                    if ($data->pengurus_gudang_id != null) {
                         return 'Karyawan Gudang';
-                    } elseif (isset($data->bank_id)) {
+                    } elseif ($data->bank_id != null) {
                         return 'Pihak Bank';
-                    } elseif (isset($data->pemasok_id)) {
+                    } elseif ($data->pemasok_id != null) {
                         return 'Pemasok';
-                    } elseif (isset($data->pelanggan_id)) {
+                    } elseif ($data->pelanggan_id != null) {
                         return 'Pembeli';
                     }
                 })
-                ->rawColumns(['action','status'])
+                ->addColumn('nik', function($data){
+                    if ($data->pengurus_gudang_id != null) {
+                        if ($data->pengurusGudang->nik != null) {
+                            return $data->pengurusGudang->nik;
+                        } else {
+                            return 'Kosong';
+                        }
+                    } elseif ($data->bank_id != null) {
+                        if ($data->bank->nik != null) {
+                            return $data->bank->nik;
+                        } else {
+                            return 'Kosong';
+                        }
+                    } elseif ($data->pemasok_id != null) {
+                        if ($data->pemasok->nik != null) {
+                            return $data->pemasok->nik;
+                        } else {
+                            return 'Kosong';
+                        }
+                    } elseif ($data->pelanggan_id != null) {
+                        if ($data->pelanggan->nik != null) {
+                            return $data->pelanggan->nik;
+                        } else {
+                            return 'Kosong';
+                        }
+                    }
+                })
+                ->rawColumns(['action','status','role'])
                 ->make(true);
         }
         return view($this->path.'index');
