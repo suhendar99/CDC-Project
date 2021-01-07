@@ -1,6 +1,33 @@
-@extends('layouts.app')
+@php
+        $icon = 'storage';
+        $pageTitle = 'Edit Data Barang';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
+@endphp
+@extends('layouts.dashboard.header')
 
 @section('content')
+<div class="row valign-center mb-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
+        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+        <div>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+          <div class="valign-center breadcumb">
+            <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Barang</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Edit Data</a>
+          </div>
+        </div>
+    </div>
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div> --}}
+</div>
 <div class="container">
     <div class="row h-100">
         <div class="col-md-12">
@@ -26,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Edit Data Barang</h5>
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -42,6 +69,17 @@
                             <form action="{{route('barang.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang" value="{{ $data->kode_barang }}" placeholder="Enter nama barang">
+                                        @error('kode_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
@@ -119,5 +157,9 @@
 </div>
 @endsection
 @push('script')
+{{-- Chart Section --}}
+<script type="text/javascript">
 
+</script>
+{{--  --}}
 @endpush

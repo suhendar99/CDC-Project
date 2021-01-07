@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/verification','Auth\RegisterController@verify');
+
 Auth::routes(['verify' => true]);
 
 Route::get('/home', function (){
@@ -30,6 +32,29 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::post('completeAkun/{id}','DashboardController@complete')->name('complete.akun');
     //Approval
     Route::get('approval', 'DashboardController@approval')->name('approval');
+    // Pengaturan Akun User
+        // Admin
+    Route::get('pengaturan-akun-admin','PengaturanAkunController@showFormUpdateAkunAdmin')->name('setAdmin.show');
+    Route::post('pengaturan-akun-admins','PengaturanAkunController@updateAkunAdmin')->name('setAdmin.action');
+        // Pelanggan
+    Route::get('pengaturan-akun-pelanggan','PengaturanAkunController@showFormUpdateAkunPelanggan')->name('setPelanggan.show');
+    Route::post('pengaturan-akun-pelanggans','PengaturanAkunController@updateAkunPelanggan')->name('setPelanggan.action');
+        // Pemasok
+    Route::get('pengaturan-akun-pemasok','PengaturanAkunController@showFormUpdateAkunPemasok')->name('setPemasok.show');
+    Route::post('pengaturan-akun-pemasoks','PengaturanAkunController@updateAkunPemasok')->name('setPemasok.action');
+        // Pengurus Gudang
+    Route::get('pengaturan-akun-pengurusGudang','PengaturanAkunController@showFormUpdateAkunPengurusGudang')->name('setPengurusGudang.show');
+    Route::post('pengaturan-akun-pengurusGudangs','PengaturanAkunController@updateAkunPengurusGudang')->name('setPengurusGudang.action');
+        // Karyawan
+    Route::get('pengaturan-akun-karyawan','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
+    Route::post('pengaturan-akun-karyawans','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
+        // Bank
+    Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
+    Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
+        // Update Password
+    Route::get('pengaturan-password-akun','PengaturanAkunController@updatePassword')->name('setPass.show');
+    Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
+    // End Pengaturan Akun User
 
     Route::group(['middleware' => ['admin']], function () {
         // User
@@ -42,11 +67,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pelanggan', 'PelangganController');
         // Gudang
         Route::resource('gudang', 'GudangController');
+        // Pengaturan Aplikasi
+        Route::resource('setApp', 'PengaturanAplikasiController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
-        Route::resource('barang', 'BarangController');
     });
+    Route::resource('barang', 'BarangController');
     Route::group(['middleware' => ['bank']], function () {
 
     });

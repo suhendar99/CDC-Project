@@ -9,14 +9,14 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Waiting for Approval</div>
+                <div class="card-header">Menunggu persetujuan</div>
 
                 <div class="card-body">
-                    Your account is waiting for our administrator approval.
+                    Akun Anda sedang menunggu persetujuan administrator kami.
                     <br />
-                    Please check back later.
+                    Silakan periksa lagi nanti.
                 </div>
             </div>
         </div>

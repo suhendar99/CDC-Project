@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
+<div class="container ">
+    <div class="row fullscreen">
+        <div class="col-md-7">
             @if (session()->has('success'))
 		    <div class="alert alert-success alert-dismissible fade show" role="alert">
 		    	<i data-feather="check-circle"></i>
@@ -21,13 +21,14 @@
 		        </button>
 		    </div>
 		    @endif
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+            <div class="card shadow">
+                <div class="ml-4 p-2 font"><i class="fas fa-user-plus text-warning"></i> <small>{{ __('Register') }}</small></div>
+                <hr class="m-0">
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-
+                        <input type="hidden" name="email_verified_at" value="">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -54,7 +55,7 @@
                                             <option value="pelanggan">Pembeli</option>
                                             <option value="pemasok">Resseler</option>
                                             <option value="karyawan">Karyawan</option>
-                                            {{-- <option value="bank">Bank</option> --}}
+                                            <option value="bank">Bank</option>
                                             <option value="gudang">Pengurus Gudang</option>
                                         </select>
 
@@ -86,7 +87,7 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="email" class="col-md-4">{{ __('E-Mail Address') }}</label>
+                                    <label for="email" class="col-md-4">{{ __('Email') }}</label>
 
                                     <div class="col-md-12">
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
@@ -119,7 +120,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="password-confirm" class="col-md-12">{{ __('Confirm Password') }}</label>
+                                    <label for="password-confirm" class="col-md-12">{{ __('Password Konfirmasi') }}</label>
 
                                     <div class="col-md-12">
                                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -130,6 +131,9 @@
 
                         <div class="form-group mb-0">
                             <div class="col-md-12">
+                                <div class="float-left">
+                                    <a href="{{route('login')}}">Sudah punya akun ?
+                                </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         {{ __('Register') }}

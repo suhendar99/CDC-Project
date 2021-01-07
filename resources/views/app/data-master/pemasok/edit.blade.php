@@ -1,6 +1,33 @@
-@extends('layouts.app')
+@php
+        $icon = 'storage';
+        $pageTitle = 'Edit Data Pemasok';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
+@endphp
+@extends('layouts.dashboard.header')
 
 @section('content')
+<div class="row valign-center mb-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
+        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+        <div>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+          <div class="valign-center breadcumb">
+            <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Pemasok</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Edit Data Pemasok</a>
+          </div>
+        </div>
+    </div>
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div> --}}
+</div>
 <div class="container">
     <div class="row h-100">
         <div class="col-md-12">
@@ -26,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Tambah Data Pemasok</h5>
+                                <h5></h5>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -305,8 +332,9 @@
 </div>
 @endsection
 @push('script')
+{{-- Chart Section --}}
 <script type="text/javascript">
-     $('#provinsi-select').change(function() {
+    $('#provinsi-select').change(function() {
             var valueProv = $('#provinsi-select').val();
             console.log('Provinsi Id : '+valueProv);
             getKabupaten(valueProv);
@@ -389,4 +417,5 @@
             });
         }
 </script>
+{{--  --}}
 @endpush

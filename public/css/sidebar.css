@@ -96,7 +96,7 @@ a:focus {
 }
 
 
-#sidebar-child.active {
+#sidebar.active {
     margin-left: -200px;
 }
 
@@ -171,6 +171,7 @@ ul ul a {
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
+    overflow-x: hidden;
 }
 
 /* ---------------------------------------------------
@@ -178,13 +179,13 @@ ul ul a {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-    #sidebar-child {
+    #sidebar {
         margin-left: -200px;
     }
-    #sidebar-child.active {
+    #sidebar.active {
         margin-left: 0;
     }
-    #sidebar-childCollapse span {
+    #sidebarCollapse span {
         display: none;
     }
 }

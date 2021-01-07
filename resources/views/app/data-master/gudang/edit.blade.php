@@ -1,6 +1,33 @@
-@extends('layouts.app')
+@php
+        $icon = 'storage';
+        $pageTitle = 'Edit Data Gudang';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
+@endphp
+@extends('layouts.dashboard.header')
 
 @section('content')
+<div class="row valign-center mb-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
+        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+        <div>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+          <div class="valign-center breadcumb">
+            <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Gudang</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Edit Data Gudang</a>
+          </div>
+        </div>
+    </div>
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div> --}}
+</div>
 <div class="container">
     <div class="row h-100">
         <div class="col-md-12">
@@ -26,7 +53,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Tambah Data Gudang</h5>
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -205,7 +232,8 @@
 </div>
 @endsection
 @push('script')
-    <script>
+{{-- Chart Section --}}
+<script type="text/javascript">
     var mbUrl = 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
     var satelite   = L.tileLayer(mbUrl, {id: 'mapbox/satellite-v9', tileSize: 512, zoomOffset: -1}),
         streets  = L.tileLayer(mbUrl, {id: 'mapbox/streets-v11', tileSize: 512, zoomOffset: -1});
@@ -278,5 +306,6 @@
     };
     navigator.geolocation.getCurrentPosition(success, error, getPosition);
     };
-    </script>
+</script>
+{{--  --}}
 @endpush

@@ -1,3 +1,16 @@
+@php 
+    if(!isset(Auth::user()->pelanggan_id) && !isset(Auth::user()->karyawan_id) && !isset(Auth::user()->bank_id) && !isset(Auth::user()->pemasok_id)) {
+        $admin = true;
+    } elseif (isset(Auth::user()->karyawan_id)) {
+        $karyawan = true;
+    } elseif (isset(Auth::user()->bank_id)) {
+        $bank = true;
+    } elseif (isset(Auth::user()->pemasok_id)) {
+        $pemasok = true;
+    } elseif (isset(Auth::user()->pelanggan_id)) {
+        $pelanggan = true;
+    }
+@endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -36,6 +49,9 @@
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
+    
 </head>
 <body>
     <div id="app">
@@ -82,6 +98,10 @@
 
         $('#sidebarCollapsed').on('click', function () {
             $('#sidebar').toggleClass('active');
+            if($('#sidebar').hasClass('active')){
+                // alert('Active');
+                $('#content').css({"width": "100%"})
+            }
         });
 
         $('#rightbarCollapse').on('click', function () {
@@ -99,6 +119,8 @@
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.6/js/responsive.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.nl.min.js"></script>
 @stack('script')
 <script src="{{ asset('js/carousel.js') }}"></script>
 </html>

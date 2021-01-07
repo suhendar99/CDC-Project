@@ -1,6 +1,31 @@
-@extends('layouts.app')
+@php
+        $icon = 'storage';
+        $pageTitle = 'Data Barang';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
+@endphp
+@extends('layouts.dashboard.header')
 
 @section('content')
+<div class="row valign-center mb-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
+        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+        <div>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+          <div class="valign-center breadcumb">
+            <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Master</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Barang</a>
+          </div>
+        </div>
+    </div>
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div> --}}
+</div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -9,7 +34,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Data Barang</h5>
+                                <h5></h5>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -19,12 +44,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Barang</th>
+                                <th>Kode Barang / Barcode</th>
                                 <th>Nama Barang</th>
                                 <th>Harga Barang</th>
                                 <th>Kategori</th>
@@ -43,9 +69,11 @@
     @csrf
     @method('DELETE')
 </form>
+@endsection
 @push('script')
-    <script>
-        let table = $('#data_table').DataTable({
+{{-- Chart Section --}}
+<script type="text/javascript">
+    let table = $('#data_table').DataTable({
             processing : true,
             serverSide : true,
             responsive: true,
@@ -54,10 +82,13 @@
             ajax : "{{ route('barang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode_barang', name: 'kode_barang'},
+                {data : 'barcode', name: 'barcode'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'harga_barang', name: 'harga_barang'},
-                {data : 'kategori.nama', name: 'kategori_id'},
+                {data : 'kategori.nama', render:function(data,a,b,c){
+                        return (data == null || data == "") ? "Kosong !" : data;
+                    }
+                },
                 {data : 'satuan', name: 'satuan'},
                 {data : 'foto', render: function (data, type, full, meta) {
                         if(data == null){
@@ -103,6 +134,6 @@
                 }
             })
         }
-    </script>
+</script>
+{{--  --}}
 @endpush
-@endsection

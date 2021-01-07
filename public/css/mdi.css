@@ -4,10 +4,10 @@
   font-weight: 400;
   src: url(https://example.com/MaterialIcons-Outline.eot); /* For IE6-8 */
   src: local('Material Icons');
-    /*local('MaterialIcons-Outline'),
+    local('MaterialIcons-Outline'),
     url(https://example.com/MaterialIcons-Outline.woff2) format('woff2'),
     url(https://example.com/MaterialIcons-Outline.woff) format('woff'),
-    url(https://example.com/MaterialIcons-Outline.ttf) format('truetype');*/
+    url(https://example.com/MaterialIcons-Outline.ttf) format('truetype');
 }
 
 .material-icons {

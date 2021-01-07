@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pelanggan;
+use App\Models\Provinsi;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -32,7 +33,7 @@ class PelangganController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/pelanggan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/pelanggan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
@@ -46,7 +47,8 @@ class PelangganController extends Controller
      */
     public function create()
     {
-        return view($this->path.'create');
+        $provinsi = Provinsi::all();
+        return view($this->path.'create',compact('provinsi'));
     }
 
     /**
@@ -58,53 +60,56 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50',
+            'nama' => 'required|string|max:100',
             'alamat' => 'required|string|max:200',
             'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
+            'nik' => 'required|string|max:17',
+            'tempat_lahir' => 'required|string|max:40',
+            'tgl_lahir' => 'required|string|',
+            'agama' => 'required|string',
+            'pekerjaan' => 'required',
             'jenis_kelamin' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            'status_perkawinan' => 'required',
+            'kewarganegaraan' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'desa_id' => 'nullable',
+            'kecamatan_id' => 'nullable',
+            'kabupaten_id' => 'nullable',
+            'provinsi_id' => 'nullable',
         ]);
         if ($v->fails()) {
+            // dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
-                $pelanggan = Pelanggan::create([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'foto' => 'upload/foto/pelanggan/'.$foto,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
-                $numRand = mt_rand(100, 999);
-                $nama = $request->nama;
-                $subStr = explode(' ',trim($nama));
-                User::create([
-                    'username' => $subStr[0].$numRand,
-                    'email' => $subStr[0].$numRand."@gmail.com",
-                    'password' => Hash::make('12341234'),
-                    'pelanggan_id' => $pelanggan->id
-                ]);
-
+                if ($request->desa_id == null) {
+                    $pelanggan = Pelanggan::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pelanggan/'.$foto
+                    ]));
+                } else {
+                    $pelanggan = Pelanggan::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pelanggan/'.$foto
+                    ]));
+                }
             } else {
-                $pelanggan = Pelanggan::create([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
-                $numRand = mt_rand(100, 999);
-                $nama = $request->nama;
-                $subStr = explode(' ',trim($nama));
-                User::create([
-                    'username' => $subStr[0].$numRand,
-                    'email' => $subStr[0].$numRand."@gmail.com",
-                    'password' => Hash::make('12341234'),
-                    'pelanggan_id' => $pelanggan->id
-                ]);
+                if ($request->desa_id == null) {
+                    $pelanggan = Pelanggan::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id')));
+                } else {
+                    $pelanggan = Pelanggan::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
+                }
             }
+            $numRand = mt_rand(100, 999);
+            $nama = $request->nama;
+            $subStr = explode(' ',trim($nama));
+            User::create([
+                'username' => $subStr[0].$numRand,
+                'email' => $subStr[0].$numRand."@gmail.com",
+                'password' => Hash::make('12341234'),
+                'pelanggan_id' => $pelanggan->id
+            ]);
         }
         return back()->with('success',$this->alert.'Disimpan !');
     }
@@ -117,7 +122,11 @@ class PelangganController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Pelanggan::with('desa','kecamatan','kabupaten')->where('id',$id)->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
@@ -129,7 +138,8 @@ class PelangganController extends Controller
     public function edit($id)
     {
         $data = Pelanggan::find($id);
-        return view($this->path.'edit',compact('data'));
+        $provinsi = Provinsi::all();
+        return view($this->path.'edit',compact('data','provinsi'));
     }
 
     /**
@@ -142,38 +152,49 @@ class PelangganController extends Controller
     public function update(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50',
+            'nama' => 'required|string|max:100',
             'alamat' => 'required|string|max:200',
             'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
+            'nik' => 'required|string|max:17',
+            'tempat_lahir' => 'required|string|max:40',
+            'tgl_lahir' => 'required|string|',
+            'agama' => 'required|string',
+            'pekerjaan' => 'required',
             'jenis_kelamin' => 'required',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            'status_perkawinan' => 'required',
+            'kewarganegaraan' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'desa_id' => 'nullable',
+            'kecamatan_id' => 'nullable',
+            'kabupaten_id' => 'nullable',
+            'provinsi_id' => 'nullable',
         ]);
         if ($v->fails()) {
+            // dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
-            $pelanggan = Pelanggan::find($id);
+            $set = Pelanggan::find($id);
             if ($request->file('foto')) {
-                File::delete($pelanggan->foto);
+                File::delete($set->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
-                $pelanggan->update([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'foto' => 'upload/foto/pelanggan/'.$foto,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
+                if ($request->desa_id == null) {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pelanggan/'.$foto
+                    ]));
+                } else {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pelanggan/'.$foto
+                    ]));
+                }
             } else {
-                $pelanggan->update([
-                    'nama' => $request->nama,
-                    'alamat' => $request->alamat,
-                    'telepon' => $request->telepon,
-                    'jenis_kelamin' => $request->jenis_kelamin
-                ]);
+                if ($request->desa_id == null) {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id')));
+                } else {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
+                }
             }
-
-
         }
         return back()->with('success',$this->alert.'Diedit !');
     }

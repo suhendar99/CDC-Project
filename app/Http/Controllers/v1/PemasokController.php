@@ -7,6 +7,7 @@ use App\Models\Pemasok;
 use App\Models\Provinsi;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -188,6 +189,7 @@ class PemasokController extends Controller
         } else {
             $set = Pemasok::find($id);
             if ($request->file('foto')) {
+                File::delete($set->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/pemasok"), $foto);
@@ -219,7 +221,9 @@ class PemasokController extends Controller
      */
     public function destroy($id)
     {
-        $this->Data->deleteData($id);
+        $data = $this->Data->find($id);
+        File::delete($data->foto);
+        $data->delete();
 
         return back();
     }
