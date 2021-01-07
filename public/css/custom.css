@@ -57,7 +57,7 @@ img .scale-down{
 }
 
 .avatar-text{
-	font-size: .8rem !important;	
+	font-size: .8rem !important;
 }
 
 
@@ -171,7 +171,7 @@ img .scale-down{
 	font-size: 	14px !important ;
 }
 .log-buyer{
-	font-size: 	12px !important ;	
+	font-size: 	12px !important ;
 }
 
 .h-30{
@@ -198,6 +198,17 @@ img .scale-down{
 
 .form-control {
 	font-size: .85rem;
+}
+.icon-large {
+    font-size: 88px;
+}
+.card-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+.garis {
+    border-right: 1px solid black;
 }
 
 #calendar{

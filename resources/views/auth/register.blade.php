@@ -129,10 +129,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group mb-0">
+                        <div class="form-group mb-4">
                             <div class="col-md-12">
                                 <div class="float-left">
-                                    <a href="{{route('login')}}">Sudah punya akun ?
+                                    <a href="{{route('login')}}">Sudah punya akun ?</a>
                                 </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-primary btn-sm">

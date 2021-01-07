@@ -52,9 +52,18 @@
             /* display:flex;
             align-items: center; */
         }
+        .fixed {
+            position: fixed;
+            z-index: 100;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
+    @php
+        $set = App\Models\PengaturanAplikasi::find(1);
+    @endphp
     <div id="app">
         {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -110,6 +119,14 @@
         <main>
             @yield('content')
         </main>
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3 text-dark fixed">
+            <div class="copyright">
+                <span>© 2020 Copyright:</span>
+                <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
+            </div>
+        </div>
+        <!-- Copyright -->
     </div>
 </body>
 <!-- Scripts -->
