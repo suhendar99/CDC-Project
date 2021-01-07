@@ -63,7 +63,7 @@
 					</div>
 				</div>
 			    <div class="col-md-12 valign-center">
-			      <i class="material-icons md-24 text-my-warning mr-1">work</i><span style="font-size: 14px">Daftar Barang Saya</span>
+			      <i class="material-icons md-36 text-my-danger mr-1">local_fire_department</i><span style="font-size: 18px"> Sembako Populer</span>
 			    </div>
 			    <div class="col-12">
 			        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">

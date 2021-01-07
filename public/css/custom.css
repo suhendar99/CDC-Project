@@ -286,9 +286,13 @@ body .dropdown-item{
 
 .card-header {
 	background: #fff;
-	display: flex;
+	/*display: flex;*/
 	/*justify-content: center;*/
-	align-items: center;
+	/*align-items: center;*/
+}
+
+.card-title{
+	margin: 0;
 }
 
 
