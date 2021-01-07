@@ -88,6 +88,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {
+        // Storage
         Route::resource('storage/in', 'StorageInController');
+        Route::resource('storage/out', 'StorageOutController');
     });
 });

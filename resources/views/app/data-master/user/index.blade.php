@@ -62,6 +62,7 @@
                                 <th>No</th>
                                 <th>Username</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -106,13 +107,14 @@
             processing : true,
             serverSide : true,
             responsive: true,
-            ordering : false,
+            ordering : true,
             pageLength : 10,
             ajax : "{{ route('user.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
+                {data : 'role', name: 'role'},
                 {data : 'status', name: 'status'},
                 {data : 'action', name: 'action'}
             ]

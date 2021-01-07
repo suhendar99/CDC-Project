@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Storage Masuk';
+        $pageTitle = 'Data Storage Keluar';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -18,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Storage Keluar</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>
+                                <a href="{{route('out.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Keluar</a>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="border-top: 8px solid orange;">
           <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -143,7 +143,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('in.index') }}",
+            ajax : "{{ route('out.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kode', name: 'kode'},
@@ -175,8 +175,9 @@
             $('.gudang').text('LOADING...')
             $('.karyawan').text('LOADING...')
             $('.waktu').text('LOADING...')
+
             $.ajax({
-                url: "/api/v1/detail/storage/in/"+id,
+                url: "/api/v1/detail/storage/out/"+id,
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -203,7 +204,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/storage/in/'+id
+            formDelete.action = '/v1/storage/out/'+id
 
             const Toast = Swal.mixin({
             toast: true,

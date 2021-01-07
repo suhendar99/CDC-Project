@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\StorageIn;
+use App\Models\StorageOut;
 use App\Models\Gudang;
 use App\Models\Barang;
 
-class StorageInController extends Controller
+class StorageOutController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class StorageInController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageIn::with('barang', 'gudang')
+            $data = StorageOut::with('barang', 'gudang')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -30,30 +30,7 @@ class StorageInController extends Controller
                 })
                 ->make(true);
         }
-        return view('app.data-master.storage.in.index');
-    }
-
-    public function checkBarang($kode)
-    {
-        try {
-            $barang = Barang::with('kategori', 'pemasok')->where('kode_barang', $kode)->first();
-
-            if (!$barang) {
-                return response()->json([
-                    'data' => 'Tidak ada barang'
-                ], 404);
-            } else {
-                return response()->json([
-                    'data' => $barang
-                ], 200);
-                # code...
-            }
-            
-        } catch (Throwable $t) {
-            return response()->json([
-                'message' => $t->getMessage()
-            ], 500);
-        }
+        return view('app.data-master.storage.out.index');
     }
 
     /**
@@ -64,7 +41,7 @@ class StorageInController extends Controller
     public function create()
     {
         $gudang = Gudang::all();
-        return view('app.data-master.storage.in.create', compact('gudang'));
+        return view('app.data-master.storage.out.create', compact('gudang'));
     }
 
     /**
@@ -75,7 +52,6 @@ class StorageInController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $v = Validator::make($request->all(),[
             'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:barangs,id',
@@ -92,13 +68,13 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
-        StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
+        StorageOut::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
             'kode' => $kode,
             'user_id' => auth()->user()->id,
             'waktu' => now('Asia/Jakarta')
         ]);
 
-        return back()->with('success', __( 'Storage In!' ));
+        return back()->with('success', __( 'Storage Out!' ));
     }
 
     /**
@@ -115,7 +91,7 @@ class StorageInController extends Controller
     public function detail($id)
     {
         try {
-            $data = StorageIn::with('barang', 'gudang', 'user.karyawan')->where('id', $id)->first();
+            $data = StorageOut::with('barang', 'gudang', 'user.karyawan')->where('id', $id)->first();
 
             return response()->json([
                 'data' => $data
@@ -135,9 +111,9 @@ class StorageInController extends Controller
      */
     public function edit($id)
     {
-        $data = StorageIn::find($id);
+        $data = StorageOut::find($id);
         $gudang = Gudang::all();
-        return view('app.data-master.storage.in.edit', compact('gudang', 'data'));
+        return view('app.data-master.storage.out.edit', compact('gudang', 'data'));
     }
 
     /**
@@ -165,9 +141,9 @@ class StorageInController extends Controller
 
         // $kode = $faker->unique()->ean13;
 
-        StorageIn::findOrFail($id)->update($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan'));
+        StorageOut::findOrFail($id)->update($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan'));
 
-        return back()->with('success', __( 'Storage In Updated!' ));
+        return back()->with('success', __( 'Storage Out Updated!' ));
     }
 
     /**
@@ -178,7 +154,7 @@ class StorageInController extends Controller
      */
     public function destroy($id)
     {
-        StorageIn::findOrFail($id)->delete();
+        StorageOut::findOrFail($id)->delete();
 
         return back()->with('success', __( 'Storage In Deleted!' ));
     }

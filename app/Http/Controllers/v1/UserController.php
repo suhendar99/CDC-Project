@@ -48,6 +48,19 @@ class UserController extends Controller
                     }
                     return '<a href="/v1/user/'.$data->id.'/approve" class="btn btn-success btn-sm '.$disable.'">Aktifkan</a>&nbsp;<a href="/v1/user/'.$data->id.'/unapprove" class="btn btn-danger btn-sm '.$disabled.'">Non-Aktifkan</a>';
                 })
+                ->addColumn('role', function($data){
+                    if(!isset($data->pelanggan_id) && !isset($data->karyawan_id) && !isset($data->bank_id) && !isset($data->pemasok_id)) {
+                        return 'Admin';
+                    } elseif (isset($data->karyawan_id)) {
+                        return 'Karyawan Gudang';
+                    } elseif (isset($data->bank_id)) {
+                        return 'Pihak Bank';
+                    } elseif (isset($data->pemasok_id)) {
+                        return 'Pemasok';
+                    } elseif (isset($data->pelanggan_id)) {
+                        return 'Pembeli';
+                    }
+                })
                 ->rawColumns(['action','status'])
                 ->make(true);
         }

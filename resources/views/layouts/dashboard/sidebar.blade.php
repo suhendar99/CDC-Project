@@ -11,7 +11,7 @@
                     <li class="
                         {{ Request::is('v1/dashboard*') ? 'active' : false }}
                     ">
-                        <a href="#" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
+                        <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/user*') ? 'active' : false }}
@@ -19,6 +19,8 @@
                         {{ Request::is('v1/barang*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/storage/in*') ? 'active' : false }}
+                        {{ Request::is('v1/storage/out*') ? 'active' : false }}
                     ">
                         <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
                         <ul id="dataSubmenu" class="collapse list-unstyled 
@@ -27,6 +29,8 @@
                             {{ Request::is('v1/barang*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/storage/in*') ? 'show' : false }}
+                            {{ Request::is('v1/storage/out*') ? 'show' : false }}
                         ">
                             @if(isset($admin))
                             <li class="
@@ -56,9 +60,14 @@
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/storage*') ? 'active' : false }}
+                                {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">
-                                <a href="#">Storage</a>
+                                <a href="{{ route('in.index') }}">Storage Masuk</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/storage/out*') ? 'active' : false }}
+                            ">
+                                <a href="{{ route('out.index') }}">Storage Keluar</a>
                             </li>
                         </ul>
                     </li>
