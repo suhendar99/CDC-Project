@@ -40,9 +40,11 @@
 <div class="d-my-none">
     <div class=" row valign-center mb-1">
         <div class="col-md-6 col-sm-12 valign-center">
+            @if(!isset($nosidebar))
             <button type="button" id="sidebarCollapsed" class="btn btn-sm btn-transparent">
                 <i class="material-icons md-24 text-my-primary">dehaze</i>
             </button>
+            @endif
         </div>
         <div class="col-md-6">
             <div class="d-inline-block float-right valign-center">
@@ -54,6 +56,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    @if(!isset($nosidebar))
                     @if (Auth::user()->pelanggan_id != null)
                     <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
                     @elseif(Auth::user()->pemasok_id != null)
@@ -68,6 +71,7 @@
                         <a class="dropdown-item" href="{{route('setAdmin.show')}}">Perbaharui Akun</a>
                     @endif
                     <a class="dropdown-item" href="{{route('setPass.show')}}">Perbaharui Password</a>
+                    @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">

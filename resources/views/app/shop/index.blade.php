@@ -7,8 +7,11 @@
 @extends('layouts.dashboard.header')
 
 @section('content')
-<nav class="navbar navbar-dark bg-dark">
-	
+<nav class="navbar navbar-light bg-light shadow px-4">
+	<a class="navbar-brand pl-2" href="#">
+    <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt=""> <b class="text-24 text-my-primary">Shop</b>
+  </a>
+  <a class="ml-auto" href="{{route('login')}}">Login</a>
 </nav>
 <div class="container-fluid">
 	<div class="row">
