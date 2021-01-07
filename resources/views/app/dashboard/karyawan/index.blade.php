@@ -1,11 +1,28 @@
 @php
-        $pageTitle = 'Dashboard Gudang';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
-        $dashboard = true;
+  $icon = 'dashboard';
+  $pageTitle = 'Dashboard Gudang';
+  $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+  $dashboard = true;
 @endphp
 @extends('layouts.dashboard.header')
 
 @section('content')
+<div class="row valign-center mb-2">
+    <div class="col-md-8 col-sm-12 valign-center py-2">
+        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+        <div>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+          <div class="valign-center breadcumb">
+            <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Gudang</a>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div>
+</div>
 <div class="row my-2">
     <div class="col-md-3 col-sm-6">
         <div class="card my-2 shadow">
@@ -81,14 +98,156 @@
     </div>
 </div>
 <div class="row my-4">
-  <div class="col-md-12">
+  <div class="col-md-4">
+    <div class="card" style="height: 350px;">
+      <div class="line-strip bg-my-warning"></div>
+      <div class="card-body">
+        <div class="valign-center">
+          <i class="material-icons md-36 text-my-warning">house_siding</i>
+          <span class="text-18">Detail Gudang Saya</span>
+        </div>
+        <hr class="p-0">
+        <center>
+          <img src="{{asset('images/logo-cdc.png')}}" style="height: 120px;" class="scale-down pb-4">
+        </center>
+        <div class="row">
+          <div class="col-md-4">
+            Nama
+          </div>
+          <div class="col-md-8">
+            <div class="float-left">:</div>
+            <div class="float-right">Gudang Koperasi Nganu</div>
+          </div>
+          <div class="col-md-4">
+            Kontak
+          </div>
+          <div class="col-md-8">
+            <div class="float-left">:</div>
+            <div class="float-right">081212345121</div>
+          </div>
+          <div class="col-md-4">
+            Hari Kerja
+          </div>
+          <div class="col-md-8">
+            <div class="float-left">:</div>
+            <div class="float-right">Senin - Jumat</div>
+          </div>
+          <div class="col-md-4">
+            Jam Kerja
+          </div>
+          <div class="col-md-8">
+            <div class="float-left">:</div>
+            <div class="float-right">09:00 - 17:00</div>
+          </div>
+          <div class="col-md-4">
+            Alamat
+          </div>
+          <div class="col-md-8">
+            <div class="float-left">:</div>
+            <div class="float-right">Jl. Pangeran Nganu No.200</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
     <div style="height: 350px; width: 100%;" id="mapid"></div>
+  </div>
+</div>
+<div class="row my-4">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="line-strip bg-my-success"></div>
+      <div class="card-body">
+        <div class="valign-center">
+          <i class="material-icons md-36 text-my-success">insert_chart</i>
+          <span class="text-18">Statistik Gudang</span>
+        </div>
+        <hr class="p-0">
+        <div class=" row"> 
+          <div class=" col-md-6 col-sm-12"> 
+            <div class=" row"> 
+              <div class="col-6 border-right">
+                <center>
+                  <div id="calendar"></div>
+                </center>
+              </div>
+              <div class="col-6" style="font-size: .8rem;">
+                <span style="font-size: 1rem">Hari Ini</span><br><hr class="mb-1">
+                <div class="float-left">
+                  Item Terjual
+                </div>
+                <div class="float-right">
+                  20 Item
+                </div>
+                <br>
+                <hr class="my-1">
+                <div class="float-left">
+                  Barang Dikirim
+                </div>
+                <div class="float-right">
+                  10 Item
+                </div>
+                <br>
+                <hr class="my-1">
+                <div class="float-left">
+                  Barang Diterima
+                </div>
+                <div class="float-right">
+                  10 Item
+                </div>
+                <br>
+                <hr class="my-1">
+                <div class="float-left">
+                  Pesanan Lunas
+                </div>
+                <div class="float-right">
+                  18 Item
+                </div>
+                <br>
+                <hr class="my-1">
+                <div class="float-left">
+                  Pesanan Belum Lunas
+                </div>
+                <div class="float-right">
+                  2 Item
+                </div>
+                <br>
+                <hr class="my-1">
+                <div class="float-left">
+                  Total Pendapatan
+                </div>
+                <div class="float-right">
+                  Rp. 200.000
+                </div>
+                <br>
+                <hr class="my-1">
+              </div>
+            </div>
+          </div>
+          <div class=" col-md-6 col-sm-12"> 
+            <div class="row">
+              <div class="col-12 valign-center">
+                <i class="material-icons md-24 text-my-success mr-1">bar_chart</i><span style="font-size: 14px">Grafik Penjualan Hari Ini</span>
+              </div>
+              <div class="col-12">
+                <div id="frekuensichart"></div>
+              </div>
+            </div>         
+          </div>
+          <div class="col-md-12">
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
   </div>
 </div>
 <div class="row my-4">
     <div class="col-md-12 col-sm-12">
       <div class="valign-center">
-        <i class="material-icons md-24 text-my-warning mr-1">work</i><span style="font-size: 18px">Daftar Barang Bulky</span>
+        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Bulky</span>
       </div>
       <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
           <div class="MultiCarousel-inner">
@@ -120,7 +279,7 @@
     </div>
     <div class="col-md-12 col-sm-12">
       <div class="valign-center">
-        <i class="material-icons md-24 text-my-warning mr-1">work</i><span style="font-size: 18px">Daftar Barang Retail</span>
+        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Retail</span>
       </div>
       <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
           <div class="MultiCarousel-inner">
@@ -187,6 +346,81 @@
     L.control.layers(baseLayers).addTo(map);
 </script>
 {{--  --}}
+
+{{-- Calendar Section --}}
 <script type="text/javascript">
+    $('#calendar').datepicker({
+      format: "yyyy-mm-dd",
+      language: "de",
+      calendarWeeks: false,
+      todayHighlight: true
+    }).on('changeDate', ()=>{
+        // let value = $('#calendar').datepicker('getFormattedDate');
+        // updateChart(value)
+        console.log($('#calendar').datepicker('getFormattedDate'));
+    });
 </script>
+{{--  --}}
+
+{{-- Chart Section --}}
+<script type="text/javascript">
+  var options = {
+    chart: {
+      type: 'bar',
+      height: '200px',
+      toolbar: {
+          show: false,
+      },
+      animations: {
+          enabled: true,
+          easing: 'easein',
+          speed: 800,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 350
+          }
+      }
+    },
+    markers: {
+      size: 0,
+    },
+    series: [{
+      name: 'Penjualan Bulanan',
+      data: [30,40,35,50]
+    }],
+    xaxis: {
+      categories: ['Beras','Jagung','Bawang Merah','Apel']
+    },
+    yaxis: {
+      show: true,
+      title: {
+          text: 'Jumlah Item',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: '#373d3f',
+              fontSize: '12px',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+          },
+      }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    tooltip: {
+        enabled: true
+    }
+  }
+
+  var chart = new ApexCharts(document.querySelector("#frekuensichart"), options);
+
+  chart.render();
+</script>
+{{--  --}}
 @endpush

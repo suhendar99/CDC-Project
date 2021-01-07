@@ -258,8 +258,9 @@
       calendarWeeks: false,
       todayHighlight: true
     }).on('changeDate', ()=>{
-        let value = $('#calendar').datepicker('getFormattedDate');
-        updateChart(value)
+        // let value = $('#calendar').datepicker('getFormattedDate');
+        // updateChart(value)
+        console.log($('#calendar').datepicker('getFormattedDate'));
     });
 </script>
 <script type="text/javascript">
