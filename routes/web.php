@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    // return view('auth.login');
+    return view('app.shop.index');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');
