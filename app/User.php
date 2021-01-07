@@ -59,4 +59,26 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return static::with('pemasok','karyawan','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();
     }
+
+    /**
+     * User has many StorageIn.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageIn()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
+        return $this->hasMany('App\Models\StorageIn');
+    }
+
+    /**
+     * User has many StorageOut.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageOut()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
+        return $this->hasMany('App\Models\StorageOut');
+    }
 }
