@@ -4,7 +4,11 @@
             <div class="sidebar-content">
                 <div class="sidebar-header">
                     <center>
-                        <img src="{{asset('images/logo-cdc.png')}}" height="50" class="scale-down my-3">
+                        @if($set->logo_tab != null)
+                        <img src="{{asset($set->logo_app)}}" height="50" class="scale-down my-3">
+                        @else
+                        <img src="{{asset('images/logo-app.png')}}" height="50" class="scale-down my-3">
+                        @endif
                     </center>
                 </div>
                 <ul class="list-unstyled components">
@@ -71,7 +75,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="#transSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">receipt_long</i>Data Transaksi</a>
                         <ul class="collapse list-unstyled" id="transSubmenu">
                             <li>
@@ -90,8 +94,8 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">
                             <li>
@@ -116,10 +120,10 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>

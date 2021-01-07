@@ -49,7 +49,7 @@ $(document).ready(function () {
                 itemWidth = sampwidth / incno;
             }
             else {
-                incno = itemsSplit[1];
+                incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
             $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });

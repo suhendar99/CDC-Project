@@ -131,10 +131,10 @@
 </body>
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
-<script>
- php
+<script type="text/javascript">
+    
     $(document).ready(function () {
-        $('.card').addClass('stop');
+        $('.card').delay(1000).addClass('stop');
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

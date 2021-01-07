@@ -10,18 +10,20 @@
     } elseif (isset(Auth::user()->pelanggan_id)) {
         $pelanggan = true;
     }
+
+    $set = App\Models\PengaturanAplikasi::find(1);
 @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="{{asset('images/logo-cdc.png')}}">
+    <link rel="shortcut icon" href="{{asset($set->logo_tab)}}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'CDC') }}</title>
+    <title>{{ $set->nama_tab }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -39,12 +41,19 @@
     <link rel="stylesheet" href="{{ asset('css/sidebar.css')}}">
     {{-- <link rel="stylesheet" href="{{ asset('css/rightbar.css')}}"> --}}
     <link rel="stylesheet" href="{{ asset('css/carousel.css')}}">
+    @if(isset($shop))
+    <link rel="stylesheet" href="{{ asset('css/shop.css')}}">
+    @endif
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
     @if(!isset($rightbar))
     <link rel="stylesheet" href="{{ asset('css/norightbar.css')}}">
+    @endif
+
+    @if(isset($nosidebar))
+    <link rel="stylesheet" href="{{ asset('css/nosidebar.css')}}">
     @endif
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -54,10 +63,23 @@
     
 </head>
 <body>
+    @if(isset($shop))
+    @yield('content')
+    <!-- Copyright -->
+    <div class="footer-copyright text-center pt-4 text-dark fixed">
+        <div class="copyright">
+            <span>© 2020 Copyright:</span>
+            <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
+        </div>
+    </div>
+    <!-- Copyright -->
+    @else
     <div id="app">
         <div class="wrapper">
+            @if(!isset($nosidebar))
             <!-- Sidebar  -->
             @include('layouts.dashboard.sidebar')
+            @endif
 
             <div id="content">
                 <!-- Page Content  -->
@@ -66,6 +88,14 @@
                     <div class=" row"> 
                         <div class=" col-12"> 
                             @yield('content')
+                            <!-- Copyright -->
+                            <div class="footer-copyright text-center pt-4 text-dark fixed">
+                                <div class="copyright">
+                                    <span>© 2020 Copyright:</span>
+                                    <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
+                                </div>
+                            </div>
+                            <!-- Copyright -->
                         </div>
                     </div>   
                 </div>
@@ -75,6 +105,7 @@
             @endif
         </div>
     </div>
+    @endif
 </body>
 
 
