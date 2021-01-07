@@ -37,7 +37,10 @@ class BarangController extends Controller
                 ->addColumn('barcode', function($data){
                     return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,65,array(0,0,0), true).'" alt="barcode" />';
                 })
-                ->rawColumns(['barcode','action'])
+                ->addColumn('jumsat', function($data){
+                    return $data->jumlah.' '.$data->satuan;
+                })
+                ->rawColumns(['barcode','action','jumsat'])
                 ->make(true);
         }
         return view($this->path.'index');
@@ -85,8 +88,11 @@ class BarangController extends Controller
         $v = Validator::make($request->all(),[
             'nama_barang' => 'required|string|max:20',
             'harga_barang' => 'required|string|max:20',
-            'kode_barang' => 'required|string|max:100',
+            // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'jumlah' => 'required|numeric',
+            'harga_satuan' => 'required|numeric',
+            'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
         ]);
@@ -97,19 +103,22 @@ class BarangController extends Controller
             //         .mt_rand(100, 999);
             // $date = date("Y");
             // $kode = "BG".$date.$pin;
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode = $faker->unique()->ean13;
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
                     'foto' => 'upload/foto/barang/'.$foto,
-                    'kode_barang' => $request->kode_barang,
+                    'kode_barang' => $kode,
                     'pemasok_id' => Auth::user()->pemasok_id,
                     'kategori_id' => $request->kategori_id
                 ]));
             } else {
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan'),[
-                    'kode_barang' => $request->kode_barang,
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                    'kode_barang' => $kode,
                     'pemasok_id' => Auth::user()->pemasok_id,
                     'kategori_id' => $request->kategori_id
                 ]));
@@ -158,8 +167,11 @@ class BarangController extends Controller
         $v = Validator::make($request->all(),[
             'nama_barang' => 'required|string|max:20',
             'harga_barang' => 'required|string|max:20',
-            'kode_barang' => 'required|string|max:100',
+            // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'jumlah' => 'required|numeric',
+            'harga_satuan' => 'required|numeric',
+            'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
         ]);
@@ -172,15 +184,15 @@ class BarangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
                     'foto' => 'upload/foto/barang/'.$foto,
-                    'kode_barang' => $request->kode_barang,
+                    // 'kode_barang' => $request->kode_barang,
                     'kategori_id' => $request->kategori_id
                 ]));
             } else {
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan'),[
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
                     'kategori_id' => $request->kategori_id,
-                    'kode_barang' => $request->kode_barang,
+                    // 'kode_barang' => $request->kode_barang,
                 ]));
             }
         }

@@ -129,10 +129,10 @@
               </div>
           </div>
         </div>
-        {{-- <div class="modal-footer">
-          <a href="#" class="btn btn-warning btn-progress" id="btn-edit">Edit</a>
-          <button type="submit" class="btn btn-danger btn-progress" id="btn-delete">Delete</button>
-        </div> --}}
+        <div class="modal-footer">
+          <a href="#" class="btn btn-warning btn-sm btn-progress" id="btn-edit">Beli</a>
+          {{-- <button type="submit" class="btn btn-danger btn-progress" id="btn-delete">Delete</button> --}}
+        </div>
       </div>
     </div>
 </div>
@@ -156,7 +156,7 @@
             success: (response)=>{
                 console.log(response.data)
                 $.each(response.data, function (a, b) {
-                    // $('#btn-edit').attr('href', '/v1/saranaPrasaranaUPTD/'+b.id+'/edit').removeClass('btn-progress');
+                    $('#btn-edit').attr('href', '/v1/pembelian/'+b.id).removeClass('btn-progress');
                     // $('#btn-delete').attr('onclick', 'sweet('+b.id+')').removeClass('btn-progress');
                         $('.pemasok').text(b.pemasok.nama)
                         $('.nama').text(b.nama_barang)

@@ -1,6 +1,6 @@
 @php
-        $icon = 'storage';
-        $pageTitle = 'Data Barang';
+        $icon = 'receipt_long';
+        $pageTitle = 'Penerimaan Barang';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -16,9 +16,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Barang</a>
+            <a href="#" class="text-14">Penerimaan Barang</a>
           </div>
         </div>
     </div>
@@ -29,40 +29,69 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="float-left">
-                                <h5></h5>
+            @forelse ($data as $item)
+                {{-- {{dd($item->barang->foto != null)}} --}}
+                <div class="card shadow">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="float-left">
+                                    <h5>Penerimaaan Barang Dari {{$item->pemasok->nama}}</h5>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="float-right">
+                                    <form method="POST" action="{{ route('penerimaan.destroy',$item->id) }}">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button type="submit" class="btn btn-default"><i class="material-icons text-danger">delete_forever</i></button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="float-right">
-                                <a href="{{route('barang.create')}}" class="btn btn-primary btn-sm">Tambah Data Barang</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2 garis">
+                                @if ($item->barang->foto != null)
+                                    <div class="card shadow card-image">
+                                        <img src="{{asset($item->barang->foto)}}" width="100" height="100" alt="Image-Penerimaan-Barang" class="img-border">
+                                    </div>
+                                @else
+                                    <div class="card shadow card-image">
+                                        <center><i class="material-icons icon-large">broken_image</i></center>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="col-md-4 valign-center">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        {{$item->barang->nama_barang}}
+                                    </div>
+                                    <div class="col-md-12">
+                                        Rp {{$item->barang->harga_barang}}   1 {{$item->barang->satuan}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 valign-center">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Total Harga
+                                    </div>
+                                    <div class="col-md-12">
+                                        Rp. 800000
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 valign-center">
+                                <a href="#" class="btn btn-success btn-sm">Beli Kembali</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="card-body">
-                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Kode Barang / Barcode</th>
-                                <th>Nama Barang</th>
-                                <th>Harga Satuan</th>
-                                <th>Jumlah</th>
-                                <th>Total harga</th>
-                                <th>Kategori</th>
-                                <th>Foto</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
+            @empty
+                <center>Tidak Ada Transaksi</center>
+            @endforelse
         </div>
     </div>
 </div>
@@ -86,12 +115,11 @@
                 {data : 'barcode', name: 'barcode'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'harga_barang', name: 'harga_barang'},
-                {data : 'jumsat', name: 'jumsat'},
-                {data : 'harga_total', name: 'harga_total'},
                 {data : 'kategori.nama', render:function(data,a,b,c){
                         return (data == null || data == "") ? "Kosong !" : data;
                     }
                 },
+                {data : 'satuan', name: 'satuan'},
                 {data : 'foto', render: function (data, type, full, meta) {
                         if(data == null){
                             return "Foto Tidak Ada !"
