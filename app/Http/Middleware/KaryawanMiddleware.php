@@ -16,7 +16,7 @@ class KaryawanMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->karyawan_id != null) {
+        if (Auth::user()->pengurus_gudang_id != null) {
             return $next($request);
         }
         return abort(401);
