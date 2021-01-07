@@ -18,6 +18,6 @@ class KaryawanSeeder extends Seeder
             'kabupaten_id' => 1101,
             'provinsi_id' => 11,
         ];
-        DB::table('karyawans')->insert($akun);
+        DB::table('pengurus_gudangs')->insert($akun);
     }
 }
