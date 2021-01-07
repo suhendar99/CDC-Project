@@ -35,4 +35,15 @@ class StorageIn extends Model
     	// belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Gudang');
     }
+
+    /**
+     * StorageIn belongs to User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+    	// belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
+    	return $this->belongsTo('App\User');
+    }
 }

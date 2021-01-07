@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Storage Masuk';
+        $pageTitle = 'Buat Data Storage Keluar';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -18,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Storage Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Buat Data</a>
           </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('in.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('out.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('in.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('out.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
