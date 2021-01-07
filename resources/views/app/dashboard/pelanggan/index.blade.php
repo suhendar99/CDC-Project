@@ -23,6 +23,7 @@
         @include('layouts.dashboard.search')
     </div>
 </div>
+
 @endsection
 @push('script')
 <script type="text/javascript">
