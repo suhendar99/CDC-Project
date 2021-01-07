@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('gudang.create')}}" class="btn btn-primary btn-sm">Tambah Data Gudang</a>
+                                <a href="{{route('in.create')}}" class="btn btn-primary btn-sm">Buat Storage In</a>
                             </div>
                         </div>
                     </div>
