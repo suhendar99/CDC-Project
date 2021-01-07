@@ -11,7 +11,7 @@
                     <li class="
                         {{ Request::is('v1/dashboard*') ? 'active' : false }}
                     ">
-                        <a href="#" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
+                        <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/user*') ? 'active' : false }}

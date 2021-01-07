@@ -92,6 +92,11 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('.card').delay(1000).addClass('stop');
+        $('.alert').delay(1000).fadeOut(1000, function () {
+           $('.alert').remove(); 
+        });
+        // $('.alert').delay(5000).remove();
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
         });
