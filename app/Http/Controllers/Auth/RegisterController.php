@@ -102,8 +102,7 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'pemasok_id' => $pemasok->id,
-                'email_verified_at' => $data['email_verified_at'],
-                'status' => 1
+                'email_verified_at' => $data['email_verified_at']
             ]);
         } elseif ($data['role'] == 'karyawan') {
             $karyawan = Karyawan::create([

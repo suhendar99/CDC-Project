@@ -91,7 +91,6 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
-            'harga_satuan' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
@@ -170,7 +169,6 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
-            'harga_satuan' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id'
