@@ -11,7 +11,7 @@
 	<a class="navbar-brand pl-2" href="#">
     <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt=""> <b class="text-24 text-my-primary">Shop</b>
   </a>
-  <a class="ml-auto" href="{{route('login')}}">Login</a>
+  <a class="ml-auto pr-2" href="{{route('login')}}">Login</a>
 </nav>
 <div class="container-fluid">
 	<div class="row">
@@ -63,7 +63,7 @@
 					</div>
 				</div>
 			    <div class="col-md-12 valign-center">
-			      <i class="material-icons md-24 text-my-warning mr-1">work</i><span style="font-size: 14px">Daftar Barang Saya</span>
+			      <i class="material-icons md-36 text-my-danger mr-1">local_fire_department</i><span style="font-size: 18px"> Sembako Populer</span>
 			    </div>
 			    <div class="col-12">
 			        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
