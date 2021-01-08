@@ -150,6 +150,10 @@
             $('#rightbar').toggleClass('active');
         });
 
+        $('#categoryCollapse').on('click', function () {
+            $('#category').toggleClass('active');
+        });
+
 
     });
 </script>
