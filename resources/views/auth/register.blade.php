@@ -53,9 +53,9 @@
                                         <select name="role" id="" class="form-control">
                                             <option value="">--Pilih Role--</option>
                                             <option value="pelanggan">Pembeli</option>
-                                            <option value="pemasok">Resseler</option>
-                                            <option value="karyawan">Karyawan</option>
-                                            <option value="bank">Bank</option>
+                                            <option value="pemasok">Pemasok</option>
+                                            {{-- <option value="karyawan">Karyawan</option> --}}
+                                            {{-- <option value="bank">Bank</option> --}}
                                             <option value="gudang">Pengurus Gudang</option>
                                         </select>
 
@@ -129,10 +129,10 @@
                             </div>
                         </div>
 
-                        <div class="form-group mb-0">
+                        <div class="form-group mb-4">
                             <div class="col-md-12">
                                 <div class="float-left">
-                                    <a href="{{route('login')}}">Sudah punya akun ?
+                                    <a href="{{route('login')}}">Sudah punya akun ?</a>
                                 </div>
                                 <div class="float-right">
                                     <button type="submit" class="btn btn-primary btn-sm">

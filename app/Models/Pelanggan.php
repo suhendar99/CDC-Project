@@ -29,6 +29,10 @@ class Pelanggan extends Model
     {
         return $this->belongsTo('App\Models\Kabupaten');
     }
+    public function penerimaan()
+    {
+        return $this->hasMany('App\Models\Penerimaan');
+    }
 
     public function getData()
     {

@@ -4,7 +4,11 @@
             <div class="sidebar-content">
                 <div class="sidebar-header">
                     <center>
-                        <img src="{{asset('images/logo-cdc.png')}}" height="50" class="scale-down my-3">
+                        @if($set->logo_tab != null)
+                        <img src="{{asset($set->logo_app)}}" height="50" class="scale-down my-3">
+                        @else
+                        <img src="{{asset('images/logo-app.png')}}" height="50" class="scale-down my-3">
+                        @endif
                     </center>
                 </div>
                 <ul class="list-unstyled components">
@@ -23,7 +27,7 @@
                         {{ Request::is('v1/storage/out*') ? 'active' : false }}
                     ">
                         <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
-                        <ul id="dataSubmenu" class="collapse list-unstyled 
+                        <ul id="dataSubmenu" class="collapse list-unstyled
                             {{ Request::is('v1/user*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/barang*') ? 'show' : false }}
@@ -38,7 +42,6 @@
                             ">
                                 <a href="{{route('user.index')}}">Akun</a>
                             </li>
-                            @endif
                             <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
                             ">
@@ -59,6 +62,8 @@
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
+                            @endif
+                            @if (isset($admin) && isset($pengurusGudang))
                             <li class="
                                 {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">
@@ -69,9 +74,10 @@
                             ">
                                 <a href="{{ route('out.index') }}">Storage Keluar</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="#transSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">receipt_long</i>Data Transaksi</a>
                         <ul class="collapse list-unstyled" id="transSubmenu">
                             <li>
@@ -90,8 +96,8 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">
                             <li>
@@ -116,10 +122,10 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>

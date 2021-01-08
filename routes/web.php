@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    // return view('auth.login');
+    return view('app.shop.index');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');
@@ -55,6 +56,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pengaturan-password-akun','PengaturanAkunController@updatePassword')->name('setPass.show');
     Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
     // End Pengaturan Akun User
+
+    // Penerimaan Barang Pada Pelanggan
+    Route::resource('penerimaan', 'PenerimaanController');
+    // Pembelian Barang
+    Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
+    // Route::resource('pembelian', 'PembelianController');
 
     Route::group(['middleware' => ['admin']], function () {
         // User

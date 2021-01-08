@@ -31,23 +31,6 @@
 <div class="container">
     <div class="row h-100">
         <div class="col-md-12">
-            @if (session()->has('success'))
-		    <div class="alert alert-success alert-dismissible fade show" role="alert">
-		    	<i data-feather="check-circle"></i>
-		        {{ session()->get('success') }}
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		            <span aria-hidden="true">&times;</span>
-		        </button>
-		    </div>
-		    @elseif (session()->has('failed'))
-		    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-		    	<i data-feather="alert-circle"></i>
-		        {{ session()->get('failed') }}
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		            <span aria-hidden="true">&times;</span>
-		        </button>
-		    </div>
-		    @endif
             <div class="card card-block d-flex">
                 <div class="card-header">
                     <div class="row">
@@ -70,17 +53,6 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('kode_barang') is-invalid @enderror" name="kode_barang" value="{{ old('kode_barang') }}" placeholder="Enter nama barang">
-                                        @error('kode_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Enter nama barang">
                                         @error('nama_barang')
@@ -92,9 +64,31 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
+                                        <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" min="0" id="satuan" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
                                         @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" min="0" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" placeholder="Enter jumlah barang">
+                                        @error('jumlah')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Total harga <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" min="0" id="hasil" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ old('harga_total') }}" placeholder="Enter total harga barang">
+                                        @error('harga_total')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -158,7 +152,17 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
-
+        function inputed(){
+            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        }
+        $('#jumlah').on('keyup',(value) => {
+            console.log()
+            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        })
+        $('#satuan').on('keyup',(value) => {
+            console.log()
+            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        })
 </script>
 {{--  --}}
 @endpush

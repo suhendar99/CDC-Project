@@ -52,9 +52,10 @@
                                 <th>No</th>
                                 <th>Kode Barang / Barcode</th>
                                 <th>Nama Barang</th>
-                                <th>Harga Barang</th>
+                                <th>Harga Satuan</th>
+                                <th>Jumlah</th>
+                                <th>Total harga</th>
                                 <th>Kategori</th>
-                                <th>Satuan</th>
                                 <th>Foto</th>
                                 <th>Action</th>
                             </tr>
@@ -85,11 +86,12 @@
                 {data : 'barcode', name: 'barcode'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'harga_barang', name: 'harga_barang'},
+                {data : 'jumsat', name: 'jumsat'},
+                {data : 'harga_total', name: 'harga_total'},
                 {data : 'kategori.nama', render:function(data,a,b,c){
                         return (data == null || data == "") ? "Kosong !" : data;
                     }
                 },
-                {data : 'satuan', name: 'satuan'},
                 {data : 'foto', render: function (data, type, full, meta) {
                         if(data == null){
                             return "Foto Tidak Ada !"
