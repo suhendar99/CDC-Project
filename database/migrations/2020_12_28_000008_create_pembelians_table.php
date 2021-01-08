@@ -20,6 +20,9 @@ class CreatePembeliansTable extends Migration
             $table->date('tanggal_pembelian');
             $table->date('tanggal_penerimaan')->nullable();
             $table->boolean('status_pengiriman')->nullable();
+            $table->string('kurir')->nullable();
+            $table->integer('total_harga')->nullable();
+            $table->text('alamat')->nullable();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('barang_id')->nullable()->constrained('barangs')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
