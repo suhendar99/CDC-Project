@@ -155,7 +155,7 @@
                                         </tr>
                                         <tr>
                                             <td>Pemasok Barang</td>
-                                            <td id="pemasok">${response.data.pemasok.nama}</td>
+                                            <td id="pemasok">${(response.data.pemasok == null) ? 'NULL' : response.data.pemasok.nama}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -195,7 +195,7 @@
                     $('#barangStatus').empty();
                     $('#barangStatus').append('Barang ditemukan <a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a>')
                     $('#card-table').remove();
-                    $('#card-form').after(`<div class="card card-block d-flex">
+                    $('#card-form').after(`<div class="card card-block d-flex" id="card-table">
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-md-12 col-sm-6">
@@ -219,7 +219,7 @@
                                         </tr>
                                         <tr>
                                             <td>Pemasok Barang</td>
-                                            <td id="pemasok">${response.data.pemasok.nama}</td>
+                                            <td id="pemasok">${(response.data.pemasok == null) ? 'NULL' : response.data.pemasok.nama}</td>
                                         </tr>
                                     </tbody>
                                 </table>
