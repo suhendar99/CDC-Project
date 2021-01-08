@@ -13,4 +13,9 @@ class Kategori extends Model
     {
         return $this->hasMany('App\Models\Barang');
     }
+
+    public function getAll()
+    {
+    	return static::orderBy('nama')->get();
+    }
 }
