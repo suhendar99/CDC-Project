@@ -1,6 +1,14 @@
 @php
 	$shop = true;
-	$card = [1,1,1,1,1,1,1,1,1,1];
+	$card = array(
+        ['id' => 1,'nama' => 'ahaha', ],
+        ['id' => 2,'nama' => 'ahaha', ],
+        ['id' => 3,'nama' => 'ahaha', ],
+        ['id' => 4,'nama' => 'ahaha', ],
+        ['id' => 5,'nama' => 'ahaha', ],
+        ['id' => 6,'nama' => 'ahaha', ]
+    );
+
   	$data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
 @endphp
 
@@ -17,11 +25,11 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="row">
-				@foreach($card as $c)
+                @foreach($card as $c)
 				<div class="col-6 pl-2 pr-2 pb-4">
 					<div class="card" style="height: 150px;">
 						<div class="card-body">
-							
+							<i class="material-icons text-my-primary icon-large">shopping_bag</i>
 						</div>
 					</div>
 				</div>
@@ -97,7 +105,7 @@
 									Beras Super, 1Kg
 								</div>
 								<div class="col-12">
-									Stok : 20 Item	
+									Stok : 20 Item
 								</div>
 							</div>
 							<button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>

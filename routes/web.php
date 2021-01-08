@@ -19,7 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('test', function () {
-    return view('app.transaksi.pembelian-barang.pelanggan.beli');
+    return view('app.transaksi.pembelian-barang.pelanggan.stepper');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     // Penerimaan Barang Pada Pelanggan
     Route::resource('penerimaan', 'PenerimaanController');
     // Pembelian Barang
-    Route::get('pembelian','PembelianController@create')->name('pembelian');
+    Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
     Route::post('/ongkir', 'PembelianController@check_ongkir');
     Route::get('/cities/{id}', 'PembelianController@getCities');
     // Route::resource('pembelian', 'PembelianController');

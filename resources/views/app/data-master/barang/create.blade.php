@@ -64,7 +64,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <span class="font-weight-bold">Pilih Kota dan Provinsi</span>
+                                    <span class="font-weight-bold">Pilih Kota dan Provinsi Untuk Ongkir</span>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">

@@ -103,7 +103,7 @@ class BarangController extends Controller
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id',
-            'province_origin' => 'required|provinces:,province_id',
+            'province_origin' => 'required',
             'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {
@@ -166,7 +166,8 @@ class BarangController extends Controller
     {
         $kategori = Kategori::all();
         $data = Barang::find($id);
-        return view($this->path.'edit',compact('kategori','data'));
+        $provinces = Province::pluck('name', 'province_id');
+        return view($this->path.'edit',compact('kategori','data','provinces'));
     }
 
     /**
@@ -188,7 +189,7 @@ class BarangController extends Controller
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id',
-            'province_origin' => 'required|provinces:,province_id',
+            'province_origin' => 'nullable',
             'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {

@@ -54,7 +54,8 @@
                             <div class="col-md-3 col-sm-6">
                                 <div class="col-md-12">
                                     <div class="card shadow" style="width: 18rem;">
-                                        <a data-toggle="modal" data-target="#exampleModal" onclick="detail({{$item->id}})" data-id="{{$item->id}}" style="cursor: pointer;" title="Detail">
+                                        {{-- <a data-toggle="modal" data-target="#exampleModal" onclick="detail({{$item->id}})" data-id="{{$item->id}}" style="cursor: pointer;" title="Detail"> --}}
+                                        <a href="{{route('pembelian',$item->id)}}">
                                         @if ($item->foto != null)
                                             <img class="card-img-top" style="width: 100%; height: 150px;" src="{{asset($item->foto)}}" alt="Card image cap">
                                         @else

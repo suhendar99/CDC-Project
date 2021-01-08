@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\City;
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\Provinsi;
 use App\Province;
 use Illuminate\Http\Request;
@@ -31,10 +32,12 @@ class PembelianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
+        $data = Barang::find($id);
+        // dd($data->city_id);
         $provinces = Province::pluck('name', 'province_id');
-        return view($this->path.'beli', compact('provinces'));
+        return view($this->path.'beli', compact('provinces','data'));
     }
 
     public function getCities($id)
