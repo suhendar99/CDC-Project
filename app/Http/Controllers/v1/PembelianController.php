@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\City;
 use App\Http\Controllers\Controller;
+use App\Models\Barang;
 use App\Models\Provinsi;
 use App\Province;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class PembelianController extends Controller
 {
     public function __construct()
     {
-        $this->path = 'app.transaksi.pembelian-barang.';
+        $this->path = 'app.transaksi.pembelian-barang.pelanggan.';
         $this->alert = 'Data Berhasil ';
     }
     /**
@@ -33,8 +34,10 @@ class PembelianController extends Controller
      */
     public function create($id)
     {
+        $data = Barang::find($id);
+        // dd($data->city_id);
         $provinces = Province::pluck('name', 'province_id');
-        return view('ongkir', compact('provinces'));
+        return view($this->path.'beli', compact('provinces','data'));
     }
 
     public function getCities($id)

@@ -143,16 +143,14 @@
                                 </div>
 
                                 <div class="tab">Login Info:
-                                    <input type="hidden" name="city_origin" value="{{$data->city_id}}">
-                                    <input type="hidden" name="province_origin" value="{{$data->province_id}}">
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <label>Provinsi <small class="text-success">*Harus diisi</small></label>
                                             <select class="form-control provinsi-tujuan" name="province_destination">
                                                 <option value="0">-- pilih provinsi tujuan --</option>
-                                                @foreach ($provinces as $province => $value)
+                                                {{-- @foreach ($provinces as $province => $value)
                                                     <option value="{{ $province  }}">{{ $value }}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                             @error('province_destination')
                                                 <span class="invalid-feedback" role="alert">
@@ -195,22 +193,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-md btn-primary btn-block btn-check">CEK ONGKOS KIRIM</button>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="float-left">
-                                                <div class="card d-none ongkir">
-                                                    <div id="ongkir"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div style="overflow:auto;">
                                   <div style="float:right;">
                                     <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-danger btn-sm">Previous</button>
-                                    <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary btn-sm">Next</button>
+                                    <button type="submit" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary btn-sm">Next</button>
                                   </div>
                                 </div>
 
@@ -362,7 +350,7 @@ function fixStepIndicator(n) {
             e.preventDefault();
 
             let token            = $("meta[name='csrf-token']").attr("content");
-            let city_origin      = $('input[name=city_origin]').val();
+            let city_origin      = $('select[name=city_origin]').val();
             let city_destination = $('select[name=city_destination]').val();
             let courier          = $('select[name=courier]').val();
             let weight           = $('#weight').val();
@@ -390,14 +378,7 @@ function fixStepIndicator(n) {
                         $('#ongkir').empty();
                         $('.ongkir').addClass('d-block');
                         $.each(response[0]['costs'], function (key, value) {
-                            $('#ongkir').append(`
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        <li class="list-group-item">`+response[0].code.toUpperCase()+` : <strong>`+value.service+`</strong> - Rp. `+value.cost[0].value+` (`+value.cost[0].etd+` hari)</li>
-                                    </label>
-                                </div>
-                            `)
+                            $('#ongkir').append('<li class="list-group-item">'+response[0].code.toUpperCase()+' : <strong>'+value.service+'</strong> - Rp. '+value.cost[0].value+' ('+value.cost[0].etd+' hari)</li>')
                         });
 
                     }
