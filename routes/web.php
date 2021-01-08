@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('/', 'ShopController@index');    
+    Route::get('/', 'ShopController@index');
 });
 
 Route::get('test', function () {
@@ -66,7 +66,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
     Route::post('/ongkir', 'PembelianController@check_ongkir');
     Route::get('/cities/{id}', 'PembelianController@getCities');
-    // Route::resource('pembelian', 'PembelianController');
+    // Route::post('pembelian/store/{id}', 'PembelianController@store')->name('pembelian.store');
+    Route::resource('pembelian', 'PembelianController');
 
     Route::group(['middleware' => ['admin']], function () {
         // User

@@ -63,6 +63,13 @@
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
                             @endif
+                            @if (Auth::user()->pelanggan_id != null)
+                            <li class="
+                            {{ Request::is('v1/barang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('barang.index')}}">Barang</a>
+                            </li>
+                            @endif
                             @if (isset($admin) || isset($pengurusGudang))
                             <li class="
                                 {{ Request::is('v1/storage/in*') ? 'active' : false }}

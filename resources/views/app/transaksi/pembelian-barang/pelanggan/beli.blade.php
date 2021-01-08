@@ -29,9 +29,10 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="#" method="post" enctype="multipart/form-data" id="regForm">
+                            <form action="{{route('pembelian.store')}}" method="post" enctype="multipart/form-data" id="regForm">
                                 {{-- {{route('pembelian.store')}} --}}
                                 @csrf
+                                <input type="hidden" name="id" value="{{$data->id}}">
                                 <!-- One "tab" for each step in the form: -->
                                 <div class="tab">Info Barang
                                     <div class="row">
@@ -50,10 +51,10 @@
                                         <div class="col-md-7">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <small class="font-weight-bold">Toko Ahmad</small>
+                                                    <small class="font-weight-bold">Toko {{$data->pemasok->nama}}</small>
                                                 </div>
                                                 <div class="col-md-12" style="border-bottom: 1px solid grey; border-left-width: 10px;">
-                                                    <p class="h1">Beras Merah</p>
+                                                    <p class="h1">{{$data->nama_barang}}</p>
                                                 </div>
                                                 <div class="col-md-12 mt-4" style="border-bottom: 1px solid grey; border-left-width: 10px;">
                                                     <div class="row p-2">
@@ -61,7 +62,7 @@
                                                             <div class="h6">Harga :</div>
                                                         </div>
                                                         <div class="col-md-9 valign-center">
-                                                            <p class="font-weight-bold h5" style="color: red;">Rp 20.000</p>
+                                                            <p class="font-weight-bold h5 text-my-primary">Rp {{$data->harga_barang}}</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,19 +76,19 @@
                                                                 <div class="col-md-4">
                                                                     <div class="row">
                                                                         <div class="col-md-12">Stok</div>
-                                                                        <div class="col-md-12">200 Pcs</div>
+                                                                        <div class="col-md-12">{{$data->jumlah}} {{$data->satuan}}</div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <div class="row">
                                                                         <div class="col-md-12">Berat</div>
-                                                                        <div class="col-md-12">200 Gr</div>
+                                                                        <div class="col-md-12">{{$data->berat}} Gr</div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <div class="row">
                                                                         <div class="col-md-12">Kondisi</div>
-                                                                        <div class="col-md-12">Baru</div>
+                                                                        <div class="col-md-12">Baik</div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -105,7 +106,7 @@
                                                                     <div class="float-left">
                                                                         <div class="row">
                                                                             <div class="col-md-12">
-                                                                                Dari Bandung
+                                                                                Dari {{$data->city->name}}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -114,7 +115,7 @@
                                                                     <div class="float-right">
                                                                         <div class="row">
                                                                             <div class="col-md-12">
-                                                                                <small>Mulai dari : Rp 20.000</small>
+                                                                                <small>Mulai dari : Rp 11000</small>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -142,9 +143,10 @@
                                     </div>
                                 </div>
 
-                                <div class="tab">Login Info:
+                                <div class="tab">Pengiriman:
                                     <input type="hidden" name="city_origin" value="{{$data->city_id}}">
                                     <input type="hidden" name="province_origin" value="{{$data->province_id}}">
+                                    <input type="hidden" name="weight" id="weight" value="{{$data->berat}}">
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <label>Provinsi <small class="text-success">*Harus diisi</small></label>
@@ -175,27 +177,43 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-6">
-                                            <label for="">Pilih Jasa Pengiriman</label>
-                                        </div>
                                         <div class="col-md-12">
-                                            <div class="float-left">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input kurir" type="radio" name="courier" id="inlineRadio1" value="jne">
-                                                    <label class="form-check-label" for="inlineRadio1">JNE</label>
-                                                  </div>
-                                                  <div class="form-check form-check-inline">
-                                                    <input class="form-check-input kurir" type="radio" name="courier" id="inlineRadio2" value="pos">
-                                                    <label class="form-check-label" for="inlineRadio2">POS</label>
-                                                  </div>
-                                                  <div class="form-check form-check-inline">
-                                                    <input class="form-check-input kurir" type="radio" name="courier" id="inlineRadio2" value="tiki">
-                                                    <label class="form-check-label" for="inlineRadio2">TIKI</label>
-                                                  </div>
+                                            <label>Alamat <small class="text-success">*Harus diisi</small></label>
+                                            <textarea name="alamat" id="" cols="10" rows="3" class="form-control">{{old('alamat')}}</textarea>
+                                            @error('alamat')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label for="">Pilih Jasa Pengiriman</label>
+                                                    <select class="form-control kurir" name="courier">
+                                                        <option value="jne">JNE</option>
+                                                        <option value="pos">POS</option>
+                                                        <option value="tiki">TIKI</option>
+                                                    </select>
+                                                    @error('courier')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label for=""></label>
+                                                    <button class="btn btn-md btn-primary btn-block btn-check btn-sm mr-2" style="margin-top: 8px;">Cek Ongkir</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-md btn-primary btn-block btn-check">CEK ONGKOS KIRIM</button>
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <div class="float-left">
@@ -206,11 +224,12 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div style="overflow:auto;">
-                                  <div style="float:right;">
+                                  <div  style="float:right;">
                                     <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-danger btn-sm">Previous</button>
-                                    <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary btn-sm">Next</button>
+                                    {{-- <div id="btn-colect"> --}}
+                                        <button type="button" id="nextBtn" onclick="nextPrev(1)" class="btn btn-primary btn-sm">Next</button>
+                                    {{-- </div> --}}
                                   </div>
                                 </div>
 
@@ -258,8 +277,12 @@ function showTab(n) {
   // ... and run a function that displays the correct step indicator:
   fixStepIndicator(n)
 }
+// function submitForm() {
+//     document.getElementById("regForm").submit();
+// }
 
 function nextPrev(n) {
+    // console.log(n);
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -269,8 +292,13 @@ function nextPrev(n) {
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
   // if you have reached the end of the form... :
+  console.log(currentTab);
   if (currentTab >= x.length) {
     //...the form gets submitted:
+    // $("#nextBtn").attr('onclick','submitForm()');
+    // $("#nextBtn").attr('id','btn-beli');
+    // $('#btn-beli').attr('type','submit');
+    // $('#nextBtn').html(`<button type="submit" id="btn-beli" class="btn btn-primary btn-sm">Beli</button>`)
     document.getElementById("regForm").submit();
     return false;
   }
@@ -392,9 +420,9 @@ function fixStepIndicator(n) {
                         $.each(response[0]['costs'], function (key, value) {
                             $('#ongkir').append(`
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                    <input class="form-check-input" type="radio" name="hargaOngkir" id="exampleRadios1" value="`+value.cost[0].value+`" checked>
                                     <label class="form-check-label" for="exampleRadios1">
-                                        <li class="list-group-item">`+response[0].code.toUpperCase()+` : <strong>`+value.service+`</strong> - Rp. `+value.cost[0].value+` (`+value.cost[0].etd+` hari)</li>
+                                        `+response[0].code.toUpperCase()+` : <strong>`+value.service+`</strong> - Rp. `+value.cost[0].value+` (`+value.cost[0].etd+` hari)
                                     </label>
                                 </div>
                             `)

@@ -5,9 +5,13 @@ namespace App\Http\Controllers\v1;
 use App\City;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Pembelian;
 use App\Models\Provinsi;
 use App\Province;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Kavist\RajaOngkir\Facades\RajaOngkir;
 
 class PembelianController extends Controller
@@ -68,7 +72,44 @@ class PembelianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'jumlah' => 'required|numeric',
+            'alamat' => 'required|string|max:20',
+            'province_destination' => 'required',
+            'city_destination' => 'required',
+            // 'courier' => 'required',
+        ]);
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            return back()->with('error','Mohon Periksa kembali inputan anda !');
+        } else {
+            $id = $request->id;
+            $data = Barang::find($id);
+            $jumlah = $request->jumlah;
+            $jumtot = $data->jumlah;
+            $sisa = $jumtot - $jumlah;
+            $hargaTotal = $data->harga_barang + $request->hargaOngkir;
+            $total = $hargaTotal * $jumlah;
+            $date = date('Ymd');
+            $kode = 'PB'.$date;
+            $data->update([
+                'jumlah' => $sisa
+            ]);
+            Pembelian::create([
+                'kode_pembelian' => $kode,
+                'jumlah' => $jumlah,
+                'tanggal_pembelian' => Carbon::now(),
+                'pelanggan_id' => Auth::user()->pelanggan_id,
+                'barang_id' => $data->id,
+                'city_id' => $request->province_destination,
+                'province_id' => $request->city_destination,
+                'kurir' => $request->courier,
+                'harga_total' => $total,
+                'alamat' => $request->alamat,
+            ]);
+
+            return redirect('v1/barangs')->with('success','Barang'.$data->nama_barang.'berhasil dibeli !');
+        }
     }
 
     /**
