@@ -23,6 +23,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
 
 });
 
+Route::get('citiesLoad/{id}', function($id){
+    dd($id);
+})->name('citiesLoad');
+
 Route::get('/v1/getBarang/{id}','v1\BarangController@show');
 Route::get('/v1/getGudang/{id}','v1\GudangController@show');
 Route::get('/v1/getPemasok/{id}','v1\PemasokController@show');
