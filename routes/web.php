@@ -18,7 +18,6 @@ Route::group(['namespace' => 'v1'], function () {
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');
-
 });
 
 Route::get('test', function () {
@@ -70,7 +69,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
     Route::post('/ongkir', 'PembelianController@check_ongkir');
     Route::get('/cities/{id}', 'PembelianController@getCities');
-    // Route::resource('pembelian', 'PembelianController');
+    // Route::post('pembelian/store/{id}', 'PembelianController@store')->name('pembelian.store');
+    Route::resource('pembelian', 'PembelianController');
 
     Route::group(['middleware' => ['admin']], function () {
         // User

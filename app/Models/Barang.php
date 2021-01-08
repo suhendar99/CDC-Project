@@ -53,4 +53,8 @@ class Barang extends Model
     {
         return $this->belongsTo('App\Province','province_id','id');
     }
+    public function city()
+    {
+        return $this->belongsTo('App\City','city_id','id');
+    }
 }
