@@ -2,7 +2,16 @@
 	$shop = true;
 	$card = [1,1,1,1,1,1,1];
 	$else = 'Jeruk';
-  $category = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+  // $category = array(
+  // 	['icon'=>'grass','nama'=>'Pertanian'],
+  // 	['icon'=>'grass','nama'=>'Perkebunan'],
+  // 	['icon'=>'set_meal','nama'=>'Perikanan'],
+  // 	['icon'=>'flutter_dash','nama'=>'Peternakan'],
+  // 	['icon'=>'bento','nama'=>'Makanan Kaleng'],
+  // 	['icon'=>'kitchen','nama'=>'Makanan Beku'],
+  // 	['icon'=>'free_breakfast','nama'=>'Minuman'],
+  // 	['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
+  // );
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -26,9 +35,12 @@
 			<div class="row">
 				@forelse($category as $c)
 				<div class="col-6 pl-2 pr-2 pb-4">
-					<div class="card" style="height: 150px;">
-						<div class="card-body">
-							<i class="material-icons text-my-primary icon-large">shopping_bag</i>
+					<div class="card" style="height: auto;">
+						<div class="card-body d-flex justify-content-center">
+							<center> 
+									<i class="material-icons md-48">{{$c['icon']}}</i><br>
+									<span>{{$c['nama']}}</span>
+							</center>
 						</div>
 					</div>
 				</div>
