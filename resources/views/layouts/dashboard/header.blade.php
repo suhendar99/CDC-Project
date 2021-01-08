@@ -66,7 +66,15 @@
 </head>
 <body>
     @if(isset($shop))
-    @yield('content')
+    @include('layouts.shop.navbar')
+    <div class="container-fluid">
+        <div class="wrapper">
+            @if(!isset($detail))
+                @include('layouts.shop.category')
+            @endif
+            @yield('content')
+        </div>
+    </div>
     <!-- Copyright -->
     <div class="footer-copyright text-center pt-4 text-dark fixed">
         <div class="copyright">

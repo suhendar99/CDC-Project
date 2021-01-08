@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('/', 'ShopController@index');
+    Route::get('/', 'ShopController@index')->name('shop');  
+    Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
+    Route::get('citiesShop/{id}', 'ShopController@getCities');
+    Route::post('ongkirShop', 'PembelianController@check_ongkir');
 });
 
 Route::get('test', function () {

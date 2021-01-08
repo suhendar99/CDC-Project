@@ -110,7 +110,7 @@ body::-webkit-scrollbar-thumb
 /* CARD STYLE*/
 .item-card{
 	margin: .5rem 0;
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 .item-card img{
 	width: 100%;
