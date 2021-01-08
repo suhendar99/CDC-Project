@@ -1,7 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Dashboard Admin';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
         $dashboard = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -126,13 +125,15 @@
             let provindeId = $(this).val();
             if (provindeId) {
                 jQuery.ajax({
-                    url: '/cities/'+provindeId,
+                    url: '/v1/cities/'+provindeId,
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
                         $('select[name="city_origin"]').empty();
                         $('select[name="city_origin"]').append('<option value="">-- pilih kota asal --</option>');
                         $.each(response, function (key, value) {
+                            console.log(key);
+                            console.log(value);
                             $('select[name="city_origin"]').append('<option value="' + key + '">' + value + '</option>');
                         });
                     },
@@ -146,7 +147,7 @@
             let provindeId = $(this).val();
             if (provindeId) {
                 jQuery.ajax({
-                    url: '/cities/'+provindeId,
+                    url: '/v1/cities/'+provindeId,
                     type: "GET",
                     dataType: "json",
                     success: function (response) {
@@ -178,7 +179,7 @@
 
             isProcessing = true;
             jQuery.ajax({
-                url: "/ongkir",
+                url: "/v1/ongkir",
                 data: {
                     _token:              token,
                     city_origin:         city_origin,
@@ -189,7 +190,8 @@
                 dataType: "JSON",
                 type: "POST",
                 success: function (response) {
-                    isProcessing = false;
+                    console.log(response)
+                    isProcessing = true;
                     if (response) {
                         $('#ongkir').empty();
                         $('.ongkir').addClass('d-block');

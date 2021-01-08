@@ -49,4 +49,8 @@ class Barang extends Model
     {
         return $this->hasMany('App\Models\Penerimaan');
     }
+    public function province()
+    {
+        return $this->belongsTo('App\Province');
+    }
 }

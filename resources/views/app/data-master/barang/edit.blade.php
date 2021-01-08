@@ -116,7 +116,7 @@
                                                 <option value="{{$item->id}}" {{ $data->kategori_id == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
                                             @endforeach
                                         </select>
-                                        @error('harga_barang')
+                                        @error('kategori_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

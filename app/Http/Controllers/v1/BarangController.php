@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\City;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Kategori;
+use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -74,7 +76,13 @@ class BarangController extends Controller
     public function create()
     {
         $kategori = Kategori::all();
-        return view($this->path.'create',compact('kategori'));
+        $provinces = Province::pluck('name', 'province_id');
+        return view($this->path.'create',compact('kategori','provinces'));
+    }
+    public function getCities($id)
+    {
+        $city = City::where('province_id', $id)->pluck('name', 'city_id');
+        return response()->json($city);
     }
 
     /**
@@ -91,9 +99,12 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
+            'berat' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'kategori_id' => 'required|exists:kategoris,id'
+            'kategori_id' => 'required|exists:kategoris,id',
+            'province_origin' => 'required|provinces:,province_id',
+            'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
@@ -109,17 +120,21 @@ class BarangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
                     'foto' => 'upload/foto/barang/'.$foto,
                     'kode_barang' => $kode,
                     'pemasok_id' => Auth::user()->pemasok_id,
-                    'kategori_id' => $request->kategori_id
+                    'kategori_id' => $request->kategori_id,
+                    'province_id' => $request->province_origin,
+                    'city_id' => $request->city_origin
                 ]));
             } else {
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
                     'kode_barang' => $kode,
                     'pemasok_id' => Auth::user()->pemasok_id,
-                    'kategori_id' => $request->kategori_id
+                    'kategori_id' => $request->kategori_id,
+                    'province_id' => $request->province_origin,
+                    'city_id' => $request->city_origin
                 ]));
             }
         }
@@ -169,9 +184,12 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
+            'berat' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-            'kategori_id' => 'required|exists:kategoris,id'
+            'kategori_id' => 'required|exists:kategoris,id',
+            'province_origin' => 'required|provinces:,province_id',
+            'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
@@ -182,15 +200,19 @@ class BarangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/barang"), $foto);
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
                     'foto' => 'upload/foto/barang/'.$foto,
                     // 'kode_barang' => $request->kode_barang,
-                    'kategori_id' => $request->kategori_id
+                    'kategori_id' => $request->kategori_id,
+                    'province_id' => $request->province_origin,
+                    'city_id' => $request->city_origin
                 ]));
             } else {
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
                     'kategori_id' => $request->kategori_id,
                     // 'kode_barang' => $request->kode_barang,
+                    'province_id' => $request->province_origin,
+                    'city_id' => $request->city_origin
                 ]));
             }
         }

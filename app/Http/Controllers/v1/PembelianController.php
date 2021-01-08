@@ -13,7 +13,7 @@ class PembelianController extends Controller
 {
     public function __construct()
     {
-        $this->path = 'app.transaksi.pembelian-barang.';
+        $this->path = 'app.transaksi.pembelian-barang.pelanggan.';
         $this->alert = 'Data Berhasil ';
     }
     /**
@@ -31,10 +31,10 @@ class PembelianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         $provinces = Province::pluck('name', 'province_id');
-        return view('ongkir', compact('provinces'));
+        return view($this->path.'beli', compact('provinces'));
     }
 
     public function getCities($id)

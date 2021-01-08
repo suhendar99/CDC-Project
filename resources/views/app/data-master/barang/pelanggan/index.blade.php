@@ -55,7 +55,11 @@
                                 <div class="col-md-12">
                                     <div class="card shadow" style="width: 18rem;">
                                         <a data-toggle="modal" data-target="#exampleModal" onclick="detail({{$item->id}})" data-id="{{$item->id}}" style="cursor: pointer;" title="Detail">
-                                        <img class="card-img-top" style="width: 100%; height: 150px;" src="{{asset($item->foto)}}" alt="Card image cap">
+                                        @if ($item->foto != null)
+                                            <img class="card-img-top" style="width: 100%; height: 150px;" src="{{asset($item->foto)}}" alt="Card image cap">
+                                        @else
+                                            <center><i class="material-icons icon-large">broken_image</i></center>
+                                        @endif
                                         <div class="card-body">
                                         <center><p class="card-text">{{$item->nama_barang}}</p></center>
                                         {{-- <center><p class="card-text">{{$item->kategori->nama}}</p></center> --}}
