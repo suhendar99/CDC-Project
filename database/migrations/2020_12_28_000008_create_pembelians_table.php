@@ -23,7 +23,7 @@ class CreatePembeliansTable extends Migration
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('barang_id')->nullable()->constrained('barangs')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
-            $table->foreignId('city_id')->nullable()->constrained('kabupatens')->onDelete('set null');
+            $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('set null');
             $table->foreignId('province_id')->nullable()->constrained('provinsis')->onDelete('set null');
             $table->timestamps();
         });

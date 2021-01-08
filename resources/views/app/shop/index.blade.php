@@ -28,7 +28,7 @@
 				<div class="col-6 pl-2 pr-2 pb-4">
 					<div class="card" style="height: 150px;">
 						<div class="card-body">
-							
+							<i class="material-icons text-my-primary icon-large">shopping_bag</i>
 						</div>
 					</div>
 				</div>

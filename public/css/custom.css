@@ -208,11 +208,11 @@ img .scale-down{
 	font-size: .85rem;
 }
 .icon-large {
-    font-size: 88px;
+    font-size: 245px;
 }
 .card-image {
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 290px;
     object-fit: cover;
 }
 .garis {
@@ -230,7 +230,7 @@ small, .small {
 
 body .card{
 	font-size: .8rem !important;
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; 
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 	overflow-x: hidden;
 }
 
@@ -363,3 +363,51 @@ body .dropdown-item{
 		display: none !important;
 	}
 }
+/* Stepper Form*/
+/* Style the form */
+#regForm {
+    background-color: #ffffff;
+    padding: 40px;
+    min-width: 300px;
+  }
+
+  /* Style the input fields */
+  .input {
+    padding: 10px;
+    width: 100%;
+    font-size: 17px;
+    font-family: Raleway;
+    border: 1px solid #aaaaaa;
+  }
+
+  /* Mark input boxes that gets an error on validation: */
+  input.invalid {
+    background-color: #ffdddd;
+  }
+
+  /* Hide all steps by default: */
+  .tab {
+    display: none;
+  }
+
+  /* Make circles that indicate the steps of the form: */
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+
+  /* Mark the active step: */
+  .step.active {
+    opacity: 1;
+  }
+
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: green;
+  }
