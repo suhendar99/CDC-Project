@@ -1,7 +1,6 @@
 @php
 	$shop = true;
-	$card = [1,1,1,1,1,1,1];
-	$else = 'Jeruk';
+	// $card = [1,1,1,1,1,1,1];
   // $category = array(
   // 	['icon'=>'grass','nama'=>'Pertanian'],
   // 	['icon'=>'grass','nama'=>'Perkebunan'],
@@ -38,7 +37,7 @@
 					<div class="card" style="height: auto;">
 						<div class="card-body d-flex justify-content-center">
 							<center> 
-									<i class="material-icons md-48">{{$c['icon']}}</i><br>
+									<i class="material-icons text-my-primary md-48">{{$c['icon']}}</i><br>
 									<span>{{$c['nama']}}</span>
 							</center>
 						</div>
@@ -112,22 +111,35 @@
 				        </div>
 				    </div>
 					</div> --}}
+					<div class="row mt-2 mb-4">
+						<div class="col-2">
+							<button type="button" class="btn btn-primary btn-sm btn-block valign-center justify-content-center dropdown-toggle"><i class="material-icons p-0">filter_alt</i> Filter</button>
+						</div>
+						<div class="col-10">
+							@include('layouts.dashboard.search')
+						</div>
+					</div>
 					<div class="row" id="product-list">
-						@forelse($card as $c)
+						@forelse($barang as $b)
 						<div class="col-md-3 col-4">
 							<div class="card item-card">
+								@if($b->foto == null)
 								<img src="https://cf.shopee.co.id/file/08744f5b0e1ab3e2d537df5bbf5b2bb4">
+								@else
+								<img src="{{asset($b->foto)}}">
+								@endif
 								<div class="card-body">
 									<div class="row">
 										<div class="col-12">
-											<span class="badge badge-pill badge-danger bg-my-danger">Terlaris</span>
-											<span class="badge badge-pill badge-primary bg-my-primary">Perkebunan</span>
+											<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
+											<span class="badge badge-pill badge-primary bg-my-primary">{{$b->kategori->nama}}</span>
+											<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 										</div>
 										<div class="col-12">
-											<span class="product-name">Beras Super, 1Kg ashdh asadgh asdhgj hsgd gaasd dhgahsdghs dhgaasdgjhaghdjhsdhdshgdhj</span>
+											<span class="product-name">{{$b->nama_barang}}</span>
 										</div>
 										<div class="col-12">
-											<span class="product-price">Rp. 200.000</span>
+											<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}}</span>
 										</div>
 									</div>
 									{{-- <button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>
@@ -139,16 +151,18 @@
 						<div class="col-md-12 d-flex justify-content-center">
 							<center>
 								<span class="oops">Oops!</span>
-								<p class="not-found">Maaf, {{$else}} tidak ada. Mohon Cari Kembali</p>
+								<p class="not-found">Maaf, Barang tidak ditemukan. Mohon Cari Kembali</p>
 							</center>
 						</div>
 						@endforelse
 					</div>
+					@if(count($barang) >= 1)
 					<div class="row my-4">
 						<div class="col-md-12 col-sm-6 d-flex justify-content-center">
 							<button type="button" class="btn btn-outline-primary">Lebih Banyak</button>
 						</div>
 					</div>
+					@endif
 				</div>
 			</div>
 		</div>
