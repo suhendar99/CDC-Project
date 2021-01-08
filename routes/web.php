@@ -80,6 +80,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pelanggan', 'PelangganController');
         // Gudang
         Route::resource('gudang', 'GudangController');
+
+        // Rak
+        Route::resource('gudang/{gudang}/rak', 'RakController');
+
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
     });

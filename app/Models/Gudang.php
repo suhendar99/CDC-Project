@@ -35,4 +35,15 @@ class Gudang extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
     	return $this->hasMany('App\Models\StorageOut');
     }
+
+    /**
+     * Gudang has many Rak.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rak()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
+    	return $this->hasMany('App\Models\Rak');
+    }
 }
