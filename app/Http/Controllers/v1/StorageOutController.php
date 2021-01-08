@@ -91,7 +91,7 @@ class StorageOutController extends Controller
     public function detail($id)
     {
         try {
-            $data = StorageOut::with('barang', 'gudang', 'user.karyawan')->where('id', $id)->first();
+            $data = StorageOut::with('barang', 'gudang', 'user.pengurusGudang')->where('id', $id)->first();
 
             return response()->json([
                 'data' => $data

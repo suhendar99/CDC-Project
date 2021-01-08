@@ -63,7 +63,7 @@
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
                             @endif
-                            @if (isset($admin) && isset($pengurusGudang))
+                            @if (isset($admin) || isset($pengurusGudang))
                             <li class="
                                 {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">

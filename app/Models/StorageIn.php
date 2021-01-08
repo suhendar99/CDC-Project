@@ -46,4 +46,15 @@ class StorageIn extends Model
     	// belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\User');
     }
+
+    /**
+     * StorageIn has many Storage.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storage()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
+    	return $this->hasMany('App\Models\Storage', 'storage_in_kode', 'kode');
+    }
 }
