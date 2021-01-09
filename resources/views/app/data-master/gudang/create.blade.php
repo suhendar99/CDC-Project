@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Kapasitas Gudang(Kg) <small class="text-success">*Harus diisi</small></label>
+                                        <label>Kapasitas Gudang ( &#13217; ) <small class="text-success">*Harus diisi</small></label>
                                         <input type="number" min="1" class="form-control @error('kapasitas') is-invalid @enderror" name="kapasitas" value="{{ old('kapasitas') }}" placeholder="Enter kapasitas">
                                         @error('kapasitas')
                                             <span class="invalid-feedback" role="alert">

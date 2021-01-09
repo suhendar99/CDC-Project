@@ -34,7 +34,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5></h5>
+                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false">Second</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -46,13 +53,24 @@
                 </div>
 
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">Home</div>
+                                <div class="tab-pane fade" id="pills-second" role="tabpanel" aria-labelledby="pills-second-tab">Second</div>
+                            </div>
+                        </div>
+                    </div>
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Kode Storage / Barcode</th>
-                                <th>Nama Gudang</th>
+                                <th>Kode Barang Masuk</th>
                                 <th>Nama Barang</th>
-                                <th>Jumlah Barang Masuk</th>
+                                <th>Jumlah Barang</th>
+                                <th>Nama Gudang</th>
+                                <th>Rak</th>
+                                <th>Tingkatan Rak</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -143,13 +161,13 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('storage-in.index') }}",
+            ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode', name: 'kode'},
+                {data : 'storage_in_kode', name: 'kode'},
                 {
-                    data : 'gudang', render:function(data,a,b,c){
-                        return data.nama;
+                    data : 'storageIn', render:function(data,a,b,c){
+                        return data.jumlah;
                     }
                 },
                 {data : 'barang', render:function(data,a,b,c){
@@ -203,7 +221,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/storage-in/'+id
+            formDelete.action = '/v1/storage/in/'+id
 
             const Toast = Swal.mixin({
             toast: true,

@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('out.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('storage-out.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('out.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('storage-out.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
