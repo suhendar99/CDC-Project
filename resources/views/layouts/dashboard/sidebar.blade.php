@@ -11,6 +11,7 @@
                         @endif
                     </center>
                 </div>
+                {{-- @if(isset($admin)) --}}
                 <ul class="list-unstyled components">
                     <li class="
                         {{ Request::is('v1/dashboard*') ? 'active' : false }}
@@ -36,7 +37,6 @@
                             {{ Request::is('v1/storage/in*') ? 'show' : false }}
                             {{ Request::is('v1/storage/out*') ? 'show' : false }}
                         ">
-                            @if(isset($admin))
                             <li class="
                                 {{ Request::is('v1/user*') ? 'active' : false }}
                             ">
@@ -62,28 +62,37 @@
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
-                            @endif
-                            @if (Auth::user()->pelanggan_id != null)
-                            <li class="
-                            {{ Request::is('v1/barang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('barang.index')}}">Barang</a>
-                            </li>
-                            @endif
                             @if (isset($admin) || isset($pengurusGudang))
                             <li class="
-                                {{ Request::is('v1/storage/in*') ? 'active' : false }}
+                            {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">
-                                <a href="{{ route('in.index') }}">Storage Masuk</a>
+                            <a href="{{ route('in.index') }}">Storage Masuk</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/storage/out*') ? 'active' : false }}
+                            {{ Request::is('v1/storage/out*') ? 'active' : false }}
                             ">
-                                <a href="{{ route('out.index') }}">Storage Keluar</a>
-                            </li>
-                            @endif
+                            <a href="{{ route('out.index') }}">Storage Keluar</a>
+                        </li>
+                        @endif
                         </ul>
                     </li>
+                    {{-- @endif --}}
+                     @if (Auth::user()->pelanggan_id != null)
+                    <li class="
+                        {{ Request::is('v1/barangs*') ? 'active' : false }}
+                    ">
+                        <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
+                        <ul id="dataSubmenu" class="collapse list-unstyled
+                            {{ Request::is('v1/barangs*') ? 'show' : false }}
+                        ">
+                            <li class="
+                            {{ Request::is('v1/barangs*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('get-barang')}}">Barang</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
                     {{-- <li>
                         <a href="#transSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">receipt_long</i>Data Transaksi</a>
                         <ul class="collapse list-unstyled" id="transSubmenu">
