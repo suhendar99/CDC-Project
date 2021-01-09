@@ -1,9 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Edit Akun Karyawan';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 

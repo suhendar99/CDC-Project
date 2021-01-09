@@ -1,9 +1,6 @@
 @php
         $icon = 'receipt_long';
         $pageTitle = 'Penerimaan Barang';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 

@@ -1,9 +1,6 @@
 @php
         $icon = 'settings';
         $pageTitle = 'Pengaturan Aplikasi';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 

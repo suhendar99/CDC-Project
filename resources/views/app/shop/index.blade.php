@@ -1,5 +1,6 @@
 @php
 	$shop = true;
+	$cart = true;
 	// $card = [1,1,1,1,1,1,1];
   // $category = array(
   // 	['icon'=>'grass','nama'=>'Pertanian'],
