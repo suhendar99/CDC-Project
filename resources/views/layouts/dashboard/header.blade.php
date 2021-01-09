@@ -67,7 +67,15 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
-
+    <style type="text/css" media="screen">
+        .dropdown-toggle::after{
+            content: "";
+            border: 0em solid;
+        },
+        .list-group-flush > .list-group-item::last-child{
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+    </style>
 </head>
 <body>
     @if(isset($shop))

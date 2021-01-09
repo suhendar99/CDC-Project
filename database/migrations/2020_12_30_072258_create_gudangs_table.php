@@ -19,12 +19,14 @@ class CreateGudangsTable extends Migration
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
             $table->string('kontak');
+            $table->string('pemilik');
             $table->integer('kapasitas');
             $table->time('jam_buka');
             $table->time('jam_tutup');
             $table->string('hari');
             $table->string('foto')->nullable();
             $table->text('alamat');
+            $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->timestamps();
         });
     }

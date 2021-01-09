@@ -24,4 +24,15 @@ class TingkatanRak extends Model
     	// belongsTo(RelatedModel, foreignKey = rak_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Rak');
     }
+
+    /**
+     * TingkatanRak has many Storage.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storage()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = tingkatanRak_id, localKey = id)
+    	return $this->hasMany('App\Models\Storage', 'tingkat_id');
+    }
 }

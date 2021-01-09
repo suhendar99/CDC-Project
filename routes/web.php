@@ -82,11 +82,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemasok', 'PemasokController');
         // Pembeli
         Route::resource('pelanggan', 'PelangganController');
-        // Gudang
-        Route::resource('gudang', 'GudangController');
-
-        // Rak
-        Route::resource('gudang/{gudang}/rak', 'RakController');
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
@@ -110,7 +105,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['karyawan']], function () {
         // Storage
-        Route::resource('storage/in', 'StorageInController');
-        Route::resource('storage/out', 'StorageOutController');
+        Route::resource('storage', 'StorageController');
+        Route::resource('storage-in', 'StorageInController');
+        Route::resource('storage-out', 'StorageOutController');
+        
+        // Gudang
+        Route::resource('gudang', 'GudangController');
+
+        // Rak
+        Route::resource('gudang/{gudang}/rak', 'RakController');
     });
 });

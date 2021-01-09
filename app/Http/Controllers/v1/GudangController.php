@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Provinsi;
 
 class GudangController extends Controller
 {
@@ -30,11 +31,13 @@ class GudangController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="/v1/gudang/'.$data->id.'/rak" class="btn btn-secondary btn-sm">Rak</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
-        return view($this->path.'index');
+        $data = Gudang::all();
+
+        return view($this->path.'index', compact('data'));
     }
 
     /**
@@ -44,7 +47,8 @@ class GudangController extends Controller
      */
     public function create()
     {
-        return view($this->path.'create');
+        $provinsi = Provinsi::all();
+        return view($this->path.'create', compact('provinsi'));
     }
 
     /**
@@ -55,6 +59,7 @@ class GudangController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $v = Validator::make($request->all(),[
             'lat' => 'required',
             'long' => 'required',
@@ -65,6 +70,8 @@ class GudangController extends Controller
             'jam_tutup' => 'required|',
             'alamat' => 'required|string|max:200',
             'kapasitas' => 'required|numeric',
+            'desa_id' => 'required',
+            'pemilik' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($v->fails()) {
@@ -74,12 +81,12 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari'),[
+                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto
                 ]));
 
             } else {
-                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari')));
+                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik')));
             }
         }
         return back()->with('success',$this->alert.'Disimpan !');
@@ -109,7 +116,8 @@ class GudangController extends Controller
     public function edit($id)
     {
         $data = Gudang::find($id);
-        return view($this->path.'edit',compact('data'));
+        $provinsi = Provinsi::all();
+        return view($this->path.'edit',compact('data', 'provinsi'));
     }
 
     /**
@@ -131,6 +139,8 @@ class GudangController extends Controller
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
             'hari' => 'required|',
+            'desa_id' => 'required|exists:desas,id',
+            'pemilik' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
         if ($v->fails()) {
@@ -142,12 +152,12 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari'),[
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto
                 ]));
 
             } else {
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari')));
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari','desa_id','pemilik')));
             }
         }
         return back()->with('success',$this->alert.'Diedit !');

@@ -25,7 +25,7 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -41,21 +41,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Gudang</th>
-                                <th>Alamat</th>
-                                <th>Kontak</th>
-                                <th>Hari Buka</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
             </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                @foreach($data as $gudang)
+                <div class="col-4">
+                    <div class="card">
+                        <img src="{{ asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="float-left">
+                                        <h5>{{ $gudang->nama }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="float-right">
+                                        <div class="dropdown">
+                                            <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu" aria-labelledby="dropmenu">
+                                                <a href="{{ route('gudang.edit', $gudang->id) }}" class="dropdown-item">Edit</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $gudang->id }})" data-id="{{ $gudang->id }}">Detail</a>
+                                                <a href="{{ route('rak.index', $gudang->id) }}" class="dropdown-item">Rak Gudang</a>
+                                                <a href="#" class="dropdown-item" onclick="sweet({{ $gudang->id }})">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Hari Kerja: {{ $gudang->hari }}</li>
+                            <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
+                        </ul>
+                        <div class="card-body" style="border-bottom: 5px solid #ffa723;">
+                            <h6>Alamat</h5>
+                            <p class="card-text">{{ $gudang->alamat }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            
         </div>
     </div>
 </div>
@@ -130,28 +158,29 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
-    let table = $('#data_table').DataTable({
-            processing : true,
-            serverSide : true,
-            responsive: true,
-            ordering : false,
-            pageLength : 10,
-            ajax : "{{ route('gudang.index') }}",
-            columns : [
-                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama', name: 'nama'},
-                {data : 'alamat', render:function(data,a,b,c){
-                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
-                    }
-                },
-                {data : 'kontak', render:function(data,a,b,c){
-                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
-                    }
-                },
-                {data : 'hari', name: 'hari'},
-                {data : 'action', name: 'action'}
-            ]
-        });
+    // let table = $('#data_table').DataTable({
+    //         processing : true,
+    //         serverSide : true,
+    //         responsive: true,
+    //         ordering : false,
+    //         pageLength : 10,
+    //         ajax : "{{-- route('gudang.index') --}}",
+    //         columns : [
+    //             {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+    //             {data : 'nama', name: 'nama'},
+    //             {data : 'alamat', render:function(data,a,b,c){
+    //                     return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+    //                 }
+    //             },
+    //             {data : 'kontak', render:function(data,a,b,c){
+    //                     return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
+    //                 }
+    //             },
+    //             {data : 'hari', name: 'hari'},
+    //             {data : 'action', name: 'action'}
+    //         ]
+    //     });
+
         function detail(id){
             $('#foto').text("Mendapatkan Data.......")
             $('.nama').text("Mendapatkan Data.......")
@@ -178,7 +207,7 @@
                             $('.hari').text(b.hari)
                             $('.buka').text(b.jam_buka)
                             $('.tutup').text(b.jam_tutup)
-                            $('.kapasitas').text(b.kapasitas+'Kg')
+                            $('.kapasitas').text(b.kapasitas+' \u33A1')
                         if (b.foto == null) {
                             $("#foto").text('- Tidak Ada Foto Barang -');
                         }else{
