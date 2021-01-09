@@ -70,6 +70,45 @@
     @csrf
     @method('DELETE')
 </form>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detail Data Gudang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-md-12 mb-3">
+                  <h3 id="nama"></h3>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center">
+                <span>Foto Barang</span><br>
+                <div id="foto" class="my-4"></div>
+            </div>
+              <div class="col-12">
+                  <table class="table">
+                      <tbody>
+                        <tr>
+                            <th scope="row">Nama Gudang</th>
+                            <td class="nama"></td>
+                        </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @endsection
 @push('script')
 {{-- Chart Section --}}
@@ -92,14 +131,7 @@
                         return (data == null || data == "") ? "Kosong !" : data;
                     }
                 },
-                {data : 'foto', render: function (data, type, full, meta) {
-                        if(data == null){
-                            return "Foto Tidak Ada !"
-                        }else{
-                            return "<img src=\"{{ asset('') }}" + data + "\" height=\"50px\"width=\"50px\">";
-                        }
-                    }
-                },
+                {data : 'foto', name: 'foto'},
                 {data : 'action', name: 'action'},
             ]
         });

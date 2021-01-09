@@ -19,14 +19,17 @@
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     @if (isset($pemasok))
-                        <li>
+                        <li class="{{ Request::is('v1/kategoriBarang*') ? 'active' : false }}">
                             <a href="{{route('kategoriBarang.index')}}" class="valign-center {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}"><i class="material-icons">shopping_cart</i>Kategori Induk</a>
                         </li>
+                        <li class="{{ Request::is('v1/barang*') ? 'active' : false }}">
+                            <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
+                        </li>
                     @endif
+                    @if (isset($admin) || isset($pengurusGudang))
                     <li class="
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
-                        {{ Request::is('v1/barang*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
                         {{ Request::is('v1/storage/in*') ? 'active' : false }}
@@ -36,7 +39,6 @@
                         <ul id="dataSubmenu" class="collapse list-unstyled
                             {{ Request::is('v1/user*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
-                            {{ Request::is('v1/barang*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/gudang*') ? 'show' : false }}
                             {{ Request::is('v1/storage/in*') ? 'show' : false }}
@@ -53,11 +55,6 @@
                                 <a href="{{route('pemasok.index')}}">Pemasok</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/barang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('barang.index')}}">Barang</a>
-                            </li>
-                            <li class="
                                 {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                             ">
                                 <a href="{{route('pelanggan.index')}}">Pembeli</a>
@@ -67,7 +64,6 @@
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
-                            @if (isset($admin) || isset($pengurusGudang))
                             <li class="
                             {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">

@@ -20,7 +20,7 @@ class ShopController extends Controller
 	}
 	public function index()
 	{
-		$category = $this->category->getAll();
+		$category = $this->category->getData();
 		$barang = $this->barang->limit(20)->get();
 		// dd($category);
 		return view('app.shop.index', compact('category','barang'));

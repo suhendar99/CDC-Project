@@ -63,28 +63,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <span class="font-weight-bold">Pilih Kota dan Provinsi Untuk Ongkir</span>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="font-weight">Provinsi</label>
-                                        <select class="form-control provinsi-asal" name="province_origin">
-                                            <option value="0">-- pilih provinsi asal --</option>
-                                            @foreach ($provinces as $province => $value)
-                                                <option value="{{ $province  }}">{{ $value }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="font-weight">Kota / Kabupaten</label>
-                                        <select class="form-control kota-asal" name="city_origin">
-                                            <option value="">-- pilih kota asal --</option>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
@@ -110,7 +88,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Total harga <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="hasil" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ old('harga_total') }}" placeholder="Enter total harga barang">
+                                        <input type="number" min="0" id="hasil" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ old('harga_total') }}" placeholder="Total harga barang" readonly>
                                         @error('harga_total')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -147,19 +125,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Berat(GRAM) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('berat') is-invalid @enderror" name="berat" value="{{ old('berat') }}" placeholder="Enter berat">
-                                        @error('berat')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Foto Barang <small class="text-success">*Boleh Tidak diisi</small></label>
-                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}" placeholder="Enter foto">
+                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Enter foto" multiple>
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -186,44 +153,16 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
-    $(document).ready(function(){
-        //active select2
-        // $(".provinsi-asal , .kota-asal, .provinsi-tujuan, .kota-tujuan").select2({
-        //     theme:'bootstrap4',width:'style',
-        // });
-        //ajax select kota asal
-        $('select[name="province_origin"]').on('change', function () {
-            let provindeId = $(this).val();
-            $('#provinceVal').val(provindeId);
-            if (provindeId) {
-                jQuery.ajax({
-                    url: '/v1/getKota/'+provindeId,
-                    type: "GET",
-                    dataType: "json",
-                    success: function (response) {
-                        console.log(response);
-                        $('select[name="city_origin"]').empty();
-                        $('select[name="city_origin"]').append('<option value="'+response.id+'">-- pilih kota asal --</option>');
-                        $.each(response, function (key, value) {
-                            $('select[name="city_origin"]').append('<option value="' + key + '">' + value + '</option>');
-                        });
-                    },
-                });
-            } else {
-                $('select[name="city_origin"]').append('<option value="">-- pilih kota asal --</option>');
-            }
-        });
-        function inputed(){
-            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
-        }
-        $('#jumlah').on('keyup',(value) => {
-            console.log()
-            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
-        })
-        $('#satuan').on('keyup',(value) => {
-            console.log()
-            $('#hasil').val($('#jumlah').val() * $('#satuan').val())
-        })
+    function inputed(){
+        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+    }
+    $('#jumlah').on('keyup',(value) => {
+        console.log()
+        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+    })
+    $('#satuan').on('keyup',(value) => {
+        console.log()
+        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
     })
 </script>
 {{--  --}}
