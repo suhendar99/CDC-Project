@@ -31,14 +31,11 @@ class BarangSeeder extends Seeder
     			$data[] = [
     				'pemasok_id' => $p->id,
     				'kategori_id' => $kat[array_rand($kat)],
-    				'city_id' => $c->city_id,
-    				'province_id' => $c->province_id,
     				'kode_barang' => $faker->unique()->ean13,
     				'nama_barang' => $faker->text($maxNbChars = 20),
     				'jumlah' => $jumlah,
     				'harga_barang' => $harga,
     				'harga_total' => $harga * $jumlah,
-    				'berat' => 1,
     				'satuan' => 'Kg'
     			];
 			}
