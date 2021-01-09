@@ -18,6 +18,7 @@ Route::group(['namespace' => 'v1'], function () {
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');
+    Route::post('searchBarang', 'SearchController@barang')->name('search.barang');
 });
 
 Route::get('test', function () {
