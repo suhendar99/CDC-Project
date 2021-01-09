@@ -25,25 +25,43 @@
                         <li class="{{ Request::is('v1/barang*') ? 'active' : false }}">
                             <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
                         </li>
+                        <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
+                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
+                        </li>
+                        <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
+                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>
+                        </li>
                     @endif
-                    @if (isset($admin) || isset($pengurusGudang))
+                    @if (isset($admin) && isset($pengurusGudang))
                     <li class="
+                        @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
+                        @endif
+                        @if (isset($pengurusGudang))
                         {{ Request::is('v1/storage/in*') ? 'active' : false }}
                         {{ Request::is('v1/storage/out*') ? 'active' : false }}
+                        @endif
                     ">
+                        @if (isset($admin) && isset($pengurusGudang))
                         <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
                         <ul id="dataSubmenu" class="collapse list-unstyled
-                            {{ Request::is('v1/user*') ? 'show' : false }}
-                            {{ Request::is('v1/pemasok*') ? 'show' : false }}
-                            {{ Request::is('v1/pelanggan*') ? 'show' : false }}
-                            {{ Request::is('v1/gudang*') ? 'show' : false }}
-                            {{ Request::is('v1/storage/in*') ? 'show' : false }}
-                            {{ Request::is('v1/storage/out*') ? 'show' : false }}
+                        @if (isset($admin))
+                        {{ Request::is('v1/user*') ? 'show' : false }}
+                        {{ Request::is('v1/pemasok*') ? 'show' : false }}
+                        {{ Request::is('v1/pelanggan*') ? 'show' : false }}
+                        {{ Request::is('v1/gudang*') ? 'show' : false }}
+                        @endif
+                        @if (isset($pengurusGudang))
+                        {{ Request::is('v1/storage/in*') ? 'show' : false }}
+                        {{ Request::is('v1/storage/out*') ? 'show' : false }}
+                        @endif
                         ">
+                        @endif
+                        {{-- {{dd($admin)}} --}}
+                            @if(isset($admin))
                             <li class="
                                 {{ Request::is('v1/user*') ? 'active' : false }}
                             ">
@@ -64,6 +82,9 @@
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
+                            @endif
+
+                            @if (isset($pengurusGudang))
                             <li class="
                             {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">
@@ -73,10 +94,11 @@
                             {{ Request::is('v1/storage/out*') ? 'active' : false }}
                             ">
                             <a href="{{ route('out.index') }}">Storage Keluar</a>
-                        </li>
-                        @endif
+                            </li>
+                            @endif
                         </ul>
                     </li>
+                    @endif
                     {{-- @endif --}}
                      @if (Auth::user()->pelanggan_id != null)
                     <li class="
@@ -143,9 +165,11 @@
                     {{-- <li>
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li> --}}
+                    @if (isset($admin))
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>
+                    @endif
                 </ul>
             </div>
         </nav>

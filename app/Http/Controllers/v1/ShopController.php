@@ -17,13 +17,14 @@ class ShopController extends Controller
 		$this->barang = new Barang;
 		$this->province = new Province;
 		$this->city = new City;
+		$this->shopPath = 'app.shop.';
 	}
 	public function index()
 	{
 		$category = $this->category->getData();
 		$barang = $this->barang->limit(20)->get();
 		// dd($category);
-		return view('app.shop.index', compact('category','barang'));
+		return view($this->shopPath.'index', compact('category','barang'));
 	}
 
 	public function detail($id)
@@ -31,7 +32,7 @@ class ShopController extends Controller
 		$data = $this->barang->find($id);
 		$provinces = $this->province->pluck('name','province_id');
 		// dd($barang);
-		return view('app.shop.detail', compact('data','provinces'));
+		return view($this->shopPath.'detail', compact('data','provinces'));
 	}
 
 	public function getCities($id)

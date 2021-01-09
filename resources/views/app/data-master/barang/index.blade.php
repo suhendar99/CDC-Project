@@ -1,8 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Data Barang';
-        $dashboard = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 

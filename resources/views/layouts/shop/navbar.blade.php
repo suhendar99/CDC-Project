@@ -3,7 +3,7 @@
 		<button type="button" id="categoryCollapse" class="btn btn-sm btn-transparent mr-auto">
         <i class="material-icons md-24 text-my-primary">dehaze</i>
     </button>
-		<a class="navbar-brand pl-2" href="#">
+		<a class="navbar-brand pl-2" href="/">
 	    <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt=""> 
 	    <b class="text-24 text-my-primary">Shop</b>
 	  </a>

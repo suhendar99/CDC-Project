@@ -1,9 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Data Pembeli';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
