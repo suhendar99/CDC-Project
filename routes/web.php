@@ -13,9 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // return view('auth.login');
-    return view('app.shop.index');
+Route::group(['namespace' => 'v1'], function () {
+    Route::get('/', 'ShopController@index')->name('shop');
+    Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
+    Route::get('citiesShop/{id}', 'ShopController@getCities');
+    Route::post('ongkirShop', 'PembelianController@check_ongkir');
+});
+
+Route::get('test', function () {
+    return view('app.transaksi.pembelian-barang.pelanggan.stepper');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');
@@ -61,7 +67,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::resource('penerimaan', 'PenerimaanController');
     // Pembelian Barang
     Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
-    // Route::resource('pembelian', 'PembelianController');
+    Route::post('/ongkir', 'PembelianController@check_ongkir');
+    Route::get('/cities/{id}', 'PembelianController@getCities');
+    // Route::post('pembelian/store/{id}', 'PembelianController@store')->name('pembelian.store');
+    Route::resource('pembelian', 'PembelianController');
 
     Route::group(['middleware' => ['admin']], function () {
         // User
@@ -78,10 +87,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
+        Route::resource('barang', 'BarangController');
+        Route::resource('kategoriBarang', 'KategoriBarangController');
     });
-    Route::resource('barang', 'BarangController');
+    Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
-
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli

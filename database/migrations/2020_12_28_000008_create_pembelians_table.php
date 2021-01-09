@@ -20,10 +20,13 @@ class CreatePembeliansTable extends Migration
             $table->date('tanggal_pembelian');
             $table->date('tanggal_penerimaan')->nullable();
             $table->boolean('status_pengiriman')->nullable();
+            $table->string('kurir')->nullable();
+            $table->integer('total_harga')->nullable();
+            $table->text('alamat')->nullable();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('barang_id')->nullable()->constrained('barangs')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
-            $table->foreignId('city_id')->nullable()->constrained('kabupatens')->onDelete('set null');
+            $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('set null');
             $table->foreignId('province_id')->nullable()->constrained('provinsis')->onDelete('set null');
             $table->timestamps();
         });

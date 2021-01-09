@@ -1,9 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Data Storage Masuk';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 

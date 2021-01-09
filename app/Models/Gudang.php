@@ -46,4 +46,15 @@ class Gudang extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
     	return $this->hasMany('App\Models\Rak');
     }
+
+    /**
+     * Gudang belongs to Desa.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function desa()
+    {
+    	// belongsTo(RelatedModel, foreignKey = desa_id, keyOnRelatedModel = id)
+    	return $this->belongsTo('App\Models\Desa');
+    }
 }

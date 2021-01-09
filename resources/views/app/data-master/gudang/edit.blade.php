@@ -1,9 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Edit Data Gudang';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -65,9 +62,9 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <label>Latitude <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" id="latitude" class="form-control @error('lat') is-invalid @enderror" name="lat" value="{{ $data->lat }}" placeholder="Enter Latitude">
                                                 @error('lat')
@@ -76,11 +73,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label>Longitude <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" id="longitude" class="form-control @error('long') is-invalid @enderror" name="long" value="{{ $data->long }}" placeholder="Enter Longitude">
                                                 @error('long')
@@ -89,13 +82,13 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <label>Nama Gudang <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $data->nama }}" placeholder="Enter Nama">
                                                 @error('nama')
@@ -104,11 +97,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label>Kontak <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" class="form-control @error('kontak') is-invalid @enderror" name="kontak" value="{{ $data->kontak }}" placeholder="Enter kontak">
                                                 @error('kontak')
@@ -121,9 +110,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <label>Foto <small class="text-success">*Boleh tidak  diisi</small></label>
                                                 <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $data->foto }}" placeholder="Enter foto">
                                                 @error('foto')
@@ -132,11 +121,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                            <div class="form-group col-md-6">
                                                 <label>Hari Kerja <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" value="{{ $data->hari }}" placeholder="Enter hari">
                                                 @error('hari')
@@ -149,9 +134,75 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="provinsi-select">Provinsi</label>
+                                                <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    @foreach($provinsi as $p)
+                                                    <option value="{{$p->id}}" @if($p->id == $data->desa->kecamatan->kabupaten->provinsi_id) selected @endif>{{$p->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('provinsi_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="kabupaten-select">Kabupaten</label>
+                                                <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    <option value="{{ $data->desa->kecamatan->kabupaten_id }}" selected>{{ $data->desa->kecamatan->kabupaten->nama }}</option>}
+                                                </select>
+                                                @error('kabupaten_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="kecamatan-select">Kecamatan</label>
+                                                <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    <option value="{{ $data->desa->kecamatan_id }}" selected>{{ $data->desa->kecamatan->nama }}</option>}
+                                                </select>
+                                                @error('kecamatan_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="desa-select">Desa</label>
+                                                <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    <option value="{{ $data->desa_id }}" selected>{{ $data->desa->nama }}</option>}
+                                                </select>
+                                                @error('desa_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <label>Jam Buka <small class="text-success">*Harus diisi</small></label>
                                                 <input type="time" class="form-control @error('jam_buka') is-invalid @enderror" name="jam_buka" value="{{ $data->jam_buka }}" placeholder="Enter jam buka">
                                                 @error('jam_buka')
@@ -160,11 +211,7 @@
                                                     </span>
                                                 @enderror
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <label>Jam Tutup <small class="text-success">*Harus diisi</small></label>
                                                 <input type="time" class="form-control @error('jam_tutup') is-invalid @enderror" name="jam_tutup" value="{{ $data->jam_tutup }}" placeholder="Enter jam tutup">
                                                 @error('jam_tutup')
@@ -176,35 +223,46 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <label>Kapasitas Gudang(Kg) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="1" class="form-control @error('kapasitas') is-invalid @enderror" name="kapasitas" value="{{ $data->kapasitas }}" placeholder="Enter kapasitas">
-                                        @error('kapasitas')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>Kapasitas Gudang ( &#13217; ) <small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('kapasitas') is-invalid @enderror" name="kapasitas" value="{{ $data->kapasitas }}" placeholder="Enter kapasitas">
+                                                @error('kapasitas')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ $data->pemilik }}" placeholder="Enter pemilik">
+                                                @error('pemilik')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label>Alamat <small class="text-success">*Harus diisi</small></label>
+                                    <textarea name="alamat" id="" cols="30" rows="10" class="form-control @error('alamat') is-invalid @enderror">{{$data->alamat}}</textarea>
+                                    @error('alamat')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <label>Alamat <small class="text-success">*Harus diisi</small></label>
-                                        <textarea name="alamat" id="" cols="30" rows="10" class="form-control @error('alamat') is-invalid @enderror">{{$data->alamat}}</textarea>
-                                        @error('alamat')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                      <div class="col-md-12">
                                         <div class="float-right">
                                             <button type="submit" class="btn btn-success btn-sm">Simpan</button>
                                         </div>
-                                      </div>
-                                  </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -289,6 +347,89 @@
     };
     navigator.geolocation.getCurrentPosition(success, error, getPosition);
     };
+
+    $('#provinsi-select').change(function() {
+            var valueProv = $('#provinsi-select').val();
+            console.log('Provinsi Id : '+valueProv);
+            getKabupaten(valueProv);
+        });
+        $('#kabupaten-select').change(function() {
+            var valueKab = $('#kabupaten-select').val();
+            console.log('Kabupaten Id : '+valueKab);
+            getKecamatan(valueKab);
+        });
+        $('#kecamatan-select').change(function() {
+            var valueKec = $('#kecamatan-select').val();
+            console.log('Kecamatan Id : '+valueKec);
+            getDesa(valueKec);
+        });
+        $('#desa-select').change(function() {
+            var valueDesa = $('#desa-select').val();
+            console.log('Desa Id : '+valueDesa);
+        });
+        function getKabupaten(id) {
+            $.ajax({
+              url: '/api/v1/getKabupaten/'+id,
+              type: 'GET',
+              cache: false,
+              dataType: 'json',
+              success: function(json) {
+                // alert(json.data);
+                // console.log(json.data);
+                  $("#kabupaten-select").html('');
+                  if (json.code == 200) {
+                      for (i = 0; i < Object.keys(json.data).length; i++) {
+                          // console.log(json.data[i].nama);
+                          $('#kabupaten-select').append($('<option>').text(json.data[i].nama).attr('value', json.data[i].id));
+                      }
+                  } else {
+                      $('#kabupaten-select').append($('<option>').text('Data tidak di temukan').attr('value', 'Data tidak di temukan'));
+                  }
+              }
+            });
+        }
+        function getKecamatan(id) {
+            $.ajax({
+              url: '/api/v1/getKecamatan/'+id,
+              type: 'GET',
+              cache: false,
+              dataType: 'json',
+              success: function(json) {
+                // alert(json.data);
+                // console.log(json.data);
+                  $("#kecamatan-select").html('');
+                  if (json.code == 200) {
+                      for (i = 0; i < Object.keys(json.data).length; i++) {
+                          // console.log(json.data[i].nama);
+                          $('#kecamatan-select').append($('<option>').text(json.data[i].nama).attr('value', json.data[i].id));
+                      }
+                  } else {
+                      $('#kecamatan-select').append($('<option>').text('Data tidak di temukan').attr('value', 'Data tidak di temukan'));
+                  }
+              }
+            });
+        }
+        function getDesa(id) {
+            $.ajax({
+              url: '/api/v1/getDesa/'+id,
+              type: 'GET',
+              cache: false,
+              dataType: 'json',
+              success: function(json) {
+                // alert(json.data);
+                // console.log(json.data);
+                  $("#desa-select").html('');
+                  if (json.code == 200) {
+                      for (i = 0; i < Object.keys(json.data).length; i++) {
+                          // console.log(json.data[i].nama);
+                          $('#desa-select').append($('<option>').text(json.data[i].nama).attr('value', json.data[i].id));
+                      }
+                  } else {
+                      $('#desa-select').append($('<option>').text('Data tidak di temukan').attr('value', 'Data tidak di temukan'));
+                  }
+              }
+            });
+        }
 </script>
 {{--  --}}
 @endpush

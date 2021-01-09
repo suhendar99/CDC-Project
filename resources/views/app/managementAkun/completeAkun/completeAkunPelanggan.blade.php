@@ -1,8 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Pengisian Data Diri';
-        $dashboard = true;
-        $admin = true;
         $nosidebar = true;
 @endphp
 @extends('layouts.dashboard.header')

@@ -1,9 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Tambah Data Barang';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -51,6 +48,7 @@
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('barang.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                {{-- <input type="hidden" name="provinces_origin" id="provinceVal" value=""> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
@@ -60,6 +58,28 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <span class="font-weight-bold">Pilih Kota dan Provinsi Untuk Ongkir</span>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="font-weight">Provinsi</label>
+                                        <select class="form-control provinsi-asal" name="province_origin">
+                                            <option value="0">-- pilih provinsi asal --</option>
+                                            @foreach ($provinces as $province => $value)
+                                                <option value="{{ $province  }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="font-weight">Kota / Kabupaten</label>
+                                        <select class="form-control kota-asal" name="city_origin">
+                                            <option value="">-- pilih kota asal --</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -98,13 +118,13 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Kategori Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="kategori_id" id="" class="form-control">
+                                        <select name="kategori_id" id="" class="form-control @error('kategori_id') is-invalid @enderror">
                                             <option value="0">--Pilih Kategori--</option>
                                             @foreach ($kategori as $item)
                                                 <option value="{{$item->id}}" {{ old('kategori_id') == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
                                             @endforeach
                                         </select>
-                                        @error('harga_barang')
+                                        @error('kategori_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -116,6 +136,17 @@
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan') }}" placeholder="Enter satuan">
                                         @error('satuan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Berat(GRAM) <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('berat') is-invalid @enderror" name="berat" value="{{ old('berat') }}" placeholder="Enter berat">
+                                        @error('berat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -152,6 +183,33 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+    $(document).ready(function(){
+        //active select2
+        // $(".provinsi-asal , .kota-asal, .provinsi-tujuan, .kota-tujuan").select2({
+        //     theme:'bootstrap4',width:'style',
+        // });
+        //ajax select kota asal
+        $('select[name="province_origin"]').on('change', function () {
+            let provindeId = $(this).val();
+            $('#provinceVal').val(provindeId);
+            if (provindeId) {
+                jQuery.ajax({
+                    url: '/v1/getKota/'+provindeId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        $('select[name="city_origin"]').empty();
+                        $('select[name="city_origin"]').append('<option value="'+response.id+'">-- pilih kota asal --</option>');
+                        $.each(response, function (key, value) {
+                            $('select[name="city_origin"]').append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    },
+                });
+            } else {
+                $('select[name="city_origin"]').append('<option value="">-- pilih kota asal --</option>');
+            }
+        });
         function inputed(){
             $('#hasil').val($('#jumlah').val() * $('#satuan').val())
         }
@@ -163,6 +221,7 @@
             console.log()
             $('#hasil').val($('#jumlah').val() * $('#satuan').val())
         })
+    })
 </script>
 {{--  --}}
 @endpush

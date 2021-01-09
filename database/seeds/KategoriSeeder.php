@@ -21,6 +21,16 @@ class KategoriSeeder extends Seeder
             ['nama' => 'Bahan Pangan'],
             ['nama' => 'Produk Kecantikan'],
         );
-        \DB::table('kategoris')->insert($value);
+        $category = array(
+          ['icon'=>'grass','nama'=>'Pertanian'],
+          ['icon'=>'grass','nama'=>'Perkebunan'],
+          ['icon'=>'set_meal','nama'=>'Perikanan'],
+          ['icon'=>'flutter_dash','nama'=>'Peternakan'],
+          ['icon'=>'bento','nama'=>'Makanan Kaleng'],
+          ['icon'=>'kitchen','nama'=>'Makanan Beku'],
+          ['icon'=>'free_breakfast','nama'=>'Minuman'],
+          ['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
+        );
+        \DB::table('kategoris')->insert($category);
     }
 }

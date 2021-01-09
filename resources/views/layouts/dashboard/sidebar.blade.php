@@ -11,12 +11,18 @@
                         @endif
                     </center>
                 </div>
+                {{-- @if(isset($admin)) --}}
                 <ul class="list-unstyled components">
                     <li class="
                         {{ Request::is('v1/dashboard*') ? 'active' : false }}
                     ">
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
+                    @if (isset($pemasok))
+                        <li>
+                            <a href="{{route('kategoriBarang.index')}}" class="valign-center {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}"><i class="material-icons">shopping_cart</i>Kategori Induk</a>
+                        </li>
+                    @endif
                     <li class="
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
@@ -36,6 +42,7 @@
                             {{ Request::is('v1/storage-in*') ? 'show' : false }}
                             {{ Request::is('v1/storage-out*') ? 'show' : false }}
                         ">
+                        {{-- {{dd($admin)}} --}}
                             @if(isset($admin))
                             <li class="
                                 {{ Request::is('v1/user*') ? 'active' : false }}
@@ -48,27 +55,28 @@
                                 <a href="{{route('pemasok.index')}}">Pemasok</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/barang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('barang.index')}}">Barang</a>
-                            </li>
-                            <li class="
                                 {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                             ">
                                 <a href="{{route('pelanggan.index')}}">Pembeli</a>
                             </li>
+                            @endif
+                            @if(isset($pemasok))
+                            <li class="
+                                {{ Request::is('v1/barang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('barang.index')}}">Barang</a>
+                            </li>
+                            @endif
+                            @if (isset($pengurusGudang))
                             <li class="
                                 {{ Request::is('v1/gudang*') ? 'active' : false }}
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
-                            @endif
-                            @if (isset($pengurusGudang))
                             <li class="
                                 {{ Request::is('v1/storage-in*') ? 'active' : false }}
                             ">
                                 <a href="{{ route('storage-in.index') }}">Storage Masuk</a>
-                            </li>
                             <li class="
                                 {{ Request::is('v1/storage-out*') ? 'active' : false }}
                             ">
@@ -77,6 +85,23 @@
                             @endif
                         </ul>
                     </li>
+                    {{-- @endif --}}
+                     @if (Auth::user()->pelanggan_id != null)
+                    <li class="
+                        {{ Request::is('v1/barangs*') ? 'active' : false }}
+                    ">
+                        <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
+                        <ul id="dataSubmenu" class="collapse list-unstyled
+                            {{ Request::is('v1/barangs*') ? 'show' : false }}
+                        ">
+                            <li class="
+                            {{ Request::is('v1/barangs*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('get-barang')}}">Barang</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
                     {{-- <li>
                         <a href="#transSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">receipt_long</i>Data Transaksi</a>
                         <ul class="collapse list-unstyled" id="transSubmenu">

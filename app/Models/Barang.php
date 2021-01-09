@@ -49,4 +49,17 @@ class Barang extends Model
     {
         return $this->hasMany('App\Models\Penerimaan');
     }
+    public function province()
+    {
+        return $this->belongsTo('App\Province','province_id','id');
+    }
+    public function city()
+    {
+        return $this->belongsTo('App\City','city_id','id');
+    }
+
+    public function foto()
+    {
+        return $this->hasMany('App\Models\FotoBarang');
+    }
 }

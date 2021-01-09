@@ -19,6 +19,7 @@ class CreateGudangsTable extends Migration
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
             $table->string('kontak');
+            $table->string('pemilik');
             $table->integer('kapasitas');
             $table->time('jam_buka');
             $table->time('jam_tutup');
@@ -26,9 +27,6 @@ class CreateGudangsTable extends Migration
             $table->string('foto')->nullable();
             $table->text('alamat');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
-            $table->foreignId('kecamatan_id')->nullable()->constrained('kecamatans')->onDelete('set null');
-            $table->foreignId('kabupaten_id')->nullable()->constrained('kabupatens')->onDelete('set null');
-            $table->foreignId('provinsi_id')->nullable()->constrained('provinsis')->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -1,9 +1,6 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Edit Data Barang';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -74,6 +71,28 @@
                                         @enderror
                                     </div>
                                 </div>
+                                {{-- <div class="col-md-12">
+                                    <span class="font-weight-bold">Pilih Kota dan Provinsi</span>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="font-weight">Provinsi</label>
+                                        <select class="form-control provinsi-asal" name="province_origin">
+                                            <option value="0">-- pilih provinsi asal --</option>
+                                            @foreach ($provinces as $province => $value)
+                                                <option value="{{ $province  }}" {{ $data->province_id == $province ? 'selected' : ''}}>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="font-weight">Kota / Kabupaten</label>
+                                        <select class="form-control kota-asal" name="city_origin">
+                                            <option value="">-- pilih kota asal --</option>
+                                        </select>
+                                    </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
@@ -116,7 +135,7 @@
                                                 <option value="{{$item->id}}" {{ $data->kategori_id == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
                                             @endforeach
                                         </select>
-                                        @error('harga_barang')
+                                        @error('kategori_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -128,6 +147,17 @@
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ $data->satuan }}" placeholder="Enter satuan">
                                         @error('satuan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Berat(GRAM) <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('berat') is-invalid @enderror" name="berat" value="{{ $data->berat }}" placeholder="Enter berat">
+                                        @error('berat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
