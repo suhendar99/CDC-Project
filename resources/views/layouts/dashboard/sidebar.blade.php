@@ -44,6 +44,8 @@
                             {{ Request::is('v1/storage/in*') ? 'show' : false }}
                             {{ Request::is('v1/storage/out*') ? 'show' : false }}
                         ">
+                        {{-- {{dd($admin)}} --}}
+                            @if(isset($admin))
                             <li class="
                                 {{ Request::is('v1/user*') ? 'active' : false }}
                             ">
@@ -64,6 +66,17 @@
                             ">
                                 <a href="{{route('gudang.index')}}">Gudang</a>
                             </li>
+                            @endif
+
+                            @if(isset($pemasok))
+                            <li class="
+                                {{ Request::is('v1/barang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('barang.index')}}">Barang</a>
+                            </li>
+                            @endif
+
+                            @if (isset($pengurusGudang))
                             <li class="
                             {{ Request::is('v1/storage/in*') ? 'active' : false }}
                             ">

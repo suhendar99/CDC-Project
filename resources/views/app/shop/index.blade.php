@@ -1,5 +1,7 @@
 @php
 	$shop = true;
+	$cart = true;
+	$nomore = true;
 	// $card = [1,1,1,1,1,1,1];
   // $category = array(
   // 	['icon'=>'grass','nama'=>'Pertanian'],
@@ -29,14 +31,14 @@
 					  <div class="carousel-inner">
 					    <div class="carousel-item active">
 					      <img class="d-block w-100" src="https://shop.redq.now.sh/_next/static/images/grocery-banner-img-one-f61643072d29ecf1481c657015b69ea3.jpg" alt="First slide">
-						  {{-- <div class="carousel-caption d-none d-md-block bg-my-success">
+						  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 						    <h5>First slide</h5>
 						    <p>First slide subtitle</p>
 						  </div> --}}
 					    </div>
 					    <div class="carousel-item">
 					      <img class="d-block w-100" src="https://shop.redq.now.sh/_next/static/images/grocery-banner-img-two-02f262ef03102cd4eaeea8ef517e4a16.jpg" alt="Second slide">
-						  {{-- <div class="carousel-caption d-none d-md-block bg-my-success">
+						  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 						    <h5>Second slide</h5>
 						    <p>Second slide subtitle</p>
 						  </div> --}}
@@ -78,10 +80,10 @@
 		    </div>
 			</div> --}}
 			<div class="row mt-2 mb-4">
-				<div class="col-2">
-					<button type="button" class="btn btn-primary btn-sm btn-block valign-center justify-content-center dropdown-toggle"><i class="material-icons p-0">filter_alt</i> Filter</button>
+				<div class="col-md-2 col-4">
+					<button type="button" id="filter" class="btn bg-my-primary btn-sm btn-block valign-center justify-content-center px-2"><i class="material-icons p-0">filter_alt</i> Filter<n-/button>
 				</div>
-				<div class="col-10">
+				<div class="col-md-10 col-8">
 					@include('layouts.dashboard.search')
 				</div>
 			</div>
@@ -125,11 +127,13 @@
 				@endforelse
 			</div>
 			@if(count($barang) >= 1)
-			<div class="row my-4">
-				<div class="col-md-12 col-sm-6 d-flex justify-content-center">
-					<button type="button" class="btn btn-outline-primary">Lebih Banyak</button>
+				@if(!isset($nomore))
+				<div class="row my-4">
+					<div class="col-md-12 col-sm-6 d-flex justify-content-center">
+						<button type="button" class="btn btn-outline-primary">Lebih Banyak</button>
+					</div>
 				</div>
-			</div>
+				@endif
 			@endif
 		</div>
 	</div>

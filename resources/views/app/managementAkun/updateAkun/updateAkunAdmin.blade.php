@@ -1,9 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Edit Akun Admin';
-        $dashboard = true;
-        $admin = true;
-        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -20,30 +17,10 @@
           </div> --}}
         </div>
     </div>
-    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
-        @include('layouts.dashboard.search')
-    </div> --}}
 </div>
 <div class="container">
     <div class="row h-100">
         <div class="col-md-12">
-            {{-- @if (session()->has('success'))
-		    <div class="alert alert-success alert-dismissible fade show" role="alert">
-		    	<i data-feather="check-circle"></i>
-		        {{ session()->get('success') }}
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		            <span aria-hidden="true">&times;</span>
-		        </button>
-		    </div>
-		    @elseif (session()->has('failed'))
-		    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-		    	<i data-feather="alert-circle"></i>
-		        {{ session()->get('failed') }}
-		        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-		            <span aria-hidden="true">&times;</span>
-		        </button>
-		    </div>
-		    @endif --}}
             <div class="card card-block d-flex">
                 <div class="card-header">
                     <div class="row">
