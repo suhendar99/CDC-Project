@@ -1,6 +1,8 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Edit Data Barang';
+        $dashboard = true;
+        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -71,28 +73,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                {{-- <div class="col-md-12">
-                                    <span class="font-weight-bold">Pilih Kota dan Provinsi</span>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="font-weight">Provinsi</label>
-                                        <select class="form-control provinsi-asal" name="province_origin">
-                                            <option value="0">-- pilih provinsi asal --</option>
-                                            @foreach ($provinces as $province => $value)
-                                                <option value="{{ $province  }}" {{ $data->province_id == $province ? 'selected' : ''}}>{{ $value }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="font-weight">Kota / Kabupaten</label>
-                                        <select class="form-control kota-asal" name="city_origin">
-                                            <option value="">-- pilih kota asal --</option>
-                                        </select>
-                                    </div>
-                                </div> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
@@ -153,27 +133,32 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Berat(GRAM) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('berat') is-invalid @enderror" name="berat" value="{{ $data->berat }}" placeholder="Enter berat">
-                                        @error('berat')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="float-left">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="float-right">
+                                                <a href="{{route('create.barang',$data->id)}}" class="btn btn-primary btn-sm">Tambah Foto Barang</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Foto Barang <small class="text-success">*Boleh Tidak diisi</small></label>
-                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $data->foto }}" placeholder="Enter foto">
-                                        @error('foto')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                <div class="card-body">
+                                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Foto</th>
+                                                @if ($foto->count() > 1)
+                                                <th>Action</th>
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">
@@ -190,10 +175,78 @@
         </div>
     </div>
 </div>
+<form action="" id="formDelete" method="POST">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+        var count = JSON.parse('{!!json_encode($foto)!!}')
+        console.log(count);
+        let counter = 0;
+        for (let i = 0; i < count.length; i++) {
+            counter++;
+            // console.log(count[i].length);
+        }
+        console.log(counter);
+        let columns = [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'foto', render: function (data, type, full, meta) {
+                        if(data == null){
+                            return "Foto Tidak Ada !"
+                        }else{
+                            return "<img style='object-fit: scale-down;' src=\"{{ asset('') }}" + data + "\" height=\"50px\"width=\"50px\">";
+                        }
+                    }
+                },
+            ]
+            if (counter > 1) {
+                columns.push({data : 'action', name: 'action'})
+            }
+        let table = $('#data_table').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('barang.edit',$data->id) }}",
+            columns : columns
+        });
+
+        function sweet(id){
+            const formDelete = document.getElementById('formDelete')
+            formDelete.action = '/v1/delete-foto-barang/'+id
+
+            const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            })
+            Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formDelete.submit();
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Your file has been deleted,wait a minute !'
+                    })
+                    // Swal.fire(
+                    // 'Deleted!',
+                    // 'Your file has been deleted.',
+                    // 'success'
+                    // )
+                }
+            })
+        }
         $('#jumlah').on('keyup',(value) => {
             console.log($('#jumlah').val() * $('#satuan').val())
             $('#hasil').val($('#jumlah').val() * $('#satuan').val())
