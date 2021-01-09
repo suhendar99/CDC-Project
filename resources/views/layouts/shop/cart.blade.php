@@ -1,5 +1,5 @@
 <div id="cart-button" class=" active">
-	<div class="card bg-my-success pointer rad-mod" onclick="showCart()">
+	<div class="card bg-my-warning pointer rad-mod" onclick="showCart()">
 		<div class="card-body">
 			<center> 
 				<i class="material-icons md-36">shopping_cart</i><br> 
@@ -12,8 +12,8 @@
 </div>
 <div id="cart-card">
 	<div class="card cart-card rad-mod">
-		<div class="card-header d-flex justify-content-between valign-center bg-my-success"> 
-			<span class=" card-title"> Keranjang Saya</span><span class=" pointer" onclick="hideCart()"><i class=" material-icons md-12">close</i></span>
+		<div class="card-header d-flex justify-content-between valign-center bg-my-warning"> 
+			<span class=" card-title"> Keranjang Saya</span><span class="close pointer" onclick="hideCart()"><i class=" material-icons md-12">close</i></span>
 		</div>
 		<div class="card-body">
 			<div class="cart-list">

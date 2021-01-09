@@ -5,7 +5,7 @@
             <div class="card" style="height: auto;">
                 <div class="card-body d-flex justify-content-center">
                     <center> 
-                            <i class="material-icons text-my-primary md-48">{{$c['icon']}}</i><br>
+                            <i class="material-icons text-my-warning md-48">{{$c['icon']}}</i><br>
                             <span>{{$c['nama']}}</span>
                     </center>
                 </div>
