@@ -1,0 +1,34 @@
+#cart-button{
+	position: fixed;
+    z-index: 100;
+    right: 0;
+    top: 50vh;
+}
+
+#cart-card{
+	width:  200px;
+}
+
+.rad-mod{
+	border-radius: 5px 0 0 5px;
+}
+
+#cart-button .card .card-body{ 
+	padding:  1rem;
+}
+
+#cart-card.active{
+	right:  0;
+}
+
+#cart-card{
+	position: fixed;
+    z-index: 100;
+    right: -200px;
+    transition: all .6s ease-in;
+	right:  -200px;
+}
+
+#content{
+	overflow-x:  hidden;
+}
