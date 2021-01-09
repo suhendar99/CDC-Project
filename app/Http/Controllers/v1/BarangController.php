@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\City;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\FotoBarang;
 use App\Models\Kategori;
 use App\Province;
 use Illuminate\Http\Request;
@@ -36,13 +37,16 @@ class BarangController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('foto', function($data){
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
+                })
                 ->addColumn('barcode', function($data){
-                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,65,array(0,0,0), true).'" alt="barcode" />';
+                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
                 })
                 ->addColumn('jumsat', function($data){
                     return $data->jumlah.' '.$data->satuan;
                 })
-                ->rawColumns(['barcode','action','jumsat'])
+                ->rawColumns(['barcode','action','jumsat','foto'])
                 ->make(true);
         }
         return view($this->path.'index');
@@ -99,14 +103,11 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
-            'berat' => 'required|numeric',
             'harga_total' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id',
-            'province_origin' => 'required',
-            'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {
+            // dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
             // $pin = mt_rand(100, 999)
@@ -116,29 +117,27 @@ class BarangController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            if ($request->file('foto')) {
-                $name = $request->file('foto');
-                $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/barang"), $foto);
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
-                    'foto' => 'upload/foto/barang/'.$foto,
-                    'kode_barang' => $kode,
-                    'pemasok_id' => Auth::user()->pemasok_id,
-                    'kategori_id' => $request->kategori_id,
-                    'province_id' => $request->province_origin,
-                    'city_id' => $request->city_origin
-                ]));
-            } else {
-                Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
-                    'kode_barang' => $kode,
-                    'pemasok_id' => Auth::user()->pemasok_id,
-                    'kategori_id' => $request->kategori_id,
-                    'province_id' => $request->province_origin,
-                    'city_id' => $request->city_origin
-                ]));
+            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                'kode_barang' => $kode,
+                'pemasok_id' => Auth::user()->pemasok_id,
+                'kategori_id' => $request->kategori_id
+            ]));
+
+            if($request->hasfile('foto'))
+            {
+                foreach($request->file('foto') as $image)
+                {
+                    $name = rand(). '.' . $image->getClientOriginalExtension();
+                    $image->move(public_path("upload/foto/barang"), $name);
+
+                    FotoBarang::create([
+                        'barang_id' => $barang->id,
+                        'foto' => 'upload/foto/barang/'.$name,
+                    ]);
+                }
             }
         }
-        return back()->with('success',$this->alert.'Disimpan !');
+        return back()->with('success',$this->alert.'disimpan !');
     }
 
     /**
@@ -162,14 +161,89 @@ class BarangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
+        $barang = Barang::find($id);
+        // dd($barang);
+        if($request->ajax()){
+            $data = FotoBarang::where('barang_id',$barang->id)->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    return '<a href="/v1/edit-foto-barang/'.$data->id.'" class="btn btn-success btn-sm">Edit</a>
+                    <button class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')" data-id="'.$data->id.'">Hapus</button>';
+                })
+                ->make(true);
+        }
         $kategori = Kategori::all();
+        $foto = FotoBarang::where('barang_id',$barang->id)->get();
         $data = Barang::find($id);
-        $provinces = Province::pluck('name', 'province_id');
-        return view($this->path.'edit',compact('kategori','data','provinces'));
+        if (!$data) {
+            return redirect(route('barang.index'));
+        }
+        return view($this->path.'edit',compact('kategori','data','foto'));
     }
+    public function createFotoBarang($id)
+    {
+        return view($this->path.'foto-barang.create',compact('id'));
+    }
+    public function storeFotoBarang(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'foto' => 'required|image|mimes:png,jpg|max:2048'
+        ]);
 
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $barang = Barang::find($request->id);
+            // dd($barang);
+            $name = $request->file('foto');
+            $foto = time()."_".$name->getClientOriginalName();
+            $request->foto->move(public_path("upload/foto/barang"), $foto);
+
+            FotoBarang::create([
+                'barang_id' => $barang->id,
+                'foto' => 'upload/foto/barang/'.$foto,
+            ]);
+            return back()->with('success',$this->alert.'ditambahkan !');
+        }
+    }
+    public function editFotoBarang($id)
+    {
+        $data = Barang::find($id);
+        $fotoBarang = FotoBarang::find($id);
+        return view($this->path.'foto-barang.edit',compact('data','fotoBarang'));
+    }
+    public function updateFotoBarang(Request $request,$id)
+    {
+        $v = Validator::make($request->all(),[
+            'foto' => 'required|image|mimes:png,jpg|max:2048'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $data = FotoBarang::find($id);
+            File::delete($data->foto);
+            $name = $request->file('foto');
+            $foto = time()."_".$name->getClientOriginalName();
+            $request->foto->move(public_path("upload/foto/barang"), $foto);
+
+            $data->update([
+                // 'barang_id' => $barang->id,
+                'foto' => 'upload/foto/barang/'.$foto,
+            ]);
+            return back()->with('success',$this->alert.'diedit !');
+        }
+    }
+    public function deleteFotoBarang($id)
+    {
+        $data = FotoBarang::find($id);
+        File::delete($data->foto);
+        $data->delete();
+        return back();
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -185,37 +259,17 @@ class BarangController extends Controller
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
-            'berat' => 'required|numeric',
             'harga_total' => 'required|numeric',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'kategori_id' => 'required|exists:kategoris,id',
-            'province_origin' => 'nullable',
-            'city_origin' => 'nullable',
         ]);
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $barang = Barang::find($id);
-            if ($request->file('foto')) {
-                File::delete($barang->foto);
-                $name = $request->file('foto');
-                $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/barang"), $foto);
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
-                    'foto' => 'upload/foto/barang/'.$foto,
-                    // 'kode_barang' => $request->kode_barang,
-                    'kategori_id' => $request->kategori_id,
-                    'province_id' => $request->province_origin,
-                    'city_id' => $request->city_origin
-                ]));
-            } else {
-                $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','berat'),[
-                    'kategori_id' => $request->kategori_id,
-                    // 'kode_barang' => $request->kode_barang,
-                    'province_id' => $request->province_origin,
-                    'city_id' => $request->city_origin
-                ]));
-            }
+            $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+                'kategori_id' => $request->kategori_id,
+                // 'kode_barang' => $request->kode_barang
+            ]));
         }
         return back()->with('success',$this->alert.'Diedit !');
     }
