@@ -18,6 +18,11 @@
                     ">
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
+                    @if (isset($pemasok))
+                        <li>
+                            <a href="{{route('kategoriBarang.index')}}" class="valign-center {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}"><i class="material-icons">shopping_cart</i>Kategori Induk</a>
+                        </li>
+                    @endif
                     <li class="
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKategorisTable extends Migration
+class CreateFotoBarangsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateKategorisTable extends Migration
      */
     public function up()
     {
-        Schema::create('kategoris', function (Blueprint $table) {
+        Schema::create('foto_barangs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
-            $table->string('nama',50);
-            $table->string('icon',30)->nullable();
+            $table->foreignId('barang_id')->constrained('barangs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateKategorisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategoris');
+        Schema::dropIfExists('foto_barangs');
     }
 }
