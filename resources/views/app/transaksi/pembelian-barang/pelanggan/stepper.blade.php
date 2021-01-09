@@ -1,7 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Pembelian Barang';
-        $dashboard = true;
 @endphp
 @extends('layouts.dashboard.header')
 
