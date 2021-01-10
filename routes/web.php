@@ -98,7 +98,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('edit-foto-barang/{id}','BarangController@editFotoBarang')->name('edit.barang');
         Route::put('update-foto-barang/{id}','BarangController@updateFotoBarang')->name('update.barang');
         Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
-        Route::post('st0BarangController@storeFotoBarang')->name('store.barang');
+        Route::post('store-foto-barang','BarangController@storeFotoBarang')->name('store.barang');
         Route::delete('delete-foto-barang/{id}','BarangController@deleteFotoBarang')->name('delete.barang');
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
