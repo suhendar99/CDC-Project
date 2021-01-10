@@ -122,10 +122,30 @@
                                         @enderror
                                     </div>
                                 </div>
+                                {{-- <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Berat Per Item <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('berat_satuan') is-invalid @enderror" name="berat_satuan" value="{{ $data->berat_satuan }}" placeholder="Enter Berat Satuan">
+                                        @error('berat_satuan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ $data->satuan }}" placeholder="Enter satuan">
+                                        <select class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                            <option value="kg">kg</option>
+                                            <option value="ons">ons</option>
+                                            <option value="gram">gram</option>
+                                            <option value="ml">ml</option>
+                                            <option value="m3">m<sup>3</sup></option>
+                                            <option value="m2">m<sup>2</sup></option>
+                                            <option value="m">m</option>
+                                            <option value="gram">cm</option>
+                                        </select>
                                         @error('satuan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

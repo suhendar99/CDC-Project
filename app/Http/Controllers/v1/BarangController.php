@@ -30,7 +30,7 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
-        $barang = Barang::with('foto')->get();
+        $barang = Barang::with('foto')->paginate(24);
         $foto = FotoBarang::all();
         // if($request->ajax()){
         //     $data = $this->Data->getData();
@@ -100,16 +100,17 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama_barang' => 'required|string|max:20',
+            'nama_barang' => 'required|string|max:50',
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
+            'foto.*' => 'required|mimes:png,jpg|max:2048'
         ]);
         if ($v->fails()) {
-            // dd($v->errors()->all());
+            dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
             // $pin = mt_rand(100, 999)
