@@ -21,6 +21,7 @@ class CreateBarangsTable extends Migration
             $table->string('nama_barang',50);
             $table->string('harga_barang',20);
             $table->string('harga_total',20);
+            $table->text('deskripsi');
             $table->integer('jumlah');
             // $table->integer('berat_satuan');
             $table->string('satuan',10);

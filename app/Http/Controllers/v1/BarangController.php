@@ -104,6 +104,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'deskripsi' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
@@ -120,7 +121,7 @@ class BarangController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
                 'kode_barang' => $kode,
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id
@@ -261,6 +262,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'deskripsi' => 'required|string|max:10',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
@@ -269,7 +271,7 @@ class BarangController extends Controller
             return back()->withErrors($v)->withInput();
         } else {
             $barang = Barang::find($id);
-            $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+            $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
                 'kategori_id' => $request->kategori_id,
                 // 'kode_barang' => $request->kode_barang
             ]));
