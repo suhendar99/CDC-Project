@@ -96,6 +96,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
         Route::post('store-foto-barang','BarangController@storeFotoBarang')->name('store.barang');
         Route::delete('delete-foto-barang/{id}','BarangController@deleteFotoBarang')->name('delete.barang');
+        // Rekening Pemasok
+        Route::resource('rekeningPemasok', 'RekeningPemasokController');
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
