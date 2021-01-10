@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
+use App\Models\Bank;
+use App\Models\RekeningPemasok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
 
-class KategoriBarangController extends Controller
+class RekeningPemasokController extends Controller
 {
     public function __construct()
     {
-        $this->Data = new Kategori;
+        $this->Data = new RekeningPemasok;
 
-        $this->path = 'app.data-master.kategori.';
+        $this->path = 'app.data-master.rekening-pemasok.';
         $this->alert = 'Data Berhasil ';
     }
     /**
@@ -22,18 +23,9 @@ class KategoriBarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if($request->ajax()){
-            $data = $this->Data->getData();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($data){
-                    return '<a href="/v1/kategoriBarang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                })
-                ->make(true);
-        }
-        return view($this->path.'index');
+        //
     }
 
     /**
@@ -43,7 +35,10 @@ class KategoriBarangController extends Controller
      */
     public function create()
     {
-        return view($this->path.'create');
+        $data = RekeningPemasok::where('pemasok_id',Auth::user()->pemasok_id)->get();
+        $bank = Bank::all();
+
+        return view($this->path.'create',compact('data','bank'));
     }
 
     /**
@@ -55,16 +50,17 @@ class KategoriBarangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
+            'bank_id' => 'required|exists:banks,id',
+            'pemilik' => 'required|string|max:50',
+            'no_rek' => 'required|digits_between:1,16',
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $this->Data->storeData($request->only('nama'));
-
-            return back()->with('success',$this->alert.'ditambah !');
+            RekeningPemasok::create(array_merge($request->only('bank_id','pemilik','no_rek'),['pemasok_id' => Auth::user()->pemasok_id]));
         }
+        return back()->with('success',$this->alert.'ditambah !');
     }
 
     /**
@@ -86,8 +82,10 @@ class KategoriBarangController extends Controller
      */
     public function edit($id)
     {
-        $data = Kategori::find($id);
-        return view($this->path.'edit',compact('data'));
+        $data = RekeningPemasok::find($id);
+        $bank = Bank::all();
+
+        return view($this->path.'edit',compact('data','bank'));
     }
 
     /**
@@ -100,16 +98,18 @@ class KategoriBarangController extends Controller
     public function update(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
+            'bank_id' => 'required|exists:banks,id',
+            'pemilik' => 'required|string|max:50',
+            'no_rek' => 'required|digits_between:1,16',
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $this->Data->updateData($id,$request->only('    '));
-
-            return back()->with('success',$this->alert.'diedit !');
-        }//
+            $data = RekeningPemasok::find($id);
+            $data->update(array_merge($request->only('bank_id','pemilik','no_rek')));
+        }
+        return back()->with('success',$this->alert.'diedit !');
     }
 
     /**
@@ -120,8 +120,8 @@ class KategoriBarangController extends Controller
      */
     public function destroy($id)
     {
-        $this->Data->deleteData($id);
-
+        $data = RekeningPemasok::find($id);
+        $data->delete();
         return back()->with('success',$this->alert.'dihapus !');
     }
 }
