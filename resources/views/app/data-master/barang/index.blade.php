@@ -47,51 +47,57 @@
         <div class="col-md-12">
             <div class="row">
                 @forelse($barang as $key => $value)
-                <div class="col-4">
+                <div class="col-md-3 col-4 my-2">
                     <div class="card">
-                        <div class="card-header">
-                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                                <ol class="carousel-indicators">
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                </ol>
-                                <div class="carousel-inner">
-                                  <div class="carousel-item active">
-                                    <img class="d-block w-100" src="..." alt="First slide">
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img class="d-block w-100" src="..." alt="Second slide">
-                                  </div>
-                                  <div class="carousel-item">
-                                    <img class="d-block w-100" src="..." alt="Third slide">
-                                  </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="carouselExampleIndicators{{$key}}" class="carousel slide" data-ride="carousel">
+                                    <ol class="carousel-indicators">
+                                        @forelse($value->foto as $keyFoto => $val)
+                                        <li data-target="#carouselExampleIndicators{{$key}}" data-slide-to="{{$keyFoto}}"></li>
+                                        @empty
+                                        @endforelse
+                                    </ol>
+                                    <div class="carousel-inner carousel-barang">
+                                        @forelse($value->foto as $keyFoto => $val)
+                                        <div class="carousel-item {{ $keyFoto == 0 ? 'active' : ''}}">
+                                            <img class="d-block w-100 cover " height="150" src="{{asset($val->foto)}}" alt="First slide">
+                                        </div>
+                                        @empty
+                                        <div class="carousel-item active">
+                                            <div class="d-flex justify-content-center valign-center" style="height: 150px; background-color: #c6c6c6; color: #fff">
+                                                Gambar Belum Diisi!
+                                            </div>
+                                        </div>
+                                        @endforelse
+                                    </div>
+                                    @if(count($value->foto) >= 1)
+                                    <a class="carousel-control-prev" href="#carouselExampleIndicators{{$key}}" role="button" data-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleIndicators{{$key}}" role="button" data-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                    @endif
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                  <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                  <span class="sr-only">Next</span>
-                                </a>
-                              </div>
-                            <div class="row">
-                                <div class="col-md-6">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row my-2">
+                                <div class="col-md-12 pr-4">
                                     <div class="float-left">
-                                        <h5>{{ $value->nama_barang }}</h5>
+                                        <span class="barang-title">{{ $value->nama_barang }}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="float-right">
-                                        <div class="dropdown">
-                                            <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu" aria-labelledby="dropmenu">
-                                                <a href="{{ route('gudang.edit', $value->id) }}" class="dropdown-item">Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $value->id }})" data-id="{{ $value->id }}">Detail</a>
-                                                <a href="{{ route('rak.index', $value->id) }}" class="dropdown-item">Rak Gudang</a>
-                                                <a href="#" class="dropdown-item" onclick="sweet({{ $value->id }})">Delete</a>
-                                            </div>
+                                <div class="float-right" style="position: absolute; right: 1rem;">
+                                    <div class="dropdown">
+                                        <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
+                                            <a href="{{ route('barang.edit', $value->id) }}" class="dropdown-item">Edit</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $value->id }})" data-id="{{ $value->id }}">Detail</a>
+                                            <a href="#" class="dropdown-item" onclick="sweet({{ $value->id }})">Delete</a>
                                         </div>
                                     </div>
                                 </div>
@@ -108,10 +114,13 @@
                     </div>
                 </div>
                 @empty
-                <div class="col-md-12">
+                <div class="col-md-12 my-2">
                     <center>== Tidak Ada Data ==</center>
                 </div>
                 @endforelse
+                <div class="col-md-12 d-flex justify-content-center">
+                    {{$barang->links()}}
+                </div>
             </div>
         {{-- <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
             <thead>
@@ -159,8 +168,12 @@
                   <table class="table">
                       <tbody>
                         <tr>
-                            <th scope="row">Nama Gudang</th>
+                            <th scope="row">Nama Barang</th>
                             <td class="nama"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Deskripsi</th>
+                            <td class="deskripsi"></td>
                         </tr>
                       </tbody>
                   </table>

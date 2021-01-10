@@ -125,7 +125,16 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan') }}" placeholder="Enter satuan">
+                                        <select class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                            <option value="kg">kg</option>
+                                            <option value="ons">ons</option>
+                                            <option value="gram">gram</option>
+                                            <option value="ml">ml</option>
+                                            <option value="m3">m<sup>3</sup></option>
+                                            <option value="m2">m<sup>2</sup></option>
+                                            <option value="m">m</option>
+                                            <option value="gram">cm</option>
+                                        </select>
                                         @error('satuan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -135,7 +144,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Foto Barang <small class="text-success">*Boleh Tidak diisi & bisa di pilih banyak</small></label>
+                                        <label>Foto Barang <small class="text-success">*Harus diisi</small></label>
                                         <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Enter foto" multiple>
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
