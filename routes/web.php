@@ -96,6 +96,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
         Route::post('store-foto-barang','BarangController@storeFotoBarang')->name('store.barang');
         Route::delete('delete-foto-barang/{id}','BarangController@deleteFotoBarang')->name('delete.barang');
+        Route::get('detailBarang/{id}','BarangController@detail');
         // Rekening Pemasok
         Route::resource('rekeningPemasok', 'RekeningPemasokController');
     });
