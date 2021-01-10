@@ -64,6 +64,33 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Kategori Barang <small class="text-success">*Harus diisi</small></label>
+                                        <select name="kategori_id" id="" class="form-control @error('kategori_id') is-invalid @enderror">
+                                            <option value="0">--Pilih Kategori--</option>
+                                            @foreach ($kategori as $item)
+                                                <option value="{{$item->id}}" {{ old('kategori_id') == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('kategori_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Deskripsi Barang <small class="text-success">*Harus diisi</small></label>
+                                        <textarea name="deskripsi" id="" cols="10" rows="3" class="form-control @error('deskripsi') is-invalid @enderror">{{old('deskripsi')}}</textarea>
+                                        @error('nama_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
                                         <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
                                         <input type="number" min="0" id="satuan" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
                                         @error('harga_barang')
@@ -97,22 +124,6 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Kategori Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="kategori_id" id="" class="form-control @error('kategori_id') is-invalid @enderror">
-                                            <option value="0">--Pilih Kategori--</option>
-                                            @foreach ($kategori as $item)
-                                                <option value="{{$item->id}}" {{ old('kategori_id') == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('kategori_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan') }}" placeholder="Enter satuan">
                                         @error('satuan')
@@ -124,7 +135,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Foto Barang <small class="text-success">*Boleh Tidak diisi</small></label>
+                                        <label>Foto Barang <small class="text-success">*Boleh Tidak diisi & bisa di pilih banyak</small></label>
                                         <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Enter foto" multiple>
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
