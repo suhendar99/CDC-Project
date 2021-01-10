@@ -58,7 +58,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Foto <small class="text-success">*Harus diisi</small></label>
-                                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $fotoBarang->foto }}">
+                                                <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $fotoBarang->foto }}">
                                                 @error('foto')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
