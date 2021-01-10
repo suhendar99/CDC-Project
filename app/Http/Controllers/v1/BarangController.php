@@ -104,7 +104,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
-            'deskripsi' => 'required|string|max:10',
+            'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
@@ -156,6 +156,27 @@ class BarangController extends Controller
 
         return response()->json([
             'data' => $data
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function detail($id)
+    {
+        $data = Barang::with('foto','pemasok','kategori')->find($id);
+        $foto = [];
+        foreach ($data->foto as $key => $value) {
+            $foto[] = $value->foto;
+        }
+
+        // dd($foto);
+        return response()->json([
+            'data' => $data,
+            'foto' => $foto
         ]);
     }
 
@@ -262,7 +283,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
-            'deskripsi' => 'required|string|max:10',
+            'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',

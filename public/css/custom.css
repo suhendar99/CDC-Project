@@ -200,6 +200,7 @@ img .scale-down{
 	position: absolute;
 	z-index: 2;
 	right: 25px;
+    padding: .3rem !important;
 }
 
 .flex-last{
@@ -313,6 +314,13 @@ img.cover{
 	margin: 0;
 }
 
+.detail-foto{
+	height: 150px;
+	width: 150px;
+	object-fit: cover;
+	padding: 0 1rem;
+	border-radius: 5px;
+}
 
 .fr-absolute {
 	position:  absolute;
