@@ -106,7 +106,7 @@ class KategoriBarangController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $this->Data->updateData($id,$request->only('nama'));
+            $this->Data->updateData($id,$request->only('    '));
 
             return back()->with('success',$this->alert.'diedit !');
         }//

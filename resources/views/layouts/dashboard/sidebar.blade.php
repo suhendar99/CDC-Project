@@ -19,9 +19,6 @@
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     @if (isset($pemasok))
-                        <li class="{{ Request::is('v1/kategoriBarang*') ? 'active' : false }}">
-                            <a href="{{route('kategoriBarang.index')}}" class="valign-center {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}"><i class="material-icons">shopping_cart</i>Kategori Induk</a>
-                        </li>
                         <li class="{{ Request::is('v1/barang*') ? 'active' : false }}">
                             <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
                         </li>
@@ -38,6 +35,7 @@
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
+                        {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                         @endif
                         @if (isset($pengurusGudang))
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
@@ -52,6 +50,7 @@
                             {{ Request::is('v1/user*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
+                            {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
                             @endif
                             @if (isset($pengurusGudang))
                             {{ Request::is('v1/gudang*') ? 'show' : false }}
@@ -76,6 +75,11 @@
                                 {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                             ">
                                 <a href="{{route('pelanggan.index')}}">Pembeli</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('kategoriBarang.index')}}">Kategori Induk</a>
                             </li>
                             @endif
                             @if(isset($pemasok))
