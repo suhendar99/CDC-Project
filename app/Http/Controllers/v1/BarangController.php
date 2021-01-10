@@ -30,26 +30,28 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $data = $this->Data->getData();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($data){
-                    return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                })
-                ->addColumn('foto', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
-                })
-                ->addColumn('barcode', function($data){
-                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
-                })
-                ->addColumn('jumsat', function($data){
-                    return $data->jumlah.' '.$data->satuan;
-                })
-                ->rawColumns(['barcode','action','jumsat','foto'])
-                ->make(true);
-        }
-        return view($this->path.'index');
+        $barang = Barang::with('foto')->get();
+        $foto = FotoBarang::all();
+        // if($request->ajax()){
+        //     $data = $this->Data->getData();
+        //     return DataTables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function($data){
+        //             return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+        //         })
+        //         ->addColumn('foto', function($data){
+        //             return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
+        //         })
+        //         ->addColumn('barcode', function($data){
+        //             return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
+        //         })
+        //         ->addColumn('jumsat', function($data){
+        //             return $data->jumlah.' '.$data->satuan;
+        //         })
+        //         ->rawColumns(['barcode','action','jumsat','foto'])
+        //         ->make(true);
+        // }
+        return view($this->path.'index',compact('barang','foto'));
     }
     public function getBarangByPelanggan(Request $request)
     {
