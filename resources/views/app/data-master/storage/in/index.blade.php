@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>
+                                <a href="{{route('storage-in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>
                             </div>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('in.index') }}",
+            ajax : "{{ route('storage-in.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kode', name: 'kode'},
@@ -200,7 +200,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/storage/in/'+id
+            formDelete.action = '/v1/storage-in/'+id
 
             const Toast = Swal.mixin({
             toast: true,

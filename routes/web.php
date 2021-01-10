@@ -82,11 +82,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemasok', 'PemasokController');
         // Pembeli
         Route::resource('pelanggan', 'PelangganController');
-        // Gudang
-        Route::resource('gudang', 'GudangController');
-
-        // Rak
-        Route::resource('gudang/{gudang}/rak', 'RakController');
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
@@ -95,6 +90,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang
         Route::resource('barang', 'BarangController');
         Route::resource('kategoriBarang', 'KategoriBarangController');
+        Route::get('edit-foto-barang/{id}','BarangController@editFotoBarang')->name('edit.barang');
+        Route::put('update-foto-barang/{id}','BarangController@updateFotoBarang')->name('update.barang');
+        Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
+        Route::post('store-foto-barang','BarangController@storeFotoBarang')->name('store.barang');
+        Route::delete('delete-foto-barang/{id}','BarangController@deleteFotoBarang')->name('delete.barang');
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
@@ -105,7 +105,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['karyawan']], function () {
         // Storage
-        Route::resource('storage/in', 'StorageInController');
-        Route::resource('storage/out', 'StorageOutController');
+        Route::resource('storage', 'StorageController');
+        Route::resource('storage-in', 'StorageInController');
+        Route::resource('storage-out', 'StorageOutController');
+        
+        // Gudang
+        Route::resource('gudang', 'GudangController');
+
+        // Rak
+        Route::resource('gudang/{gudang}/rak', 'RakController');
     });
 });

@@ -18,4 +18,26 @@ class Desa extends Model
         return $this->hasMany('App\Models\Pelanggan');
     }
 
+    /**
+     * Desa belongs to Kecamatan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kecamatan()
+    {
+        // belongsTo(RelatedModel, foreignKey = kecamatan_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Kecamatan');
+    }
+
+    /**
+     * Desa has many Gudang.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function gudang()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = desa_id, localKey = id)
+        return $this->hasMany('App\Models\Gudang');
+    }
+
 }
