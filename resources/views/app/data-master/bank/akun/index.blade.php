@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Bank';
+        $pageTitle = 'Data Bank Akun';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Bank</a>
+            <a href="#" class="text-14">Data Bank Akun</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bank.create')}}" class="btn btn-primary btn-sm">Tambah Bank</a>
+                                <a href="{{route('akun-bank.create')}}" class="btn btn-primary btn-sm">Tambah Bank</a>
                             </div>
                         </div>
                     </div>
@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nama</th>
-                                <th>Tahun Berdiri</th>
-                                <th>Telepon</th>
-                                <th>Foto</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Bank</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -146,38 +146,13 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('bank.index') }}",
+            ajax : "{{ route('akun-bank.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama', name: 'nama'},
-                {
-                    data : 'tahun_berdiri', render:function(data,a,b,c){
-                        if (data == null) {
-                            return ""
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    data : 'telepon', render:function(data,a,b,c){
-                        if (data == null) {
-                            return ""
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    data : 'foto', render:function(data,a,b,c){
-                        if (data == null) {
-                            return "";
-                        } else {
-                            return `<img src="{{ asset('') }}${data}" height=\"50px\"width=\"50px\">`;
-
-                        }
-                    }
-                },
+                {data : 'name', name: 'name'},
+                {data : 'username', name: 'username'},
+                {data : 'email', name: 'email'},
+                {data : 'bank.nama', name: 'bank'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -223,7 +198,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/bank/'+id
+            formDelete.action = '/v1/akun-bank/'+id
 
             const Toast = Swal.mixin({
             toast: true,
