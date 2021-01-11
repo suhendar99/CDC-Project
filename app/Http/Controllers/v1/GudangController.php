@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Provinsi;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 
 class GudangController extends Controller
 {
@@ -38,6 +40,33 @@ class GudangController extends Controller
         $data = Gudang::all();
 
         return view($this->path.'index', compact('data'));
+    }
+
+    public function geocode(Request $request)
+    {
+        if ($request->query('kecamatan')) {
+            $kecamatan = Kecamatan::with('kabupaten.provinsi')->where('nama', 'like', '%'.$request->query('kecamatan').'%')->get();
+            if (count($kecamatan) > 0) {
+                $data = $kecamatan[0];
+                $index = 'kecamatan';
+            }
+        }elseif ($request->query('kabupaten')) {
+            $kabupaten = Kabupaten::with('provinsi')->where('nama', 'like', '%'.$request->query('kabupaten').'%')->get();
+            if (count($kabupaten) > 0) {
+                $data = $kabupaten[0];
+                $index = 'kabupaten';
+            }
+        }elseif ($request->query('provinsi')) {
+            $provinsi = Provinsi::where('nama', 'like', '%'.$request->query('provinsi').'%')->get();
+            if (count($provinsi) > 0) {
+                $data = $provinsi[0];
+                $index = 'provinsi';
+            }
+        }
+
+        return response()->json([
+            $index => $data
+        ], 200);
     }
 
     /**
