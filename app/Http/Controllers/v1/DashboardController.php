@@ -30,6 +30,8 @@ class DashboardController extends Controller
         $this->pathPengurusGudang = 'app.dashboard.pengurusGudang.';
 
         $this->pathCompleteAkun = 'app.managementAkun.completeAkun.';
+        $this->pathFotoKtp = 'app.managementAkun.completeAkun.fotoKtp.';
+        $this->pathFotoKtpSelfie = 'app.managementAkun.completeAkun.fotoKtpSelfie.';
 	}
 
     public function index()
@@ -40,18 +42,30 @@ class DashboardController extends Controller
             if ($auth->pemasok->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
             }
+            if ($auth->status == 2) {
+                return view($this->pathFotoKtp.'fotoKtpPemasok');
+            }
+            if ($auth->status == 3) {
+                return view($this->pathFotoKtpSelfie.'fotoKtpSelfiePemasok');
+            }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPemasok.'index');
     	} elseif ($auth->karyawan_id != null) {
             if ($auth->karyawan->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
             }
+            if ($auth->status == 2) {
+                return view($this->pathFotoKtp.'fotoKtpKaryawan');
+            }
+            if ($auth->status == 3) {
+                return view($this->pathFotoKtpSelfie.'fotoKtpSelfieKaryawan');
+            }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathKaryawan.'index');
     	} elseif ($auth->pelanggan_id != null) {
@@ -60,25 +74,37 @@ class DashboardController extends Controller
             }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPelanggan.'index');
     	}elseif ($auth->bank_id != null) {
             if ($auth->bank->tahun_berdiri == null) {
                 return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
             }
+            if ($auth->status == 2) {
+                return view($this->pathFotoKtp.'fotoKtpBank');
+            }
+            if ($auth->status == 3) {
+                return view($this->pathFotoKtpSelfie.'fotoKtpSelfieBank');
+            }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
             if ($auth->pengurusGudang->nik == null) {
                 return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
             }
+            if ($auth->status == 2) {
+                return view($this->pathFotoKtp.'fotoKtpPengurusGudang');
+            }
+            if ($auth->status == 3) {
+                return view($this->pathFotoKtpSelfie.'fotoKtpSelfiePengurusGudang');
+            }
             if ($auth->status == 0) {
                 Auth::logout();
-                return redirect('/')->with('error','Akun Anda Telah Di Non-aktifkan Oleh Administrator.');
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPengurusGudang.'index');
     	} else {
@@ -161,6 +187,9 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
+                $data->update([
+                    'status' => 2
+                ]);
             }
         } elseif ($auth->pelanggan_id != null) {
             $v = Validator::make($request->all(),[
@@ -206,6 +235,9 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
+                $data->update([
+                    'status' => 2
+                ]);
             }
         } elseif ($auth->karyawan_id != null) {
             $v = Validator::make($request->all(),[
@@ -251,6 +283,9 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
+                $data->update([
+                    'status' => 2
+                ]);
             }
         } elseif ($auth->pengurus_gudang_id != null) {
             $v = Validator::make($request->all(),[
@@ -296,6 +331,9 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
+                $data->update([
+                    'status' => 2
+                ]);
             }
         } elseif ($auth->bank_id != null) {
             $date = Carbon::now()->format('Y');
@@ -335,11 +373,14 @@ class DashboardController extends Controller
                         $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
                     }
                 }
+                $data->update([
+                    'status' => 2
+                ]);
             }
         }
 
         if ($set = true) {
-            return redirect('v1/dashboard')->with('success',  __('Data Sudah Dilengkapi, Terima Kasih Sudah melengkapi.'));
+            return redirect('v1/dashboard')->with('success',  __('Data Diri Sudah Dilengkapi, Terima Kasih.'));
         } else {
             return redirect('v1/dashboard')->with('failed',  __('Update Data Gagal.'));
         }
