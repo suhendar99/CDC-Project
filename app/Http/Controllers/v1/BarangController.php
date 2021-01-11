@@ -111,7 +111,7 @@ class BarangController extends Controller
             'foto.*' => 'required|mimes:png,jpg|max:2048'
         ]);
         if ($v->fails()) {
-            dd($v->errors()->all());
+            // dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
             // $pin = mt_rand(100, 999)
