@@ -30,7 +30,7 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
-        $barang = Barang::with('foto')->paginate(24);
+        $barang = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->paginate(24);
         $foto = FotoBarang::all();
         // if($request->ajax()){
         //     $data = $this->Data->getData();

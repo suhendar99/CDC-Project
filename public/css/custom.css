@@ -114,12 +114,40 @@ img .scale-down{
 	object-fit: cover;
 }
 
+.img-gudang{
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
 .item .card .card-body{
 	padding: .2rem;
 }
 
 .item .card{
 	/*border: .5px solid #C6C6C6;*/
+}
+
+.input-group-text {
+    font-size: .8rem;
+}
+
+.loading::before{
+	content: 'Loading . . .';
+	position: absolute;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	align-items: center;
+	background: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	padding-top: 150px;
+}
+
+.mt-100{
+	margin-top: 100px;
 }
 
 /*Text Section*/
@@ -257,6 +285,34 @@ img.cover{
 	object-fit: cover;
 }
 
+.mh-50vh{
+	min-height: 200px;
+}
+
+.h-100{
+	height: 100%;
+}
+
+.barang-img{
+	width: 100%;
+	min-height: 200px;
+	max-height: 200px;
+}
+
+.circle{
+	height: 5px;
+	width: 5px;
+	border-radius: 50%;
+}
+
+#detailGudang {
+	-webkit-transition: all .6s ease;
+	   -moz-transition: all .6s ease;
+	    -ms-transition: all .6s ease;
+	     -o-transition: all .6s ease;
+	        transition: all .6s ease;
+}
+
 /* .card::after{
 	position: absolute;
 	content: '';
@@ -373,6 +429,19 @@ img.cover{
     height: 20px;
     width: 20px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.oops{
+	font-size: 5rem;
+	font-weight: 800;
+}
+
+.not-found{
+	color: #c6c6c6;
+}
+
+.wrapper .container {
+	min-height: 65vh;
 }
 
 

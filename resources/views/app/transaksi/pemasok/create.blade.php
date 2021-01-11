@@ -1,7 +1,6 @@
 @php
-    $icon = 'storage';
-    $pageTitle = 'Data Barang';
-    $indikator = $barang;
+    $icon = 'attach_money';
+    $pageTitle = 'Tambah Transaksi';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -17,7 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Barang</a>
+            <a href="#" class="text-14">Tambah Transaksi</a>
           </div>
         </div>
     </div>
@@ -31,10 +30,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-6">
-                            @include('layouts.dashboard.search')
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="float-right">
                                 <a href="{{route('barang.create')}}" class="btn btn-primary btn-sm">Tambah Data Barang</a>
                             </div>
@@ -90,36 +86,27 @@
                                         <span class="barang-title">{{ $value->nama_barang }}</span>
                                     </div>
                                 </div>
-                                <div class="col-md-12 pr-4">
-                                    <div class="float-left">
-                                        <span>Tersedia {{ $value->jumlah.' '.$value->satuan }}</span>
-                                    </div>
+                                <div class="col-md-12">
+                                    <span>Tersedia {{ $value->jumlah.' '.$value->satuan }}</span>
                                 </div>
-                                <div class="col-md-12 pr-4">
-                                    <div class="float-left">
-                                        <span class="harga-title">Rp. {{ number_format($value->harga_barang,0,',','.') }}</span>
-                                    </div>
+                                <div class="col-md-12">
+                                    <span class="harga-title">Rp. {{ number_format($value->harga_barang,0,',','.') }}</span>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <a href="{{route('create.detail',$value->id)}}" class="btn btn-outline-primary btn-block btn-sm">Pilih Barang</a>
                                 </div>
                                 <div class="float-right" style="position: absolute; right: 1rem;">
                                     <div class="dropdown">
                                         <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                         <div class="dropdown-menu" aria-labelledby="dropmenu">
-                                            <a href="{{ route('barang.edit', $value->id) }}" class="dropdown-item">Edit</a>
+                                            {{-- <a href="{{ route('barang.edit', $value->id) }}" class="dropdown-item">Edit</a> --}}
                                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $value->id }})" data-id="{{ $value->id }}">Detail</a>
-                                            <a href="#" class="dropdown-item" onclick="sweet({{ $value->id }})">Delete</a>
+                                            {{-- <a href="#" class="dropdown-item" onclick="sweet({{ $value->id }})">Delete</a> --}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Hari Kerja: {{ $value->hari }}</li>
-                            <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $value->jam_buka }} - {{ $value->jam_tutup }}</li>
-                        </ul>
-                        <div class="card-body" style="border-bottom: 5px solid #ffa723;">
-                            <h6>Alamat</h5>
-                            <p class="card-text">{{ $value->alamat }}</p>
-                        </div> --}}
                     </div>
                 </div>
                 @empty
@@ -218,31 +205,7 @@
 </div>
 @endsection
 @push('script')
-{{-- Chart Section --}}
 <script type="text/javascript">
-    // let table = $('#data_table').DataTable({
-    //     processing : true,
-    //     serverSide : true,
-    //     responsive: true,
-    //     ordering : true,
-    //     pageLength : 10,
-    //     ajax : "{{ route('barang.index') }}",
-    //     columns : [
-    //         {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-    //         {data : 'barcode', name: 'barcode'},
-    //         {data : 'nama_barang', name: 'nama_barang'},
-    //         {data : 'harga_barang', name: 'harga_barang'},
-    //         {data : 'jumsat', name: 'jumsat'},
-    //         {data : 'harga_total', name: 'harga_total'},
-    //         {data : 'kategori.nama', render:function(data,a,b,c){
-    //                 return (data == null || data == "") ? "Kosong !" : data;
-    //             }
-    //         },
-    //         {data : 'foto', name: 'foto'},
-    //         {data : 'action', name: 'action'},
-    //     ]
-    // });
-
     function sweet(id){
         const formDelete = document.getElementById('formDelete')
         formDelete.action = '/v1/barang/'+id
@@ -300,5 +263,4 @@
         });
     }
 </script>
-{{--  --}}
 @endpush
