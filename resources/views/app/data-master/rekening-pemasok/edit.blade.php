@@ -1,5 +1,5 @@
 @php
-        $icon = 'storage';
+        $icon = 'attach_money';
         $pageTitle = 'Edit Data Rekening Pemasok';
         $dashboard = true;
         // $rightbar = true;
