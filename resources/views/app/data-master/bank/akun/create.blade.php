@@ -16,7 +16,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Bank</a>
+            <a href="#" class="text-14">Data Bank Akun</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Tambah Data Bank</a>
           </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bank.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('akun-bank.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -47,59 +47,53 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('bank.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('akun-bank.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label>Nama Bank <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('nama_bank') is-invalid @enderror" name="nama_bank" value="{{ old('nama_bank') }}" aria-describedby="barangStatus" placeholder="Enter the bank name...">
-                                        @error('nama_bank')
+                                    <div class="form-group col-md-6">
+                                        <label>Nama Akun <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Enter the Name Account...">
+                                        @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label>Foto <small class="text-success">*Tidak Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}">
-                                        @error('foto')
+                                    <div class="form-group col-md-6">
+                                        <label>Username <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" placeholder="Enter the username...">
+                                        @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-4">
-                                        <label>Tahun Berdiri <small class="text-success">*Harus diisi</small></label>
-                                        <select name="tahun_berdiri" id="" class="form-control">
-                                            <option value="0">--Pilih Tahun--</option>
-                                            @for($i = 1945;$i <= 2021;$i++)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>E-mail <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" aria-describedby="barangStatus" aria-describedby="barangStatus" placeholder="Enter the email...">
+                                        <small id="barangStatus" class="form-text">Password akan dikirim ke E-mail ini.</small>
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Bank <small class="text-success">*Harus diisi</small></label>
+                                        <select name="bank_id" id="" class="form-control">
+                                            <option value="0">--Pilih Bank--</option>
+                                            @foreach($bank as $data)
+                                                <option value="{{ $data->id }}">{{ $data->nama }}</option>
+                                            @endforeach
                                         </select>
-                                        @error('tahun_berdiri')
+                                        @error('bank_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Telepon <small class="text-success">*Harus diisi</small></label>
-                                    <input type="number" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ old('telepon') }}" placeholder="Enter number...">
-                                    @error('telepon')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label>Alamat <small class="text-success">*Harus diisi</small></label>
-                                    <textarea name="alamat" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{old('alamat')}}</textarea>
-                                    @error('alamat')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">

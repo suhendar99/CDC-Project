@@ -75,7 +75,7 @@ return [
 
     'from' => [
         'address' =>  'al@makerindo.com',
-        'name' => 'Registration Verification'
+        'name' => 'CDC System'
     ],
 
     /*

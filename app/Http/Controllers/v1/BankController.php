@@ -26,7 +26,7 @@ class BankController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/bank/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/bank/'.$data->id.'/edit" class="btn btn-outline-primary btn-sm" style="border-width: 3px;border-radius: 5px;">Edit</a>&nbsp;<a class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;border-width: 3px;border-radius: 5px;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->id.')" style="border-width: 3px;border-radius: 5px;">Hapus</a></div>';
                 })
                 ->make(true);
         }
@@ -62,11 +62,8 @@ class BankController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama_akun' => 'required|string|max:50',
             'nama_bank' => 'required|string|max:50',
             'tahun_berdiri' => 'required|integer|max:2022',
-            'username' => 'required|string|max:50',
-            'email' => 'required|email|unique:users,email',
             'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
             'alamat' => 'required|string|max:65534',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
@@ -78,14 +75,6 @@ class BankController extends Controller
 
         $bank = Bank::create($request->only('tahun_berdiri', 'alamat', 'telepon')+[
             'nama' => $request->nama_bank
-        ]);
-
-        User::create([
-            'name' => $request->nama_akun,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make('12341234'),
-            'bank_id' => $bank->id
         ]);
 
         if ($request->file('foto')) {

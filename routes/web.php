@@ -96,6 +96,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Bank
         Route::resource('bank', 'BankController');
+        Route::resource('akun-bank', 'AkunBankController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
