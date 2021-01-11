@@ -40,13 +40,10 @@ class UserController extends Controller
                 })
                 ->addColumn('status', function($data){
                     if ($data->status == 1) {
-                        $disabled = '';
-                        $disable = 'disabled';
+                        return '<a style="text-decoration:none;" class="text-primary font-weight-bold">AKTIF </a>&nbsp;<a href="/v1/user/'.$data->id.'/unapprove" class="btn btn-danger btn-sm">Non-Aktifkan</a>';
                     } else{
-                        $disabled = 'disabled';
-                        $disable = '';
+                        return '<a href="/v1/user/'.$data->id.'/approve" class="btn btn-success btn-sm">Aktifkan</a>&nbsp;<a style="text-decoration:none;" class="text-danger font-weight-bold"> NON-AKTIF</a>';
                     }
-                    return '<a href="/v1/user/'.$data->id.'/approve" class="btn btn-success btn-sm '.$disable.'">Aktifkan</a>&nbsp;<a href="/v1/user/'.$data->id.'/unapprove" class="btn btn-danger btn-sm '.$disabled.'">Non-Aktifkan</a>';
                 })
                 ->addColumn('role', function($data){
                     if ($data->pengurus_gudang_id != null) {

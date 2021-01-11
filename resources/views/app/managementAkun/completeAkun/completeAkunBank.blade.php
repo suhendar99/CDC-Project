@@ -75,7 +75,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Tahun Berdiri <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('tahun_berdiri') is-invalid @enderror" name="tahun_berdiri" value="{{$auth->bank->tahun_berdiri}}">
+                                                <input type="text" class="form-control @error('tahun_berdiri') is-invalid @enderror" name="tahun_berdiri" value="{{old('tahun_berdiri')}}">
                                                 @error('tahun_berdiri')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -161,7 +161,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Alamat <small class="text-success">*Harus diisi</small></label>
-                                                <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{$auth->bank->alamat}}</textarea>
+                                                <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{old('alamat')}}</textarea>
                                                 @error('pekerjaan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -174,7 +174,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Telepon <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $auth->bank->telepon }}">
+                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ old('telepon') }}">
                                                 @error('telepon')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -187,7 +187,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Foto <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $auth->bank->foto }}">
+                                        <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}">
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -226,7 +226,7 @@
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">
-                                            <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                            <button type="submit" class="btn btn-success btn-sm">Selanjutnya</button>
                                         </div>
                                       </div>
                                   </div>
