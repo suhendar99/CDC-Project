@@ -36,6 +36,7 @@
                     <li class="
                         @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
+                        {{ Request::is('v1/bank*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
@@ -46,6 +47,7 @@
                         <ul id="dataSubmenu" class="collapse list-unstyled
                             @if (isset($admin))
                             {{ Request::is('v1/user*') ? 'show' : false }}
+                            {{ Request::is('v1/bank*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
@@ -58,6 +60,11 @@
                                 {{ Request::is('v1/user*') ? 'active' : false }}
                             ">
                                 <a href="{{route('user.index')}}">Akun</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/bank*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('bank.index')}}">Bank</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
