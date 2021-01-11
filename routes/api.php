@@ -37,4 +37,5 @@ Route::get('/v1/getDesa/{id}','v1\DashboardController@getDesa');
 Route::get('/v1/storage/barang/{kode}', 'v1\StorageInController@checkBarang');
 Route::get('/v1/detail/storage/in/{id}', 'v1\StorageInController@detail');
 Route::get('/v1/detail/storage/out/{id}', 'v1\StorageOutController@detail');
+Route::get('/v1/detail/bank/{id}', 'v1\BankController@detail');
 Route::get('/v1/geocode', 'v1\GudangController@geocode');
