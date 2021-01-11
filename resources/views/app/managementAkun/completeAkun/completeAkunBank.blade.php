@@ -186,7 +186,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Foto <small class="text-success">*Harus diisi</small></label>
+                                        <label>Foto Profil <small class="text-success">*Harus diisi</small></label>
                                         <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}">
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">

@@ -59,8 +59,10 @@
                                 <th>No</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Role</th>
                                 <th>NIK</th>
+                                <th>Foto KTP</th>
+                                <th>Foto KTP Selfie</th>
+                                <th>Role</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -112,8 +114,10 @@
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
-                {data : 'role', name: 'role'},
                 {data : 'nik', name: 'nik'},
+                {data : 'foto_ktp', name: 'foto_ktp'},
+                {data : 'foto_ktp_selfie', name: 'foto_ktp_selfie'},
+                {data : 'role', name: 'role'},
                 {data : 'status', name: 'status'},
                 {data : 'action', name: 'action'}
             ]

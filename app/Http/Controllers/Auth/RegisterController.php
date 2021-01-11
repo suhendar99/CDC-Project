@@ -102,7 +102,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'pemasok_id' => $pemasok->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } elseif ($data['role'] == 'karyawan') {
             $karyawan = Karyawan::create([
@@ -140,7 +141,8 @@ class RegisterController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
                 'pengurus_gudang_id' => $pengurusGudang->id,
-                'email_verified_at' => $data['email_verified_at']
+                'email_verified_at' => $data['email_verified_at'],
+                'status' => 1
             ]);
         } else {
             return back()->with('failed', 'Mohon pilih role terlebih dahulu !');

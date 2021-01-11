@@ -34,6 +34,12 @@ Route::get('/home', function (){
 })->name('home');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+    // Complete Foto KTP
+    Route::post('KTP/{id}','KtpController@fotoKtp')->name('foto.ktp');
+    // End Complete Foto KTP
+    // Complete Foto Selfie KTP
+    Route::post('KTP-Selfie/{id}','KtpController@fotoKtpSelfie')->name('foto.ktp.selfie');
+    // End Complete Foto Selfie KTP
     //Dashboard
     Route::get('dashboard','DashboardController@index')->name('dashboard');
     // Complete Akun

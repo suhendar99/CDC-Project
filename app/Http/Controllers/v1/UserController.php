@@ -56,6 +56,28 @@ class UserController extends Controller
                         return 'Pembeli';
                     }
                 })
+                ->addColumn('foto_ktp', function($data){
+                    if ($data->pengurus_gudang_id != null) {
+                        return '<img src="{{asset($data->pengurusGudang->foto_ktp)}}" alt="" height="50" width="100">';
+                    } elseif ($data->bank_id != null) {
+                        return 'Tidak Mempunyai Foto KTP';
+                    } elseif ($data->pemasok_id != null) {
+                        return '<img src="{{asset($data->pemasok->foto_ktp)}}" alt="" height="50" width="100">';
+                    } elseif ($data->pelanggan_id != null) {
+                        return 'Tidak Mempunyai Foto KTP';
+                    }
+                })
+                ->addColumn('foto_ktp_selfie', function($data){
+                    if ($data->pengurus_gudang_id != null) {
+                        return '<img src="{{asset($data->pengurusGudang->foto_ktp_selfie)}}" alt="" height="50" width="100">';
+                    } elseif ($data->bank_id != null) {
+                        return 'Tidak Mempunyai Foto KTP';
+                    } elseif ($data->pemasok_id != null) {
+                        return '<img src="{{asset($data->pemasok->foto_ktp_selfie)}}" alt="" height="50" width="100">';
+                    } elseif ($data->pelanggan_id != null) {
+                        return 'Tidak Mempunyai Foto KTP';
+                    }
+                })
                 ->addColumn('nik', function($data){
                     if ($data->pengurus_gudang_id != null) {
                         if ($data->pengurusGudang->nik != null) {
@@ -83,7 +105,7 @@ class UserController extends Controller
                         }
                     }
                 })
-                ->rawColumns(['action','status','role'])
+                ->rawColumns(['action','status','role','foto_ktp','foto_ktp_selfie'])
                 ->make(true);
         }
         return view($this->path.'index');
