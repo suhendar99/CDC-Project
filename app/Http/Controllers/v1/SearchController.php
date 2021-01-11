@@ -14,6 +14,7 @@ class SearchController extends Controller
 		$this->barang = new Barang;
 		$this->category = new Kategori;
 		$this->shopPath = 'app.shop.';
+		$this->pemasokPath = 'app.data-master.barang.';
 	}
 
 	public function barang(Request $request)
@@ -23,6 +24,9 @@ class SearchController extends Controller
 		if($request->page == 'shop'){
 			$barang =  $this->barang->where('nama_barang', 'like', '%'.$request->search.'%')->get();
 			return view($this->shopPath.'index', compact('category','barang','nomore'));
+		} elseif($request->page == 'pemasok'){
+			$barang =  $this->barang->where('nama_barang', 'like', '%'.$request->search.'%')->paginate(24);
+			return view($this->pemasokPath.'index', compact('category','barang'));
 		} else {
 			return 'null';
 		}

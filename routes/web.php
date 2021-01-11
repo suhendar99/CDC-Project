@@ -85,16 +85,20 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
+        // Kategori Barang Induk
+        Route::resource('kategoriBarang', 'KategoriBarangController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
         Route::resource('barang', 'BarangController');
-        Route::resource('kategoriBarang', 'KategoriBarangController');
         Route::get('edit-foto-barang/{id}','BarangController@editFotoBarang')->name('edit.barang');
         Route::put('update-foto-barang/{id}','BarangController@updateFotoBarang')->name('update.barang');
         Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
-        Route::post('st0BarangController@storeFotoBarang')->name('store.barang');
+        Route::post('store-foto-barang','BarangController@storeFotoBarang')->name('store.barang');
         Route::delete('delete-foto-barang/{id}','BarangController@deleteFotoBarang')->name('delete.barang');
+        Route::get('detailBarang/{id}','BarangController@detail');
+        // Rekening Pemasok
+        Route::resource('rekeningPemasok', 'RekeningPemasokController');
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
@@ -108,7 +112,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('storage', 'StorageController');
         Route::resource('storage-in', 'StorageInController');
         Route::resource('storage-out', 'StorageOutController');
-        
+
         // Gudang
         Route::resource('gudang', 'GudangController');
 

@@ -13,4 +13,8 @@ class Bank extends Model
     {
         return $this->hasMany('App\User');
     }
+    public function rekeningPemasok()
+    {
+        return $this->hasMany('App\Models\RekeningPemasok');
+    }
 }

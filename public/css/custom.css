@@ -148,6 +148,16 @@ img .scale-down{
 .text-24{
 	font-size: 24px;
 }
+
+.barang-title{
+	font-size: 14px;
+	font-weight: 500;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1; /* number of lines to show */
+	-webkit-box-orient: vertical;
+}
 /*End Text Section*/
 
 .p-0{
@@ -190,6 +200,7 @@ img .scale-down{
 	position: absolute;
 	z-index: 2;
 	right: 25px;
+    padding: .3rem !important;
 }
 
 .flex-last{
@@ -219,6 +230,10 @@ img .scale-down{
     border-right: 1px solid black;
 }
 
+.carousel-barang{
+	border-radius : 5px 5px 0 0 !important;
+}
+
 #calendar{
 	font-size: .8rem;
 }
@@ -236,6 +251,10 @@ body .card{
 
 body .dropdown-item{
 	font-size: .8rem !important;
+}
+
+img.cover{
+	object-fit: cover;
 }
 
 /* .card::after{
@@ -295,6 +314,13 @@ body .dropdown-item{
 	margin: 0;
 }
 
+.detail-foto{
+	height: 150px;
+	width: 150px;
+	object-fit: cover;
+	padding: 0 1rem;
+	border-radius: 5px;
+}
 
 .fr-absolute {
 	position:  absolute;

@@ -37,6 +37,10 @@ class Pemasok extends Model
     {
         return $this->hasMany('App\Models\Kategori');
     }
+    public function rekeningPemasok()
+    {
+        return $this->hasMany('App\Models\RekeningPemasok');
+    }
     public function getData()
     {
         return static::orderBy('id','desc')->get();

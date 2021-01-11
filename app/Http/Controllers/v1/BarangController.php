@@ -30,26 +30,28 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $data = $this->Data->getData();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($data){
-                    return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                })
-                ->addColumn('foto', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
-                })
-                ->addColumn('barcode', function($data){
-                    return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
-                })
-                ->addColumn('jumsat', function($data){
-                    return $data->jumlah.' '.$data->satuan;
-                })
-                ->rawColumns(['barcode','action','jumsat','foto'])
-                ->make(true);
-        }
-        return view($this->path.'index');
+        $barang = Barang::with('foto')->paginate(24);
+        $foto = FotoBarang::all();
+        // if($request->ajax()){
+        //     $data = $this->Data->getData();
+        //     return DataTables::of($data)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function($data){
+        //             return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+        //         })
+        //         ->addColumn('foto', function($data){
+        //             return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
+        //         })
+        //         ->addColumn('barcode', function($data){
+        //             return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
+        //         })
+        //         ->addColumn('jumsat', function($data){
+        //             return $data->jumlah.' '.$data->satuan;
+        //         })
+        //         ->rawColumns(['barcode','action','jumsat','foto'])
+        //         ->make(true);
+        // }
+        return view($this->path.'index',compact('barang','foto'));
     }
     public function getBarangByPelanggan(Request $request)
     {
@@ -98,16 +100,18 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama_barang' => 'required|string|max:20',
+            'nama_barang' => 'required|string|max:50',
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
+            'foto.*' => 'required|mimes:png,jpg|max:2048'
         ]);
         if ($v->fails()) {
-            // dd($v->errors()->all());
+            dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
             // $pin = mt_rand(100, 999)
@@ -117,7 +121,7 @@ class BarangController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
                 'kode_barang' => $kode,
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id
@@ -152,6 +156,27 @@ class BarangController extends Controller
 
         return response()->json([
             'data' => $data
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function detail($id)
+    {
+        $data = Barang::with('foto','pemasok','kategori')->find($id);
+        $foto = [];
+        foreach ($data->foto as $key => $value) {
+            $foto[] = $value->foto;
+        }
+
+        // dd($foto);
+        return response()->json([
+            'data' => $data,
+            'foto' => $foto
         ]);
     }
 
@@ -258,6 +283,7 @@ class BarangController extends Controller
             'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
+            'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
@@ -266,7 +292,7 @@ class BarangController extends Controller
             return back()->withErrors($v)->withInput();
         } else {
             $barang = Barang::find($id);
-            $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total'),[
+            $barang->update(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
                 'kategori_id' => $request->kategori_id,
                 // 'kode_barang' => $request->kode_barang
             ]));
