@@ -156,6 +156,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $('.card').delay(1000).addClass('stop');
         $('.alert').delay(1000).fadeOut(1000, function () {
            $('.alert').remove();
@@ -185,7 +186,13 @@
             $('#category').toggleClass('active');
         });
 
-
+        var satuan = $('#selectSatuan').val()
+        $('#satuanAppend').text(satuan)
+        
+        $('#selectSatuan').change(function(){
+            satuan = $('#selectSatuan').val()
+            $('#satuanAppend').text(satuan)
+        })
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>

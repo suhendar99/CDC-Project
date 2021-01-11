@@ -23,7 +23,10 @@
                             <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
                         </li>
                         <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
-                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
+                            <a href="{{route('transaksiPemasok.index')}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
+                        </li>
+                        <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
+                            <a href="{{route('transaksiPemasok.index')}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
                         </li>
                         <li class="{{ Request::is('v1/Laporan*') ? 'active' : false }}">
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>

@@ -111,30 +111,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ $data->jumlah }}" placeholder="Enter jumlah barang">
-                                        @error('jumlah')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Total harga <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="hasil" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ $data->harga_total }}" placeholder="Enter total harga barang">
-                                        @error('harga_total')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <select class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
                                             <option value="kg">kg</option>
                                             <option value="ons">ons</option>
                                             <option value="gram">gram</option>
@@ -145,6 +123,33 @@
                                             <option value="gram">cm</option>
                                         </select>
                                         @error('satuan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group mb-3">
+                                          <input type="number" type="number" name="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text" id="satuanAppend"></span>
+                                          </div>
+                                          @error('jumlah')
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $message }}</strong>
+                                              </span>
+                                          @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Total harga <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" min="0" id="hasil" class="form-control @error('harga_total') is-invalid @enderror" name="harga_total" value="{{ $data->harga_total }}" placeholder="Enter total harga barang">
+                                        @error('harga_total')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
