@@ -87,6 +87,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('setApp', 'PengaturanAplikasiController');
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
+
+        // Bank
+        Route::resource('bank', 'BankController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
         // Barang
