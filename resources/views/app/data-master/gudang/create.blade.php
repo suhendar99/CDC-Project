@@ -13,8 +13,6 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Gudang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Tambah Data Gudang</a>
@@ -88,6 +86,69 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
+                                                <label for="provinsi-select">Provinsi <small class="text-success">*Harus diisi</small></label>
+                                                <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    @foreach($provinsi as $p)
+                                                    <option value="{{$p->id}}">{{$p->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('provinsi_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="kabupaten-select">Kabupaten <small class="text-success">*Harus diisi</small></label>
+                                                <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                </select>
+                                                @error('kabupaten_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="kecamatan-select">Kecamatan <small class="text-success">*Harus diisi</small></label>
+                                                <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                </select>
+                                                @error('kecamatan_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="desa-select">Desa <small class="text-success">*Harus diisi</small></label>
+                                                <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                </select>
+                                                @error('desa_id')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
                                                 <label>Nama Gudang <small class="text-success">*Harus diisi</small></label>
                                                 <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Enter Nama">
                                                 @error('nama')
@@ -127,69 +188,6 @@
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="provinsi-select">Provinsi</label>
-                                                <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
-                                                    <option value="">-- Pilih Disini --</option>
-                                                    @foreach($provinsi as $p)
-                                                    <option value="{{$p->id}}">{{$p->nama}}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('provinsi_id')
-                                                <div class="invalid-feedback">
-                                                    <i class="bx bx-radio-circle"></i>
-                                                    {{{$message}}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="kabupaten-select">Kabupaten</label>
-                                                <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
-                                                    <option value="">-- Pilih Disini --</option>
-                                                </select>
-                                                @error('kabupaten_id')
-                                                <div class="invalid-feedback">
-                                                    <i class="bx bx-radio-circle"></i>
-                                                    {{{$message}}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="kecamatan-select">Kecamatan</label>
-                                                <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
-                                                    <option value="">-- Pilih Disini --</option>
-                                                </select>
-                                                @error('kecamatan_id')
-                                                <div class="invalid-feedback">
-                                                    <i class="bx bx-radio-circle"></i>
-                                                    {{{$message}}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="desa-select">Desa</label>
-                                                <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
-                                                    <option value="">-- Pilih Disini --</option>
-                                                </select>
-                                                @error('desa_id')
-                                                <div class="invalid-feedback">
-                                                    <i class="bx bx-radio-circle"></i>
-                                                    {{{$message}}}
-                                                </div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -306,10 +304,111 @@
         draggable: true
     }).addTo(map);
     L.control.layers(baseLayers).addTo(map);
+    var geocodeService = L.esri.Geocoding.geocodeService();
     marker.on('dragend', function (e) {
       document.getElementById('latitude').value = marker.getLatLng().lat;
       document.getElementById('longitude').value = marker.getLatLng().lng;
+
+        geocodeService.reverse().latlng(e.target._latlng).run(function (error, result) {
+          if (error) {
+            return;
+          }
+
+          // console.log(result)
+
+          let geo = "";
+          let kecamatan = "";
+          let kabupaten = "";
+          let provinsi = "";
+
+          if (result.address.District !== "") {
+            // console.log('kecamatan='+result.address.District)
+            kecamatan = 'kecamatan='+result.address.District;
+            geo = geo + "?" + kecamatan;
+          }
+
+          if (result.address.Subregion !== "") {
+            // console.log('kabupaten='+result.address.Subregion)
+            kabupaten = 'kabupaten='+result.address.Subregion;
+            if (geo !== "") {
+                geo = geo + "&" + kabupaten;
+            }else{
+                geo = geo + "?" + kabupaten;
+            }
+          }
+
+          if (result.address.Region !== "") {
+            // console.log('provinsi='+result.address.Region)
+            provinsi = 'provinsi='+result.address.Region;
+            if (geo !== "") {
+                geo = geo + "&" + provinsi;
+            }else{
+                geo = geo + "?" + provinsi;
+            }
+          }
+
+          $.ajax({
+              url: '/api/v1/geocode'+geo,
+              type: 'GET',
+              cache: false,
+              dataType: 'json',
+              success: function(response) {
+                // alert(json.data);
+                console.log(response);
+                if (typeof response.kecamatan !== 'undefined') {
+                    $('#kecamatan-select').html('');
+                    $('#kecamatan-select').append($('<option>').text(response.kecamatan.nama).attr({
+                        value: response.kecamatan.id,
+                        selected: 'selected'
+                    }));
+                    $('#kabupaten-select').html('')
+                    $('#kabupaten-select').append($('<option>').text(response.kecamatan.kabupaten.nama).attr({
+                        value: response.kecamatan.kabupaten.id,
+                        selected: 'selected'
+                    }));
+                    $.each($('#provinsi-select option'), function(index, val) {
+                         /* iterate through array or object */
+                         if ($(this).val() == response.kecamatan.kabupaten.provinsi.id) {
+                            $(this).attr('selected', 'selected');
+                         }
+                    });
+                    getDesa(response.kecamatan.id)
+                }
+
+                if (typeof response.kabupaten !== 'undefined') {
+                    $('#kabupaten-select').html('');
+                    $('#kabupaten-select').append($('<option>').text(response.kabupaten.nama).attr({
+                        value: response.kabupaten.id,
+                        selected: 'selected'
+                    }));
+                    $.each($('#provinsi-select option'), function(index, val) {
+                         /* iterate through array or object */
+                         if ($(this).val() == response.kabupaten.provinsi.id) {
+                            $(this).attr('selected', 'selected');
+                         }
+                    });
+                    getKecamatan(response.kabupaten.id)
+                }
+
+                if (typeof response.provinsi !== 'undefined') {
+                    $.each($('#provinsi-select option'), function(index, val) {
+                         /* iterate through array or object */
+                         if ($(this).val() == response.provinsi.id) {
+                            $(this).attr('selected', 'selected');
+                         }
+                    });
+                    $('#kecamatan-select').html(`<option value="">-- Pilih Disini --</option>`);
+                    $('#kabupaten-select').html(`<option value="">-- Pilih Disini --</option>`)
+                    $('#desa-select').html(`<option value="">-- Pilih Disini --</option>`)
+                    getKabupaten(response.provinsi.id)
+                }
+              }
+            });
+
+          marker.bindPopup(result.address.Match_addr).openPopup();
+        });
     });
+
     function getLocation(){
     // get users lat/long
     var getPosition = {

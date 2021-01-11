@@ -77,8 +77,11 @@ class RakController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
+        $faker = \Faker\Factory::create('id_ID');
+
         $rak = Rak::create($request->only('nama', 'lebar', 'panjang', 'tinggi')+[
-            'gudang_id' => $gudang
+            'gudang_id' => $gudang,
+            'kode' => $faker->unique()->regexify('([A-Z]{5})+([0-9]{7})')
         ]);
 
         for ($i=1; $i <= (integer)$request->tingkat; $i++) { 
@@ -143,6 +146,8 @@ class RakController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
+
+        // $faker = \Faker\Factory::create('id_ID');
 
         $rak = Rak::findOrFail($id)->update($request->only('nama', 'lebar', 'panjang', 'tinggi'));
 

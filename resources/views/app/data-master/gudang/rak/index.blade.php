@@ -48,7 +48,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>Kode</th>
                                 <th>Nama Rak</th>
                                 <th>Panjang</th>
                                 <th>Lebar</th>
@@ -146,7 +146,8 @@
             pageLength : 10,
             ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
             columns : [
-                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'kode', name: 'kode'},
                 {data : 'nama', name: 'nama'},
                 {
                     data : 'panjang', render:function(data,a,b,c){
