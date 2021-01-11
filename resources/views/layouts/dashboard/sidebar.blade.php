@@ -19,11 +19,14 @@
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     @if (isset($pemasok))
+                        <li class="{{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}">
+                            <a href="{{route('rekeningPemasok.index')}}" class="valign-center {{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Rekening Pemasok</a>
+                        </li>
                         <li class="{{ Request::is('v1/barang*') ? 'active' : false }}">
                             <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
                         </li>
                         <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
-                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
+                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">money</i>Transaksi</a>
                         </li>
                         <li class="{{ Request::is('v1/Laporan*') ? 'active' : false }}">
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>
