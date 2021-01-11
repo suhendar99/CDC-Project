@@ -29,18 +29,13 @@
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>
                         </li>
                     @endif
-                    @if (isset($admin) || isset($pengurusGudang))
+                    @if (isset($admin))
                     <li class="
                         @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
-                        @endif
-                        @if (isset($pengurusGudang))
-                        {{ Request::is('v1/gudang*') ? 'active' : false }}
-                        {{ Request::is('v1/storage-in*') ? 'active' : false }}
-                        {{ Request::is('v1/storage-out*') ? 'active' : false }}
                         @endif
                     ">
                         @if (isset($admin) || isset($pengurusGudang))
@@ -51,11 +46,6 @@
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
-                            @endif
-                            @if (isset($pengurusGudang))
-                            {{ Request::is('v1/gudang*') ? 'show' : false }}
-                            {{ Request::is('v1/storage-in*') ? 'show' : false }}
-                            {{ Request::is('v1/storage-out*') ? 'show' : false }}
                             @endif
                         ">
                         @endif
@@ -89,23 +79,24 @@
                                 <a href="{{route('barang.index')}}">Barang</a>
                             </li>
                             @endif
-                            @if (isset($pengurusGudang))
-                            <li class="
-                                {{ Request::is('v1/gudang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('gudang.index')}}">Gudang</a>
-                            </li>
-                            <li class="
-                                {{ Request::is('v1/storage-in*') ? 'active' : false }}
-                            ">
-                                <a href="{{ route('storage-in.index') }}">Storage Masuk</a>
-                            <li class="
-                                {{ Request::is('v1/storage-out*') ? 'active' : false }}
-                            ">
-                                <a href="{{ route('storage-out.index') }}">Storage Keluar</a>
-                            </li>
-                            @endif
                         </ul>
+                    </li>
+                    @endif
+                    @if (isset($pengurusGudang))
+                    <li class="
+                        {{ Request::is('v1/gudang*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('gudang.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Gudang</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/storage-in*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('storage-in.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Masuk</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/storage-out*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('storage-out.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Keluar</a>
                     </li>
                     @endif
                     {{-- @endif --}}

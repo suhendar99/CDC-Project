@@ -13,8 +13,6 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Gudang</a>
           </div>
         </div>
@@ -31,7 +29,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-
+                                <form action="{{route('gudang.search')}}" method="post" style="width: 100%;">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="text" name="nama" class=" form-control" placeholder=" Cari gudang ..." aria-label="Cari gudang..." aria-describedby="basic-addon1">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-outline-secondary">search</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -45,6 +51,7 @@
         </div>
         <div class="col-md-12">
             <div class="row">
+                @if(count($data) > 0)
                 @foreach($data as $gudang)
                 <div class="col-4">
                     <div class="card">
@@ -82,8 +89,17 @@
                     </div>
                 </div>
                 @endforeach
+                @else
+                <div class="col-12">
+                    <div class="footer-copyright text-center pt-4 text-dark fixed">
+                        ~ Tidak Ada Data Gudang ~
+                    </div>
+                </div>
+                @endif
             </div>
-            
+        </div>
+        <div class="col-md-12">
+            {{ $data->links() }}
         </div>
     </div>
 </div>

@@ -37,7 +37,14 @@ class GudangController extends Controller
                 })
                 ->make(true);
         }
-        $data = Gudang::all();
+        $data = Gudang::paginate(6);
+
+        return view($this->path.'index', compact('data'));
+    }
+
+    public function search(Request $request)
+    {
+        $data = Gudang::where('nama', 'like', '%'.$request->nama.'%')->paginate(6);
 
         return view($this->path.'index', compact('data'));
     }

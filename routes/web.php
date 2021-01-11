@@ -114,6 +114,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('storage-out', 'StorageOutController');
 
         // Gudang
+        Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
         Route::resource('gudang', 'GudangController');
 
         // Rak
