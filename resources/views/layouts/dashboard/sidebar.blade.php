@@ -19,31 +19,27 @@
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     @if (isset($pemasok))
+                        <li class="{{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}">
+                            <a href="{{route('rekeningPemasok.index')}}" class="valign-center {{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Rekening Pemasok</a>
+                        </li>
                         <li class="{{ Request::is('v1/barang*') ? 'active' : false }}">
                             <a href="{{route('barang.index')}}" class="valign-center {{ Request::is('v1/barang*') ? 'active' : false }}"><i class="material-icons">archive</i>Barang</a>
                         </li>
                         <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
-                            <a href="{{route('transaksiPemasok.index')}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
-                        </li>
-                        <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
-                            <a href="{{route('transaksiPemasok.index')}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Transaksi</a>
+                            <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">money</i>Transaksi</a>
                         </li>
                         <li class="{{ Request::is('v1/Laporan*') ? 'active' : false }}">
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>
                         </li>
                     @endif
-                    @if (isset($admin) || isset($pengurusGudang))
+                    @if (isset($admin))
                     <li class="
                         @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
+                        {{ Request::is('v1/bank*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
-                        @endif
-                        @if (isset($pengurusGudang))
-                        {{ Request::is('v1/gudang*') ? 'active' : false }}
-                        {{ Request::is('v1/storage-in*') ? 'active' : false }}
-                        {{ Request::is('v1/storage-out*') ? 'active' : false }}
                         @endif
                     ">
                         @if (isset($admin) || isset($pengurusGudang))
@@ -51,14 +47,10 @@
                         <ul id="dataSubmenu" class="collapse list-unstyled
                             @if (isset($admin))
                             {{ Request::is('v1/user*') ? 'show' : false }}
+                            {{ Request::is('v1/bank*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
-                            @endif
-                            @if (isset($pengurusGudang))
-                            {{ Request::is('v1/gudang*') ? 'show' : false }}
-                            {{ Request::is('v1/storage-in*') ? 'show' : false }}
-                            {{ Request::is('v1/storage-out*') ? 'show' : false }}
                             @endif
                         ">
                         @endif
@@ -68,6 +60,11 @@
                                 {{ Request::is('v1/user*') ? 'active' : false }}
                             ">
                                 <a href="{{route('user.index')}}">Akun</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/bank*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('bank.index')}}">Bank</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
@@ -92,23 +89,24 @@
                                 <a href="{{route('barang.index')}}">Barang</a>
                             </li>
                             @endif
-                            @if (isset($pengurusGudang))
-                            <li class="
-                                {{ Request::is('v1/gudang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('gudang.index')}}">Gudang</a>
-                            </li>
-                            <li class="
-                                {{ Request::is('v1/storage-in*') ? 'active' : false }}
-                            ">
-                                <a href="{{ route('storage-in.index') }}">Storage Masuk</a>
-                            <li class="
-                                {{ Request::is('v1/storage-out*') ? 'active' : false }}
-                            ">
-                                <a href="{{ route('storage-out.index') }}">Storage Keluar</a>
-                            </li>
-                            @endif
                         </ul>
+                    </li>
+                    @endif
+                    @if (isset($pengurusGudang))
+                    <li class="
+                        {{ Request::is('v1/gudang*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('gudang.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Gudang</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/storage-in*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('storage-in.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Masuk</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/storage-out*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('storage-out.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Keluar</a>
                     </li>
                     @endif
                     {{-- @endif --}}

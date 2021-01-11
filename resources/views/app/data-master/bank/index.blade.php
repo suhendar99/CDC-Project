@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Rak Gudang';
+        $pageTitle = 'Data Bank';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -9,15 +9,13 @@
     <div class="col-md-8 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
         <div>
-          <h4 class="mt-1 mb-0">{{$pageTitle}} {{ $gudang->nama }}</h4>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Gudang</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Rak Gudang</a>
+            <a href="#" class="text-14">Data Bank</a>
           </div>
         </div>
     </div>
@@ -38,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('rak.create', ['gudang' => $gudang->id])}}" class="btn btn-primary btn-sm">Tambah Rak Gudang</a>
+                                <a href="{{route('bank.create')}}" class="btn btn-primary btn-sm">Tambah Bank</a>
                             </div>
                         </div>
                     </div>
@@ -48,12 +46,11 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Kode</th>
-                                <th>Nama Rak</th>
-                                <th>Panjang</th>
-                                <th>Lebar</th>
-                                <th>Tinggi</th>
-                                <th>Tingkat Rak</th>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Tahun Berdiri</th>
+                                <th>Telepon</th>
+                                <th>Foto</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -79,33 +76,26 @@
         </div>
         <div class="modal-body">
           <div class="row">
-              <div class="col-md-12 mb-3">
-                  <h3 id="kode"></h3>
-              </div>
+            <div class="col-12 text-center">
+                <span>Foto Bank</span><br>
+                <div id="foto" class="my-4"></div>
+            </div>
           </div>
           <div class="row">
               <div class="col-6">
                   <table class="table">
                       <tbody>
                         <tr>
-                            <th scope="row">Kode Barang</th>
-                            <td class="kodeBarang"></td>
+                            <th scope="row">Nama Bank</th>
+                            <td class="namaBank"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Nama Barang</th>
-                          <td class="nama"></td>
+                          <th scope="row">Tahun Berdiri</th>
+                          <td class="tahun"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Harga Barang</th>
-                          <td class="harga"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Satuan Barang</th>
-                          <td class="satuan"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Jumlah Barang</th>
-                          <td class="jumlah"></td>
+                          <th scope="row">Telepon</th>
+                          <td class="telepon"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -114,16 +104,28 @@
                   <table class="table">
                       <tbody>
                         <tr>
-                            <th scope="row">Nama Gudang</th>
-                            <td class="gudang"></td>
+                            <th scope="row">Nama Akun</th>
+                            <td class="namaAkun"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Karyawan</th>
-                          <td class="karyawan"></td>
+                          <th scope="row">Username</th>
+                          <td class="username"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Waktu Masuk</th>
-                          <td class="waktu"></td>
+                          <th scope="row">E-mail</th>
+                          <td class="email"></td>
+                        </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12">
+                  <table class="table">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Alamat</th>
+                          <td class="alamat"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -144,59 +146,74 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
+            ajax : "{{ route('bank.index') }}",
             columns : [
-                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode', name: 'kode'},
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
                 {
-                    data : 'panjang', render:function(data,a,b,c){
-                        return data + ' m';
+                    data : 'tahun_berdiri', render:function(data,a,b,c){
+                        if (data == null) {
+                            return "( NULL )"
+                        } else {
+                            return data;
+                        }
                     }
                 },
                 {
-                    data : 'lebar', render:function(data,a,b,c){
-                        return data + ' m';
+                    data : 'telepon', render:function(data,a,b,c){
+                        if (data == null) {
+                            return "( NULL )"
+                        } else {
+                            return data;
+                        }
                     }
                 },
                 {
-                    data : 'tinggi', render:function(data,a,b,c){
-                        return data + ' m';
+                    data : 'foto', render:function(data,a,b,c){
+                        if (data == null) {
+                            return "( NULL )";
+                        } else {
+                            return `<img src="{{ asset('') }}${data}" height=\"50px\"width=\"50px\">`;
+
+                        }
                     }
                 },
-                {data : 'tingkat_count', name: 'tingkat_count'},
                 {data : 'action', name: 'action'}
             ]
         });
 
         function detail(id){
-            $('.kodeBarang').text('LOADING...')
-            $('.nama').text('LOADING...')
-            $('.harga').text('LOADING...')
-            $('.satuan').text('LOADING...')
-            $('.jumlah').text('LOADING...')
-            $('.gudang').text('LOADING...')
-            $('.karyawan').text('LOADING...')
-            $('.waktu').text('LOADING...')
+            $('.namaBank').text('LOADING...')
+            $('.namaAkun').text('LOADING...')
+            $('.username').text('LOADING...')
+            $('.email').text('LOADING...')
+            $('.tahun').text('LOADING...')
+            $('.telepon').text('LOADING...')
+            $('.alamat').text('LOADING...')
+
             $.ajax({
-                url: "/api/v1/detail/storage/in/"+id,
+                url: "/api/v1/detail/bank/"+id,
                 method: "GET",
                 contentType: false,
                 cache: false,
                 processData: false,
                 success: (response)=>{
-                    console.log(response.data)
-                    let storage = response.data;
+                    // console.log(response.data)
+                    let bank = response.data;
 
-                    $('#kode').text("Kode Storage: " + storage.kode)
-                    $('.kodeBarang').text(storage.barang.kode_barang)
-                    $('.nama').text(storage.barang.nama_barang)
-                    $('.harga').text(storage.barang.harga_barang)
-                    $('.satuan').text(storage.barang.satuan)
-                    $('.jumlah').text(storage.jumlah)
-                    $('.gudang').text(storage.gudang.nama)
-                    $('.karyawan').text(storage.user.karyawan.nama)
-                    $('.waktu').text(storage.waktu)
+                    $('.namaBank').text(bank.nama)
+                    $('.namaAkun').text(bank.user[0].name)
+                    $('.username').text(bank.user[0].username)
+                    $('.email').text(bank.user[0].email)
+                    $('.tahun').text(bank.tahun_berdiri)
+                    $('.telepon').text(bank.telepon)
+                    $('.alamat').text(bank.alamat)
+
+                    if (bank.foto == null) {
+                        $("#foto").text('- Tidak Ada Foto Bank -');
+                    }else{
+                        $("#foto").html(`<img class="foto" style="width:100%; height:300px;" src="{{asset('${bank.foto}')}}">`);
+                    }
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;
@@ -206,7 +223,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/gudang/{{ $gudang->id }}/rak/'+id
+            formDelete.action = '/v1/bank/'+id
 
             const Toast = Swal.mixin({
             toast: true,

@@ -15,6 +15,7 @@ class CreateRaksTable extends Migration
     {
         Schema::create('raks', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->unique();
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->string('nama');
             $table->integer('tinggi');

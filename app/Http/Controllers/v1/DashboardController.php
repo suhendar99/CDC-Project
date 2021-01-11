@@ -135,7 +135,7 @@ class DashboardController extends Controller
                 'kecamatan_id' => 'nullable',
                 'kabupaten_id' => 'nullable',
                 'provinsi_id' => 'nullable',
-            ]);
+            ],['telepon.regex' => 'telephone number does not match the format, for example: 082xxxxxxx.']);
             if ($v->fails()) {
                 // dd($v->errors()->all());
                 return back()->withErrors($v)->withInput();
@@ -180,7 +180,7 @@ class DashboardController extends Controller
                 'kecamatan_id' => 'nullable',
                 'kabupaten_id' => 'nullable',
                 'provinsi_id' => 'nullable',
-            ]);
+            ],['telepon.regex' => 'telephone number does not match the format, for example: 082xxxxxxx.']);
             if ($v->fails()) {
                 // dd($v->errors()->all());
                 return back()->withErrors($v)->withInput();
@@ -225,7 +225,7 @@ class DashboardController extends Controller
                 'kecamatan_id' => 'nullable',
                 'kabupaten_id' => 'nullable',
                 'provinsi_id' => 'nullable',
-            ]);
+            ],['telepon.regex' => 'telephone number does not match the format, for example: 082xxxxxxx.']);
             if ($v->fails()) {
                 // dd($v->errors()->all());
                 return back()->withErrors($v)->withInput();
@@ -270,7 +270,7 @@ class DashboardController extends Controller
                 'kecamatan_id' => 'nullable',
                 'kabupaten_id' => 'nullable',
                 'provinsi_id' => 'nullable',
-            ]);
+            ],['telepon.regex' => 'telephone number does not match the format, for example: 082xxxxxxx.']);
             if ($v->fails()) {
                 // dd($v->errors()->all());
                 return back()->withErrors($v)->withInput();
@@ -309,7 +309,7 @@ class DashboardController extends Controller
                 'kecamatan_id' => 'nullable',
                 'kabupaten_id' => 'nullable',
                 'provinsi_id' => 'nullable',
-            ]);
+            ],['telepon.regex' => 'telephone number does not match the format, for example: 082xxxxxxx.']);
             if ($v->fails()) {
                 // dd($v->errors()->all());
                 return back()->withErrors($v)->withInput();
