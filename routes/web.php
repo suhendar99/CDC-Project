@@ -105,6 +105,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('transaksiPemasok', 'TransaksiPemasokController');
         Route::get('transaksiPemasok/createDetail/{id}', 'TransaksiPemasokController@createDetail')->name('create.detail');
         Route::get('selectGudang', 'TransaksiPemasokController@selectGudang')->name('select.gudang');
+        Route::get('suratJalan', 'TransaksiPemasokController@suratJalan')->name('transaksiPemasok.surat');
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {

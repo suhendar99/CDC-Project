@@ -6,6 +6,17 @@
 @extends('layouts.dashboard.header')
 
 @section('content')
+
+@error('gudang_id')
+    <div class="alert alert-danger alert-dismissible fade show valign-center" role="alert">
+    <i class="material-icons text-my-danger">cancel</i>
+    Pastikan Anda Sudah memilih gudang tujuan
+    <button type="button" class="btn btn-transparent fr-absolute" data-dismiss="alert" aria-label="Close">
+        <i class="material-icons md-14">close</i>
+    </button>
+</div>
+@enderror
+
 <div class="row valign-center mb-2">
     <div class="col-md-12 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
@@ -27,10 +38,13 @@
                     <span class="text-18">Detail Tambah Transaksi</span>
                 </div>
                 <div class="card-body">
-                    <form action="{{route('transaksiPemasok.store')}}" method="post">
+                    <form action="{{route('transaksiPemasok.surat')}}" method="get">
                                           
                     @csrf                                          
+                    <input type="hidden" name="barang_id" value="{{$barang->id}}">
                     <input type="hidden" name="gudang_id" id="gudang_id">
+                    <input type="hidden" name="satuan" value="{{$barang->satuan}}">
+                    <input type="hidden" name="max" value="{{$barang->jumlah}}">
                     <div class="row mh-50vh">
                         <div class="col-md-5 col-12 h-100">
                             <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
@@ -95,10 +109,15 @@
                                   <div class="col-md-12">
                                       <label>Jumlah Kirim <small class="text-primary">*Harus diisi</small></label>
                                       <div class="input-group mb-3">
-                                        <input id="jumlah" type="number" type="number" name="jumlah" min="1" max="{{$barang->jumlah}}" class="form-control" aria-describedby="basic-addon2">
+                                        <input id="jumlah" type="number" type="number" name="jumlah" min="1" max="{{$barang->jumlah}}" class="form-control @error('jumlah') is-invalid @enderror" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                           <span class="input-group-text" id="basic-addon2">{{$barang->satuan}}</span>
                                         </div>
+                                        @error('jumlah')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                       </div>
                                   </div>
                                 </div>
@@ -190,7 +209,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="float-right">
-                               <button type="submit" class="btn btn-success btn-sm">Next</button> 
+                               <button id="next" type="button" class="btn btn-success btn-sm" disabled>Next</button> 
                             </div>
                         </div>
                     </div>
@@ -300,6 +319,8 @@
     }
 
     function select(id){
+        $('#next').removeAttr('disabled')
+        $('#next').attr('type','submit')
         $('#detailGudang').removeClass('d-none')
         $('#detailGudang').addClass('loading')
         $.ajax({
