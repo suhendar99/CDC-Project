@@ -22,7 +22,7 @@ class ShopController extends Controller
 	public function index()
 	{
 		$category = $this->category->getData();
-		$barang = $this->barang->limit(20)->get();
+		$barang = $this->barang->with('foto')->limit(20)->get();
 		// dd($category);
 		return view($this->shopPath.'index', compact('category','barang'));
 	}

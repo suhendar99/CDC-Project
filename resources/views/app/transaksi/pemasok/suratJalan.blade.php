@@ -68,6 +68,15 @@
                           <tr>
                             <td class="text-center bold text-36" colspan="2"><u>SURAT JALAN</u></td>
                           </tr>
+                          <tr>
+                            <td class="text-14" colspan="2">Mohon Diterima Barang Barang tersebut dibawah ini : </td>
+                          </tr>
+                        </table>
+                        <table class="table table-bordered">
+                          <thead>
+                            <th>No</th>
+                            <th></th>
+                          </thead>
                         </table>
                       </div>
                         <div class="col-md-12">

@@ -95,7 +95,8 @@
 							@if($b->foto == null)
 							<img src="https://cf.shopee.co.id/file/08744f5b0e1ab3e2d537df5bbf5b2bb4">
 							@else
-							<img src="{{asset($b->foto)}}">
+							{{-- {{dd($b->foto[0]->foto)}} --}}
+							<img src="{{asset($b->foto[0]->foto)}}">
 							@endif
 							<div class="card-body">
 								<div class="row">
