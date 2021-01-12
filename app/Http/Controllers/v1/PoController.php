@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
 use PDF;
 
@@ -69,11 +70,34 @@ class PoController extends Controller
      */
     public function store(Request $request)
     {
-        if (isset($request->konfirmasi_po)) {
-            return view($this->indexPath.'konfirmasiPo');
-        } else {
 
+        $v = Validator::make($request->all(),[
+            'pengirim_po' => 'required|string|max:50',
+            'nama_pengirim' => 'required|string|max:50',
+            'telepon_pengirim' => 'required|numeric',
+            'email_pengirim' => 'required|email',
+
+            'penerima_po' => 'required|string|max:50',
+            'nama_penerima' => 'required|string|max:50',
+            'telepon_penerima' => 'required|numeric',
+            'email_penerima' => 'required|email',
+            'alamat_penerima' => 'required',
+
+            'nama_barang.*' => 'required|string|max:100',
+            'satuan.*' => 'required|string|max:10',
+            'jumlah.*' => 'required|numeric|min:1',
+            'harga.*' => 'required|numeric',
+            'diskon.*' => 'nullable|numeric',
+            'pajak.*' => 'nullable|numeric',
+        ]);
+
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+        dd($request->all());
+        // return view($this->indexPath.'konfirmasiPo');
     }
 
     /**
