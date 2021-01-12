@@ -73,6 +73,7 @@
         </div>
     </div>
 </div>
+@include('layouts.modal.user')
 <form action="" id="formDelete" method="POST">
     @csrf
     @method('DELETE')
@@ -80,6 +81,7 @@
 @endsection
 @push('script')
 {{-- Chart Section --}}
+<script src="{{asset('js/modal.js')}}"></script>
 <script type="text/javascript">
     $('.disabled').click(function(e){
             e.preventDefault();

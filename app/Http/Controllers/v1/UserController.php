@@ -58,22 +58,38 @@ class UserController extends Controller
                 })
                 ->addColumn('foto_ktp', function($data){
                     if ($data->pengurus_gudang_id != null) {
-                        return '<img src="{{asset($data->pengurusGudang->foto_ktp)}}" alt="" height="50" width="100">';
+                        if ($data->pengurusGudang->foto_ktp !=null) {
+                            return '<a data-toggle="modal" data-target="#fotoKtpGudang" onclick="detailFotoKtpPengurusGudang('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail"><img src="'.asset($data->pengurusGudang->foto_ktp).'" alt="" height="50" width="100"></a>';
+                        } else {
+                            return '<center>No Foto !</center>';
+                        }
                     } elseif ($data->bank_id != null) {
                         return 'Tidak Mempunyai Foto KTP';
                     } elseif ($data->pemasok_id != null) {
-                        return '<img src="{{asset($data->pemasok->foto_ktp)}}" alt="" height="50" width="100">';
+                        if ($data->pemasok->foto_ktp !=null) {
+                            return '<a data-toggle="modal" data-target="#fotoKtpPemasok" onclick="detailFotoKtpPemasok('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail"><img src="'.asset($data->pemasok->foto_ktp).'" alt="" height="50" width="100"></a>';
+                        } else {
+                            return '<center>No Foto !</center>';
+                        }
                     } elseif ($data->pelanggan_id != null) {
                         return 'Tidak Mempunyai Foto KTP';
                     }
                 })
                 ->addColumn('foto_ktp_selfie', function($data){
                     if ($data->pengurus_gudang_id != null) {
-                        return '<img src="{{asset($data->pengurusGudang->foto_ktp_selfie)}}" alt="" height="50" width="100">';
+                        if ($data->pengurusGudang->foto_ktp !=null) {
+                            return '<a data-toggle="modal" data-target="#fotoKtpSelfieGudang" onclick="detailFotoKtpSelfiePengurusGudang('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail"><img src="'.asset($data->pengurusGudang->foto_ktp).'" alt="" height="50" width="100"></a>';
+                        } else {
+                            return '<center>No Foto !</center>';
+                        }
                     } elseif ($data->bank_id != null) {
                         return 'Tidak Mempunyai Foto KTP';
                     } elseif ($data->pemasok_id != null) {
-                        return '<img src="{{asset($data->pemasok->foto_ktp_selfie)}}" alt="" height="50" width="100">';
+                        if ($data->pemasok->foto_ktp !=null) {
+                            return '<a data-toggle="modal" data-target="#fotoKtpSelfiePemasok" onclick="detailFotoKtpSelfiePemasok('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail"><img src="'.asset($data->pemasok->foto_ktp).'" alt="" height="50" width="100"></a>';
+                        } else {
+                            return '<center>No Foto !</center>';
+                        }
                     } elseif ($data->pelanggan_id != null) {
                         return 'Tidak Mempunyai Foto KTP';
                     }
@@ -225,7 +241,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = User::with('pemasok','pengurusGudang','bank','pelanggan')->where('id',$id)->get();
+
+        return response()->json([
+            'data' => $data
+        ]);
     }
 
     /**
