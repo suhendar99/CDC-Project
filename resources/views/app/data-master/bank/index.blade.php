@@ -100,24 +100,6 @@
                       </tbody>
                   </table>
               </div>
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Akun</th>
-                            <td class="namaAkun"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Username</th>
-                          <td class="username"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">E-mail</th>
-                          <td class="email"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
           </div>
           <div class="row">
               <div class="col-12">
@@ -184,9 +166,6 @@
 
         function detail(id){
             $('.namaBank').text('LOADING...')
-            $('.namaAkun').text('LOADING...')
-            $('.username').text('LOADING...')
-            $('.email').text('LOADING...')
             $('.tahun').text('LOADING...')
             $('.telepon').text('LOADING...')
             $('.alamat').text('LOADING...')
@@ -202,9 +181,6 @@
                     let bank = response.data;
 
                     $('.namaBank').text(bank.nama)
-                    $('.namaAkun').text(bank.user[0].name)
-                    $('.username').text(bank.user[0].username)
-                    $('.email').text(bank.user[0].email)
                     $('.tahun').text(bank.tahun_berdiri)
                     $('.telepon').text(bank.telepon)
                     $('.alamat').text(bank.alamat)

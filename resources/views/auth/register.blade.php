@@ -51,7 +51,7 @@
 
                                     <div class="col-md-12">
                                         <select name="role" id="" class="form-control">
-                                            <option value="">--Pilih Role--</option>
+                                            {{-- <option value="">--Pilih Role--</option> --}}
                                             <option value="pelanggan">Pembeli</option>
                                             <option value="pemasok">Pemasok</option>
                                             {{-- <option value="karyawan">Karyawan</option> --}}
@@ -60,6 +60,30 @@
                                         </select>
 
                                         @error('role')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-12">{{ __('Jenis Usaha') }}</label>
+
+                                    <div class="col-md-12">
+                                        <select name="jenis" id="" class="form-control">
+                                            {{-- <option value="">--Pilih Jenis Usaha--</option> --}}
+                                            <option value="0">Perorangan</option>
+                                            <option value="1">Instansi</option>
+                                            {{-- <option value="karyawan">Karyawan</option> --}}
+                                            {{-- <option value="bank">Bank</option> --}}
+                                            {{-- <option value="gudang">Pengurus Gudang</option> --}}
+                                        </select>
+
+                                        @error('jenis')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
