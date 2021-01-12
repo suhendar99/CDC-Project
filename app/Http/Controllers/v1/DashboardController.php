@@ -39,9 +39,9 @@ class DashboardController extends Controller
         $auth = Auth::user();
         $provinsi = Provinsi::all();
     	if ($auth->pemasok_id != null) {
-            if ($auth->pemasok->nik == null) {
-                return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
-            }
+            // if ($auth->pemasok->nik == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
+            // }
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPemasok');
             }
@@ -54,9 +54,9 @@ class DashboardController extends Controller
             }
             return view($this->pathPemasok.'index');
     	} elseif ($auth->karyawan_id != null) {
-            if ($auth->karyawan->nik == null) {
-                return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
-            }
+            // if ($auth->karyawan->nik == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
+            // }
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpKaryawan');
             }
@@ -69,18 +69,18 @@ class DashboardController extends Controller
             }
             return view($this->pathKaryawan.'index');
     	} elseif ($auth->pelanggan_id != null) {
-            if ($auth->pelanggan->nik == null) {
-                return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
-            }
+            // if ($auth->pelanggan->nik == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
+            // }
             if ($auth->status == 0) {
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPelanggan.'index');
     	}elseif ($auth->bank_id != null) {
-            if ($auth->bank->tahun_berdiri == null) {
-                return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
-            }
+            // if ($auth->bank->tahun_berdiri == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
+            // }
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpBank');
             }
@@ -93,9 +93,9 @@ class DashboardController extends Controller
             }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
-            if ($auth->pengurusGudang->nik == null) {
-                return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
-            }
+            // if ($auth->pengurusGudang->nik == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
+            // }
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPengurusGudang');
             }

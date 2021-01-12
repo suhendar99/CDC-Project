@@ -133,7 +133,7 @@
                                     <div class="col-md-12">
                                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group mb-3">
-                                          <input type="number" type="number" name="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                          <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                           <div class="input-group-append">
                                             <span class="input-group-text" id="satuanAppend"></span>
                                           </div>

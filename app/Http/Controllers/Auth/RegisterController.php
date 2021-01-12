@@ -142,10 +142,14 @@ class RegisterController extends Controller
                 'password' => Hash::make($data['password']),
                 'pengurus_gudang_id' => $pengurusGudang->id,
                 'email_verified_at' => $data['email_verified_at'],
-                'status' => 1
+                'status' => 2,
+                'jenis' => $data['jenis']
             ]);
+            if ($data['jenis'] == null) {
+                return back()->with('error', 'Mohon pilih Jenis Usaha !');
+            }
         } else {
-            return back()->with('failed', 'Mohon pilih role terlebih dahulu !');
+            return back()->with('error', 'Mohon pilih role terlebih dahulu !');
         }
     }
     public function verify()
