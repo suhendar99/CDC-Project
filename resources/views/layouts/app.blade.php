@@ -132,7 +132,7 @@
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
-    
+
     $(document).ready(function () {
         $('.card').delay(1000).addClass('stop');
     });
