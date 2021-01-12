@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Po;
+use PDF;
 
 class PoController extends Controller
 {
@@ -25,7 +26,29 @@ class PoController extends Controller
 
     public function print()
     {
-        return view($this->indexPath.'print');
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $pajak = 5;
+        $data = array(
+            [
+                'nama' => 'Beras Super Nganu',
+                'jumlah' => 170,
+                'harga' => 11500,
+                'diskon' => 10,
+                'satuan' => 'Kg'
+            ],
+            [
+                'nama' => 'Mangga Super Nganu',
+                'jumlah' => 230,
+                'harga' => 12000,
+                'diskon' => 20,
+                'satuan' => 'Kg'
+            ]
+        );
+        // PDF::;
+        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date','pajak'))->setOptions(['defaultFont' => 'poppins']);
+        return $pdf->stream();
+        return view($this->indexPath.'print', compact('data','date','pajak'));
     }
 
     /**
