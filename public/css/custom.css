@@ -184,6 +184,11 @@ img .scale-down{
 	font-size: 36px;
 }
 
+.border-all{
+	border: 1px solid #dee2e6;
+	padding: .5rem;
+}
+
 .barang-title{
 	font-size: 14px;
 	font-weight: 500;
