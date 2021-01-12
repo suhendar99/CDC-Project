@@ -94,6 +94,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
+        // Purchase Order
+        Route::resource('po', 'PoController');
+        Route::get('print', 'PoController@print')->name('po.print');
+
         // Bank
         Route::resource('bank', 'BankController');
         Route::resource('akun-bank', 'AkunBankController');
