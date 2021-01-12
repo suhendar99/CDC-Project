@@ -53,11 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function pengurusGudang()
     {
-        return $this->belongsTo('App\Models\PengurusGudang');
+        return $this->belongsTo('App\Models\PengurusGudang','pengurus_gudang_id','id');
     }
     public function getData()
     {
-        return static::with('pemasok','karyawan','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();
+        return static::with('pemasok','pengurusGudang','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();
     }
 
     /**
