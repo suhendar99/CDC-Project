@@ -125,7 +125,7 @@
           </div>
           <div class="row">
             <div class="col-12 text-center">
-                <span>Foto Barang</span><br>
+                <span>Foto Gudang</span><br>
                 <div id="foto" class="my-4"></div>
             </div>
               <div class="col-12">
@@ -138,10 +138,6 @@
                         <tr>
                           <th scope="row">Kontak</th>
                           <td class="kontak"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Alamat</th>
-                          <td class="alamat"></td>
                         </tr>
                         <tr>
                           <th scope="row">hari Kerja</th>
@@ -158,6 +154,26 @@
                         <tr>
                           <th scope="row">Kapasitas</th>
                           <td class="kapasitas"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Provinsi</th>
+                          <td class="provinsi"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Kabupaten</th>
+                          <td class="kabupaten"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Kecamatan</th>
+                          <td class="kecamatan"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Desa</th>
+                          <td class="desa"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Alamat</th>
+                          <td class="alamat"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -206,6 +222,10 @@
             $('.buka').text("Mendapatkan Data.......")
             $('.tutup').text("Mendapatkan Data.......")
             $('.kapasitas').text("Mendapatkan Data.......")
+            $('.provinsi').text("Mendapatkan Data.......")
+            $('.kabupaten').text("Mendapatkan Data.......")
+            $('.kecamatan').text("Mendapatkan Data.......")
+            $('.desa').text("Mendapatkan Data.......")
             $.ajax({
                 url: "/api/v1/getGudang/"+id,
                 method: "GET",
@@ -224,6 +244,10 @@
                             $('.buka').text(b.jam_buka)
                             $('.tutup').text(b.jam_tutup)
                             $('.kapasitas').text(b.kapasitas+' \u33A1')
+                            $('.provinsi').text(b.desa.kecamatan.kabupaten.provinsi.nama)
+                            $('.kabupaten').text(b.desa.kecamatan.kabupaten.nama)
+                            $('.kecamatan').text(b.desa.kecamatan.nama)
+                            $('.desa').text(b.desa.nama)
                         if (b.foto == null) {
                             $("#foto").text('- Tidak Ada Foto Barang -');
                         }else{

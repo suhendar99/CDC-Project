@@ -136,7 +136,7 @@ class GudangController extends Controller
      */
     public function show($id)
     {
-        $data = Gudang::where('id',$id)->get();
+        $data = Gudang::with('desa.kecamatan.kabupaten.provinsi')->where('id',$id)->get();
 
         return response()->json([
             'data' => $data

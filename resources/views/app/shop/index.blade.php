@@ -92,10 +92,10 @@
 				<div class="col-md-3 col-4">
 					<a href="{{route('shop.detail',$b->id)}}">
 						<div class="card item-card">
-							@if($b->foto == null)
+							@if(count($b->foto) < 1 || $b->foto == null)
 							<img src="https://cf.shopee.co.id/file/08744f5b0e1ab3e2d537df5bbf5b2bb4">
 							@else
-							{{-- {{dd($b->foto[0]->foto)}} --}}
+							{{-- {{dd($b)}} --}}
 							<img src="{{asset($b->foto[0]->foto)}}">
 							@endif
 							<div class="card-body">
