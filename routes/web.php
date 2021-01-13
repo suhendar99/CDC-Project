@@ -94,9 +94,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
-        // Purchase Order
-        Route::resource('po', 'PoController');
-        Route::get('print', 'PoController@print')->name('po.print');
 
         // Bank
         Route::resource('bank', 'BankController');
@@ -126,6 +123,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {
+        // Purchase Order
+        Route::resource('po', 'PoController');
+        Route::get('print/{id}', 'PoController@print')->name('po.print');
         // Storage
         // Route::resource('storage', 'StorageController');
         // Route::resource('storage-in', 'StorageInController');
