@@ -38,7 +38,35 @@
         </div>
         <div class="col-md-12">
             <div class="row">
-                
+                @foreach($data as $d)
+                <div class="col-md-6 col-6 my-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 border-right">
+                                    Dari : <span class="pl-2">{{$d->pengirim_po}}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    Ke : <span class="pl-2">{{$d->penerima_po}}</span>
+                                </div>
+                                <div class="col-md-6 border-right">
+                                    Email : <span class="pl-2">{{$d->email_pengirim}}</span>
+                                </div>
+                                <div class="col-md-6">
+                                    Email : <span class="pl-2">{{$d->email_penerima}}</span>
+                                </div>
+                                <div class="col-md-12"> 
+                                    <hr class=" my-1">
+                                    <span class=" text-18">Data Barang PO</span><br>
+                                    @foreach($d->po_item as $i)
+                                    <span>{{$i->nama_barang}} ({{$i->jumlah.' '.$i->satuan}})</span>,
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>

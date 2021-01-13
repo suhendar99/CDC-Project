@@ -18,7 +18,7 @@ class CreatePoItemsTable extends Migration
             $table->foreignId('po_id')->nullable()->constrained('pos')->onDelete('cascade');
             $table->string('nama_barang',100);
             $table->integer('jumlah');
-            $table->integer('satuan');
+            $table->string('satuan',10);
             $table->integer('harga');
             $table->integer('diskon')->nullable();
             $table->integer('pajak')->nullable();
