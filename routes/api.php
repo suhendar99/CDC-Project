@@ -40,3 +40,4 @@ Route::get('/v1/detail/storage/in/{id}', 'v1\StorageInController@detail');
 Route::get('/v1/detail/storage/out/{id}', 'v1\StorageOutController@detail');
 Route::get('/v1/detail/bank/{id}', 'v1\BankController@detail');
 Route::get('/v1/geocode', 'v1\GudangController@geocode');
+Route::get('/v1/storage/rak/{id}', 'v1\StorageController@tingkatRak');

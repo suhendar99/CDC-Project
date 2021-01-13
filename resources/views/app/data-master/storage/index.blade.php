@@ -1,8 +1,8 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Storage Masuk';
-        $dashboard = true;
-        $admin = true;
+        $pageTitle = 'Data Storage';
+        // $dashboard = true;
+        // $admin = true;
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -16,9 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Storage</a>
           </div>
         </div>
     </div>
@@ -36,17 +34,20 @@
                             <div class="float-left">
                                 <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true">Home</a>
+                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Penyimpanan</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false">Second</a>
+                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Masuk</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Keluar</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="float-right">
-                                <a href="{{route('storage-in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>
+                            <div class="float-right" id="btn-action">
+                                
                             </div>
                         </div>
                     </div>
@@ -55,26 +56,51 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-
                             <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">Home</div>
-                                <div class="tab-pane fade" id="pills-second" role="tabpanel" aria-labelledby="pills-second-tab">Second</div>
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Storage Masuk</th>
+                                                <th>Nama Gudang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang</th>
+                                                <th>Rak</th>
+                                                <th>Tingkatan Rak</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="pills-second" role="tabpanel" aria-labelledby="pills-second-tab">
+                                    <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Storage / Barcode</th>
+                                                <th>Nama Gudang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang Masuk</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
+                                    <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Kode Storage / Barcode</th>
+                                                <th>Nama Gudang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Jumlah Barang Keluar</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Kode Barang Masuk</th>
-                                <th>Nama Barang</th>
-                                <th>Jumlah Barang</th>
-                                <th>Nama Gudang</th>
-                                <th>Rak</th>
-                                <th>Tingkatan Rak</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
                 </div>
             </div>
         </div>
@@ -164,10 +190,72 @@
             ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'storage_in_kode', name: 'kode'},
+                {data : 'kode', name: 'kode'},
+                {data : 'gudang.nama', name: 'gudang'},
+                {data : 'barang.nama_barang', name: 'nama_barang'},
+                {data : function (data, type, row, meta) {
+                        return data.jumlah + " " + data.satuan;
+                    }, name: 'jumlah'},
+                {data : function(data,a,b,c){
+                        if (data.storage == null) {
+                            return 'Belum Diupdate';
+                        } else {
+                            return data.storage.tingkat.rak.nama;
+                        }
+                    }, name: 'rak'},
+                {data : function(data,a,b,c){
+                        if (data.storage == null) {
+                            return 'Belum Diupdate';
+                        } else {
+                            return data.storage.tingkat.nama;
+                        }
+                    }, name: 'tingkat'},
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_masuk = $('#table_masuk').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('storage.in.index') }}",
+            columns : [
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'kode', name: 'kode'},
                 {
-                    data : 'storageIn', render:function(data,a,b,c){
-                        return data.jumlah;
+                    data : 'gudang', render:function(data,a,b,c){
+                        return data.nama;
+                    }
+                },
+                {data : 'barang', render:function(data,a,b,c){
+                        return data.nama_barang;
+                    }
+                },
+                {
+                    data: function (data, type, row, meta) {
+                        return data.jumlah + " " + data.satuan;
+                    },
+                    name: 'jumlah'
+                },
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_keluar = $('#table_keluar').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('storage.out.index') }}",
+            columns : [
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'kode', name: 'kode'},
+                {
+                    data : 'gudang', render:function(data,a,b,c){
+                        return data.nama;
                     }
                 },
                 {data : 'barang', render:function(data,a,b,c){
@@ -210,7 +298,7 @@
                     $('.satuan').text(storage.barang.satuan)
                     $('.jumlah').text(storage.jumlah)
                     $('.gudang').text(storage.gudang.nama)
-                    $('.karyawan').text(storage.user.karyawan.nama)
+                    $('.karyawan').text(storage.user.pengurus_gudang.nama)
                     $('.waktu').text(storage.waktu)
                 },
                 error: (xhr)=>{
@@ -219,9 +307,10 @@
                 }
             });
         }
+
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/storage/in/'+id
+            formDelete.action = id;
 
             const Toast = Swal.mixin({
             toast: true,
@@ -250,6 +339,16 @@
                     // )
                 }
             })
+        }
+
+        function storageIn() {
+            $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>`);
+        }
+        function storageOut() {
+            $('#btn-action').html(`<a href="{{route('storage.out.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Keluar</a>`);
+        }
+        function cleanBtn() {
+            $('#btn-action').empty();
         }
     </script>
 @endpush
