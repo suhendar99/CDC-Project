@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
+use App\Models\PoItem;
 use PDF;
 
 class PoController extends Controller
@@ -21,7 +22,7 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->all();
+        $data = $po->with('po_item')->all();
         return view($this->indexPath.'index',compact($data));
     }
 
@@ -90,14 +91,35 @@ class PoController extends Controller
             'diskon.*' => 'nullable|numeric',
             'pajak.*' => 'nullable|numeric',
         ]);
+        // dd($request->all());
 
         if ($v->fails()) {
             // dd($v->errors()->all());
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
-        dd($request->all());
-        // return view($this->indexPath.'konfirmasiPo');
+        $date = date('Ymdhis');
+        $kode = 'PO'.$date;
+
+        $po = Po::create(array_merge($request->only('pengirim_po','nama_pengirim','telepon_pengirim','email_pengirim','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            'kode_po' => $kode
+        ]));
+
+        $arrayLength = count($request->nama_barang);
+        for ($i=0; $i < $arrayLength; $i++) { 
+            PoItem::create([
+                'po_id' => $po->id,
+                'nama_barang' => $request->nama_barang[$i],
+                'satuan' => $request->satuan[$i],
+                'jumlah' => $request->jumlah[$i],
+                'harga' => $request->harga[$i],
+                'diskon' => $request->diskon[$i],
+                'pajak' => $request->pajak[$i],
+            ]);
+        }
+
+        // dd($po);
+        return view($this->indexPath.'konfirmasiPo',compact($po->id));
     }
 
     /**

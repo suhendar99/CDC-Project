@@ -38,7 +38,22 @@
         </div>
         <div class="col-md-12">
             <div class="row">
-                
+                @foreach($data as $d)
+                <div class="col-md-3 col-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 border-right">
+                                    Dari : {{$d->pengirim_po}}
+                                </div>
+                                <div class="col-md-6">
+                                    Ke : {{$d->pengirim_po}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>

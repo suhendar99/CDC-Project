@@ -15,6 +15,7 @@ class CreatePosTable extends Migration
     {
         Schema::create('pos', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_po',50)->unique();
             $table->string('pengirim_po',50);
             $table->string('nama_pengirim',50);
             $table->string('telepon_pengirim',50);

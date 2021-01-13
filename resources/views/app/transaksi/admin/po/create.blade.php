@@ -191,7 +191,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
-                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang[${key}]" value="{{ old('nama_barang') }}" >
+                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang[]" value="{{ old('nama_barang') }}" >
                         @error('nama_barang')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -201,7 +201,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                    <select id="selectSatuan" onchange="changeSatuan(${key},this)" class="form-control @error('satuan') is-invalid @enderror" name="satuan[${key}]"  >
+                    <select id="selectSatuan" onchange="changeSatuan(${key},this)" class="form-control @error('satuan') is-invalid @enderror" name="satuan[]"  >
                         <option value="kg">kg</option>
                         <option value="ons">ons</option>
                         <option value="gram">gram</option>
@@ -221,10 +221,9 @@
                     <div class="form-group">
                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah[${key}]" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                          <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah[]" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                           <div class="input-group-append">
                             <span class="input-group-text" id="satuanAppend${key}"></span>
-                            <input type="hidden" name="satuan[${key}]">
                           </div>
                           @error('jumlah')
                               <span class="invalid-feedback" role="alert">
@@ -237,7 +236,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
-                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga[${key}]" value="{{ old('harga') }}" >
+                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga[]" value="{{ old('harga') }}" >
                         @error('harga')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -249,7 +248,7 @@
                     <div class="form-group">
                         <label>Diskon <small class="text-success">*Jika Tidak Ada Kosongkan</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon[${key}]" value="{{ old('diskon') }}" aria-describedby="satuanAppend">
+                          <input type="number" type="number" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon[]" value="{{ old('diskon') }}" aria-describedby="satuanAppend">
                           <div class="input-group-append">
                             <span class="input-group-text">%</span>
                           </div>
@@ -265,7 +264,7 @@
                     <div class="form-group">
                         <label>Pajak <small class="text-success">*Jika Tidak Ada Kosongkan</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[${key}]" value="{{ old('pajak') }}" aria-describedby="satuanAppend">
+                          <input type="number" type="number" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[]" value="{{ old('pajak') }}" aria-describedby="satuanAppend">
                           <div class="input-group-append">
                             <span class="input-group-text" >%</span>
                           </div>
