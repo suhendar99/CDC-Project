@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('status')->comment('0 = nonaktif, 1 = data diri, 2 = KTP, 3 = foto selfie KTP')->default(0);
+            $table->tinyInteger('jenis')->comment('0 = Perorangan, 1 = Instansi')->nullable();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('karyawan_id')->nullable()->constrained('karyawans')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');

@@ -51,8 +51,8 @@
 
                                     <div class="col-md-12">
                                         <select name="role" id="" class="form-control">
-                                            <option value="">--Pilih Role--</option>
-                                            <option value="pelanggan">Pembeli</option>
+                                            {{-- <option value="">--Pilih Role--</option> --}}
+                                            {{-- <option value="pelanggan">Pembeli</option> --}}
                                             <option value="pemasok">Pemasok</option>
                                             {{-- <option value="karyawan">Karyawan</option> --}}
                                             {{-- <option value="bank">Bank</option> --}}
@@ -60,6 +60,30 @@
                                         </select>
 
                                         @error('role')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-12">{{ __('Jenis Usaha') }}</label>
+
+                                    <div class="col-md-12">
+                                        <select name="jenis" id="" class="form-control">
+                                            {{-- <option value="">--Pilih Jenis Usaha--</option> --}}
+                                            <option value="0">Perorangan</option>
+                                            <option value="1">Instansi</option>
+                                            {{-- <option value="karyawan">Karyawan</option> --}}
+                                            {{-- <option value="bank">Bank</option> --}}
+                                            {{-- <option value="gudang">Pengurus Gudang</option> --}}
+                                        </select>
+
+                                        @error('jenis')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -109,7 +133,7 @@
 
                                     <div class="col-md-12">
                                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                        <i class="far fa-eye" style="position: absolute;right: 1.7rem;top: .9rem;cursor: pointer;" id="togglePassword"></i>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -123,7 +147,8 @@
                                     <label for="password-confirm" class="col-md-12">{{ __('Password Konfirmasi') }}</label>
 
                                     <div class="col-md-12">
-                                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                        <input id="passwordConfirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                        <i class="far fa-eye" style="position: absolute;right: 1.7rem;top: .9rem;cursor: pointer;" id="togglePasswordConfirm"></i>
                                     </div>
                                 </div>
                             </div>
@@ -148,3 +173,26 @@
     </div>
 </div>
 @endsection
+@push('script')
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const togglePasswordConfirm = document.querySelector('#togglePasswordConfirm');
+    const password = document.querySelector('#password');
+    const passwordConfirm = document.querySelector('#passwordConfirm');
+
+    togglePassword.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+    togglePasswordConfirm.addEventListener('click', function (e) {
+        // toggle the type attribute
+        const typeConfirm = passwordConfirm.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordConfirm.setAttribute('type', typeConfirm);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
+@endpush

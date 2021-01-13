@@ -178,6 +178,11 @@
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li> --}}
                     @if (isset($admin))
+                    <li class="
+                        {{ Request::is('v1/po*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
+                    </li>
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>

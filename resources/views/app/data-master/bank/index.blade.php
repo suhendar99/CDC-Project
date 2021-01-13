@@ -46,7 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>No</th>
                                 <th>Nama</th>
                                 <th>Tahun Berdiri</th>
                                 <th>Telepon</th>
@@ -65,7 +65,7 @@
     @method('DELETE')
 </form>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labe   lledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -96,24 +96,6 @@
                         <tr>
                           <th scope="row">Telepon</th>
                           <td class="telepon"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Akun</th>
-                            <td class="namaAkun"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Username</th>
-                          <td class="username"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">E-mail</th>
-                          <td class="email"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -184,9 +166,6 @@
 
         function detail(id){
             $('.namaBank').text('LOADING...')
-            $('.namaAkun').text('LOADING...')
-            $('.username').text('LOADING...')
-            $('.email').text('LOADING...')
             $('.tahun').text('LOADING...')
             $('.telepon').text('LOADING...')
             $('.alamat').text('LOADING...')
@@ -202,9 +181,6 @@
                     let bank = response.data;
 
                     $('.namaBank').text(bank.nama)
-                    $('.namaAkun').text(bank.user[0].name)
-                    $('.username').text(bank.user[0].username)
-                    $('.email').text(bank.user[0].email)
                     $('.tahun').text(bank.tahun_berdiri)
                     $('.telepon').text(bank.telepon)
                     $('.alamat').text(bank.alamat)
