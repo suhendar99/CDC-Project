@@ -55,6 +55,6 @@ class StorageIn extends Model
     public function storage()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
-    	return $this->hasMany('App\Models\Storage', 'storage_in_kode', 'kode');
+    	return $this->hasOne('App\Models\Storage', 'storage_in_kode', 'kode');
     }
 }
