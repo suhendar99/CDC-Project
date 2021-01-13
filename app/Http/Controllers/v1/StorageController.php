@@ -24,13 +24,13 @@ class StorageController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Gudang::with('storageIn.barang', 'rak.tingkat')
+            $data = StorageIn::with('barang', 'storage.tingkat.rak', 'gudang')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/gudang/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Ubah Penyimpanan</a>';
                 })
                 ->make(true);
         }
@@ -45,7 +45,7 @@ class StorageController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -78,7 +78,19 @@ class StorageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $masuk = StorageIn::find($id);
+        $rak = Rak::with('tingkat')->where('gudang_id', $masuk->gudang_id)->get();
+
+        return view('app.data-master.storage.create', compact('rak', 'masuk'));
+    }
+
+    public function tingkatRak($id)
+    {
+        $tingkat = TingkatanRak::where('rak_id', $id)->get();
+
+        return response()->json([
+            'data' => $tingkat
+        ], 200);
     }
 
     /**
@@ -90,7 +102,26 @@ class StorageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'rak_id' => 'required|exists:raks,id',
+            'tingkat_id' => 'required|exists:tingkatan_raks,id'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        $storage = Storage::where('storage_in_kode', $id)->first();
+
+        if ($storage != null) {
+            $storage->update($request->only('tingkat_id'));
+        }else{
+            Storage::create([
+                'storage_in_kode' => $id,
+                'tingkat_id' => $request->tingkat_id
+            ]);
+        }
+
+        return redirect(route('storage.index'))->with('success', __( 'Saved!' ));
     }
 
     /**

@@ -114,7 +114,7 @@
                             <td class="gudang"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Karyawan</th>
+                          <th scope="row">Pengurus Gudang</th>
                           <td class="karyawan"></td>
                         </tr>
                         <tr>
@@ -189,7 +189,7 @@
                     $('.satuan').text(storage.barang.satuan)
                     $('.jumlah').text(storage.jumlah)
                     $('.gudang').text(storage.gudang.nama)
-                    $('.karyawan').text(storage.user.karyawan.nama)
+                    $('.karyawan').text(storage.user.pengurus_gudang.nama)
                     $('.waktu').text(storage.waktu)
                 },
                 error: (xhr)=>{

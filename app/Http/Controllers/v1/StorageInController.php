@@ -26,11 +26,11 @@ class StorageInController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/in/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/storage/in/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/in/'.$data->id.'\')">Hapus</a>';
                 })
                 ->make(true);
         }
-        return view('app.data-master.storage.in.index');
+        return view('app.data-master.storage.index');
     }
 
     public function checkBarang($kode)
@@ -77,14 +77,15 @@ class StorageInController extends Controller
     {
         // dd($request->all());
         $v = Validator::make($request->all(),[
-            'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+            'barang_kode' => 'required|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:barangs,id',
             'jumlah' => 'required|numeric',
-            'satuan' => 'required|string'
+            'satuan' => 'required'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($v->fails()) {
+            dd($v);
             return back()->withErrors($v)->withInput();
         }
 

@@ -46,7 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>No</th>
                                 <th>Name</th>
                                 <th>Username</th>
                                 <th>Email</th>

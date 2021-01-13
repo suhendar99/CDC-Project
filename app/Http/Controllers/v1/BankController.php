@@ -26,7 +26,7 @@ class BankController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<div class="text-center" style="width: 100%"><a href="/v1/bank/'.$data->id.'/edit" class="btn btn-outline-primary btn-sm" style="border-width: 3px;border-radius: 5px;">Edit</a>&nbsp;<a class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;border-width: 3px;border-radius: 5px;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->id.')" style="border-width: 3px;border-radius: 5px;">Hapus</a></div>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/bank/'.$data->id.'/edit" class="btn btn-primary btn-sm" style="border-width: 3px;border-radius: 5px;">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;border-width: 3px;border-radius: 5px;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')" style="border-width: 3px;border-radius: 5px;">Hapus</a></div>';
                 })
                 ->make(true);
         }
@@ -86,7 +86,7 @@ class BankController extends Controller
                 'foto' => 'upload/foto/bank/'.$nama
             ]);
         }
-        
+
         return redirect(route('bank.index'))->with('success', __( 'Bank Created' ));
     }
 
@@ -152,7 +152,7 @@ class BankController extends Controller
                 'foto' => 'upload/foto/bank/'.$nama
             ]);
         }
-        
+
         return redirect(route('bank.index'))->with('success', __( 'Bank Updated' ));
     }
 
