@@ -533,3 +533,7 @@ img.cover{
   .step.finish {
     background-color: green;
   }
+
+  .btn {
+  	font-size: .8rem;
+  }

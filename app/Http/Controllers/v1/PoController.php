@@ -22,8 +22,8 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->with('po_item')->all();
-        return view($this->indexPath.'index',compact($data));
+        $data = $po->with('po_item')->get();
+        return view($this->indexPath.'index',compact('data'));
     }
 
     public function print()
@@ -119,7 +119,7 @@ class PoController extends Controller
         }
 
         // dd($po);
-        return view($this->indexPath.'konfirmasiPo',compact($po->id));
+        return view($this->indexPath.'konfirmasiPo',compact('po'));
     }
 
     /**
