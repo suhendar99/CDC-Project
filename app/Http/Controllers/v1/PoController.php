@@ -26,31 +26,15 @@ class PoController extends Controller
         return view($this->indexPath.'index',compact('data'));
     }
 
-    public function print()
+    public function print($id)
     {
         set_time_limit(120);
         $date = date('d-m-Y');
-        $pajak = 5;
-        $data = array(
-            [
-                'nama' => 'Beras Super Nganu',
-                'jumlah' => 170,
-                'harga' => 11500,
-                'diskon' => 10,
-                'satuan' => 'Kg'
-            ],
-            [
-                'nama' => 'Mangga Super Nganu',
-                'jumlah' => 230,
-                'harga' => 12000,
-                'diskon' => 20,
-                'satuan' => 'Kg'
-            ]
-        );
+        $data = Po::where('id',$id)->with('po_item')->first();
         // PDF::;
-        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date','pajak'))->setOptions(['defaultFont' => 'poppins']);
+        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
         return $pdf->stream();
-        return view($this->indexPath.'print', compact('data','date','pajak'));
+        // return view($this->indexPath.'print', compact('data','date'));
     }
 
     /**
@@ -118,8 +102,9 @@ class PoController extends Controller
             ]);
         }
 
-        // dd($po);
-        return view($this->indexPath.'konfirmasiPo',compact('po'));
+        $data = Po::where('id',$po->id)->with('po_item')->first();
+        // dd($data);
+        return view($this->indexPath.'konfirmasiPo',compact('data'));
     }
 
     /**

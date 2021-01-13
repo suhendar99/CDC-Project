@@ -110,6 +110,11 @@
                     ">
                         <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage</a>
                     </li>
+                    <li class="
+                        {{ Request::is('v1/po*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
+                    </li>
                     @endif
                     {{-- @endif --}}
                      @if (Auth::user()->pelanggan_id != null)
