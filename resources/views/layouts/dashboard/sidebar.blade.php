@@ -106,14 +106,14 @@
                         <a href="{{route('gudang.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Gudang</a>
                     </li>
                     <li class="
-                        {{ Request::is('v1/storage-in*') ? 'active' : false }}
+                        {{ Request::is('v1/storage*') ? 'active' : false }}
                     ">
-                        <a href="{{route('storage-in.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Masuk</a>
+                        <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage</a>
                     </li>
                     <li class="
-                        {{ Request::is('v1/storage-out*') ? 'active' : false }}
+                        {{ Request::is('v1/po*') ? 'active' : false }}
                     ">
-                        <a href="{{route('storage-out.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage Keluar</a>
+                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
                     </li>
                     @endif
                     {{-- @endif --}}

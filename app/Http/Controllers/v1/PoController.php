@@ -4,7 +4,10 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
+use App\Models\PoItem;
+use PDF;
 
 class PoController extends Controller
 {
@@ -19,13 +22,19 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->all();
-        return view($this->indexPath.'index',compact($data));
+        $data = $po->with('po_item')->get();
+        return view($this->indexPath.'index',compact('data'));
     }
 
-    public function print()
+    public function print($id)
     {
-        return view($this->indexPath.'print');
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $data = Po::where('id',$id)->with('po_item')->first();
+        // PDF::;
+        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
+        return $pdf->stream();
+        // return view($this->indexPath.'print', compact('data','date'));
     }
 
     /**
@@ -46,11 +55,56 @@ class PoController extends Controller
      */
     public function store(Request $request)
     {
-        if (isset($request->konfirmasi_po)) {
-            return view($this->indexPath.'konfirmasiPo');
-        } else {
 
+        $v = Validator::make($request->all(),[
+            'pengirim_po' => 'required|string|max:50',
+            'nama_pengirim' => 'required|string|max:50',
+            'telepon_pengirim' => 'required|numeric',
+            'email_pengirim' => 'required|email',
+
+            'penerima_po' => 'required|string|max:50',
+            'nama_penerima' => 'required|string|max:50',
+            'telepon_penerima' => 'required|numeric',
+            'email_penerima' => 'required|email',
+            'alamat_penerima' => 'required',
+
+            'nama_barang.*' => 'required|string|max:100',
+            'satuan.*' => 'required|string|max:10',
+            'jumlah.*' => 'required|numeric|min:1',
+            'harga.*' => 'required|numeric',
+            'diskon.*' => 'nullable|numeric',
+            'pajak.*' => 'nullable|numeric',
+        ]);
+        // dd($request->all());
+
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+        $date = date('Ymdhis');
+        $kode = 'PO'.$date;
+
+        $po = Po::create(array_merge($request->only('pengirim_po','nama_pengirim','telepon_pengirim','email_pengirim','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            'kode_po' => $kode
+        ]));
+
+        $arrayLength = count($request->nama_barang);
+        for ($i=0; $i < $arrayLength; $i++) { 
+            PoItem::create([
+                'po_id' => $po->id,
+                'nama_barang' => $request->nama_barang[$i],
+                'satuan' => $request->satuan[$i],
+                'jumlah' => $request->jumlah[$i],
+                'harga' => $request->harga[$i],
+                'diskon' => $request->diskon[$i],
+                'pajak' => $request->pajak[$i],
+            ]);
+        }
+
+        $data = Po::where('id',$po->id)->with('po_item')->first();
+        // dd($data);
+        return view($this->indexPath.'konfirmasiPo',compact('data'));
     }
 
     /**

@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('storage-out.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -46,13 +46,17 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('storage-out.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('storage.out.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('barang_kode') is-invalid @enderror" name="barang_kode" value="{{ old('barang_kode') }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Use Scanner or type it...">
-                                        <small id="barangStatus" class="form-text"><a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a></small>
+                                        <select name="barang_kode" id="" class="form-control">
+                                            <option value="0">--Pilih Barang--</option>
+                                            @foreach (\App\Models\Barang::get() as $barang)
+                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}}>{{$barang->nama_barang}}</option>
+                                            @endforeach
+                                        </select>
                                         @error('barang_kode')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -70,7 +74,16 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan') }}" placeholder="Enter satuan">
+                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                            <option value="kg">kg</option>
+                                            <option value="ons">ons</option>
+                                            <option value="gram">gram</option>
+                                            <option value="ml">ml</option>
+                                            <option value="m3">m<sup>3</sup></option>
+                                            <option value="m2">m<sup>2</sup></option>
+                                            <option value="m">m</option>
+                                            <option value="gram">cm</option>
+                                        </select>
                                         @error('satuan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

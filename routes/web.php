@@ -94,9 +94,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
-        // Purchase Order
-        Route::resource('po', 'PoController');
-        Route::get('print', 'PoController@print')->name('po.print');
 
         // Bank
         Route::resource('bank', 'BankController');
@@ -128,10 +125,29 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {
+        // Purchase Order
+        Route::resource('po', 'PoController');
+        Route::get('print/{id}', 'PoController@print')->name('po.print');
         // Storage
-        Route::resource('storage', 'StorageController');
-        Route::resource('storage-in', 'StorageInController');
-        Route::resource('storage-out', 'StorageOutController');
+        // Route::resource('storage', 'StorageController');
+        // Route::resource('storage-in', 'StorageInController');
+        Route::get('storage/in', 'StorageInController@index')->name('storage.in.index');
+        Route::get('storage/out', 'StorageOutController@index')->name('storage.out.index');
+        Route::get('storage/in/create', 'StorageInController@create')->name('storage.in.create');
+        Route::post('storage/in/store', 'StorageInController@store')->name('storage.in.store');
+        Route::get('storage/in/{id}/edit', 'StorageInController@edit')->name('storage.in.edit');
+        Route::put('storage/in/{id}', 'StorageInController@update')->name('storage.in.update');
+        Route::delete('storage/in/{id}', 'StorageInController@destroy')->name('storage.in.delete');
+
+        Route::get('storage/out/create', 'StorageOutController@create')->name('storage.out.create');
+        Route::post('storage/out/store', 'StorageOutController@store')->name('storage.out.store');
+        Route::get('storage/out/{id}/edit', 'StorageOutController@edit')->name('storage.out.edit');
+        Route::put('storage/out/{id}', 'StorageOutController@update')->name('storage.out.update');
+        Route::delete('storage/out/{id}', 'StorageOutController@destroy')->name('storage.out.delete');
+        // Route::resource('storage-out', 'StorageOutController');
+        Route::get('storage', 'StorageController@index')->name('storage.index');
+        Route::get('storage/penyimpanan/{id}', 'StorageController@edit')->name('storage.rak');
+        Route::post('storage/penyimpanan/{id}/simpan', 'StorageController@update')->name('storage.rak.simpan');
 
         // Gudang
         Route::post('gudang/search', 'GudangController@search')->name('gudang.search');

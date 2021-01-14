@@ -15,7 +15,7 @@
         $pengurusGudang = true;
     }
 @endphp
-@if(!isset($admin))
+{{-- @if(!isset($admin)) --}}
 <form action="{{route('search.barang')}}" method="post" style="width: 100%;">
 	@csrf
 	<i class="material-icons md-24 icon-search">search</i>
@@ -37,7 +37,7 @@
 
 	<input type=" text" name="search" class=" form-control rounded-40" placeholder=" Cari Barang ...">
 </form>
-@else
+{{-- @else
 <i class="material-icons md-24 icon-search">search</i>
 <input type=" text" name="search" class=" form-control rounded-40" placeholder=" Cari Pengguna ...">
-@endif
+@endif --}}

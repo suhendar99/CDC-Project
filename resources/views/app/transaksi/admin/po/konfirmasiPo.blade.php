@@ -1,6 +1,8 @@
 @php
     $icon = 'receipt_long';
     $pageTitle = 'Konfirmasi Purchase Order';
+    $date = date('d-m-Y');
+    $preview = true;
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -30,21 +32,21 @@
         <div class="col-md-12">
             <div class="card my-3">
                 <div class="card-header">
-                    <h4 class="card-title">Preview Surat Purchase Order</h4>
+                    <h4 class="card-title float-left">Preview Surat Purchase Order</h4>
+                    <div class="float-right">
+                        <a href="{{route('po.print',$data->id)}}" target="_blank" class="btn bg-my-success">
+                            <div class="d-flex valign-center">
+                                <i class="material-icons md-18 p-0 mr-1">download</i>Download
+                            </div>
+                        </a>
+                        <a href="{{route('po.index')}}" class="btn bg-my-primary">Kembali</a>
+                    </div>
                 </div>
             </div>
             <div class="card my-3">
                 <div class="card-body">
                     <div class="print-page border-all">
                         @include('app.transaksi.admin.po.print')
-                    </div>
-                </div>
-            </div>
-            <div class="card my-3">
-                <div class="card-header">
-                    <div class="float-right">
-                        <a href="{{route('po.print')}}" class="btn btn-sm bg-my-success">Cetak PO</a>
-                        <a href="{{route('po.index')}}" class="btn btn-sm bg-my-success">Selesai</a>
                     </div>
                 </div>
             </div>

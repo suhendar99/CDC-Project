@@ -33,6 +33,6 @@ class Storage extends Model
     public function tingkat()
     {
     	// belongsTo(RelatedModel, foreignKey = tingkat_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\TingkatRak');
+    	return $this->belongsTo('App\Models\TingkatanRak');
     }
 }
