@@ -2,6 +2,11 @@
         $icon = 'storage';
         $pageTitle = 'Tambah Data User';
 @endphp
+<style>
+    .bornone {
+        border: none;
+    }
+</style>
 @extends('layouts.dashboard.header')
 
 @section('content')
@@ -53,13 +58,13 @@
                                         <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
                                         <select name="role" id="" class="form-control">
                                             <option value="Null">-- Pilih Role --</option>
-                                            <option value="pelanggan" {{old('role') == 'pelanggan' ? 'selected' : ''}}>Pelanggan</option>
-                                            <option value="karyawan" {{old('role') == 'karyawan' ? 'selected' : ''}}> Karyawan</option>
-                                            {{-- <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option> --}}
+                                            {{-- <option value="pelanggan" {{old('role') == 'pelanggan' ? 'selected' : ''}}>Pelanggan</option>
+                                            <option value="karyawan" {{old('role') == 'karyawan' ? 'selected' : ''}}> Karyawan</option> --}}
+                                            <option value="bank" {{old('role') == 'bank' ? 'selected' : ''}}>Bank</option>
                                             <option value="pemasok" {{old('role') == 'pemasok' ? 'selected' : ''}}>Pemasok</option>
                                             <option value="pengurus gudang" {{old('role') == 'pengurus gudang' ? 'selected' : ''}}>Pengurus Gudang</option>
                                         </select>
-                                        @error('name')
+                                        @error('role')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -99,24 +104,29 @@
                                         @enderror
                                     </div>
                                   </div>
-                                  <div class="form-group">
+                                <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Password <small class="text-success">*Harus diisi</small></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend2"><i class="far fa-eye" style="cursor: pointer;" id="togglePassword"></i></span>
+                                            </div>
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                  </div>
-                                  <div class="row">
-                                      <div class="col-md-12">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="float-right">
                                             <button type="submit" class="btn btn-success btn-sm">Simpan</button>
                                         </div>
-                                      </div>
-                                  </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -129,7 +139,16 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
 
+    togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
 </script>
 {{--  --}}
 @endpush

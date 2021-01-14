@@ -202,6 +202,7 @@ class UserController extends Controller
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
                     'bank_id' => $bank->id,
+                    'status' => 1
 
                 ]));
             } elseif ($request->role == 'pemasok') {
@@ -213,6 +214,7 @@ class UserController extends Controller
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
                     'pemasok_id' => $pemasok->id,
+                    'status' => 2
 
                 ]));
             } elseif ($request->role == 'pengurus gudang') {
@@ -224,6 +226,7 @@ class UserController extends Controller
                 User::create(array_merge($request->only('username','email'),[
                     'password' => Hash::make($request->password),
                     'pengurus_gudang_id' => $pengurusGudang->id,
+                    'status' => 2
 
                 ]));
             } else {

@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Foto Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Foto Barang <small class="text-success">*Harus diisi & bisa pilih banyak</small></label>
                                         <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Enter foto" multiple>
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
