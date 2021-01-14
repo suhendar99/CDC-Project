@@ -81,16 +81,16 @@ class DashboardController extends Controller
             // if ($auth->bank->tahun_berdiri == null) {
             //     return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
             // }
-            if ($auth->status == 2) {
-                return view($this->pathFotoKtp.'fotoKtpBank');
-            }
-            if ($auth->status == 3) {
-                return view($this->pathFotoKtpSelfie.'fotoKtpSelfieBank');
-            }
-            if ($auth->status == 0) {
-                Auth::logout();
-                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
-            }
+            // if ($auth->status == 2) {
+            //     return view($this->pathFotoKtp.'fotoKtpBank');
+            // }
+            // if ($auth->status == 3) {
+            //     return view($this->pathFotoKtpSelfie.'fotoKtpSelfieBank');
+            // }
+            // if ($auth->status == 0) {
+            //     Auth::logout();
+            //     return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
+            // }
             return view($this->pathBank.'index');
     	}elseif ($auth->pengurus_gudang_id != null) {
             // if ($auth->pengurusGudang->nik == null) {
