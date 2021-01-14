@@ -46,11 +46,13 @@
                                 <div class="col-12">
                                     <div class="float-right">
                                         @if($d->status == 0)
-                                        <span class="badge rounded-pill bg-my-danger p-2">Po Sedang Diproses</span>
+                                        <span class="badge rounded-pill bg-my-primary p-2">PO Sedang Diproses</span>
                                         @elseif($d->status == 1)
                                         <span class="badge rounded-pill bg-my-warning p-2">Pinjaman Anda Sudah Disetujui</span>
                                         @elseif($d->status == 2)
                                         <span class="badge rounded-pill bg-my-success p-2">PO Sudah Diterima Pemasok</span>
+                                        @elseif($d->status == 3)
+                                        <span class="badge rounded-pill bg-my-danger p-2">PO Ditolak</span>
                                         @endif
                                     </div>
                                 </div>

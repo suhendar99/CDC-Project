@@ -145,8 +145,8 @@
                                     <div class="col-md-4">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
-                                            <option value="direct">Direct(Langsung Ke Penjual)</option>
-                                            <option value="kredit">Kredit(Pinjam Ke Bank)</option>
+                                            <option value="now">Bayar Sekarang</option>
+                                            <option value="later">Bayar Nanti</option>
                                         </select>
                                         @error('pembayaran')
                                             <span class="invalid-feedback" role="alert">
@@ -154,7 +154,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div id="pilihBank" class="col-md-4 d-none">
+                                    {{-- <div id="pilihBank" class="col-md-4 d-none">
                                         <label>Pilih Bank <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('bank_id') is-invalid @enderror" name="bank_id"  >
                                             @foreach($bank as $b)
@@ -166,7 +166,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat Penerima <small class="text-success">*Harus diisi</small></label>
