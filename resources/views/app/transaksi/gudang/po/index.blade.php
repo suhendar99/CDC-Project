@@ -38,22 +38,33 @@
         </div>
         <div class="col-md-12">
             <div class="row">
-                @foreach($data as $d)
+                @forelse($data as $d)
                 <div class="col-md-6 col-6 my-2">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        @if($d->status == 0)
+                                        <span class="badge rounded-pill bg-my-danger p-2">Po Sedang Diproses</span>
+                                        @elseif($d->status == 1)
+                                        <span class="badge rounded-pill bg-my-warning p-2">Pinjaman Anda Sudah Disetujui</span>
+                                        @elseif($d->status == 2)
+                                        <span class="badge rounded-pill bg-my-success p-2">PO Sudah Diterima Pemasok</span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="col-md-6 border-right">
-                                    Dari : <span class="pl-2">{{$d->user->pengurusGudang->nama}}</span>
+                                    Dari : <br><span class="text-14 bold">{{$d->gudang->pemilik}}</span>
                                 </div>
                                 <div class="col-md-6">
-                                    Ke : <span class="pl-2">{{$d->penerima_po}}</span>
+                                    Ke : <br><span class="text-14 bold">{{$d->penerima_po}}</span>
                                 </div>
                                 <div class="col-md-6 border-right">
-                                    Email : <span class="pl-2">{{$d->user->email}}</span>
+                                    Email : <br><span class="text-14 bold">{{$d->gudang->user->email}}</span>
                                 </div>
                                 <div class="col-md-6">
-                                    Email : <span class="pl-2">{{$d->email_penerima}}</span>
+                                    Email : <br><span class="text-14 bold">{{$d->email_penerima}}</span>
                                 </div>
                                 <div class="col-md-12"> 
                                     <hr class=" my-1">
@@ -66,7 +77,11 @@
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-12 my-4 py-4">
+                    <center>-- Anda Belum Pernah Melakukan PO --</center>
+                </div>
+                @endforelse
             </div>
         </div>
     </div>

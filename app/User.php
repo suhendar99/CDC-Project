@@ -55,15 +55,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany('App\Models\Piutang');
     }
+    public function gudang()
+    {
+        return $this->hasMany('App\Models\Gudang');
+    }
     public function pengurusGudang()
     {
         return $this->belongsTo('App\Models\PengurusGudang','pengurus_gudang_id','id');
     }
-    public function po()
-    {
-        return $this->belongsTo('App\Models\Po');
-    }
-
     public function getData()
     {
         return static::with('pemasok','pengurusGudang','bank','pelanggan')->where('name',null)->orderBy('id','desc')->get();

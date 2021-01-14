@@ -27,6 +27,7 @@ class CreateGudangsTable extends Migration
             $table->string('foto')->nullable();
             $table->text('alamat');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

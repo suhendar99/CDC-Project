@@ -81,8 +81,23 @@
                                         </div>
                                     </div>
                                 </div> --}}
-                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <div class="row">
+                                    <div class="col-12">
+                                        <label>Pilih Gudang <small class="text-success">*Harus diisi</small></label>
+                                        <select id="selectGudang" class="form-control @error('gudang_id') is-invalid @enderror" name="gudang_id"  >
+                                            <option value="none">-- Pilih Gudang --</option>
+                                            @foreach(Auth::user()->gudang as $b)
+                                            <option value="{{$b->id}}">{{$b->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('gudang_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div id="rowTujuan" class="row d-none mt-2">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Perusahaan Penerima <small class="text-success">*Harus diisi</small></label>
@@ -152,8 +167,6 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat Penerima <small class="text-success">*Harus diisi</small></label>
@@ -199,6 +212,17 @@
     var key = 0;
     var satuan;
     var pembayaran;
+    var gudang;
+    $('#selectGudang').change(function(){
+        gudang = $(this).val()
+        console.log(gudang)
+        if (gudang == 'none') {
+            $('#rowTujuan').addClass('d-none')
+        } else {
+            $('#rowTujuan').removeClass('d-none')
+        }
+    })
+
     $('#selectPembayaran').change(function(){
         pembayaran = $(this).val()
         if (pembayaran == 'kredit') {
@@ -310,6 +334,8 @@
                           @enderror
                         </div>
                     </div>
+                </div>
+                <div class="col-12">
                     <hr>    
                 </div>
             </div>

@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use Auth;
 
 class GudangController extends Controller
 {
@@ -96,6 +97,7 @@ class GudangController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $user_id = Auth::user()->id;
         $v = Validator::make($request->all(),[
             'lat' => 'required',
             'long' => 'required',
@@ -118,11 +120,14 @@ class GudangController extends Controller
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
                 $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
-                    'foto' => 'upload/foto/gudang/'.$foto
+                    'foto' => 'upload/foto/gudang/'.$foto,
+                    'user_id' => $user_id
                 ]));
 
             } else {
-                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik')));
+                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                    'user_id' => $user_id
+                ]));
             }
         }
         return back()->with('success',$this->alert.'Disimpan !');

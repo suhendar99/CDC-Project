@@ -14,6 +14,12 @@ class Gudang extends Model
         return static::orderBy('id','desc')->get();
     }
 
+    public function po()
+    {
+        return $this->hasMany('App\Models\Po');
+    }
+
+
     /**
      * Gudang has many StorageIn.
      *
@@ -56,5 +62,17 @@ class Gudang extends Model
     {
     	// belongsTo(RelatedModel, foreignKey = desa_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Desa');
+    }
+
+
+    /**
+     * Gudang belongs to User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        // belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\User');
     }
 }

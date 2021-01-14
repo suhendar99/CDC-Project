@@ -14,9 +14,9 @@ class Po extends Model
         return $this->hasMany('App\Models\PoItem');
     }
 
-    public function user_id()
+    public function gudang()
     {
-        return $this->hasMany('App\User');
+        return $this->belongsTo('App\Models\Gudang');
     }
 
 
