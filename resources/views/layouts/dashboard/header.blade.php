@@ -170,7 +170,7 @@ integrity="sha512-K0Vddb4QdnVOAuPJBHkgrua+/A9Moyv8AQEWi0xndQ+fqbRfAFd47z4A9u1AW/
     // $('.material-icons').css('display','none')
     $(document).ready(function () {
         // $('.material-icons').css('display','block')
-
+        $('select').select2()
         $('.card').delay(1000).addClass('stop');
         $('.alert').delay(1000).fadeOut(1000, function () {
            $('.alert').remove();

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\Bank;
+use App\User;
 use Auth;
 use PDF;
 
@@ -24,7 +25,12 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->where('user_id',Auth::user()->id)->with('po_item')->get();
+        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $arrayGudang = [];
+        foreach ($user->gudang as $key => $value) {
+            $arrayGudang[] = $value->id;
+        }
+        $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
         return view($this->indexPath.'index',compact('data'));
     }
 
@@ -46,8 +52,14 @@ class PoController extends Controller
      */
     public function create(Bank $bank)
     {
-        $bank = $bank->all();
-        return view($this->indexPath.'create', compact('bank'));
+        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $count = $user->gudang->count();
+        if($count < 1){
+            return back()->with('error','Anda Belum Memiliki Gudang!');
+        } else {
+            $bank = $bank->all();
+            return view($this->indexPath.'create', compact('bank'));
+        }
     }
 
     /**
@@ -58,13 +70,12 @@ class PoController extends Controller
      */
     public function store(Request $request)
     {
-
         $v = Validator::make($request->all(),[
             // 'pengirim_po' => 'required|string|max:50',
             // 'nama_pengirim' => 'required|string|max:50',
             // 'telepon_pengirim' => 'required|numeric',
             // 'email_pengirim' => 'required|email',
-            'user_id' => 'required',
+            'gudang_id' => 'required',
             'bank_id' => 'nullable',
             'penerima_po' => 'required|string|max:50',
             'nama_penerima' => 'required|string|max:50',
@@ -91,11 +102,11 @@ class PoController extends Controller
         $kode = 'PO'.$date;
 
         if ($request->pembayaran == 'kredit') {
-            $po = Po::create(array_merge($request->only('user_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            $po = Po::create(array_merge($request->only('gudang_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
                 'kode_po' => $kode
             ]));
         } else {
-            $po = Po::create(array_merge($request->only('user_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            $po = Po::create(array_merge($request->only('gudang_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
                 'kode_po' => $kode
             ]));
         }
@@ -114,7 +125,7 @@ class PoController extends Controller
             ]);
         }
 
-        $data = Po::where('id',$po->id)->with('po_item','user')->first();
+        $data = Po::where('id',$po->id)->with('po_item','gudang.user')->first();
         // dd($data);
         return view($this->indexPath.'konfirmasiPo',compact('data'));
     }

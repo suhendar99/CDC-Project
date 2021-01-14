@@ -20,7 +20,7 @@ class CreatePosTable extends Migration
             // $table->string('nama_pengirim',50);
             // $table->string('telepon_pengirim',50);
             // $table->string('email_pengirim',50);
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('gudang_id')->nullable()->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
             $table->string('penerima_po',50);
             $table->string('nama_penerima',50);

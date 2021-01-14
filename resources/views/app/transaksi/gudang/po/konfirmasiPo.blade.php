@@ -46,7 +46,7 @@
             <div class="card my-3">
                 <div class="card-body">
                     <div class="print-page border-all">
-                        @include('app.transaksi.admin.po.print')
+                        @include('app.transaksi.gudang.po.print')
                     </div>
                 </div>
             </div>

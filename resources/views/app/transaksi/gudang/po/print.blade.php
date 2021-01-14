@@ -222,7 +222,7 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
-					{{$data->pengirim_po}}
+					{{$data->gudang->nama}}
 				</td>
 				<td></td>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
@@ -232,7 +232,7 @@
 			<tr class="text-14">
 				<td>Telp</td>
 				<td>:</td>
-				<td class="text-right">{{$data->telepon_pengirim}}</td>
+				<td class="text-right">{{$data->gudang->kontak}}</td>
 				<td></td>
 				<td>Telp</td>
 				<td>:</td>
@@ -241,7 +241,7 @@
 			<tr class="text-14">
 				<td>Email</td>
 				<td>:</td>
-				<td class="text-right">{{$data->email_pengirim}}</td>
+				<td class="text-right">{{$data->gudang->user->email}}</td>
 				<td></td>
 				<td>Email</td>
 				<td>:</td>
@@ -351,9 +351,9 @@
 			<tr>
 				<td width="10%"></td>
 				<td width="30%" class="border-bottom text-center">
-					{{$data->pengirim_po}}
+					{{$data->gudang->nama}}
 					<br><br><br><br>
-					{{$data->nama_pengirim}}
+					{{$data->gudang->pemilik}}
 				</td>
 				<td width="20%"></td>
 				<td width="30%" class="border-bottom text-center">
