@@ -17,7 +17,8 @@ class CreatePiutangsTable extends Migration
             $table->id();
             $table->string('kode_piutang');
             $table->integer('bunga');
-            $table->date('tenggat_waktu');
+            $table->date('termin');
+            $table->foreignId('po_id')->nullable()->constrained('pos')->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
             $table->timestamps();

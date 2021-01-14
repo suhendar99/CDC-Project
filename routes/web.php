@@ -120,6 +120,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
+        // Piutang
+        Route::resource('piutang', 'PiutangController');
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli

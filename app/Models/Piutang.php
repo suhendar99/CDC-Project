@@ -17,4 +17,8 @@ class Piutang extends Model
     {
         return $this->belongsTo('App\Models\Bank');
     }
+    public function getData()
+    {
+        return static::orderBy('id','desc')->get();
+    }
 }
