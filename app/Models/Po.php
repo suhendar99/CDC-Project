@@ -13,4 +13,11 @@ class Po extends Model
     {
         return $this->hasMany('App\Models\PoItem');
     }
+
+    public function user_id()
+    {
+        return $this->hasMany('App\User');
+    }
+
+
 }

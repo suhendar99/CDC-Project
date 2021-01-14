@@ -32,10 +32,10 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Detail Pengirim dan Penerima PO</h4>
+                                <h4 class="card-title">Rincian Tujuan Purchase Order</h4>
                             </div>
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Perusahaan Pengirim <small class="text-success">*Harus diisi</small></label>
@@ -80,9 +80,10 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
+                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Perusahaan Penerima <small class="text-success">*Harus diisi</small></label>
                                             <input type="text" class="form-control @error('penerima_po') is-invalid @enderror" name="penerima_po" value="{{ old('penerima_po') }}" >
@@ -93,7 +94,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nama Penerima <small class="text-success">*Harus diisi</small></label>
                                             <input type="text" class="form-control @error('nama_penerima') is-invalid @enderror" name="nama_penerima" value="{{ old('penerima_po') }}" >
@@ -104,7 +105,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>No HP Penerima <small class="text-success">*Harus diisi</small></label>
                                             <input type="text" class="form-control @error('telepon_penerima') is-invalid @enderror" name="telepon_penerima" value="{{ old('telepon_penerima') }}" >
@@ -115,7 +116,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Email Penerima<small class="text-success">*Harus diisi</small></label>
                                             <input type="email" class="form-control @error('email_penerima') is-invalid @enderror" name="email_penerima" value="{{ old('email_penerima') }}" >
@@ -125,6 +126,31 @@
                                                 </span>
                                             @enderror
                                         </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
+                                        <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
+                                            <option value="direct">Direct(Langsung Ke Penjual)</option>
+                                            <option value="kredit">Kredit(Pinjam Ke Bank)</option>
+                                        </select>
+                                        @error('pembayaran')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div id="pilihBank" class="col-md-4 d-none">
+                                        <label>Pilih Bank <small class="text-success">*Harus diisi</small></label>
+                                        <select class="form-control @error('bank_id') is-invalid @enderror" name="bank_id"  >
+                                            @foreach($bank as $b)
+                                            <option value="{{$b->id}}">{{$b->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('bank_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row">
@@ -148,7 +174,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-between">
-                                        <h4 class="card-title">Detail Pengirim dan Penerima PO</h4>
+                                        <h4 class="card-title">Rincian Barang PO</h4>
                                         <button type="button" class="btn btn-sm bg-my-success " onclick="appendBarang()">Tambah Barang PO</button>
                                     </div>
                                 </div>
@@ -172,6 +198,15 @@
 
     var key = 0;
     var satuan;
+    var pembayaran;
+    $('#selectPembayaran').change(function(){
+        pembayaran = $(this).val()
+        if (pembayaran == 'kredit') {
+            $('#pilihBank').removeClass('d-none')
+        } else {
+            $('#pilihBank').addClass('d-none')
+        }
+    })
 
     function removeArray(id) {
         $('#rowKe'+id).remove()
