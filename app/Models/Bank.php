@@ -17,4 +17,8 @@ class Bank extends Model
     {
         return $this->hasMany('App\Models\RekeningPemasok');
     }
+    public function piutang()
+    {
+        return $this->hasMany('App\Models\Piutang');
+    }
 }
