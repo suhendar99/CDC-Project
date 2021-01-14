@@ -8,13 +8,14 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\Bank;
+use Auth;
 use PDF;
 
 class PoController extends Controller
 {
     public function __construct()
     {
-        $this->indexPath = 'app.transaksi.admin.po.';
+        $this->indexPath = 'app.transaksi.gudang.po.';
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +24,7 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->with('po_item')->get();
+        $data = $po->where('user_id',Auth::user()->id)->with('po_item')->get();
         return view($this->indexPath.'index',compact('data'));
     }
 
@@ -33,7 +34,7 @@ class PoController extends Controller
         $date = date('d-m-Y');
         $data = Po::where('id',$id)->with('po_item')->first();
         // PDF::;
-        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
+        $pdf = PDF::loadview('app.transaksi.gudang.po.print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
         return $pdf->stream();
         // return view($this->indexPath.'print', compact('data','date'));
     }

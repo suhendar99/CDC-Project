@@ -44,13 +44,13 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 border-right">
-                                    Dari : <span class="pl-2">{{$d->pengirim_po}}</span>
+                                    Dari : <span class="pl-2">{{$d->user->pengurusGudang->nama}}</span>
                                 </div>
                                 <div class="col-md-6">
                                     Ke : <span class="pl-2">{{$d->penerima_po}}</span>
                                 </div>
                                 <div class="col-md-6 border-right">
-                                    Email : <span class="pl-2">{{$d->email_pengirim}}</span>
+                                    Email : <span class="pl-2">{{$d->user->email}}</span>
                                 </div>
                                 <div class="col-md-6">
                                     Email : <span class="pl-2">{{$d->email_penerima}}</span>
