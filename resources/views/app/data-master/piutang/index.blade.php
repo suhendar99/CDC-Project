@@ -75,7 +75,8 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kode_piutang', name: 'kode_piutang'},
-                {data : 'tenggat_waktu', name: 'tenggat_waktu'}
+                {data : 'termin', name: 'termin'}
+                {data : 'po.', name: 'termin'}
                 {data : 'bunga', name: 'bunga'},
                 {data : 'tenggat_waktu', name: 'tenggat_waktu'}
             ]

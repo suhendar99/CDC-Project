@@ -30,6 +30,12 @@ class PiutangController extends Controller
                 // ->addColumn('action', function($data){
                 //     return '<a href="/v1/piutang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 // })
+                ->addColumn('jumlah', function($data){
+                    $harga = $data->po->po_item->harga;
+                    $jumlah = $data->po->po_item->jumlah;
+                    $subtotal = $harga*$jumlah;
+                    return $subtotal;
+                })
                 ->make(true);
         }
         return view($this->path.'index');

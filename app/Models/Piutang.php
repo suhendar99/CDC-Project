@@ -21,4 +21,8 @@ class Piutang extends Model
     {
         return static::orderBy('id','desc')->get();
     }
+    public function po()
+    {
+        return $this->belongsTo('App\Models\Po');
+    }
 }
