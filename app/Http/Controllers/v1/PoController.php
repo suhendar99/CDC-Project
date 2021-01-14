@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
 use App\Models\PoItem;
+use App\Models\Bank;
 use PDF;
 
 class PoController extends Controller
@@ -42,9 +43,10 @@ class PoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Bank $bank)
     {
-        return view($this->indexPath.'create');
+        $bank = $bank->all();
+        return view($this->indexPath.'create', compact('bank'));
     }
 
     /**
@@ -57,11 +59,12 @@ class PoController extends Controller
     {
 
         $v = Validator::make($request->all(),[
-            'pengirim_po' => 'required|string|max:50',
-            'nama_pengirim' => 'required|string|max:50',
-            'telepon_pengirim' => 'required|numeric',
-            'email_pengirim' => 'required|email',
-
+            // 'pengirim_po' => 'required|string|max:50',
+            // 'nama_pengirim' => 'required|string|max:50',
+            // 'telepon_pengirim' => 'required|numeric',
+            // 'email_pengirim' => 'required|email',
+            'user_id' => 'required',
+            'bank_id' => 'nullable',
             'penerima_po' => 'required|string|max:50',
             'nama_penerima' => 'required|string|max:50',
             'telepon_penerima' => 'required|numeric',
@@ -82,12 +85,20 @@ class PoController extends Controller
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+
         $date = date('Ymdhis');
         $kode = 'PO'.$date;
 
-        $po = Po::create(array_merge($request->only('pengirim_po','nama_pengirim','telepon_pengirim','email_pengirim','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
-            'kode_po' => $kode
-        ]));
+        if ($request->pembayaran == 'kredit') {
+            $po = Po::create(array_merge($request->only('user_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+                'kode_po' => $kode
+            ]));
+        } else {
+            $po = Po::create(array_merge($request->only('user_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+                'kode_po' => $kode
+            ]));
+        }
+
 
         $arrayLength = count($request->nama_barang);
         for ($i=0; $i < $arrayLength; $i++) { 
@@ -102,7 +113,7 @@ class PoController extends Controller
             ]);
         }
 
-        $data = Po::where('id',$po->id)->with('po_item')->first();
+        $data = Po::where('id',$po->id)->with('po_item','user')->first();
         // dd($data);
         return view($this->indexPath.'konfirmasiPo',compact('data'));
     }
