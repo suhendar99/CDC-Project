@@ -18,6 +18,14 @@
                     ">
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
+                    @if (isset($bank))
+                        <li class="{{ Request::is('v1/piutang*') ? 'active' : false }}">
+                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutang*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
+                        </li>
+                        <li class="{{ Request::is('v1/bungaBank*') ? 'active' : false }}">
+                            <a href="{{route('bungaBank.index')}}" class="valign-center {{ Request::is('v1/bungaBank*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Bunga  Bank</a>
+                        </li>
+                    @endif
                     @if (isset($pemasok))
                         <li class="{{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}">
                             <a href="{{route('rekeningPemasok.index')}}" class="valign-center {{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Rekening Pemasok</a>
@@ -153,7 +161,7 @@
                             </li>
                         </ul>
                     </li> --}}
-                    {{-- <li>
+                    <li>
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">
                             <li>
@@ -178,7 +186,7 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li> --}}
+                    </li>
                     {{-- <li>
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li> --}}

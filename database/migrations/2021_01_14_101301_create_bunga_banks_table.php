@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePiutangsTable extends Migration
+class CreateBungaBanksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreatePiutangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('piutangs', function (Blueprint $table) {
+        Schema::create('bunga_banks', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_piutang');
-            $table->integer('bunga');
-            $table->date('termin');
-            $table->foreignId('po_id')->nullable()->constrained('pos')->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
+            $table->float('koperasi')->nullable();
+            $table->float('ritel')->nullable();
+            $table->float('mikro')->nullable();
+            $table->float('kpr')->nullable();
+            $table->float('non_kpr')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreatePiutangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('piutangs');
+        Schema::dropIfExists('bunga_banks');
     }
 }
