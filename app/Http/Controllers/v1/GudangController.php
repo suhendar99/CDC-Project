@@ -11,6 +11,8 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Models\Bank;
+use App\Models\RekeningGudang;
 use Auth;
 
 class GudangController extends Controller
@@ -85,7 +87,8 @@ class GudangController extends Controller
     public function create()
     {
         $provinsi = Provinsi::all();
-        return view($this->path.'create', compact('provinsi'));
+        $bank = Bank::all();
+        return view($this->path.'create', compact('provinsi','bank'));
     }
 
     /**
@@ -110,7 +113,10 @@ class GudangController extends Controller
             'kapasitas' => 'required|numeric',
             'desa_id' => 'required',
             'pemilik' => 'required|string',
-            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'no_rek' => 'required|numeric',
+            'atas_nama' => 'required',
+            'bank_id' => 'required'
         ]);
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
@@ -119,14 +125,23 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto,
                     'user_id' => $user_id
                 ]));
 
+                $gudang_id = $createGudang->id;
+                RekeningGudang::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
+                    'gudang_id' => $gudang_id
+                ]));
             } else {
-                $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'user_id' => $user_id
+                ]));
+
+                $gudang_id = $createGudang->id;
+                RekeningGudang::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
+                    'gudang_id' => $gudang_id
                 ]));
             }
         }

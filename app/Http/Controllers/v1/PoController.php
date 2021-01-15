@@ -82,6 +82,7 @@ class PoController extends Controller
             'telepon_penerima' => 'required|numeric',
             'email_penerima' => 'required|email',
             'alamat_penerima' => 'required',
+            'metode_pembayaran' => 'required',
 
             'nama_barang.*' => 'required|string|max:100',
             'satuan.*' => 'required|string|max:10',
@@ -102,11 +103,11 @@ class PoController extends Controller
         $kode = 'PO'.$date;
 
         if ($request->pembayaran == 'kredit') {
-            $po = Po::create(array_merge($request->only('gudang_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            $po = Po::create(array_merge($request->only('gudang_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
                 'kode_po' => $kode
             ]));
         } else {
-            $po = Po::create(array_merge($request->only('gudang_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima'),[
+            $po = Po::create(array_merge($request->only('gudang_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
                 'kode_po' => $kode
             ]));
         }

@@ -167,6 +167,17 @@
                                             </span>
                                         @enderror
                                     </div> --}}
+                                    <div id="pilihMetode" class="col-md-4 d-none">
+                                        <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
+                                        <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
+                                            <option value="transfer">Transfer</option>
+                                        </select>
+                                        @error('metode_pembayaran')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat Penerima <small class="text-success">*Harus diisi</small></label>
