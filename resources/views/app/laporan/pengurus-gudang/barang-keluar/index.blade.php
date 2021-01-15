@@ -1,6 +1,6 @@
 @php
         $icon = 'text_snippet';
-        $pageTitle = 'Laporan Barang Masuk';
+        $pageTitle = 'Laporan Barang Keluar';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -17,7 +17,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">laporan</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Barang Masuk</a></div>
+            <a href="#" class="text-14">Barang Keluar</a></div>
         </div>
     </div>
     {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
@@ -43,7 +43,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('laporan.barang.masuk.pdf')}}" target="__blank" id="actionLaporan" method="post" enctype="multipart/form-data">
+                            <form action="{{route('laporan.barang.keluar.pdf')}}" target="__blank" id="actionLaporan" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">
@@ -113,13 +113,13 @@
             if(excel.checked == true){
                 excel.checked = false;
             }
-            actionForm.action = "{{ route('laporan.barang.masuk.pdf') }}";
+            actionForm.action = "{{ route('laporan.barang.keluar.pdf') }}";
         });
         excel.addEventListener('click', e=>{
             if(pdf.checked == true){
                 pdf.checked = false;
             }
-            actionForm.action = "{{ route('laporan.barang.masuk.excel') }}";
+            actionForm.action = "{{ route('laporan.barang.keluar.excel') }}";
         });
     }
     formExcel();
