@@ -23,6 +23,11 @@ class PiutangController extends Controller
      */
     public function index(Request $request)
     {
+        // foreach ($data as $key => $value) {
+        //     foreach ($value->user as $u) {
+        //         dd($u->email);
+        //     }
+        // }
         if($request->ajax()){
             $data = $this->Data->getData();
             return DataTables::of($data)
@@ -30,12 +35,33 @@ class PiutangController extends Controller
                 // ->addColumn('action', function($data){
                 //     return '<a href="/v1/piutang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 // })
-                ->addColumn('jumlah', function($data){
-                    $harga = $data->po->po_item->harga;
-                    $jumlah = $data->po->po_item->jumlah;
-                    $subtotal = $harga*$jumlah;
-                    return $subtotal;
+                ->addColumn('user', function($data){
+                    if ($data->user->pengurus_gudang_id != null) {
+                        return $data->user->pengurusGudang->nama;
+                    } elseif ($data->user->pelanggan_id != null) {
+                        return $data->user->pelanggan->nama;
+                    }
                 })
+                ->addColumn('jumlah', function($data){
+                    $totalPajak = 0;
+					$totalDiskon = 0;
+					$subtotalHarga = 0;
+                    foreach ($data->po->po_item as $key => $value) {
+                        $harga = $value->harga;
+                        $jumlah = $value->jumlah;
+                        $subtotal = $harga*$jumlah;
+                        $diskon = $subtotal*$value->diskon/100;
+                        $pajak = $subtotal*$value->pajak/100;
+
+                        $totalPajak = $totalPajak + $pajak;
+                        $totalDiskon = $totalDiskon + $diskon;
+                        $subtotalHarga = $subtotalHarga + $subtotal;
+                    }
+                    $totHar = $subtotalHarga+$totalPajak;
+                    $totalHarga = $totHar-$totalDiskon;
+                    return 'Rp '.$totalHarga;
+                })
+                ->rawColumns(['user','jumlah'])
                 ->make(true);
         }
         return view($this->path.'index');

@@ -47,16 +47,16 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name" class="col-md-12">{{ __('Level / Role Akses') }}</label>
+                                    <label for="name" class="col-md-12">{{ __('Tujuan Mendaftar') }}</label>
 
                                     <div class="col-md-12">
-                                        <select name="role" id="" class="form-control">
+                                        <select name="role" id="role" class="form-control">
                                             {{-- <option value="">--Pilih Role--</option> --}}
-                                            {{-- <option value="pelanggan">Pembeli</option> --}}
-                                            <option value="pemasok">Pemasok</option>
+                                            <option value="pelanggan">Membeli</option>
+                                            {{-- <option value="pemasok">Penjual Barang</option> --}}
                                             {{-- <option value="karyawan">Karyawan</option> --}}
                                             {{-- <option value="bank">Bank</option> --}}
-                                            <option value="gudang">Pengurus Gudang</option>
+                                            <option value="gudang">Menjual</option>
                                         </select>
 
                                         @error('role')
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="show" style="display: none;">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Jenis Usaha') }}</label>
@@ -175,6 +175,15 @@
 @endsection
 @push('script')
 <script>
+    $('#show').hide();
+    $('#role').on('change', function () {
+        var role = $(this).val();
+        if (role == 'gudang') {
+            $('#show').fadeIn();
+        } else {
+            $('#show').fadeOut();
+        }
+    });
     const togglePassword = document.querySelector('#togglePassword');
     const togglePasswordConfirm = document.querySelector('#togglePasswordConfirm');
     const password = document.querySelector('#password');

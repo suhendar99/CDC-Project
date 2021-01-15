@@ -119,6 +119,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['bank']], function () {
         // Piutang
         Route::resource('piutang', 'PiutangController');
+        // Bunga Bank
+        Route::resource('bungaBank', 'BungaBankController');
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli

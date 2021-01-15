@@ -2,7 +2,6 @@
         $icon = 'shopping_cart';
         $pageTitle = 'Data Piutang';
         $dashboard = true;
-        $admin = true;
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -47,8 +46,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kategori</th>
-                                <th>Action</th>
+                                <th>Kode Piutang</th>
+                                <th>Waktu Termin</th>
+                                <th>Jumlah Uang</th>
+                                <th>Bunga</th>
+                                <th>Nama User</th>
+                                <th>Nama Bank</th>
                             </tr>
                         </thead>
                     </table>
@@ -75,10 +78,11 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kode_piutang', name: 'kode_piutang'},
-                {data : 'termin', name: 'termin'}
-                {data : 'po.', name: 'termin'}
+                {data : 'termin', name: 'termin'},
+                {data : 'jumlah', name: 'jumlah'},
                 {data : 'bunga', name: 'bunga'},
-                {data : 'tenggat_waktu', name: 'tenggat_waktu'}
+                {data : 'user', name: 'user'},
+                {data : 'bank.nama', name: 'bank_id'},
             ]
         });
 

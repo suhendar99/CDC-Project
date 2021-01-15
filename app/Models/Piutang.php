@@ -19,7 +19,7 @@ class Piutang extends Model
     }
     public function getData()
     {
-        return static::orderBy('id','desc')->get();
+        return static::with('user','bank')->orderBy('id','desc')->get();
     }
     public function po()
     {
