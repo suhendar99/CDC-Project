@@ -161,7 +161,27 @@
                             </li>
                         </ul>
                     </li> --}}
-                    <li>
+                    @if (isset($pengurusGudang))
+                        <li class="
+                            {{ Request::is('v1/LaporanBarangMasuk*') ? 'active' : false }}
+                        ">
+                            <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
+                            <ul class="collapse list-unstyled
+                                {{ Request::is('v1/LaporanBarangMasuk*') ? 'show' : false }}
+                            " id="reportSubmenu">
+                                <li class="{{ Request::is('v1/LaporanBarangMasuk*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.masuk')}}">Barang Masuk</a>
+                                </li>
+                                <li>
+                                    <a href="#">Barang keluar</a>
+                                </li>
+                                <li>
+                                    <a href="#">Purcase Order</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    {{-- <li>
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">
                             <li>
@@ -186,7 +206,7 @@
                                 <a href="#">Stok Barang</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     {{-- <li>
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li> --}}
