@@ -18,6 +18,14 @@
                     ">
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
+                    @if (isset($bank))
+                        <li class="{{ Request::is('v1/piutang*') ? 'active' : false }}">
+                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutang*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
+                        </li>
+                        <li class="{{ Request::is('v1/bungaBank*') ? 'active' : false }}">
+                            <a href="{{route('bungaBank.index')}}" class="valign-center {{ Request::is('v1/bungaBank*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Bunga  Bank</a>
+                        </li>
+                    @endif
                     @if (isset($pemasok))
                         <li class="{{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}">
                             <a href="{{route('rekeningPemasok.index')}}" class="valign-center {{ Request::is('v1/rekeningPemasok*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Rekening Pemasok</a>
@@ -110,6 +118,11 @@
                     ">
                         <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage</a>
                     </li>
+                    <li class="
+                        {{ Request::is('v1/po*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
+                    </li>
                     @endif
                     {{-- @endif --}}
                      @if (Auth::user()->pelanggan_id != null)
@@ -148,6 +161,28 @@
                             </li>
                         </ul>
                     </li> --}}
+                    @if (isset($pengurusGudang))
+                        <li class="
+                            {{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}
+                            {{ Request::is('v1/laporan-barang-keluar*') ? 'active' : false }}
+                        ">
+                            <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
+                            <ul class="collapse list-unstyled
+                                {{ Request::is('v1/laporan-barang-masuk*') ? 'show' : false }}
+                                {{ Request::is('v1/laporan-barang-keluar*') ? 'show' : false }}
+                            " id="reportSubmenu">
+                                <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.masuk')}}">Barang Masuk</a>
+                                </li>
+                                <li class="{{ Request::is('v1/laporan-barang-keluar*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.keluar')}}">Barang Keluar</a>
+                                </li>
+                                <li>
+                                    <a href="#">Purcase Order</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
                     {{-- <li>
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled" id="reportSubmenu">

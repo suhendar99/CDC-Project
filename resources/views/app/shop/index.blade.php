@@ -90,7 +90,7 @@
 			<div class="row" id="product-list">
 				@forelse($barang as $b)
 				<div class="col-md-3 col-4">
-					<a href="{{route('shop.detail',$b->id)}}">
+					{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 						<div class="card item-card">
 							@if(count($b->foto) < 1 || $b->foto == null)
 							<img src="https://cf.shopee.co.id/file/08744f5b0e1ab3e2d537df5bbf5b2bb4">
@@ -111,12 +111,22 @@
 									<div class="col-12">
 										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}}</span>
 									</div>
+	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
+	                                    <div class="dropdown">
+	                                        <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+	                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
+	                                            <a href="{{route('shop.detail',$b->id)}}" class="dropdown-item">Pesan Langsung</a>
+	                                            <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a>
+	                                            <a href="https://api.whatsapp.com/send?phone=+62{{intval($b->pemasok->telepon)}}" target="_blank" class="dropdown-item" >Chat</a>
+	                                        </div>
+	                                    </div>
+	                                </div>
 								</div>
 								{{-- <button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>
 								<button type="button" class="btn btn-warning btn-sm mx-1">Beli</button> --}}
 							</div>
 						</div>
-					</a>
+					{{-- </a> --}}
 				</div>
 				@empty
 				<div class="col-md-12 d-flex justify-content-center">

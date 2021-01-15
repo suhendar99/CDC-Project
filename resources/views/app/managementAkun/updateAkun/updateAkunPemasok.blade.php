@@ -418,7 +418,7 @@
               dataType: 'json',
               success: function(json) {
                 // alert(json.data);
-                // console.log(json.data);
+                console.log(json.data);
                   $("#desa-select").html('');
                   if (json.code == 200) {
                       for (i = 0; i < Object.keys(json.data).length; i++) {

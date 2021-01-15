@@ -82,7 +82,7 @@
 @push('script')
 {{-- Chart Section --}}
 <script src="{{asset('js/modal.js')}}"></script>
-<script type="text/javascript">
+<script>
     $('.disabled').click(function(e){
             e.preventDefault();
         })

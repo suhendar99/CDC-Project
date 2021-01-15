@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PengaturanAplikasiSeeder::class);
         $this->call(LocationsSeeder::class);
         $this->call(BarangSeeder::class);
+        // $this->call(BungaSeeder::class);
     }
 }

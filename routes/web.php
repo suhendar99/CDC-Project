@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
@@ -14,15 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('/', 'ShopController@index')->name('shop');
+    // Route::get('/', 'ShopController@index')->name('shop');
+    Route::get('/', function(){
+        return redirect('login');
+    });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');
     Route::post('searchBarang', 'SearchController@barang')->name('search.barang');
-});
-
-Route::get('test', function () {
-    return view('app.transaksi.pembelian-barang.pelanggan.stepper');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');
@@ -94,9 +93,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
-        // Purchase Order
-        Route::resource('po', 'PoController');
-        Route::get('print', 'PoController@print')->name('po.print');
 
         // Bank
         Route::resource('bank', 'BankController');
@@ -120,12 +116,19 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::get('/getKota/{id}', 'BarangController@getCities');
     Route::group(['middleware' => ['bank']], function () {
+        // Piutang
+        Route::resource('piutang', 'PiutangController');
+        // Bunga Bank
+        Route::resource('bungaBank', 'BungaBankController');
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
     });
     Route::group(['middleware' => ['karyawan']], function () {
+        // Purchase Order
+        Route::resource('po', 'PoController');
+        Route::get('print/{id}', 'PoController@print')->name('po.print');
         // Storage
         // Route::resource('storage', 'StorageController');
         // Route::resource('storage-in', 'StorageInController');
@@ -153,5 +156,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
+        // Laporan
+        Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
+        Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
+        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
+
+        Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
+        Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
+        Route::post('laporan-barang-keluar-excel','LaporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
+        // End Laporan
     });
 });

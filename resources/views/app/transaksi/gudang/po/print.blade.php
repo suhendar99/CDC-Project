@@ -23,7 +23,7 @@
 			padding: 0.75rem;
 		    vertical-align: center;
 			border: 0 !important;
-		    font-family: 'Poppins', sans-serif;;
+		    font-family: 'Poppins', sans-serif;
 			border-collapse: collapse;
 		}
 
@@ -58,7 +58,7 @@
 
 		.logo{
 			width: 200px;
-			height: 70px;
+			height: 100px;
 			object-fit: scale-down;
 		}
 
@@ -89,7 +89,7 @@
 		.table-po tr td{
 			background-color: #f1f1f1;
 			border: 2px solid #fff;
-			padding: .6rem 1rem;
+			padding: .6rem 0;
 			font-size: 12px;
 		}
 
@@ -158,10 +158,10 @@
 			font-size: 14px;
 		}
 		.text-18{
-			font-size: 18px;
+			font-size: 18px !important;
 		}
 		.text-24{
-			font-size: 24px;
+			font-size: 24px !important;
 		}
 		.text-36{
 			font-size: 36px;
@@ -179,26 +179,32 @@
 					Purchase Order
 				</td>
 			</tr>
+			@php
+			$path = 'images/logo-cdc.png';
+			$type = pathinfo($path, PATHINFO_EXTENSION);
+			$img = file_get_contents($path);
+			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
+			@endphp
 			<tr>
 				<td rowspan="2" width="70%" class="pr-40">
-					<div class="d-flex justify-content-center valign-center">
-						{{-- <img src="/images/logo-cdc.png" class="logo"> --}}
-						<span class="logo-text">PO PRINT</span>
+					<div>
+						<img src="{{$base64}}" class="logo"/>
+						{{-- <span class="logo-text">LOGO</span> --}}
 					</div>
 				</td>
-				<td width="15%">
+				<td width="15%" class="valign-top">
 					Tanggal
 				</td>
-				<td width="15%">
+				<td width="15%" class="valign-top">
 					:
 					<span class="float-right">{{$date}}</span>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td class="valign-top">
 					Status
 				</td>
-				<td>
+				<td class="valign-top">
 					:
 					<span class="float-right">Draft</span>
 				</td>
@@ -216,37 +222,37 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
-					PT Pengirim
+					{{$data->gudang->nama}}
 				</td>
 				<td></td>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
-					PT Penerima
+					{{$data->penerima_po}}
 				</td>
 			</tr>
 			<tr class="text-14">
 				<td>Telp</td>
 				<td>:</td>
-				<td class="text-right">081234567890</td>
+				<td class="text-right">{{$data->gudang->kontak}}</td>
 				<td></td>
 				<td>Telp</td>
 				<td>:</td>
-				<td class="text-right">081234567890</td>
+				<td class="text-right">{{$data->telepon_penerima}}</td>
 			</tr>
 			<tr class="text-14">
 				<td>Email</td>
 				<td>:</td>
-				<td class="text-right">pengirimpo@gmail.com</td>
+				<td class="text-right">{{$data->gudang->user->email}}</td>
 				<td></td>
 				<td>Email</td>
 				<td>:</td>
-				<td class="text-right">penerimapo@gmail.com</td>
+				<td class="text-right">{{$data->email_penerima}}</td>
 			</tr>
 			<tr class="text-14">
 				<td colspan="4"></td>
 				<td class="valign-top">Alamat</td>
 				<td class="valign-top">:</td>
 				<td class="text-right">
-					Jalan Pangeran Asri No 201, Kecamatan,<br>Kabupaten, Kode Pos<br>Provinsi
+					{{$data->alamat_penerima}}
 				</td>
 			</tr>
 		</table>
@@ -258,50 +264,49 @@
 					<td>Produk</td>
 					<td>Kuantitas</td>
 					<td>Harga</td>
-					<td>Diskon</td>
-					<td>Pajak ({{$pajak}}%)</td>
+					<td>Diskon (%)</td>
+					<td>Pajak (%)</td>
 					<td>Total</td>
 				</tr>
 				@php
 					$totalPajak = 0;
-					$totalHarga = 0;
 					$totalDiskon = 0;
 					$subtotalHarga = 0;
 				@endphp
-				@foreach($data as $key => $d)
+				@foreach($data->po_item as $key => $d)
 				@php
-					$subtotal = $d['harga']*$d['jumlah'];
-					$diskon = $subtotal*$d['diskon']/100;
-					$hasilPajak = $subtotal*$pajak/100;
-					$total = $subtotal+$hasilPajak;
+					$subtotal = $d->harga*$d->jumlah;
+					$diskon = $subtotal*$d->diskon/100;
+					$hasilPajak = $subtotal*$d->pajak/100;
+					// $total = $subtotal+$hasilPajak;
 
 					$totalPajak = $totalPajak + $hasilPajak;
 					$totalDiskon = $totalDiskon + $diskon;
 					$subtotalHarga = $subtotalHarga + $subtotal;
-					$totalHarga = $totalHarga + $total;
 				@endphp
 				<tr>
 					<td>{!! $key+1 !!}</td>
 					<td class="text-left">
-						{{$d['nama']}}
+						{{$d->nama_barang}}
 					</td>
 					<td>
-						{{$d['jumlah'].' '.$d['satuan']}}
+						{{$d->jumlah.' '.$d->satuan}}
 					</td>
 					<td>
-						Rp. {{number_format($d['harga'],0,',','.')}}
+						Rp. {{number_format($d->harga,0,',','.')}}
 					</td>
 					<td>
-						{{$d['diskon']}}% : Rp. {{number_format($diskon,0,',','.')}}
+						{{$d->diskon}}% : Rp. {{number_format($diskon,0,',','.')}}
 					</td>
 					<td>
-						Rp. {{number_format($hasilPajak,0,',','.')}}
+						{{$d->pajak}}% : Rp. {{number_format($hasilPajak,0,',','.')}}
 					</td>
 					<td>
 						Rp. {{number_format($subtotal,0,',','.')}}
 					</td>
 				</tr>
 				@endforeach
+				{!! $totalHarga = $subtotalHarga + $totalPajak - $totalDiskon; !!}
 				<tr class="bg-white">
 					<td colspan="5" class="text-right">
 						<span >Subtotal</span>
@@ -329,12 +334,12 @@
 						<span>Rp. {{number_format($totalDiskon,0,',','.')}}</span>
 					</td>
 				</tr>
-				<tr class="bg-white text-18 bold">
-					<td colspan="5" class="text-right">
+				<tr class="bg-white bold">
+					<td colspan="5" class="text-right text-18">
 						<span>Total</span>
 						<span>:</span>
 					</td>
-					<td colspan="2" class="text-right">
+					<td colspan="2" class="text-right text-18">
 						<span>Rp. {{number_format($totalHarga,0,',','.')}}</span>
 					</td>
 				</tr>
@@ -346,15 +351,15 @@
 			<tr>
 				<td width="10%"></td>
 				<td width="30%" class="border-bottom text-center">
-					PT Pengirim
+					{{$data->gudang->nama}}
 					<br><br><br><br>
-					Pak Pengirim
+					{{$data->gudang->pemilik}}
 				</td>
 				<td width="20%"></td>
 				<td width="30%" class="border-bottom text-center">
-					PT Penerima
+					{{$data->penerima_po}}
 					<br><br><br><br>
-					Pak Penerima
+					{{$data->nama_penerima}}
 				</td>
 				<td width="10%"></td>
 			</tr>

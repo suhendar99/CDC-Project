@@ -53,13 +53,13 @@
                                     <div class="col-md-12">
                                         <label>Role / Level <small class="text-success">*Harus dipilih</small></label>
                                         <select name="role" id="" class="form-control">
-                                            <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : 'disabled'}}>Pelanggan</option>
-                                            <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : 'disabled'}}> Karyawan</option>
+                                            {{-- <option value="pelanggan" {{$data->pelanggan_id != null ? 'selected' : 'disabled'}}>Pelanggan</option> --}}
+                                            {{-- <option value="karyawan" {{$data->karyawan_id != null ? 'selected' : 'disabled'}}> Karyawan</option> --}}
                                             <option value="bank" {{$data->bank_id != null ? 'selected' : 'disabled'}}>Bank</option>
                                             <option value="pemasok" {{$data->pemasok_id != null ? 'selected' : 'disabled'}}>Pemasok</option>
                                             <option value="pengurus gudang" {{$data->pengurus_gudang_id != null ? 'selected' : 'disabled'}}>Pengurus Gudang</option>
                                         </select>
-                                        @error('name')
+                                        @error('role')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -101,15 +101,20 @@
                                   </div>
                                   <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Password <small class="text-success">*Boleh tidak diisi</small></label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <label>Password <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" placeholder="Enter password">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="inputGroupPrepend2"><i class="far fa-eye" style="cursor: pointer;" id="togglePassword"></i></span>
+                                            </div>
+                                            @error('password')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                  </div>
+                                </div>
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">
@@ -129,7 +134,16 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
 
+    togglePassword.addEventListener('click', function (e) {
+    // toggle the type attribute
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+    // toggle the eye slash icon
+    this.classList.toggle('fa-eye-slash');
+});
 </script>
 {{--  --}}
 @endpush

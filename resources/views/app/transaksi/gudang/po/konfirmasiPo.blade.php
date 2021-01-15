@@ -2,23 +2,6 @@
     $icon = 'receipt_long';
     $pageTitle = 'Konfirmasi Purchase Order';
     $date = date('d-m-Y');
-    $pajak = 5;
-    $data = array(
-        [
-            'nama' => 'Beras Super Nganu',
-            'jumlah' => 170,
-            'harga' => 11500,
-            'diskon' => 10,
-            'satuan' => 'Kg'
-        ],
-        [
-            'nama' => 'Mangga Super Nganu',
-            'jumlah' => 230,
-            'harga' => 12000,
-            'diskon' => 20,
-            'satuan' => 'Kg'
-        ]
-    );
     $preview = true;
 @endphp
 
@@ -51,7 +34,7 @@
                 <div class="card-header">
                     <h4 class="card-title float-left">Preview Surat Purchase Order</h4>
                     <div class="float-right">
-                        <a href="{{route('po.print')}}" class="btn bg-my-success">
+                        <a href="{{route('po.print',$data->id)}}" target="_blank" class="btn bg-my-success">
                             <div class="d-flex valign-center">
                                 <i class="material-icons md-18 p-0 mr-1">download</i>Download
                             </div>
@@ -63,7 +46,7 @@
             <div class="card my-3">
                 <div class="card-body">
                     <div class="print-page border-all">
-                        @include('app.transaksi.admin.po.print')
+                        @include('app.transaksi.gudang.po.print')
                     </div>
                 </div>
             </div>

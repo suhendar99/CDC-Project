@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Po;
+use App\Models\PoItem;
+use App\Models\Bank;
+use App\User;
+use Auth;
 use PDF;
 
 class PoController extends Controller
 {
     public function __construct()
     {
-        $this->indexPath = 'app.transaksi.admin.po.';
+        $this->indexPath = 'app.transaksi.gudang.po.';
     }
     /**
      * Display a listing of the resource.
@@ -21,35 +25,24 @@ class PoController extends Controller
      */
     public function index(Po $po)
     {
-        $data = $po->all();
-        return view($this->indexPath.'index',compact($data));
+        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $arrayGudang = [];
+        foreach ($user->gudang as $key => $value) {
+            $arrayGudang[] = $value->id;
+        }
+        $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
+        return view($this->indexPath.'index',compact('data'));
     }
 
-    public function print()
+    public function print($id)
     {
         set_time_limit(120);
         $date = date('d-m-Y');
-        $pajak = 5;
-        $data = array(
-            [
-                'nama' => 'Beras Super Nganu',
-                'jumlah' => 170,
-                'harga' => 11500,
-                'diskon' => 10,
-                'satuan' => 'Kg'
-            ],
-            [
-                'nama' => 'Mangga Super Nganu',
-                'jumlah' => 230,
-                'harga' => 12000,
-                'diskon' => 20,
-                'satuan' => 'Kg'
-            ]
-        );
+        $data = Po::where('id',$id)->with('po_item')->first();
         // PDF::;
-        $pdf = PDF::loadview('app.transaksi.admin.po.print', compact('data','date','pajak'))->setOptions(['defaultFont' => 'poppins']);
+        $pdf = PDF::loadview('app.transaksi.gudang.po.print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
         return $pdf->stream();
-        return view($this->indexPath.'print', compact('data','date','pajak'));
+        // return view($this->indexPath.'print', compact('data','date'));
     }
 
     /**
@@ -57,9 +50,16 @@ class PoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Bank $bank)
     {
-        return view($this->indexPath.'create');
+        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $count = $user->gudang->count();
+        if($count < 1){
+            return back()->with('error','Anda Belum Memiliki Gudang!');
+        } else {
+            $bank = $bank->all();
+            return view($this->indexPath.'create', compact('bank'));
+        }
     }
 
     /**
@@ -70,18 +70,19 @@ class PoController extends Controller
      */
     public function store(Request $request)
     {
-
         $v = Validator::make($request->all(),[
-            'pengirim_po' => 'required|string|max:50',
-            'nama_pengirim' => 'required|string|max:50',
-            'telepon_pengirim' => 'required|numeric',
-            'email_pengirim' => 'required|email',
-
+            // 'pengirim_po' => 'required|string|max:50',
+            // 'nama_pengirim' => 'required|string|max:50',
+            // 'telepon_pengirim' => 'required|numeric',
+            // 'email_pengirim' => 'required|email',
+            'gudang_id' => 'required',
+            'bank_id' => 'nullable',
             'penerima_po' => 'required|string|max:50',
             'nama_penerima' => 'required|string|max:50',
             'telepon_penerima' => 'required|numeric',
             'email_penerima' => 'required|email',
             'alamat_penerima' => 'required',
+            'metode_pembayaran' => 'required',
 
             'nama_barang.*' => 'required|string|max:100',
             'satuan.*' => 'required|string|max:10',
@@ -90,14 +91,44 @@ class PoController extends Controller
             'diskon.*' => 'nullable|numeric',
             'pajak.*' => 'nullable|numeric',
         ]);
+        // dd($request->all());
 
         if ($v->fails()) {
             // dd($v->errors()->all());
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
-        dd($request->all());
-        // return view($this->indexPath.'konfirmasiPo');
+
+        $date = date('Ymdhis');
+        $kode = 'PO'.$date;
+
+        if ($request->pembayaran == 'kredit') {
+            $po = Po::create(array_merge($request->only('gudang_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
+                'kode_po' => $kode
+            ]));
+        } else {
+            $po = Po::create(array_merge($request->only('gudang_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
+                'kode_po' => $kode
+            ]));
+        }
+
+
+        $arrayLength = count($request->nama_barang);
+        for ($i=0; $i < $arrayLength; $i++) { 
+            PoItem::create([
+                'po_id' => $po->id,
+                'nama_barang' => $request->nama_barang[$i],
+                'satuan' => $request->satuan[$i],
+                'jumlah' => $request->jumlah[$i],
+                'harga' => $request->harga[$i],
+                'diskon' => $request->diskon[$i],
+                'pajak' => $request->pajak[$i],
+            ]);
+        }
+
+        $data = Po::where('id',$po->id)->with('po_item','gudang.user')->first();
+        // dd($data);
+        return view($this->indexPath.'konfirmasiPo',compact('data'));
     }
 
     /**

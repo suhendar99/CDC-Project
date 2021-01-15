@@ -241,6 +241,44 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>Nomor Rekening <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ old('no_rek') }}" placeholder="Enter Nomor Rekening">
+                                                @error('no_rek')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Bank <small class="text-success">*Harus diisi</small></label>
+                                                <select class="form-control @error('bank_id') is-invalid @enderror" id="bank_id" name="bank_id">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    @foreach($bank as $p)
+                                                    <option value="{{$p->id}}">{{$p->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('bank_id')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Pemilik Rekening <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('atas_nama') is-invalid @enderror" name="atas_nama" value="{{ old('atas_nama') }}" placeholder="Enter Pemilik Rekening">
+                                                @error('atas_nama')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label>Alamat <small class="text-success">*Harus diisi</small></label>
                                     <textarea name="alamat" id="" cols="30" rows="10" class="form-control @error('alamat') is-invalid @enderror">{{old('alamat')}}</textarea>

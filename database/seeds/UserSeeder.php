@@ -71,5 +71,13 @@ class UserSeeder extends Seeder
             'approved_at' => now(),
             'status' => 1
         ]);
+        // User::create([
+        //     'email' => 'bank@makerindo.com',
+        //     'username' => 'Bank',
+        //     'password' => Hash::make('12341234'),
+        //     'bank_id' => 1,
+        //     'approved_at' => now(),
+        //     'status' => 1
+        // ]);
     }
 }
