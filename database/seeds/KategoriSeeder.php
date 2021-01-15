@@ -12,14 +12,24 @@ class KategoriSeeder extends Seeder
     public function run()
     {
         $value = array(
-            ['nama' => 'Fashion'],
-            ['nama' => 'Barang Koleksi'],
-            ['nama' => 'Barang Elektronik'],
-            ['nama' => 'Keperluan Rumah Tangga'],
-            ['nama' => 'Aksesoris'],
-            ['nama' => 'Barang Antik'],
-            ['nama' => 'Bahan Pangan'],
-            ['nama' => 'Produk Kecantikan'],
+            ['nama' => 'Kopi'],
+            ['nama' => 'Kakao'],
+            ['nama' => 'Teh'],
+            ['nama' => 'Bawang Merah'],
+            ['nama' => 'Gabah'],
+            ['nama' => 'Beras'],
+            ['nama' => 'Jagung'],
+            ['nama' => 'Lada'],
+            ['nama' => 'Garam'],
+            ['nama' => 'Karet'],
+            ['nama' => 'Rotan'],
+            ['nama' => 'Pala'],
+            ['nama' => 'Gambir'],
+            ['nama' => 'Kopra'],
+            ['nama' => 'Timah'],
+            ['nama' => 'Ikan'],
+            ['nama' => 'Rumput Laut'],
+            ['nama' => 'Ayam Beku']
         );
         $category = array(
           ['icon'=>'grass','nama'=>'Pertanian'],
@@ -31,6 +41,6 @@ class KategoriSeeder extends Seeder
           // ['icon'=>'free_breakfast','nama'=>'Minuman'],
           // ['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
         );
-        \DB::table('kategoris')->insert($category);
+        \DB::table('kategoris')->insert($value);
     }
 }

@@ -194,17 +194,17 @@
                 {data : 'gudang.nama', name: 'gudang'},
                 {data : 'barang.nama_barang', name: 'nama_barang'},
                 {data : function (data, type, row, meta) {
-                        return data.jumlah + " " + data.satuan;
+                        return data.storage.jumlah + " " + data.satuan;
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
-                        if (data.storage == null) {
+                        if (data.storage.tingkat == null) {
                             return 'Belum Diupdate';
                         } else {
                             return data.storage.tingkat.rak.nama;
                         }
                     }, name: 'rak'},
                 {data : function(data,a,b,c){
-                        if (data.storage == null) {
+                        if (data.storage.tingkat == null) {
                             return 'Belum Diupdate';
                         } else {
                             return data.storage.tingkat.nama;

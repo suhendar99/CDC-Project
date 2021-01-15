@@ -11,6 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
+use App\Models\Rak;
 
 class GudangController extends Controller
 {
@@ -37,7 +38,7 @@ class GudangController extends Controller
                 })
                 ->make(true);
         }
-        $data = Gudang::paginate(6);
+        $data = Gudang::withCount('rak')->paginate(6);
 
         return view($this->path.'index', compact('data'));
     }
@@ -73,6 +74,15 @@ class GudangController extends Controller
 
         return response()->json([
             $index => $data
+        ], 200);
+    }
+
+    public function detailBarang($id)
+    {
+        $data = Rak::with('tingkat.storage.storageIn.barang')->find($id);
+
+        return response()->json([
+            'data' => $data
         ], 200);
     }
 

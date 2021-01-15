@@ -84,14 +84,19 @@
               </div>
           </div>
           <div class="row">
-              <div class="col-6">
+              <div class="col-12">
                   <table class="table">
-                      <tbody>
+                      <thead>
+                          <tr>
+                              <th scope="row">Nama Barang</th>
+                          </tr>
+                      </thead>
+                      <tbody id="inputBarang">
                         <tr>
-                            <th scope="row">Kode Barang</th>
+                            {{-- <th scope="row">Kode Barang</th> --}}
                             <td class="kodeBarang"></td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                           <th scope="row">Nama Barang</th>
                           <td class="nama"></td>
                         </tr>
@@ -106,25 +111,7 @@
                         <tr>
                           <th scope="row">Jumlah Barang</th>
                           <td class="jumlah"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Gudang</th>
-                            <td class="gudang"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Karyawan</th>
-                          <td class="karyawan"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Waktu Masuk</th>
-                          <td class="waktu"></td>
-                        </tr>
+                        </tr> --}}
                       </tbody>
                   </table>
               </div>
@@ -170,16 +157,8 @@
         });
 
         function detail(id){
-            $('.kodeBarang').text('LOADING...')
-            $('.nama').text('LOADING...')
-            $('.harga').text('LOADING...')
-            $('.satuan').text('LOADING...')
-            $('.jumlah').text('LOADING...')
-            $('.gudang').text('LOADING...')
-            $('.karyawan').text('LOADING...')
-            $('.waktu').text('LOADING...')
             $.ajax({
-                url: "/api/v1/detail/storage/in/"+id,
+                url: "/api/v1/rak/"+id+"/barang",
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -187,16 +166,18 @@
                 success: (response)=>{
                     console.log(response.data)
                     let storage = response.data;
+                    let array = [];
 
-                    $('#kode').text("Kode Storage: " + storage.kode)
-                    $('.kodeBarang').text(storage.barang.kode_barang)
-                    $('.nama').text(storage.barang.nama_barang)
-                    $('.harga').text(storage.barang.harga_barang)
-                    $('.satuan').text(storage.barang.satuan)
-                    $('.jumlah').text(storage.jumlah)
-                    $('.gudang').text(storage.gudang.nama)
-                    $('.karyawan').text(storage.user.karyawan.nama)
-                    $('.waktu').text(storage.waktu)
+                    $.each(response.data.tingkat, function(index, val) {
+                         /* iterate through array or object */
+                         $.each(val.storage, function(i, b) {
+                              /* iterate through array or object */
+                              $('#inputBarang').append(`<tr>
+                                  <td>${b.storage_in.barang.nama_barang}</td>
+                                </tr>`)
+                             // array.push(b.storageIn.barang.nama)
+                         });
+                    });
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;

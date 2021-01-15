@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\StorageIn;
+use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
 
@@ -78,14 +79,13 @@ class StorageInController extends Controller
         // dd($request->all());
         $v = Validator::make($request->all(),[
             'barang_kode' => 'required|exists:barangs,kode_barang',
-            'gudang_id' => 'required|exists:barangs,id',
+            'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
             'satuan' => 'required'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($v->fails()) {
-            dd($v);
             return back()->withErrors($v)->withInput();
         }
 
@@ -93,9 +93,16 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
-        StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
+        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
             'kode' => $kode,
             'user_id' => auth()->user()->id,
+            'waktu' => now('Asia/Jakarta')
+        ]);
+
+        Storage::create([
+            'storage_in_kode' => $kode,
+            'jumlah' => $request->jumlah,
+            'satuan' => $request->satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
 

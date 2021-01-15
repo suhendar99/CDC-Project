@@ -79,6 +79,7 @@
                             </div>
                         </div>
                         <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Jumlah Rak: {{ $gudang->rak_count }} <a href="{{ route('rak.index', $gudang->id) }}" class="text-primary">Detail</a></li>
                             <li class="list-group-item">Hari Kerja: {{ $gudang->hari }}</li>
                             <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
                         </ul>

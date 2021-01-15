@@ -48,14 +48,25 @@
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('storage.out.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <div class="form-group">
+                                        <label>Gudang <small class="text-success">*Harus diisi</small></label>
+                                        <select name="gudang_id" id="gudang" class="form-control">
+                                            <option value="">--Pilih Gudang--</option>
+                                            @foreach ($gudang as $list)
+                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
-                                            @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}}>{{$barang->nama_barang}}</option>
-                                            @endforeach
+                                        <select name="barang_kode" id="barang" class="form-control">
+                                            <option value="">--Pilih Barang--</option>
                                         </select>
                                         @error('barang_kode')
                                             <span class="invalid-feedback" role="alert">
@@ -74,7 +85,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan" placeholder="Enter satuan">
                                             <option value="kg">kg</option>
                                             <option value="ons">ons</option>
                                             <option value="gram">gram</option>
@@ -90,20 +101,6 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                        <label>Gudang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="" class="form-control">
-                                            <option value="0">--Pilih Gudang--</option>
-                                            @foreach ($gudang as $list)
-                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('harga_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">
@@ -187,6 +184,41 @@
         // onKeyDetect: function(key){
         //     console.log(key)
         // }
+    });
+
+    $('#gudang').change(function(event) {
+        /* Act on the event */
+        let id = $('#gudang').val();
+        let array = [];
+        $('#barang').html(`<option value="">--Pilih Barang--</option>`);
+
+        $.ajax({
+                url: "/api/v1/storage/out/gudang/"+id+"/barang",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    console.log(response.data)
+
+                    for (var i = response.data.length - 1; i >= 0; i--) {
+                        
+                        for (var j = response.data[i].storage_in.length - 1; j >= 0; j--) {
+                            array.push(response.data[i].storage_in[j].storage.jumlah);
+                        }
+                        let jumlah = array.reduce((a, b) => a+b);
+
+                        $('#barang').append(`
+                            <option value="${response.data[i].kode_barang}">Nama: ${response.data[i].nama_barang} | Jumlah: ${jumlah} ${response.data[i].storage_in[0].storage.satuan}</option>
+                        `)
+                    }
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                    console.log('error')
+                }
+            });
     });
 
     $(document).ready(function() {
