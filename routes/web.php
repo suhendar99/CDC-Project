@@ -157,5 +157,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
+        // Laporan
+        Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
+        Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
+        // End Laporan
     });
 });

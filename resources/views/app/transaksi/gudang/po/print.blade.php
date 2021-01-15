@@ -23,7 +23,7 @@
 			padding: 0.75rem;
 		    vertical-align: center;
 			border: 0 !important;
-		    font-family: 'Poppins', sans-serif;;
+		    font-family: 'Poppins', sans-serif;
 			border-collapse: collapse;
 		}
 
