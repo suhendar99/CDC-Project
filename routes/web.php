@@ -159,6 +159,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Laporan
         Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
         Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
+        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
+
+        Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
+        Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
+        Route::post('laporan-barang-keluar-excel','LaporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
         // End Laporan
     });
 });
