@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Validation\Rule;
 use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\Bank;
@@ -57,8 +58,8 @@ class PoController extends Controller
         if($count < 1){
             return back()->with('error','Anda Belum Memiliki Gudang!');
         } else {
-            $bank = $bank->all();
-            return view($this->indexPath.'create', compact('bank'));
+            // $bank = $bank->all();
+            return view($this->indexPath.'create');
         }
     }
 
@@ -82,7 +83,8 @@ class PoController extends Controller
             'telepon_penerima' => 'required|numeric',
             'email_penerima' => 'required|email',
             'alamat_penerima' => 'required',
-            'metode_pembayaran' => 'required',
+            'pembayaran' => 'required',
+            'metode_pembayaran' => 'required_if:pembayaran,now',
 
             'nama_barang.*' => 'required|string|max:100',
             'satuan.*' => 'required|string|max:10',
@@ -94,13 +96,19 @@ class PoController extends Controller
         // dd($request->all());
 
         if ($v->fails()) {
-            // dd($v->errors()->all());
+            dd($v->errors()->all());
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
 
-        $date = date('Ymdhis');
-        $kode = 'PO'.$date;
+        $date = date('ymd');
+        $latest = Po::orderBy('id','desc')->first();
+        if ($latest == null) {
+            $counter = 1;
+        } else {
+            $counter = $latest->id+1;
+        }
+        $kode = 'PO'.$date.sprintf("%'.02d", (String)$counter);
 
         if ($request->pembayaran == 'kredit') {
             $po = Po::create(array_merge($request->only('gudang_id','bank_id','penerima_po','nama_penerima','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[

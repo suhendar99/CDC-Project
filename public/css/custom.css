@@ -4,6 +4,14 @@ body {
     background: #fafafa;
 }
 
+body input{
+	-webkit-transition: all 1s ease;
+	   -moz-transition: all 1s ease;
+	    -ms-transition: all 1s ease;
+	     -o-transition: all 1s ease;
+	        transition: all 1s ease;
+}
+
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1em;
