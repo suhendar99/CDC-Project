@@ -14,15 +14,14 @@ Web Routes
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('/', 'ShopController@index')->name('shop');
+    // Route::get('/', 'ShopController@index')->name('shop');
+    Route::get('/', function(){
+        return redirect('login');
+    });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');
     Route::post('searchBarang', 'SearchController@barang')->name('search.barang');
-});
-
-Route::get('test', function () {
-    return view('app.transaksi.pembelian-barang.pelanggan.stepper');
 });
 
 Route::get('/verification','Auth\RegisterController@verify');

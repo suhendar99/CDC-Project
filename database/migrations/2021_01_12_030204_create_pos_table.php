@@ -27,6 +27,7 @@ class CreatePosTable extends Migration
             $table->string('telepon_penerima',50);
             $table->string('email_penerima',50);
             $table->string('alamat_penerima',50);
+            $table->string('metode_pembayaran',50);
             $table->boolean('status')->default(0); 
             // Jika 1 Maka Peminjaman PO Diterima Oleh Bank
             // Jika 2 Maka PO diseujui oleh bulky dan oleh bank(jika meminjam)
