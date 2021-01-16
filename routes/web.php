@@ -129,6 +129,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Purchase Order
         Route::resource('po', 'PoController');
         Route::get('print/{id}', 'PoController@print')->name('po.print');
+        Route::get('preview/{id}', 'PoController@preview')->name('po.preview');
         // Storage
         // Route::resource('storage', 'StorageController');
         // Route::resource('storage-in', 'StorageInController');

@@ -1,7 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Konfirmasi Purchase Order';
-    $date = date('d-m-Y');
+    $pageTitle = 'Preview Purchase Order';
     $preview = true;
 @endphp
 
@@ -19,8 +18,6 @@
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Purchase Order</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Purchase Order</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
