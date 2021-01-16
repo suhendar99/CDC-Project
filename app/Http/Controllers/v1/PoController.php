@@ -135,8 +135,21 @@ class PoController extends Controller
         }
 
         $data = Po::where('id',$po->id)->with('po_item','gudang.user')->first();
+        $date = date_format($data->created_at,'d-m-Y');
         // dd($data);
-        return view($this->indexPath.'konfirmasiPo',compact('data'));
+        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function preview($id)
+    {
+        $data = Po::where('id',$id)->with('po_item','gudang.user')->first();
+        $date = date_format($data->created_at,'d-m-Y');
+        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
     }
 
     /**
