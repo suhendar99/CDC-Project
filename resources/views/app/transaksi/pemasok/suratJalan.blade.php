@@ -39,8 +39,8 @@
                 </div>
                 <div class="card-body">
                     <form action="{{route('transaksiPemasok.store')}}" method="post">
-                                          
-                    @csrf 
+
+                    @csrf
                     <input type="hidden" name="gudang_id" id="gudang_id">
                     <div class="row">
                       <div class="col-md-12">
@@ -49,10 +49,10 @@
                             <td class="bold text-center" width="50%">
                               <div class="float-left ml-4">
                                 <span class="text-24">{{$barang->pemasok->nama}}</span><br>
-                                {{$barang->pemasok->alamat}}, 
-                                {{$barang->pemasok->desa->nama}}, 
-                                {{$barang->pemasok->desa->kecamatan->nama}}<br>  
-                                {{$barang->pemasok->desa->kecamatan->kabupaten->nama}}, 
+                                {{$barang->pemasok->alamat}},
+                                {{$barang->pemasok->desa->nama}},
+                                {{$barang->pemasok->desa->kecamatan->nama}}<br>
+                                {{$barang->pemasok->desa->kecamatan->kabupaten->nama}},
                                 {{$barang->pemasok->desa->kecamatan->kabupaten->provinsi->nama}}<br>
                                 Telp. {{$barang->pemasok->telepon}}
                               </div>
@@ -81,7 +81,7 @@
                       </div>
                         <div class="col-md-12">
                             <div class="float-right">
-                               <button id="next" type="submit" class="btn btn-success btn-sm">Next</button> 
+                               <button id="next" type="submit" class="btn btn-success btn-sm">Next</button>
                             </div>
                         </div>
                     </div>
