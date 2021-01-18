@@ -1,19 +1,5 @@
 @php
-	// $count = $data->count();
-	// $smax = $data->max('suhu');
-	// $smin = $data->min('suhu');
-	// $savg = $data->avg('suhu');
-	// $tmax = $data->max('tegangan');
-	// $tmin = $data->min('tegangan');
-	// $tavg = $data->avg('tegangan');
-	// $amax = $data->max('arus');
-	// $amin = $data->min('arus');
-	// $aavg = $data->avg('arus');
-    // $set = App\Models\PengaturanLaporan::find(1)->first();
-    // $judul = App\Models\JudulLaporan::where('id','1')->first();
-    // $date = date("d M Y");
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    // dd($data);
 @endphp
 
 <!DOCTYPE html>
@@ -125,12 +111,15 @@
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
-			{{-- <td rowspan="2" style="text-align:left; font-size:13px;">
+			@if ($month != null)
+            <td rowspan="2" style="text-align:left; font-size:13px;">
 				Sumber Data : {{ $sumber }}
-			</td> --}}
-			<td rowspan="2" style="text-align:right; font-size:13px;">
+			</td>
+            @elseif($awal != null && $akhir != null)
+            <td rowspan="2" style="text-align:right; font-size:13px;">
 				Waktu : {{$awal}} s.d. {{$akhir}}
 			</td>
+            @endif
 		</tr>
 	</table>
     <table width="100%" style="margin-bottom: -10px; " id="customers">
