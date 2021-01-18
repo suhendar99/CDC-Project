@@ -49,6 +49,34 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
+                                                <label>Tahun <small class="text-success">*Harus dipilih</small></label>
+                                                <select name="month" id="">
+                                                    <option value="">Januari</option>
+                                                    <option value="">February</option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                    <option value=""></option>
+                                                </select>
+                                                @error('awal')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
                                                 <label>Tanggal Awal <small class="text-success">*Harus diisi</small></label>
                                                 <input type="date" class="form-control @error('awal') is-invalid @enderror" name="awal" value="{{ old('awal') }}">
                                                 @error('awal')
