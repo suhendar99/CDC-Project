@@ -45,26 +45,47 @@
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('laporan.barang.masuk.pdf')}}" target="__blank" id="actionLaporan" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <div class="row">
-                                    <div class="col-md-6">
+                                <div class="row" id="fill">
+                                    <div class="col-md-12">
+                                        <h6 class="ml-3">Pilih Filter Laporan <small class="text-success">*Harus dipilih</small></h6>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="row ml-3">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="filterBulan">
+                                                    <label class="custom-control-label mr-2" for="filterBulan">By Bulan</label>
+                                                </div>
+
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="filterTanggal">
+                                                    <label class="custom-control-label" for="filterTanggal">By Tanggal</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="bulan" style="display: none;">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Tahun <small class="text-success">*Harus dipilih</small></label>
-                                                <select name="month" id="">
-                                                    <option value="">Januari</option>
-                                                    <option value="">February</option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
-                                                    <option value=""></option>
+                                                <label>Bulan <small class="text-success">*Harus dipilih</small></label>
+                                                <select name="month" id="" class="form-control">
+                                                    <option value="">-- Pilih Bulan--</option>
+                                                    <option value="1">Januari</option>
+                                                    <option value="2">Februari</option>
+                                                    <option value="3">Maret</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">Mei</option>
+                                                    <option value="6">Juni</option>
+                                                    <option value="7">Juli</option>
+                                                    <option value="8">Agustus</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">Oktober</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">Desember</option>
                                                 </select>
-                                                @error('awal')
+                                                @error('month')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -73,7 +94,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" id="tanggal" style="display: none;">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
@@ -101,7 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="checkbox" style="display: none;">
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="exportPdf">
@@ -113,7 +134,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" id="button" style="display: none;">
                                     <div class="col-md-12">
                                     <div class="float-right">
                                         <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Buat Laporan</button>
@@ -142,15 +163,48 @@
                 excel.checked = false;
             }
             actionForm.action = "{{ route('laporan.barang.masuk.pdf') }}";
+            console.log(actionForm.action);
         });
         excel.addEventListener('click', e=>{
             if(pdf.checked == true){
                 pdf.checked = false;
             }
             actionForm.action = "{{ route('laporan.barang.masuk.excel') }}";
+            console.log(actionForm.action);
         });
     }
     formExcel();
+
+    const Filter = ()=>{
+        const bulan = document.querySelector("#filterBulan");
+        const tanggal = document.querySelector("#filterTanggal");
+        $('#fill').show();
+        bulan.addEventListener('click', e=>{
+            if(tanggal.checked == true){
+                tanggal.checked = false;
+            }
+            if (bulan.checked == true) {
+                $('#bulan').fadeIn();
+                $('#button').fadeIn();
+                $('#tanggal').css('display','none');
+                $('#fill').css('display','none');
+                $('#checkbox').fadeIn();
+            }
+        });
+        tanggal.addEventListener('click', e=>{
+            if(bulan.checked == true){
+                bulan.checked = false;
+            }
+            if (tanggal.checked == true) {
+                $('#bulan').css('display','none');
+                $('#fill').css('display','none');
+                $('#tanggal').fadeIn();
+                $('#button').fadeIn();
+                $('#checkbox').fadeIn();
+            }
+        });
+    }
+    Filter();
 </script>
 {{--  --}}
 @endpush
