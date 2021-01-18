@@ -11,6 +11,7 @@ use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\StorageIn;
 use App\Models\StorageOut;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
@@ -29,24 +30,37 @@ class laporanPengurusGudangController extends Controller
     }
     public function LaporanBarangMasukPdf(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'awal' => 'required',
-            'akhir' => 'required',
-        ]);
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $awal = $request->awal;
             $akhir = $request->akhir;
-            if ($akhir < $awal) {
-                return back()->with('failed','Mohon Perikas Tanggal Anda !');
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $bulan = $request->input('month');
+                $data = StorageIn::with('user','gudang','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+            } elseif ($awal != null && $akhir != null) {
+                if ($akhir < $awal) {
+                    return back()->with('failed','Mohon Periksa Tanggal Anda !');
+                }
+                $data = StorageIn::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
             }
-            $data = StorageIn::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
-            // dd($data);
-            $barang = Gudang::all();
-            if ($data === null) {
-                return back()->with('error','Tidak ada data pada tanggal  '.$awal.' sampai '.$akhir);
+
+            if ($data == null) {
+                return back()->with('error','Tidak ada data !');
             } else {
                 $sumber = "Semua UPTD";
                 $pdf = PDF::loadview($this->path.'pdf',compact('data','awal','akhir','sumber'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
@@ -58,26 +72,32 @@ class laporanPengurusGudangController extends Controller
     }
     public function LaporanBarangMasukExcel(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'awal' => 'required',
-            'akhir' => 'required',
-        ]);
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $awal = $request->awal;
             $akhir = $request->akhir;
-            if ($akhir < $awal) {
-                return back()->with('failed','Mohon Perikas Tanggal Anda !');
-            }
-            $data = StorageIn::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+            $bulan = $request->month;
+            $month = $request->has('month');
+            $hii = $request->input('month');
+            $data = StorageIn::all();
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
                 $input = $request->all();
                 set_time_limit(99999);
-                return (new ExportLaporanBarangMasuk($awal, $akhir))->download('Laporan-'.$akhir.'.xlsx');
+                return (new ExportLaporanBarangMasuk($awal, $akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
     public function showLaporanBarangKeluar()
@@ -86,24 +106,36 @@ class laporanPengurusGudangController extends Controller
     }
     public function LaporanBarangKeluarPdf(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'awal' => 'required',
-            'akhir' => 'required',
-        ]);
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $awal = $request->awal;
             $akhir = $request->akhir;
-            if ($akhir < $awal) {
-                return back()->with('failed','Mohon Perikas Tanggal Anda !');
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $bulan = $request->input('month');
+                $data = StorageOut::with('user','gudang','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+            } elseif ($awal != null && $akhir != null) {
+                if ($akhir < $awal) {
+                    return back()->with('failed','Mohon Periksa Tanggal Anda !');
+                }
+                $data = StorageOut::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
             }
-            $data = StorageOut::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
-            // dd($data);
-            $barang = Gudang::all();
             if ($data === null) {
-                return back()->with('error','Tidak ada data pada tanggal  '.$awal.' sampai '.$akhir);
+                return back()->with('error','Tidak ada data !');
             } else {
                 $sumber = "Semua UPTD";
                 $pdf = PDF::loadview($this->pathKeluar.'pdf',compact('data','awal','akhir','sumber'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
@@ -115,26 +147,32 @@ class laporanPengurusGudangController extends Controller
     }
     public function LaporanBarangKeluarExcel(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'awal' => 'required',
-            'akhir' => 'required',
-        ]);
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $awal = $request->awal;
             $akhir = $request->akhir;
-            if ($akhir < $awal) {
-                return back()->with('failed','Mohon Perikas Tanggal Anda !');
-            }
-            $data = StorageOut::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+            $bulan = $request->month;
+            $month = $request->has('month');
+            $hii = $request->input('month');
+            $data = StorageOut::all();
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
                 $input = $request->all();
                 set_time_limit(99999);
-                return (new ExportLaporanBarangKeluar($awal, $akhir))->download('Laporan-'.$akhir.'.xlsx');
+                return (new ExportLaporanBarangKeluar($awal,$akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
     public function showLaporanPo()
