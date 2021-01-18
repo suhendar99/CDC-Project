@@ -44,11 +44,13 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <div class="col-md-12 col-12">
-                                {{-- <h5>Location</h5> --}}
-                                <div style="width: 100%; height: 300px;" id="map"></div>
-                                {{-- <small>*) Seret pin untuk mengisi latitude & longitude</small> --}}
-                                <small>*) Drag & Drop Pin to set latitude & longitude</small>
+                            <div class="row mb-2">
+                                <div class="col-md-12 col-12">
+                                    {{-- <h5>Location</h5> --}}
+                                    <div style="width: 100%; height: 300px;" id="map"></div>
+                                    {{-- <small>*) Seret pin untuk mengisi latitude & longitude</small> --}}
+                                    <small>*) Drag & Drop Pin to set latitude & longitude</small>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
@@ -257,7 +259,7 @@
                                                 <label>Bank <small class="text-success">*Harus diisi</small></label>
                                                 <select class="form-control @error('bank_id') is-invalid @enderror" id="bank_id" name="bank_id">
                                                     <option value="">-- Pilih Disini --</option>
-                                                    @foreach($bank as $p)
+                                                    @foreach($dataBank as $p)
                                                     <option value="{{$p->id}}">{{$p->nama}}</option>
                                                     @endforeach
                                                 </select>

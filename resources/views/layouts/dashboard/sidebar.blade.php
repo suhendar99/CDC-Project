@@ -172,11 +172,13 @@
                         <li class="
                             {{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}
                             {{ Request::is('v1/laporan-barang-keluar*') ? 'active' : false }}
+                            {{ Request::is('v1/laporan-po*') ? 'active' : false }}
                         ">
                             <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                             <ul class="collapse list-unstyled
                                 {{ Request::is('v1/laporan-barang-masuk*') ? 'show' : false }}
                                 {{ Request::is('v1/laporan-barang-keluar*') ? 'show' : false }}
+                                {{ Request::is('v1/laporan-po*') ? 'show' : false }}
                             " id="reportSubmenu">
                                 <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
                                     <a href="{{route('laporan.barang.masuk')}}">Barang Masuk</a>
@@ -184,8 +186,8 @@
                                 <li class="{{ Request::is('v1/laporan-barang-keluar*') ? 'active' : false }}">
                                     <a href="{{route('laporan.barang.keluar')}}">Barang Keluar</a>
                                 </li>
-                                <li>
-                                    <a href="#">Purcase Order</a>
+                                <li class="{{ Request::is('v1/laporan-po*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.po')}}">Purcase Order</a>
                                 </li>
                             </ul>
                         </li>

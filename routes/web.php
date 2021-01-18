@@ -14,7 +14,7 @@ Web Routes
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    // Route::get('/', 'ShopController@index')->name('shop');
+    Route::get('shop', 'ShopController@index')->name('shop');
     Route::get('/', function(){
         return redirect('login');
     });
@@ -130,6 +130,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Purchase Order
         Route::resource('po', 'PoController');
         Route::get('print/{id}', 'PoController@print')->name('po.print');
+        Route::get('preview/{id}', 'PoController@preview')->name('po.preview');
         // Storage
         // Route::resource('storage', 'StorageController');
         // Route::resource('storage-in', 'StorageInController');
@@ -165,6 +166,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
         Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
         Route::post('laporan-barang-keluar-excel','LaporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
+
+        Route::get('laporan-po','LaporanPengurusGudangController@showLaporanPo')->name('laporan.po');
+        Route::post('laporan-po-pdf','LaporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
+        Route::post('laporan-po-excel','LaporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
         // End Laporan
     });
 });

@@ -125,12 +125,15 @@
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
-			{{-- <td rowspan="2" style="text-align:left; font-size:13px;">
+			@if ($month != null)
+            <td rowspan="2" style="text-align:left; font-size:13px;">
 				Sumber Data : {{ $sumber }}
-			</td> --}}
-			<td rowspan="2" style="text-align:right; font-size:13px;">
+			</td>
+            @elseif($awal != null && $akhir != null)
+            <td rowspan="2" style="text-align:right; font-size:13px;">
 				Waktu : {{$awal}} s.d. {{$akhir}}
 			</td>
+            @endif
 		</tr>
 	</table>
     <table width="100%" style="margin-bottom: -10px; " id="customers">

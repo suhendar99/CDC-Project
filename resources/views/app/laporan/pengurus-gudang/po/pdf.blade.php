@@ -1,11 +1,12 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
+    $title = 'Laporan Purcase Order'
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Barang Keluar Dari Gudang</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +108,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Barang Keluar Dari Gudang</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
@@ -125,26 +126,48 @@
     <table width="100%" style="margin-bottom: -10px; " id="customers">
         <thead>
             <tr>
-                <th>No</th>
-                <th>Waktu Barang Masuk</th>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Nama Gudang</th>
-                <th>Kode Barang Masuk</th>
-                <th>Jumlah</th>
+                <th rowspan="2">No</th>
+                <th rowspan="2">Kode PO</th>
+                <th rowspan="2">Gudang</th>
+                <th rowspan="2">Penerima PO</th>
+                <th rowspan="2">Alamat peneriam</th>
+                <th colspan="5">Item</th>
+            </tr>
+            <tr>
+                <th style="color: black">Nama Barang</th>
+                <th style="color: black">Jumlah Barang</th>
+                <th style="color: black">Harga Barang</th>
+                <th style="color: black">Diskon</th>
+                <th style="color: black">Pajak</th>
+            </tr>
         </thead>
         <tbody>
-            @php $no = 1 @endphp
-            @foreach($data as $a)
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $a->waktu }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
-                    <td>{{ $a->barang->nama_barang }}</td>
-                    <td>{{ $a->gudang->nama }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                </tr>
+            @foreach ($data as $key => $value)
+            <tr>
+                <td rowspan="{{$value->po_item->count()}}">{{$key+1}}</td>
+                <td rowspan="{{$value->po_item->count()}}">{{$value->kode_po}}</td>
+                <td rowspan="{{$value->po_item->count()}}">{{$value->gudang->nama}}</td>
+                <td rowspan="{{$value->po_item->count()}}">{{$value->penerima_po}}</td>
+                <td rowspan="{{$value->po_item->count()}}">{{$value->alamat_penerima}}</td>
+                <td>{{$value->po_item[0]->nama_barang}}</td>
+                <td>{{$value->po_item[0]->jumlah}} {{$value->po_item[0]->satuan}}</td>
+                <td>Rp {{number_format($value->po_item[0]->harga)}}</td>
+                <td>{{$value->po_item[0]->diskon}} %</td>
+                <td>{{$value->po_item[0]->pajak}} %</td>
+            </tr>
+            @if ($value->po_item->count() > 1)
+            @foreach ($value->po_item as $key => $i)
+            @if ($key > 0)
+            <tr>
+                <td>{{$i->nama_barang}}</td>
+                <td>{{$i->jumlah}} {{$i->satuan}}</td>
+                <td>Rp {{number_format($i->harga)}}</td>
+                <td>{{$i->diskon}} %</td>
+                <td>{{$i->pajak}} %</td>
+            </tr>
+            @endif
+            @endforeach
+            @endif
             @endforeach
         </tbody>
 	</table>

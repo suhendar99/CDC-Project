@@ -97,8 +97,8 @@ class GudangController extends Controller
     public function create()
     {
         $provinsi = Provinsi::all();
-        $bank = Bank::all();
-        return view($this->path.'create', compact('provinsi','bank'));
+        $dataBank = Bank::all();
+        return view($this->path.'create', compact('provinsi','dataBank'));
     }
 
     /**

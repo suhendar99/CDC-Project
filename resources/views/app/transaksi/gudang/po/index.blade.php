@@ -43,8 +43,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="float-right">
+                                <div class="col-12 d-flex justify-content-between valign-center my-2">
+                                    <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
+                                    <div>
                                         @if($d->status == 0)
                                         <span class="badge rounded-pill bg-my-primary p-2">PO Sedang Diproses</span>
                                         @elseif($d->status == 1)

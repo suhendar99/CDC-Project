@@ -83,7 +83,7 @@
                                 </div> --}}
                                 <div class="row">
                                     <div class="col-12">
-                                        <label>Pilih Gudang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectGudang" class="form-control @error('gudang_id') is-invalid @enderror" name="gudang_id"  >
                                             <option value="none">-- Pilih Gudang --</option>
                                             @foreach(Auth::user()->gudang as $b)
@@ -167,10 +167,11 @@
                                             </span>
                                         @enderror
                                     </div> --}}
-                                    <div id="pilihMetode" class="col-md-4 d-none">
+                                    <div id="pilihMetode" class="col-md-4 ">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                            <option value="transfer">Transfer</option>
+                                            <option value="">-- Pilih Metode --</option>
+                                            <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                         </select>
                                         @error('metode_pembayaran')
                                             <span class="invalid-feedback" role="alert">
@@ -236,10 +237,10 @@
 
     $('#selectPembayaran').change(function(){
         pembayaran = $(this).val()
-        if (pembayaran == 'kredit') {
-            $('#pilihBank').removeClass('d-none')
+        if (pembayaran == 'now') {
+            $('#pilihMetode').removeClass('d-none')
         } else {
-            $('#pilihBank').addClass('d-none')
+            $('#pilihMetode').addClass('d-none')
         }
     })
 
@@ -334,7 +335,7 @@
                     <div class="form-group">
                         <label>Pajak <small class="text-success">*Jika Tidak Ada Kosongkan</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[]" value="{{ old('pajak') }}" aria-describedby="satuanAppend">
+                          <input type="number" type="number" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[]" value="10" aria-describedby="satuanAppend" readonly>
                           <div class="input-group-append">
                             <span class="input-group-text" >%</span>
                           </div>
