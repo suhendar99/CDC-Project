@@ -21,6 +21,7 @@ class CreateRaksTable extends Migration
             $table->integer('tinggi');
             $table->integer('panjang');
             $table->integer('lebar');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

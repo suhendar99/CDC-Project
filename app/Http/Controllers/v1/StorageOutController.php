@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\StorageOut;
+use App\Models\StorageIn;
+use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
 
@@ -33,6 +35,17 @@ class StorageOutController extends Controller
         return view('app.data-master.storage.index');
     }
 
+    public function findBarang($id)
+    {
+        $barang = Barang::with('storageIn.storage')->whereHas('storageIn', function($query)use($id){
+            $query->where('gudang_id', $id);
+        })->get();
+
+        return response()->json([
+            'data' => $barang
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -41,6 +54,7 @@ class StorageOutController extends Controller
     public function create()
     {
         $gudang = Gudang::all();
+
         return view('app.data-master.storage.out.create', compact('gudang'));
     }
 
@@ -62,6 +76,47 @@ class StorageOutController extends Controller
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
+        }
+
+        $kode_barang = $request->barang_kode;
+
+        $stok = Storage::whereHas('storageIn', function($query)use($kode_barang){
+            $query->where('barang_kode', $kode_barang);
+        })
+        ->orderBy('waktu', 'asc')
+        ->get();
+
+        $jumlahBarang = count($stok) - 1;
+        $now = 0;
+
+        $jumlah = $request->jumlah;
+
+        $hasil = 0;
+
+        while ( $jumlah != 0 ) {
+            if ($now <= $jumlahBarang) {
+                $jumlahStok = $stok[$now]->jumlah;
+
+                if ($jumlahStok != 0) {
+                    $jumlahStok = $jumlahStok - $jumlah;
+                    if ($jumlahStok >= 0) {
+                        $stok[$now]->update([
+                            'jumlah' => $jumlahStok
+                        ]);
+
+                        $jumlah = 0;
+                    }elseif($jumlahStok < 0){
+                        $stok[$now]->update([
+                            'jumlah' => 0
+                        ]);
+
+                        $jumlah = abs($jumlahStok);
+                        $now++;
+                    }
+                }else{
+                    $now++;
+                }
+            }
         }
 
         $faker = \Faker\Factory::create('id_ID');

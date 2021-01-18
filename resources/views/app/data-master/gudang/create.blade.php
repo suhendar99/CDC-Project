@@ -546,14 +546,14 @@
               type: 'GET',
               cache: false,
               dataType: 'json',
-              success: function(json) {
+              success: function(response) {
                 // alert(json.data);
-                // console.log(json.data);
+                console.log(response.data);
                   $("#desa-select").html('');
-                  if (json.code == 200) {
-                      for (i = 0; i < Object.keys(json.data).length; i++) {
-                          // console.log(json.data[i].nama);
-                          $('#desa-select').append($('<option>').text(json.data[i].nama).attr('value', json.data[i].id));
+                  if (response.code == 200) {
+                      for (i = 0; i < response.data.length; i++) {
+                          // console.log(response.data[i].nama);
+                          $('#desa-select').append($('<option>').text(response.data[i].nama).attr('value', response.data[i].id));
                       }
                   } else {
                       $('#desa-select').append($('<option>').text('Data tidak di temukan').attr('value', 'Data tidak di temukan'));

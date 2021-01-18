@@ -112,14 +112,7 @@ class StorageController extends Controller
         }
         $storage = Storage::where('storage_in_kode', $id)->first();
 
-        if ($storage != null) {
-            $storage->update($request->only('tingkat_id'));
-        }else{
-            Storage::create([
-                'storage_in_kode' => $id,
-                'tingkat_id' => $request->tingkat_id
-            ]);
-        }
+        $storage->update($request->only('tingkat_id'));
 
         return redirect(route('storage.index'))->with('success', __( 'Saved!' ));
     }
