@@ -117,18 +117,40 @@
                     @if (isset($pengurusGudang))
                     <li class="
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
-                    ">
-                        <a href="{{route('gudang.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Gudang</a>
-                    </li>
-                    <li class="
                         {{ Request::is('v1/storage*') ? 'active' : false }}
                     ">
-                        <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">dashboard</i>Storage</a>
+                        <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/storage*') ? 'show' : false }}
+                        " id="gudangSubmenu">
+                            <li class="{{ Request::is('v1/gudang*') ? 'active' : false }}">
+                                <a href="{{route('gudang.index')}}">Identitas Gudang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
+                                <a href="{{route('storage.index')}}">Manajemen Barang</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
                     ">
-                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
+                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/po*') ? 'show' : false }}
+                        " id="transaksiSubmenu">
+                            <li>
+                                <a href="#">PO Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
+                                <a href="{{route('po.index')}}">PO Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/piutang*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('piutang.index')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
                     </li>
                     @endif
                     {{-- @endif --}}
