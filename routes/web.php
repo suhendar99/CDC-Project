@@ -93,6 +93,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Kategori Barang Induk
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
+        Route::resource('pemilik-gudang', 'PemilikGudangController');
 
         // Bank
         Route::resource('bank', 'BankController');

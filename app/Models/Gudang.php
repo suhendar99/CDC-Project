@@ -64,15 +64,14 @@ class Gudang extends Model
     	return $this->belongsTo('App\Models\Desa');
     }
 
-
     /**
-     * Gudang belongs to User.
+     * Gudang belongs to AkunGudang.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function akunGudang()
     {
-        // belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
-        return $this->belongsTo('App\User');
+        // belongsTo(RelatedModel, foreignKey = akunGudang_id, keyOnRelatedModel = id)
+        return $this->belongsToMany('App\Models\PengurusGudang', 'akun_gudangs', 'gudang_id', 'pengurus_id');
     }
 }
