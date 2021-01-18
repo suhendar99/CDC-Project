@@ -29,6 +29,7 @@ class CreatePengurusGudangsTable extends Migration
             $table->string('foto')->nullable();
             $table->string('foto_ktp')->nullable();
             $table->string('foto_ktp_selfie')->nullable();
+            $table->integer('status')->default(0);
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->foreignId('kecamatan_id')->nullable()->constrained('kecamatans')->onDelete('set null');
             $table->foreignId('kabupaten_id')->nullable()->constrained('kabupatens')->onDelete('set null');

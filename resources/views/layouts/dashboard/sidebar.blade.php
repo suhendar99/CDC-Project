@@ -46,6 +46,7 @@
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/bank*') ? 'active' : false }}
                         {{ Request::is('v1/akun-bank*') ? 'active' : false }}
+                        {{ Request::is('v1/pemilik-gudang*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
@@ -58,6 +59,7 @@
                             {{ Request::is('v1/user*') ? 'show' : false }}
                             {{ Request::is('v1/bank*') ? 'show' : false }}
                             {{ Request::is('v1/akun-bank*') ? 'show' : false }}
+                            {{ Request::is('v1/pemilik-gudang*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
@@ -80,6 +82,11 @@
                                 {{ Request::is('v1/akun-bank*') ? 'active' : false }}
                             ">
                                 <a href="{{route('akun-bank.index')}}">Bank Account</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/pemilik-gudang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pemilik-gudang.index')}}">Pemilik Gudang</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
