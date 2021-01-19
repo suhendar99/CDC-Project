@@ -24,7 +24,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-12">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="col-md-12">
             <div class="row">
@@ -44,12 +44,13 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between valign-center my-2">
-                                    <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
+                                    <a href="{{route('po.previewPemasok',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
+                                    <a href="{{route('accept.po.gudang',$d->id)}}" class="btn btn-sm bg-my-primary">Setujui</a>
                                     <div>
                                         @if($d->status == 0)
                                         <span class="badge rounded-pill bg-my-primary p-2">PO Sedang Diproses</span>
                                         @elseif($d->status == 1)
-                                        <span class="badge rounded-pill bg-my-warning p-2">Pinjaman Anda Sudah Disetujui</span>
+                                        <span class="badge rounded-pill bg-my-warning p-2">PO Disetujui</span>
                                         @elseif($d->status == 2)
                                         <span class="badge rounded-pill bg-my-success p-2">PO Sudah Diterima Pemasok</span>
                                         @elseif($d->status == 3)

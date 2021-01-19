@@ -100,6 +100,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('akun-bank', 'AkunBankController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
+        // Brang Po Masuk
+        Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
+        Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
+        Route::get('previewPemasok/{id}', 'PoController@preview')->name('po.previewPemasok');
         // Barang
         Route::resource('barang', 'BarangController');
         Route::get('edit-foto-barang/{id}','BarangController@editFotoBarang')->name('edit.barang');
