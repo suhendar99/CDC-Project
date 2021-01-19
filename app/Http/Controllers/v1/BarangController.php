@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\FotoBarang;
 use App\Models\Kategori;
+use App\Models\Storage;
 use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -58,7 +59,11 @@ class BarangController extends Controller
         if ($request->has('search') && $request->search !== '') {
             $search = trim($request->search);
             if($search == ''){
-               $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(8);
+                $storage = Storage::with('storageIn.barang')->orderBy('id','desc')->get();
+                foreach ($storage as $key => $value) {
+                    $barang = $value;
+                }
+                // dd($barang->storageIn->barang);
             }else{
            $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')
                 ->where('nama_barang','LIKE',"%".$search."%")
@@ -67,7 +72,11 @@ class BarangController extends Controller
                 ->paginate(8);
             }
         } else {
-           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')->paginate(8);
+            $storage = Storage::with('storageIn.barang')->orderBy('id','desc')->get();
+            foreach ($storage as $key => $value) {
+                $barang = $value;
+            }
+            // dd($barang->storageIn->barang);
         }
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
