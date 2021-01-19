@@ -14,6 +14,7 @@ use App\Models\Kecamatan;
 use App\Models\Rak;
 use App\Models\Bank;
 use App\Models\RekeningGudang;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class GudangController extends Controller
@@ -41,7 +42,11 @@ class GudangController extends Controller
                 })
                 ->make(true);
         }
-        $data = Gudang::withCount('rak')->paginate(6);
+        $data = Gudang::withCount('rak')
+        ->whereHas('akunGudang', function($query){
+            $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+        })
+        ->paginate(6);
 
         return view($this->path.'index', compact('data'));
     }
@@ -154,6 +159,12 @@ class GudangController extends Controller
                     'gudang_id' => $gudang_id
                 ]));
             }
+
+            DB::table('akun_gudangs')->insert([
+                'gudang_id' => $gudang_id,
+                'pengurus_id' => auth()->user()->pengurus_gudang_id,
+                'created_at' => now('Asia/Jakarta')
+            ]);
         }
         return back()->with('success',$this->alert.'Disimpan !');
     }

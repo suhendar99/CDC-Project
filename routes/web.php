@@ -152,9 +152,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('storage/penyimpanan/{id}', 'StorageController@edit')->name('storage.rak');
         Route::post('storage/penyimpanan/{id}/simpan', 'StorageController@update')->name('storage.rak.simpan');
 
-        // Gudang
-        Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
-        Route::resource('gudang', 'GudangController');
+        Route::group(['middleware' => 'pemilik'], function() {
+            // Gudang
+            Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
+            Route::resource('gudang', 'GudangController');
+
+            Route::resource('pengurus-gudang', 'PengurusGudangController');
+        });
 
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
