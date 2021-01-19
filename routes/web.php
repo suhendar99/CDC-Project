@@ -115,10 +115,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('selectGudang', 'TransaksiPemasokController@selectGudang')->name('select.gudang');
         Route::get('suratJalan', 'TransaksiPemasokController@suratJalan')->name('transaksiPemasok.surat');
     });
-    Route::get('/getKota/{id}', 'BarangController@getCities');
+    Route::get('/getKota/{id}', 'BarangConptroller@getCities');
     Route::group(['middleware' => ['bank']], function () {
-        // Piutang
-        Route::resource('piutang', 'PiutangController');
         // Bunga Bank
         Route::resource('bungaBank', 'BungaBankController');
     });
@@ -175,5 +173,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-po-pdf','LaporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
         Route::post('laporan-po-excel','LaporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
         // End Laporan
+        // Piutang
+        Route::resource('piutang', 'PiutangController');
     });
 });
