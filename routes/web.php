@@ -162,6 +162,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });
 
+        Route::resource('pemesanan', 'PemesananController');
+
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
         // Laporan
