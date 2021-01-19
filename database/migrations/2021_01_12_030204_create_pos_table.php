@@ -21,13 +21,14 @@ class CreatePosTable extends Migration
             // $table->string('telepon_pengirim',50);
             // $table->string('email_pengirim',50);
             $table->foreignId('gudang_id')->nullable()->constrained('gudangs')->onDelete('cascade');
+            $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->string('penerima_po',50);
             $table->string('nama_penerima',50);
             $table->string('telepon_penerima',50);
             $table->string('email_penerima',50);
             $table->string('alamat_penerima',50);
             $table->string('metode_pembayaran',50)->nullable();
-            $table->boolean('status')->default(0); 
+            $table->boolean('status')->default(0);
             // Jika 1 Maka Peminjaman PO Diterima Oleh Bank
             // Jika 2 Maka PO diseujui oleh bulky dan oleh bank(jika meminjam)
             $table->timestamps();

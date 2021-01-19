@@ -11,7 +11,7 @@ class PengurusGudang extends Model
 
     public function user()
     {
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\User','pengurus_gudang_id','id');
     }
 
     public function getData()

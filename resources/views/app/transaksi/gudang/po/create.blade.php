@@ -111,9 +111,14 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Nama Penerima <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('nama_penerima') is-invalid @enderror" name="nama_penerima" value="{{ old('penerima_po') }}" >
-                                            @error('nama_penerima')
+                                            <label>Nama Penerima <small class="text-success">*Harus dipilih</small></label>
+                                            <select name="pemasok_id" id="pemasok" class="form-control">
+                                                <option value="">--Pilih Nama Penerima--</option>
+                                                @foreach ($pemasok as $p)
+                                                    <option value="{{$p->id}}">{{$p->nama}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('pemasok_id')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
@@ -123,7 +128,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>No HP Penerima <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('telepon_penerima') is-invalid @enderror" name="telepon_penerima" value="{{ old('telepon_penerima') }}" >
+                                            <input id="telepon" type="text" class="form-control @error('telepon_penerima') is-invalid @enderror" name="telepon_penerima" value="{{ old('telepon_penerima') }}" >
                                             @error('telepon_penerima')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -134,7 +139,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Email Penerima<small class="text-success">*Harus diisi</small></label>
-                                            <input type="email" class="form-control @error('email_penerima') is-invalid @enderror" name="email_penerima" value="{{ old('email_penerima') }}" >
+                                            <input id="email" type="email" class="form-control @error('email_penerima') is-invalid @enderror" name="email_penerima" value="{{ old('email_penerima') }}" >
                                             @error('email_penerima')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -182,7 +187,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat Penerima <small class="text-success">*Harus diisi</small></label>
-                                            <textarea class="form-control @error('alamat_penerima') is-invalid @enderror" name="alamat_penerima" value="{{ old('alamat_penerima') }}"></textarea>
+                                            <textarea id="alamat" class="form-control @error('alamat_penerima') is-invalid @enderror" name="alamat_penerima" value="{{ old('alamat_penerima') }}"></textarea>
                                             @error('alamat_penerima')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -205,7 +210,7 @@
                                 </div>
                             </div>
                             <div class="card-body" id="barang-parent">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -225,9 +230,27 @@
     var satuan;
     var pembayaran;
     var gudang;
+    $('#pemasok').on('change',function(){
+        var id = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "/api/v1/getPoPemasok/"+id,
+            data: "data",
+            dataType: "json",
+            success: function (response) {
+                var data = response.data;
+                var user = response.user;
+                $.each(data, function (a, b) {
+                    console.log(b.user.email);
+                    $('#telepon').val(b.telepon);
+                    $('#email').val(user.email);
+                    $('#alamat').val(b.alamat);
+                });
+            }
+        });
+    })
     $('#selectGudang').change(function(){
         gudang = $(this).val()
-        console.log(gudang)
         if (gudang == 'none') {
             $('#rowTujuan').addClass('d-none')
         } else {
@@ -250,7 +273,7 @@
         console.log(key)
         return key
     }
-    
+
     function appendBarang() {
         key = key+1
         // console.log(key)
@@ -348,7 +371,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <hr>    
+                    <hr>
                 </div>
             </div>
         `)
