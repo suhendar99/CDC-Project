@@ -11,7 +11,7 @@ class Pemasok extends Model
 
     public function user()
     {
-        return $this->hasMany('App\User','pemasok_id');
+        return $this->hasMany('App\User');
     }
     public function barang()
     {

@@ -36,7 +36,11 @@
                                 <i class="material-icons md-18 p-0 mr-1">download</i>Download
                             </div>
                         </a>
-                        <a href="{{route('po.index')}}" class="btn bg-my-primary">Kembali</a>
+                        @if (Auth::user()->pemasok_id != null)
+                            <a href="{{route('po.masuk.pemasok')}}" class="btn bg-my-primary">Kembali</a>
+                        @elseif (Auth::user()->pengurus_gudang_id != null)
+                            <a href="{{route('po.index')}}" class="btn bg-my-primary">Kembali</a>
+                        @endif
                     </div>
                 </div>
             </div>

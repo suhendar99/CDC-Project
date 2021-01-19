@@ -36,6 +36,9 @@
                         <li class="{{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}">
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">money</i>Transaksi</a>
                         </li>
+                        <li class="{{ Request::is('v1/po-masuk-pemasok*') ? 'active' : false }}">
+                            <a href="{{route('po.masuk.pemasok')}}" class="valign-center {{ Request::is('v1/po-masuk-pemasok*') ? 'active' : false }}"><i class="material-icons">money</i>PO Masuk</a>
+                        </li>
                         <li class="{{ Request::is('v1/Laporan*') ? 'active' : false }}">
                             <a href="{{-- {{route('transaksiPemasok.index')}} --}}" class="valign-center {{ Request::is('v1/transaksiPemasok*') ? 'active' : false }}"><i class="material-icons">insert_drive_file</i>Laporan</a>
                         </li>
