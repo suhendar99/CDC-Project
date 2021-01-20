@@ -58,14 +58,22 @@ class PemesananController extends Controller
             'nama_pemesan' => 'required|string|max:50',
             'tanggal_pemesanan' => 'required|date',
             'alamat_pemesan' => 'required|string|max:255',
-            'metode_pembayaran' => 'required|integer'
+            'metode_pembayaran' => 'required|integer',
+            'total_harga' => 'required|integer|min:0',
+            'satuan' => 'required'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
 
-        Pemesanan::create($request->only('barang_kode', 'jumlah_barang', 'nama_pemesan', 'tanggal_pemesanan', 'alamat_pemesan', 'metode_pembayaran'));
+        $arrayName = ["kg", "ons", "gram", "ml", "m3", "m2", "m", "gram"];
+
+        if (!in_array($request->satuan, $arrayName)) {
+            return back()->with('failed', __( 'Masukan inputan satuan yang benar' ))->withInput();
+        }
+
+        Pemesanan::create($request->only('barang_kode', 'jumlah_barang', 'nama_pemesan', 'tanggal_pemesanan', 'alamat_pemesan', 'metode_pembayaran', 'total_harga', 'satuan'));
 
         return redirect(route('pemesanan.index'))->with('success', __( 'Pemesanan Created' ));
     }
@@ -108,15 +116,23 @@ class PemesananController extends Controller
             'nama_pemesan' => 'required|string|max:50',
             'tanggal_pemesanan' => 'required|date',
             'alamat_pemesan' => 'required|string|max:255',
-            'metode_pembayaran' => 'required|integer'
+            'metode_pembayaran' => 'required|integer',
+            'total_harga' => 'required|integer|min:0',
+            'satuan' => 'required'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
 
+        $arrayName = ["kg", "ons", "gram", "ml", "m3", "m2", "m", "gram"];
+
+        if (!in_array($request->satuan, $arrayName)) {
+            return back()->with('failed', __( 'Masukan inputan satuan yang benar' ))->withInput();
+        }
+
         Pemesanan::findOrFail($id)
-        ->update($request->only('barang_kode', 'jumlah_barang', 'nama_pemesan', 'tanggal_pemesanan', 'alamat_pemesan', 'metode_pembayaran'));
+        ->update($request->only('barang_kode', 'jumlah_barang', 'nama_pemesan', 'tanggal_pemesanan', 'alamat_pemesan', 'metode_pembayaran', 'total_harga', 'satuan'));
 
         return redirect(route('pemesanan.index'))->with('success', __( 'Pemesanan Updated' ));
     }
