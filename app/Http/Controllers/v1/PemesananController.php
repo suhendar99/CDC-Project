@@ -35,11 +35,6 @@ class PemesananController extends Controller
                 ->make(true);
         }
 
-            $data = Pemesanan::with('barangPesanan.barang')
-            ->orderBy('id', 'desc')
-            ->get();
-            dd($data);
-
         return view('app.data-master.pemesanan.index');
     }
 

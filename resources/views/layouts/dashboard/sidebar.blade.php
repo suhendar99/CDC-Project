@@ -142,16 +142,21 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
+                        {{ Request::is('v1/retur*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/po*') ? 'show' : false }}
+                            {{ Request::is('v1/retur*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li>
                                 <a href="#">PO Masuk</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
                                 <a href="{{route('po.index')}}">PO Keluar</a>
+                            </li>
+                            <li class="{{ Request::is('v1/retur*') ? 'active' : false }}">
+                                <a href="{{route('retur.index')}}">Retur Pemesanan</a>
                             </li>
                         </ul>
                     </li>

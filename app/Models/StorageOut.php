@@ -46,4 +46,15 @@ class StorageOut extends Model
     	// belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\User');
     }
+
+    /**
+     * StorageOut belongs to Pemesanan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pemesanan()
+    {
+        // belongsTo(RelatedModel, foreignKey = pemesanan_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Pemesanan');
+    }
 }

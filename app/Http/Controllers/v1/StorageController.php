@@ -24,7 +24,7 @@ class StorageController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageIn::with('barang', 'storage.tingkat.rak', 'gudang')
+            $data = Storage::with('storageIn.barang', 'tingkat.rak', 'storageIn.gudang')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

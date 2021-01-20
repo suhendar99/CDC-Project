@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SuratJalan extends Model
+class Retur extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'surat_jalans';
+    protected $table = 'returs';
     protected $guarded = [];
 
     /**
-     * SuratJalan belongs to Pemesanan.
+     * Retur belongs to Pemesanan.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -23,5 +23,16 @@ class SuratJalan extends Model
     {
     	// belongsTo(RelatedModel, foreignKey = pemesanan_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Pemesanan');
+    }
+
+    /**
+     * Retur belongs to Barang.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function barang()
+    {
+    	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
+    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
 }

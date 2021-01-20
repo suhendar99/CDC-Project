@@ -20,15 +20,47 @@ class Pemesanan extends Model
     	return $this->hasMany('App\Models\BarangPesanan', 'pemesanan_id', 'id');
     }
 
-
     /**
-     * Pemesanan has one Kwitansi.
+     * Pemesanan has many Kwitansi.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function kwitansi()
     {
-        // hasOne(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-        return $this->hasOne('App\Models\Kwitansi');
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\Kwitansi');
+    }
+
+    /**
+     * Pemesanan has many SuratJalan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function suratJalan()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\SuratJalan');
+    }
+
+    /**
+     * Pemesanan has many StorageOut.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageOut()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\StorageOut');
+    }
+
+    /**
+     * Pemesanan has many Retur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function retur()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\Retur');
     }
 }
