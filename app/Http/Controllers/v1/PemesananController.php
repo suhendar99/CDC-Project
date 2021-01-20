@@ -19,10 +19,11 @@ class PemesananController extends Controller
      */
     public function index(Request $request)
     {
+        $data = Pemesanan::with('barangPesanan.barang')
+        ->orderBy('id', 'desc')
+        ->get();
+        dd($data);
         if($request->ajax()){
-            $data = Pemesanan::with('barang')
-            ->orderBy('id', 'desc')
-            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

@@ -149,7 +149,7 @@
             ajax : "{{ route('pemesanan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'barang.nama_barang', name: 'name'},
+                {data : 'barangPesanan.barang.nama_barang', name: 'name'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
                 {data : 'nama_pemesan', name: 'nama_pemesan'},
                 {data : 'tanggal_pemesanan', name: 'tanggal_pemesanan'},
