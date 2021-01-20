@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Tambah Pemesanan';
+    $pageTitle = 'Tambah Pemesanan Masuk';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -35,7 +35,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="float-left">
-                                            <h4 class="card-title">Tambah Pemesanan</h4>
+                                            <h4 class="card-title">Tambah Pemesanan Masuk</h4>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -196,9 +196,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Nama Penerima <small class="text-success">*Harus dipilih</small></label>
+                        <label>Nama Barang <small class="text-success">*Harus dipilih</small></label>
                         <select name="barang[]"  onchange="changebarang(${key},this)" class="form-control">
-                            <option value="">--Pilih Nama Penerima--</option>
+                            <option value="">--Pilih Nama Barang--</option>
                             @foreach ($barang as $p)
                                 <option value="{{$p->kode_barang}}">{{$p->nama_barang}}</option>
                             @endforeach
