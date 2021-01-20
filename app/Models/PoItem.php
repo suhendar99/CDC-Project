@@ -13,4 +13,8 @@ class PoItem extends Model
     {
         return $this->belongsTo('App\Models\Po');
     }
+    public function piutangOut()
+    {
+        return $this->hasMany('App\Models\PiutangOut');
+    }
 }

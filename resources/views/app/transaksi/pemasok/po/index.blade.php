@@ -45,7 +45,6 @@
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between valign-center my-2">
                                     <a href="{{route('po.previewPemasok',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
-                                    <a href="{{route('accept.po.gudang',$d->id)}}" class="btn btn-sm bg-my-primary">Setujui</a>
                                     <div>
                                         @if($d->status == 0)
                                         <span class="badge rounded-pill bg-my-primary p-2">PO Sedang Diproses</span>
@@ -78,12 +77,26 @@
                                     @endforeach
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        @if ($d->metode_pembayaran == null)
+                                            @if ($d->status == 1)
+                                            @else
+                                            <a href="{{route('acceptPoGudang',$d->id)}}" class="btn btn-sm bg-my-primary px-4">Setujui</a>
+                                            @endif
+                                        @else
+                                            <a href="{{route('accept.po.gudang.cash',$d->id)}}" class="btn btn-sm bg-my-primary px-4">Setujui</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 @empty
                 <div class="col-12 my-4 py-4">
-                    <center>-- Anda Belum Pernah Melakukan PO --</center>
+                    <center>-- Tidak ada PO --</center>
                 </div>
                 @endforelse
             </div>

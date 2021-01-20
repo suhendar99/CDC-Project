@@ -10,8 +10,11 @@ use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\Bank;
 use App\Models\Pemasok;
+use App\Models\PiutangOut;
 use App\User;
 use Auth;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 use PDF;
 
 class PoController extends Controller
@@ -28,7 +31,7 @@ class PoController extends Controller
      */
     public function getDataMasukPemasok(Po $po)
     {
-        $user = User::where('pengurus_gudang_id','!=',null)->with('gudang')->first();
+        $user = User::where('pengurus_gudang_id','!=',null)->orderBy('id','desc')->with('gudang')->first();
         $arrayGudang = [];
         foreach ($user->gudang as $key => $value) {
             $arrayGudang[] = $value->id;
@@ -57,12 +60,30 @@ class PoController extends Controller
         return $pdf->stream();
         // return view($this->indexPath.'print', compact('data','date'));
     }
-    public function acceptGudang($id)
+    public function showAccept($id)
     {
-        Po::find($id)->update([
-            'status' => 1
-        ]);
-        return back()->with('success','Po telah disetujui');
+        return view($this->indexPathPemasok.'piutang',compact('id'));
+    }
+    public function acceptGudang(Request $request, $id)
+    {
+        $po = Po::find($id);
+        if ($po->metode_pembayaran == null) {
+            $tempo = $request->tempo;
+            $po->update([
+                'status' => 1
+            ]);
+            PiutangOut::where('barang_id',$po->id)->update([
+                'status' => 1,
+                'jatuh_tempo' => date('Y-m-d', strtotime($po->created_at.' +'.$tempo.' days'))
+            ]);
+            return redirect('v1/po-masuk-pemasok')->with('success','Po telah disetujui');
+        } else {
+            $po->update([
+                'status' => 1
+            ]);
+            return back()->with('success','Po telah disetujui');
+        }
+
     }
 
     /**
@@ -116,7 +137,7 @@ class PoController extends Controller
             'email_penerima' => 'required|email',
             'alamat_penerima' => 'required',
             'pembayaran' => 'required',
-            'metode_pembayaran' => 'required',
+            'metode_pembayaran' => 'nullable',
 
             'nama_barang.*' => 'required|string|max:100',
             'satuan.*' => 'required|string|max:10',
@@ -127,7 +148,6 @@ class PoController extends Controller
         ]);
         // dd($request->all());
         if ($v->fails()) {
-            dd($v);
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
@@ -144,19 +164,10 @@ class PoController extends Controller
         }
         $kode = 'PO'.$date.sprintf("%'.02d", (String)$counter);
 
-        if ($request->pembayaran == 'kredit') {
-            $po = Po::create(array_merge($request->only('gudang_id','pemasok_id','bank_id','penerima_po','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
-                'kode_po' => $kode,
-                'nama_penerima' => $nama
-            ]));
-        } else {
-            $po = Po::create(array_merge($request->only('gudang_id','pemasok_id','penerima_po','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
-                'kode_po' => $kode,
-                'nama_penerima' => $nama
-            ]));
-        }
-
-
+        $po = Po::create(array_merge($request->only('gudang_id','pemasok_id','penerima_po','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
+            'kode_po' => $kode,
+            'nama_penerima' => $nama
+        ]));
         $arrayLength = count($request->nama_barang);
         for ($i=0; $i < $arrayLength; $i++) {
             PoItem::create([
@@ -169,7 +180,44 @@ class PoController extends Controller
                 'pajak' => $request->pajak[$i],
             ]);
         }
+        if ($request->pembayaran == 'later') {
+            $poItem = PoItem::where('po_id',$po->id)->get();
+            $totalPajak = 0;
+            $totalDiskon = 0;
+            $subtotalHarga = 0;
+            // $harga = 0;
+            // $jumlah = 0;
+            // $disc =0;
+            // $paj = 0;
+            foreach ($poItem as $key => $value) {
+                $harga = $value->harga;
+                $jumlah = $value->jumlah;
+                $disc = $value->diskon;
+                $paj = $value->pajak;
+                $subtotal = $harga*$jumlah;
+                $diskon = $subtotal*$disc/100;
+                $pajak = $subtotal*$paj/100;
 
+                $totalPajak = $totalPajak + $pajak;
+                $totalDiskon = $totalDiskon + $diskon;
+                $subtotalHarga = $subtotalHarga + $subtotal;
+            }
+            $totHar = $subtotalHarga+$totalPajak;
+            $hutang = $totHar-$totalDiskon;
+            // dd($hutang);
+            PiutangOut::create([
+                'barang_id' => $po->id,
+                'tanggal'=> Carbon::now(),
+                'nama_pembeli' => FacadesAuth::user()->pengurusGudang->nama,
+                'hutang' => $hutang,
+            ]);
+        }
+        // } else {
+        //     $po = Po::create(array_merge($request->only('gudang_id','pemasok_id','penerima_po','telepon_penerima','email_penerima','alamat_penerima','metode_pembayaran'),[
+        //         'kode_po' => $kode,
+        //         'nama_penerima' => $nama
+        //     ]));
+        // }
         $data = Po::where('id',$po->id)->with('po_item','gudang.user')->first();
         $date = date_format($data->created_at,'d-m-Y');
         // dd($data);
