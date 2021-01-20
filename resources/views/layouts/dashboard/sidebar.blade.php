@@ -149,6 +149,9 @@
                             {{ Request::is('v1/po*') ? 'show' : false }}
                             {{ Request::is('v1/retur*') ? 'show' : false }}
                         " id="transaksiSubmenu">
+                            <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
+                                <a href="{{route('pemesanan.index')}}">Pemesanan</a>
+                            </li>
                             <li>
                                 <a href="#">PO Masuk</a>
                             </li>

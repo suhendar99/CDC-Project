@@ -18,8 +18,9 @@ class CreatePemesanansTable extends Migration
             $table->string('kode')->unique();
             $table->string('nama_pemesan');
             $table->string('alamat_pemesan');
+            $table->string('telepon');
             $table->date('tanggal_pemesanan');
-            $table->boolean('metode_pembayaran');
+            $table->boolean('metode_pembayaran')->nullable();
             $table->timestamps();
         });
     }
