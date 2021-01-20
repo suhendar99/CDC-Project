@@ -63,10 +63,49 @@
                                         @enderror
                                 </div>
                                 <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label>Telah diterima dari <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Enter terima_dari barang">
+                                        @error('terima_dari')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Jumlah Uang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="integer" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Enter jumlah_uang_digits barang">
+                                        @error('jumlah_uang_digits')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <input type="hidden" name="jumlah_uang_word">
+                                    <div class="form-group col-md-3">
+                                        <label>Satuan <small class="text-success">*Harus diisi</small></label>
+                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan" placeholder="Enter satuan">
+                                            <option value="kg">kg</option>
+                                            <option value="ons">ons</option>
+                                            <option value="gram">gram</option>
+                                            <option value="ml">ml</option>
+                                            <option value="m3">m<sup>3</sup></option>
+                                            <option value="m2">m<sup>2</sup></option>
+                                            <option value="m">m</option>
+                                            <option value="gram">cm</option>
+                                        </select>
+                                        @error('satuan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                {{-- <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
-                                            <option value="">--Pilih Barang--</option>
+                                            <option value="">-Pilih Barang-</option>
                                         </select>
                                         @error('barang_kode')
                                             <span class="invalid-feedback" role="alert">
@@ -101,7 +140,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">

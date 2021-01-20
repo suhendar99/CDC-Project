@@ -24,6 +24,9 @@ class PemesananController extends Controller
         ->get();
         dd($data);
         if($request->ajax()){
+            $data = Pemesanan::with('barangPesanan.barang')
+            ->orderBy('id', 'desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -31,6 +34,11 @@ class PemesananController extends Controller
                 })
                 ->make(true);
         }
+
+            $data = Pemesanan::with('barangPesanan.barang')
+            ->orderBy('id', 'desc')
+            ->get();
+            dd($data);
 
         return view('app.data-master.pemesanan.index');
     }
