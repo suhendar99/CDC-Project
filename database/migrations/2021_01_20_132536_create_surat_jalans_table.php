@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKwitansisTable extends Migration
+class CreateSuratJalansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateKwitansisTable extends Migration
      */
     public function up()
     {
-        Schema::create('kwitansis', function (Blueprint $table) {
+        Schema::create('surat_jalans', function (Blueprint $table) {
             $table->id();
+            $table->date('tanggal');
+            $table->string('penerima', 150);
+            $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateKwitansisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kwitansis');
+        Schema::dropIfExists('surat_jalans');
     }
 }
