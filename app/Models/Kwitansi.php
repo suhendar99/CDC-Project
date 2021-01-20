@@ -35,4 +35,8 @@ class Kwitansi extends Model
     	// belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Gudang');
     }
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

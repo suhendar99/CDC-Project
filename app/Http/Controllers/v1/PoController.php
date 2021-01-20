@@ -31,9 +31,9 @@ class PoController extends Controller
      */
     public function getDataMasukPemasok(Po $po)
     {
-        $user = User::where('pengurus_gudang_id','!=',null)->orderBy('id','desc')->with('gudang')->first();
+        $user = User::where('pengurus_gudang_id','!=',null)->orderBy('id','desc')->with('pengurusGudang.gudang')->first();
         $arrayGudang = [];
-        foreach ($user->gudang as $key => $value) {
+        foreach ($user->pengurusGudang->gudang as $key => $value) {
             $arrayGudang[] = $value->id;
         }
         $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
@@ -41,9 +41,9 @@ class PoController extends Controller
     }
     public function index(Po $po)
     {
-        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $user = User::where('id',Auth::user()->id)->with('pengurusGudang.gudang')->first();
         $arrayGudang = [];
-        foreach ($user->gudang as $key => $value) {
+        foreach ($user->pengurusGudang->gudang as $key => $value) {
             $arrayGudang[] = $value->id;
         }
         $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
@@ -93,9 +93,9 @@ class PoController extends Controller
      */
     public function create(Bank $bank)
     {
-        $user = User::where('id',Auth::user()->id)->with('gudang')->first();
+        $user = User::where('id',Auth::user()->id)->with('pengurusGudang.gudang')->first();
         $pemasok = Pemasok::all();
-        $count = $user->gudang->count();
+        $count = $user->pengurusGudang->gudang->count();
         if($count < 1){
             return back()->with('error','Anda Belum Memiliki Gudang!');
         } else {

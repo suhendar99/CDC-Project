@@ -12,7 +12,7 @@ class KaryawanSeeder extends Seeder
     public function run()
     {
         $akun = [
-            'nama' => 'Pak Karyawan',
+            'nama' => 'Pak Pemilik',
             'desa_id' => 1101010001,
             'kecamatan_id' => 1101010,
             'kabupaten_id' => 1101,
