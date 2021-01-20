@@ -86,6 +86,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
+                                    <h4>Storage Out</h4>
                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
@@ -93,7 +94,22 @@
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Keluar</th>
+                                                <th>Pemesanan</th>
                                                 <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <br>
+                                    <h4>Kwitansi</h4>
+                                    <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Pembayar</th>
+                                                <th>Jumlah Uang</th>
+                                                <th>Pemesanan</th>
+                                                <th>Gudang</th>
+                                                {{-- <th>Action</th> --}}
                                             </tr>
                                         </thead>
                                     </table>
@@ -190,27 +206,50 @@
             ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode', name: 'kode'},
-                {data : 'gudang.nama', name: 'gudang'},
-                {data : 'barang.nama_barang', name: 'nama_barang'},
+                {data : 'storage_in_kode', name: 'kode'},
+                {data : 'storage_in.gudang.nama', name: 'gudang'},
+                {data : 'storage_in.barang.nama_barang', name: 'nama_barang'},
                 {data : function (data, type, row, meta) {
-                        return data.storage.jumlah + " " + data.satuan;
+                        return data.jumlah + " " + data.satuan;
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
-                        if (data.storage.tingkat == null) {
+                        if (data.tingkat == null) {
                             return 'Belum Diupdate';
                         } else {
-                            return data.storage.tingkat.rak.nama;
+                            return data.tingkat.rak.nama;
                         }
                     }, name: 'rak'},
                 {data : function(data,a,b,c){
-                        if (data.storage.tingkat == null) {
+                        if (data.tingkat == null) {
                             return 'Belum Diupdate';
                         } else {
-                            return data.storage.tingkat.nama;
+                            return data.tingkat.nama;
                         }
                     }, name: 'tingkat'},
                 {data : 'action', name: 'action'}
+            ]
+        });
+
+
+        let table_kwitansi = $('#table_kwitansi').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('kwitansi.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'terima_dari', name: 'pembayar'},
+                {data : 'jumlah_uang_digits', render:function(data,a,b,c){
+                        return 'Rp '+data;
+                    }
+                },
+                {data : function (data, type, row, meta) {
+                        return "( "+data.pemesanan.kode + " ) " + data.pemesanan.nama_pemesan;
+                    }, name: 'nama_pemesan'},
+                {data : 'gudang.nama', name: 'gudang'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
@@ -267,6 +306,10 @@
                         return data.jumlah + " " + data.satuan;
                     },
                     name: 'jumlah'
+                },
+                {data : 'pemesanan', render:function(data,a,b,c){
+                        return data.kode+' | '+data.nama_pemesan;
+                    }
                 },
                 {data : 'action', name: 'action'}
             ]

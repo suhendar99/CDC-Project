@@ -78,4 +78,15 @@ class Gudang extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Gudang has many Kwitansi.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kwitansi()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
+        return $this->hasMany('App\Models\Kwitansi');
+    }
 }

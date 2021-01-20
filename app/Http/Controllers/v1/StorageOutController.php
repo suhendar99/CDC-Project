@@ -11,6 +11,10 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\Pemesanan;
+use App\Models\Kwitansi;
+use App\Models\SuratJalan;
+use PDF;
 
 class StorageOutController extends Controller
 {
@@ -22,17 +26,43 @@ class StorageOutController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageOut::with('barang', 'gudang')
+            $data = StorageOut::with('barang', 'gudang', 'pemesanan')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/out/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
+                    // return '<a href="/v1/storage/out/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
+                    return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
                 })
                 ->make(true);
         }
         return view('app.data-master.storage.index');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printKwitansi(Request $request)
+    {
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $data = Kwitansi::with('pemesanan','gudang','user')->first();
+        // PDF::;
+        $counter = $data->count();
+        $kode = sprintf("%'.04d", (String)$counter);
+        $pdf = PDF::loadview('app.transaksi.kwitansi.print', compact('data','date','kode'));
+        return $pdf->stream();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printSuratJalan(Request $request)
+    {
+        return view('app.transaksi.surat-jalan.print');
     }
 
     public function findBarang($id)
@@ -54,8 +84,9 @@ class StorageOutController extends Controller
     public function create()
     {
         $gudang = Gudang::all();
+        $pemesanan = Pemesanan::all();
 
-        return view('app.data-master.storage.out.create', compact('gudang'));
+        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan'));
     }
 
     /**
@@ -67,10 +98,15 @@ class StorageOutController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'gudang_id' => 'required|exists:barangs,id',
-            'jumlah' => 'required|numeric',
-            'satuan' => 'required|string'
+            // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+            'gudang_id' => 'required|exists:gudangs,id',
+            'pemesanan_id' => 'required|exists:pemesanans,id',
+            'pengirim' => 'required|string|max:50',
+            'terima_dari' => 'required|string|max:50',
+            'jumlah_uang_digits' => 'required|integer',
+            'jumlah_uang_word' => 'required|string',
+            'keterangan' => 'required|string',
+            'tempat' => 'required|string'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -78,55 +114,105 @@ class StorageOutController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        $kode_barang = $request->barang_kode;
+        $pesanan = Pemesanan::with('barangPesanan')->findOrFail($request->pemesanan_id);
 
-        $stok = Storage::whereHas('storageIn', function($query)use($kode_barang){
-            $query->where('barang_kode', $kode_barang);
-        })
-        ->orderBy('waktu', 'asc')
-        ->get();
+        foreach ($pesanan->barangPesanan as $barang) {
+            $kode_barang = $barang->barang_kode;
 
-        $jumlahBarang = count($stok) - 1;
-        $now = 0;
+            $stok = Storage::whereHas('storageIn', function($query)use($kode_barang){
+                $query->where('barang_kode', $kode_barang);
+            })
+            ->orderBy('waktu', 'asc')
+            ->get();
 
-        $jumlah = $request->jumlah;
+            $jumlahBarang = count($stok) - 1;
+            $now = 0;
 
-        $hasil = 0;
 
-        while ( $jumlah != 0 ) {
-            if ($now <= $jumlahBarang) {
-                $jumlahStok = $stok[$now]->jumlah;
+
+            $jumlah = $barang->jumlah_barang;
+
+            $hasil = 0;
+
+            for ($i=0; $i < count($stok); $i++) { 
+                # code...
+                $jumlahStok = $stok[$i]->jumlah;
 
                 if ($jumlahStok != 0) {
                     $jumlahStok = $jumlahStok - $jumlah;
                     if ($jumlahStok >= 0) {
-                        $stok[$now]->update([
+                        $stok[$i]->update([
                             'jumlah' => $jumlahStok
                         ]);
 
-                        $jumlah = 0;
+                        break;
                     }elseif($jumlahStok < 0){
-                        $stok[$now]->update([
+                        $stok[$i]->update([
                             'jumlah' => 0
                         ]);
 
                         $jumlah = abs($jumlahStok);
-                        $now++;
                     }
-                }else{
-                    $now++;
+                    // dd($jumlah);
                 }
             }
+
+            // while ( $jumlah != 0 ) {
+            //     if ($now <= $jumlahBarang) {
+            //         $jumlahStok = $stok[$now]->jumlah;
+
+            //         if ($jumlahStok != 0) {
+            //             $jumlahStok = $jumlahStok - $jumlah;
+            //             if ($jumlahStok >= 0) {
+            //                 $stok[$now]->update([
+            //                     'jumlah' => $jumlahStok
+            //                 ]);
+
+            //                 break;
+            //             }elseif($jumlahStok < 0){
+            //                 $stok[$now]->update([
+            //                     'jumlah' => 0
+            //                 ]);
+
+            //                 $jumlah = abs($jumlahStok);
+            //                 $now++;
+            //             }
+            //             // dd($jumlah);
+            //         }else{
+            //             $now++;
+            //         }
+            //     }
+            // }
+
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode_out = $faker->unique()->ean13;
+
+            StorageOut::create($request->only('gudang_id', 'pemesanan_id')+[
+                'barang_kode' => $kode_barang,
+                'jumlah' => $barang->jumlah_barang,
+                'satuan' => $barang->satuan,
+                'kode' => $kode_out,
+                'user_id' => auth()->user()->id,
+                'waktu' => now('Asia/Jakarta')
+            ]);
         }
 
-        $faker = \Faker\Factory::create('id_ID');
 
-        $kode = $faker->unique()->ean13;
+        $kode_kwi = $faker->unique()->ean13;
+        $kode_surat = $faker->unique()->ean13;
 
-        StorageOut::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
-            'kode' => $kode,
+        Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'gudang_id', 'keterangan')+[
             'user_id' => auth()->user()->id,
-            'waktu' => now('Asia/Jakarta')
+            'kode' => $kode_kwi,
+            'tanggal' => now('Asia/Jakarta')
+        ]);
+
+        SuratJalan::create($request->only('tempat', 'pengirim', 'pemesanan_id')+[
+            'penerima' => $pesanan->nama_pemesan,
+            'kode' => $kode_surat,
+            'user_id' => auth()->user()->id,
+            'tanggal' => now('Asia/Jakarta')
         ]);
 
         return back()->with('success', __( 'Storage Out!' ));

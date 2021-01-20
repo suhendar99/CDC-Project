@@ -89,4 +89,15 @@ class User extends Authenticatable implements MustVerifyEmail
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
         return $this->hasMany('App\Models\StorageOut');
     }
+
+    /**
+     * Pemesanan has one Kwitansi.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function kwitansi()
+    {
+        // hasOne(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+        return $this->hasOne('App\Models\Kwitansi');
+    }
 }

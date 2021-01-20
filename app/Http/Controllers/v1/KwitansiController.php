@@ -4,6 +4,16 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Yajra\DataTables\Facades\DataTables;
+use App\Models\Rak;
+use App\Models\TingkatanRak;
+use App\Models\StorageIn;
+use App\Models\Storage;
+use App\Models\Barang;
+use App\Models\Gudang;
+use App\Models\Kwitansi;
 
 class KwitansiController extends Controller
 {
@@ -12,9 +22,21 @@ class KwitansiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            $data = Kwitansi::with('pemesanan', 'gudang')
+            ->orderBy('id', 'desc')
+            ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Ubah Penyimpanan</a>';
+                })
+                ->make(true);
+        }
+
+        return view('app.data-master.storage.index');
     }
 
     /**
