@@ -78,4 +78,15 @@ class Gudang extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Pemesanan has one Kwitansi.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function kwitansi()
+    {
+        // hasOne(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+        return $this->hasOne('App\Models\Kwitansi');
+    }
 }

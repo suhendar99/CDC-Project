@@ -19,4 +19,16 @@ class Pemesanan extends Model
     	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
     	return $this->hasMany('App\Models\BarangPesanan', 'pemesanan_id', 'id');
     }
+
+
+    /**
+     * Pemesanan has one Kwitansi.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function kwitansi()
+    {
+        // hasOne(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+        return $this->hasOne('App\Models\Kwitansi');
+    }
 }

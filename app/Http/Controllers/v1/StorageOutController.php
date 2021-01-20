@@ -11,6 +11,9 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\Kwitansi;
+use PDF;
+
 
 class StorageOutController extends Controller
 {
@@ -33,6 +36,31 @@ class StorageOutController extends Controller
                 ->make(true);
         }
         return view('app.data-master.storage.index');
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printKwitansi(Request $request)
+    {
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $data = Kwitansi::with('pemesanan','gudang','user')->first();
+        // PDF::;
+        $counter = $data->count();
+        $kode = sprintf("%'.04d", (String)$counter);
+        $pdf = PDF::loadview('app.transaksi.kwitansi.print', compact('data','date','kode'));
+        return $pdf->stream();
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function printSuratJalan(Request $request)
+    {
+        return view('app.transaksi.surat-jalan.print');
     }
 
     public function findBarang($id)
