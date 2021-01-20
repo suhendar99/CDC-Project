@@ -67,9 +67,9 @@ class Barang extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function pemesanan()
+    public function barangPesanan()
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
-        return $this->hasMany('App\Models\Pemesanan', 'barang_kode', 'kode_barang');
+        return $this->hasMany('App\Models\BarangPesanan', 'barang_kode', 'kode_barang');
     }
 }
