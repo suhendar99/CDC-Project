@@ -16,7 +16,6 @@ class CreatePemesanansTable extends Migration
         Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
-            $table->foreignId('pesanan_id')->constrained('pesanans')->onDelete('cascade');
             $table->string('nama_pemesan');
             $table->string('alamat_pemesan');
             $table->date('tanggal_pemesanan');
