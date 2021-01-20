@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Data Purchase Order';
+    $pageTitle = 'Data Pemesanan Keluar';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="float-right">
-                                <a href="{{route('po.create')}}" class="btn btn-primary btn-sm">Tambah PO</a>
+                                <a href="{{route('po.create')}}" class="btn btn-primary btn-sm">Tambah Pemesanan</a>
                             </div>
                         </div>
                     </div>
@@ -47,13 +47,13 @@
                                     <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
                                     <div>
                                         @if($d->status == 0)
-                                        <span class="badge rounded-pill bg-my-primary p-2">PO Sedang Diproses</span>
+                                        <span class="badge rounded-pill bg-my-primary p-2">Pesanan Sedang Diproses</span>
                                         @elseif($d->status == 1)
                                         <span class="badge rounded-pill bg-my-warning p-2">Pinjaman Anda Sudah Disetujui</span>
                                         @elseif($d->status == 2)
-                                        <span class="badge rounded-pill bg-my-success p-2">PO Sudah Diterima Pemasok</span>
+                                        <span class="badge rounded-pill bg-my-success p-2">Pesanan Sudah Diterima Pemasok</span>
                                         @elseif($d->status == 3)
-                                        <span class="badge rounded-pill bg-my-danger p-2">PO Ditolak</span>
+                                        <span class="badge rounded-pill bg-my-danger p-2">Pesanan Ditolak</span>
                                         @endif
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <hr class=" my-1">
-                                    <span class=" text-18">Data Barang PO</span><br>
+                                    <span class=" text-18">Data Pemesanan Barang</span><br>
                                     @foreach($d->po_item as $i)
                                     <span>{{$i->nama_barang}} ({{$i->jumlah.' '.$i->satuan}})</span>,
                                     @endforeach
@@ -82,7 +82,7 @@
                 </div>
                 @empty
                 <div class="col-12 my-4 py-4">
-                    <center>-- Anda Belum Pernah Melakukan PO --</center>
+                    <center>-- Anda Belum Pernah Melakukan Pesanan --</center>
                 </div>
                 @endforelse
             </div>

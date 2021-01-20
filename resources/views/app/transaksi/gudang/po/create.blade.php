@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Tambah Purchase Order';
+    $pageTitle = 'Tambah Pemesanan';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -16,7 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Purchase Order</a>
+            <a href="#" class="text-14">Data Pemesanan</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
@@ -32,55 +32,9 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Rincian Tujuan Purchase Order</h4>
+                                <h4 class="card-title">Rincian Tujuan Pemesanan</h4>
                             </div>
                             <div class="card-body">
-                                {{-- <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Perusahaan Pengirim <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('pengirim_po') is-invalid @enderror" name="pengirim_po" value="{{ old('pengirim_po') }}" >
-                                            @error('pengirim_po')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Nama Pengirim <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('nama_pengirim') is-invalid @enderror" name="nama_pengirim" value="{{ old('nama_pengirim') }}" >
-                                            @error('nama_pengirim')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>No HP Pengirim <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('telepon_pengirim') is-invalid @enderror" name="telepon_pengirim" value="{{ old('telepon_pengirim') }}" >
-                                            @error('telepon_pengirim')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Email Pengirim<small class="text-success">*Harus diisi</small></label>
-                                            <input type="email" class="form-control @error('email_pengirim') is-invalid @enderror" name="email_pengirim" value="{{ old('email_pengirim') }}" >
-                                            @error('email_pengirim')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div> --}}
                                 <div class="row">
                                     <div class="col-12">
                                         <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label>
@@ -159,19 +113,6 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    {{-- <div id="pilihBank" class="col-md-4 d-none">
-                                        <label>Pilih Bank <small class="text-success">*Harus diisi</small></label>
-                                        <select class="form-control @error('bank_id') is-invalid @enderror" name="bank_id"  >
-                                            @foreach($bank as $b)
-                                            <option value="{{$b->id}}">{{$b->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('bank_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div> --}}
                                     <div id="pilihMetode" class="col-md-4 ">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
