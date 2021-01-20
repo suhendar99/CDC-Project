@@ -17,6 +17,6 @@ class Pemesanan extends Model
     public function barangPesanan()
     {
     	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->hasMany('App\Models\BarangPesanan', 'pemesanan_id', 'id');
+    	return $this->hasMany('App\Models\BarangPesanan');
     }
 }

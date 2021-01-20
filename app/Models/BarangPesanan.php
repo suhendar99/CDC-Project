@@ -13,9 +13,9 @@ class BarangPesanan extends Model
     {
         return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
- 
+
     public function pesanan()
     {
-        return $this->belongsTo('App\Models\Pemesanan', 'pemesanan_id', 'id');
+        return $this->belongsTo('App\Models\Pemesanan');
     }
 }
