@@ -20,8 +20,9 @@ class CreateBarangPesanansTable extends Migration
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan');
+            $table->bigInteger('harga');
             $table->bigInteger('total_harga');
-            $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
+            $table->foreignId('pesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });
     }
