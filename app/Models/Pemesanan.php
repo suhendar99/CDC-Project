@@ -14,9 +14,9 @@ class Pemesanan extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function barang()
+    public function barangPesanan()
     {
     	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+    	return $this->belongsTo('App\Models\BarangPesanan', 'pesanan_id', 'id');
     }
 }
