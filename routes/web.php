@@ -160,6 +160,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });
 
+        Route::resource('retur', 'ReturController');
+
+        Route::get('kwitansi', 'KwitansiController@index')->name('kwitansi.index');
+
         Route::resource('pemesanan', 'PemesananController');
 
         // Rak
