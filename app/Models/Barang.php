@@ -62,5 +62,14 @@ class Barang extends Model
     {
         return $this->hasMany('App\Models\FotoBarang');
     }
-    
+    /**
+     * Barang has many Pemesanan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesanan()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\Pemesanan', 'barang_kode', 'kode_barang');
+    }
 }

@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'bank' => \App\Http\Middleware\BankMiddleware::class,
         'karyawan' => \App\Http\Middleware\KaryawanMiddleware::class,
+        'pemilik' => \App\Http\Middleware\Pemilik::class,
         'pelanggan' => \App\Http\Middleware\PelangganMiddleware::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'approved' => \App\Http\Middleware\CheckApproved::class,

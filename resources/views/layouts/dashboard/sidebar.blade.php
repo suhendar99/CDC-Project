@@ -120,15 +120,20 @@
                     @if (isset($pengurusGudang))
                     <li class="
                         {{ Request::is('v1/gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
                         {{ Request::is('v1/storage*') ? 'active' : false }}
                     ">
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
                             {{ Request::is('v1/storage*') ? 'show' : false }}
                         " id="gudangSubmenu">
                             <li class="{{ Request::is('v1/gudang*') ? 'active' : false }}">
                                 <a href="{{route('gudang.index')}}">Identitas Gudang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
+                                <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
                             </li>
                             <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
                                 <a href="{{route('storage.index')}}">Manajemen Barang</a>
