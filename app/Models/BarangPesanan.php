@@ -13,7 +13,7 @@ class BarangPesanan extends Model
     {
         $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
-
+ 
     public function pesanan()
     {
         $this->belongsTo('App\Models\Pemesanan', 'pemesanan_id');
