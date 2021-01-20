@@ -22,7 +22,7 @@ class CreateBarangPesanansTable extends Migration
             $table->string('satuan');
             $table->bigInteger('harga');
             $table->bigInteger('total_harga');
-            $table->foreignId('pesanan_id')->constrained('pemesanans')->onDelete('cascade');
+            $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });
     }
