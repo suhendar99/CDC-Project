@@ -11,11 +11,11 @@ class BarangPesanan extends Model
 
     public function barang()
     {
-        $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+        return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
 
     public function pesanan()
     {
-        $this->belongsTo('App\Models\Pemesanan', 'pemesanan_id');
+        return $this->belongsTo('App\Models\Pemesanan', 'pemesanan_id', 'id');
     }
 }
