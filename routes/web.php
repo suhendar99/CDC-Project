@@ -121,7 +121,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
-        // Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
+        Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
@@ -161,6 +161,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         });
 
         Route::resource('pemesanan', 'PemesananController');
+
+        Route::get('kwitansi/print', 'StorageOutController@printKwitansi')->name('kwitansi.print');
+        Route::get('surat-jalan/print', 'StorageOutController@printSuratJalan')->name('surat-jalan.print');
 
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');

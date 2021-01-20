@@ -55,8 +55,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'pengurus@makerindo.com',
-            'username' => 'pengurus',
+            'email' => 'pemilik@makerindo.com',
+            'username' => 'pemilik',
             'password' => Hash::make('12341234'),
             'pengurus_gudang_id' => 1,
             'approved_at' => now(),
