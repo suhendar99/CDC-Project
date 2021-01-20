@@ -157,8 +157,20 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/piutang*') ? 'active' : false }}
+                        {{ Request::is('v1/piutangOut*') ? 'active' : false }}
                     ">
-                        <a href="{{route('piutang.index')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
+                        <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Piutang</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/piutang*') ? 'show' : false }}
+                            {{ Request::is('v1/piutangOut*') ? 'show' : false }}
+                        " id="piutangSubmenu">
+                            <li class="{{ Request::is('v1/piutang*') ? 'active' : false }}">
+                                <a href="{{route('piutang.index')}}">Piutang Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/piutangOut *') ? 'active' : false }}">
+                                <a href="{{route('piutangOut.index')}}">Piutang keluar</a>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                     {{-- @endif --}}

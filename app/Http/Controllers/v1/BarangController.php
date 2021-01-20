@@ -59,23 +59,20 @@ class BarangController extends Controller
         if ($request->has('search') && $request->search !== '') {
             $search = trim($request->search);
             if($search == ''){
-                $storage = Storage::with('storageIn.barang')->orderBy('id','desc')->get();
-                foreach ($storage as $key => $value) {
-                    $barang = $value;
-                }
+                $barang = Storage::with('storageIn.barang')->orderBy('id','desc')->paginate(8);
+
                 // dd($barang->storageIn->barang);
             }else{
-           $barang = Barang::with('pemasok','kategori')->orderBy('id','desc')
-                ->where('nama_barang','LIKE',"%".$search."%")
-                ->orWhere('harga_barang','LIKE',"%".$search."%")
-                // ->orWhere('','LIKE',"%".$search."%")
+           $barang = Storage::with('storageIn.barang')->orderBy('id','desc')
+                ->whereHas('storageIn.barang',function($q) use ($search){
+                    $q->where('nama_barang','LIKE',"%".$search."%")
+                    ->orWhere('harga_barang','LIKE',"%".$search."%");
+                })
                 ->paginate(8);
             }
         } else {
-            $storage = Storage::with('storageIn.barang')->orderBy('id','desc')->get();
-            foreach ($storage as $key => $value) {
-                $barang = $value;
-            }
+            $barang = Storage::with('storageIn.barang')->orderBy('id','desc')->paginate(8);
+
             // dd($barang->storageIn->barang);
         }
         $else = $request->search;

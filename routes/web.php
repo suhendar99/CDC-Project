@@ -71,13 +71,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     // Penerimaan Barang Pada Pelanggan
     Route::resource('penerimaan', 'PenerimaanController');
-    // Pembelian Barang
-    Route::get('pembelian/{id}','PembelianController@create')->name('pembelian');
-    Route::post('/ongkir', 'PembelianController@check_ongkir');
-    Route::get('/cities/{id}', 'PembelianController@getCities');
-    // Route::post('pembelian/store/{id}', 'PembelianController@store')->name('pembelian.store');
-    Route::resource('pembelian', 'PembelianController');
-
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');
@@ -102,7 +95,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pemasok']], function () {
         // Brang Po Masuk
         Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
-        Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
+        Route::get('accept-po/gudang/{id}','PoController@showAccept')->name('acceptPoGudang');
+        Route::post('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
+        Route::get('accept-po-gudang-cash/{id}','PoController@acceptGudang')->name('accept.po.gudang.cash');
         Route::get('previewPemasok/{id}', 'PoController@preview')->name('po.previewPemasok');
         // Barang
         Route::resource('barang', 'BarangController');
@@ -127,11 +122,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
+        // pemesanan
+        Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
+        Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
     });
+    Route::get('print/{id}', 'PoController@print')->name('po.print');
     Route::group(['middleware' => ['karyawan']], function () {
         // Purchase Order
         Route::resource('po', 'PoController');
-        Route::get('print/{id}', 'PoController@print')->name('po.print');
         Route::get('preview/{id}', 'PoController@preview')->name('po.preview');
         // Storage
         // Route::resource('storage', 'StorageController');
@@ -181,5 +179,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // End Laporan
         // Piutang
         Route::resource('piutang', 'PiutangController');
+        Route::resource('piutangOut', 'PiutangOutController');
     });
 });

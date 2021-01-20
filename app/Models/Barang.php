@@ -62,7 +62,6 @@ class Barang extends Model
     {
         return $this->hasMany('App\Models\FotoBarang');
     }
-
     /**
      * Barang has many Pemesanan.
      *

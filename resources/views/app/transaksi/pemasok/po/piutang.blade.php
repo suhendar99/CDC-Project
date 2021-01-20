@@ -1,6 +1,6 @@
 @php
         $icon = 'shopping_cart';
-        $pageTitle = 'Tambah Kategori Induk';
+        $pageTitle = 'Persetujuan Pemesanan';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -16,11 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pembeli</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Kategori Induk</a>
+            <a href="#" class="text-14">Persetujuan Pemesanan</a>
           </div>
         </div>
     </div>
@@ -41,7 +37,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('kategoriBarang.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('po.masuk.pemasok')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -49,15 +45,15 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('kategoriBarang.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('accept.po.gudang',$id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Nama Kategori <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}">
-                                                @error('nama')
+                                                <label>Batas Pembayaran (Hari) <small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('tempo') is-invalid @enderror" name="tempo" value="{{ old('tempo') }}">
+                                                @error('tempo')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
