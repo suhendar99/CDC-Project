@@ -29,39 +29,13 @@ class PiutangController extends Controller
         //     }
         // }
         if($request->ajax()){
-            $data = $this->Data->getData();
+            $data = Piutang::with('pemesanan')->where('status','=',1)->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                // ->addColumn('action', function($data){
-                //     return '<a href="/v1/piutang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                // })
-                ->addColumn('user', function($data){
-                    if ($data->user->pengurus_gudang_id != null) {
-                        return $data->user->pengurusGudang->nama;
-                    } elseif ($data->user->pelanggan_id != null) {
-                        return $data->user->pelanggan->nama;
-                    }
+                ->addColumn('hutang', function($data){
+                    return 'Rp '.number_format($data->hutang);
                 })
-                ->addColumn('jumlah', function($data){
-                    $totalPajak = 0;
-					$totalDiskon = 0;
-					$subtotalHarga = 0;
-                    foreach ($data->po->po_item as $key => $value) {
-                        $harga = $value->harga;
-                        $jumlah = $value->jumlah;
-                        $subtotal = $harga*$jumlah;
-                        $diskon = $subtotal*$value->diskon/100;
-                        $pajak = $subtotal*$value->pajak/100;
-
-                        $totalPajak = $totalPajak + $pajak;
-                        $totalDiskon = $totalDiskon + $diskon;
-                        $subtotalHarga = $subtotalHarga + $subtotal;
-                    }
-                    $totHar = $subtotalHarga+$totalPajak;
-                    $totalHarga = $totHar-$totalDiskon;
-                    return 'Rp '.$totalHarga;
-                })
-                ->rawColumns(['user','jumlah'])
+                ->rawColumns(['hutang'])
                 ->make(true);
         }
         return view($this->path.'index');

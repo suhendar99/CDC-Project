@@ -63,4 +63,9 @@ class Pemesanan extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
     	return $this->hasMany('App\Models\Retur');
     }
+    public function piutang()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\Piutang','barang_id','id');
+    }
 }

@@ -13,16 +13,12 @@ class Piutang extends Model
     {
         return $this->belongsTo('App\User');
     }
-    public function bank()
-    {
-        return $this->belongsTo('App\Models\Bank');
-    }
     public function getData()
     {
         return static::with('user','bank')->orderBy('id','desc')->get();
     }
-    public function po()
+    public function pemesanan()
     {
-        return $this->belongsTo('App\Models\Po');
+        return $this->belongsTo('App\Models\Pemesanan','barang_id','id');
     }
 }
