@@ -51,7 +51,7 @@
                                 @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="" class="form-control">
                                             <option value="0">--Pilih Barang--</option>
                                             @foreach (\App\Models\Barang::get() as $barang)
@@ -126,7 +126,7 @@
 <script src="{{ asset('js/onscan.js') }}"></script>
 <script>
     $(document).ready(function() {
-        
+
         onScan.attachTo(document, {
             suffixKeyCodes: [13],
             reactToPaste: true,

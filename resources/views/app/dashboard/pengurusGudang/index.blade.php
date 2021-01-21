@@ -1,8 +1,12 @@
 @php
   $icon = 'dashboard';
-  $pageTitle = 'Dashboard Pengurus Gudang';
+  $pageTitle = 'Dashboard Pemilik Gudang';
   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
+  $storage = \App\Models\Storage::all();
+  $storageIn = \App\Models\StorageIn::all();
+  $storageOut = \App\Models\StorageOut::all();
+  $pmsk = \App\Models\Pemasok::all();
   // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -29,13 +33,13 @@
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-primary">work</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">20 Jenis</span><br>
+                        <span class="text-my-primary">{{$storage->count()}} Jenis</span><br>
                         <span class="text-my-subtitle">Barang</span>
                     </div>
                   </div>
@@ -47,13 +51,13 @@
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-warning">archive</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">200 Kali</span><br>
+                        <span class="text-my-warning">{{$storageIn->count()}} Kali</span><br>
                         <span class="text-my-subtitle">Barang Masuk</span>
                     </div>
                   </div>
@@ -65,13 +69,13 @@
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-danger"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-danger">unarchive</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-danger">100 Kali</span><br>
+                        <span class="text-my-danger">{{$storageOut->count()}} Kali</span><br>
                         <span class="text-my-subtitle">Barang Keluar</span>
                     </div>
                   </div>
@@ -83,13 +87,13 @@
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-success"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-success">extension</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-success">10 Orang</span><br>
+                        <span class="text-my-success">{{$pmsk->count()}} Orang</span><br>
                         <span class="text-my-subtitle">Pemasok Barang</span>
                     </div>
                   </div>
@@ -165,9 +169,9 @@
           <span class="text-18">Statistik Gudang</span>
         </div>
         <hr class="p-0">
-        <div class=" row"> 
-          <div class=" col-md-6 col-sm-12"> 
-            <div class=" row"> 
+        <div class=" row">
+          <div class=" col-md-6 col-sm-12">
+            <div class=" row">
               <div class="col-6 border-right">
                 <center>
                   <div id="calendar"></div>
@@ -226,7 +230,7 @@
               </div>
             </div>
           </div>
-          <div class=" col-md-6 col-sm-12"> 
+          <div class=" col-md-6 col-sm-12">
             <div class="row">
               <div class="col-12 valign-center">
                 <i class="material-icons md-24 text-my-success mr-1">bar_chart</i><span style="font-size: 14px">Grafik Penjualan Hari Ini</span>
@@ -234,13 +238,13 @@
               <div class="col-12">
                 <div id="frekuensichart"></div>
               </div>
-            </div>         
+            </div>
           </div>
           <div class="col-md-12">
-            
+
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>
