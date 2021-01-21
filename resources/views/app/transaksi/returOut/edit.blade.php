@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Tambah Data Retur Masuk';
+        $pageTitle = 'Edit Data Retur Keluar';
 
 @endphp
 @extends('layouts.dashboard.header')
@@ -16,9 +16,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Masuk</a>
+            <a href="#" class="text-14">Data Retur Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Data Retur Masuk</a>
+            <a href="#" class="text-14">Edit Data Retur Keluar</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('retur.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('returOut.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -47,15 +47,16 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('retur.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('returOut.update', $data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="" class="form-control">
                                             <option value="0">--Pilih Barang--</option>
                                             @foreach ($barang as $b)
-                                                <option value="{{$b->kode_barang}}" {{ old('barang_kode') == $b->kode_barang ? 'selected' : ''}}>{{$b->nama_barang}}</option>
+                                                <option value="{{$b->kode_barang}}" {{ $data->barang_kode == $b->kode_barang ? 'selected' : ''}}>{{$b->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_kode')
@@ -66,13 +67,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                        <select name="pemesanan_id" id="" class="form-control">
+                                        <select name="po_id" id="" class="form-control">
                                             <option value="0">--Pilih Pesanan--</option>
                                             @foreach ($pemesanan as $pesan)
-                                                <option value="{{$pesan->id}}" {{ old('pemesanan_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_pemesan}}</option>
+                                                <option value="{{$pesan->id}}" {{ $data->po_id == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_penerima}}</option>
                                             @endforeach
                                         </select>
-                                        @error('pemesanan_id')
+                                        @error('po_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -81,7 +82,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
-                                    <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ old('tanggal_pengembalian') }}" placeholder="Enter tanggal_pengembalian">
+                                    <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ $data->tanggal_pengembalian }}" placeholder="Enter tanggal_pengembalian">
                                     @error('tanggal_pengembalian')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -90,7 +91,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Keterangan <small class="text-success">*Harus diisi</small></label>
-                                    <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
+                                    <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror">{{ $data->keterangan }}</textarea>
                                     @error('keterangan')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

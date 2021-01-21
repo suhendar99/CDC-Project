@@ -26,5 +26,10 @@ class Po extends Model
     {
         return $this->hasMany('App\Models\PiutangOut');
     }
+    public function retur()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\Retur');
+    }
 
 }

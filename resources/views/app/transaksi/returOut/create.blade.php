@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Tambah Data Retur Masuk';
+        $pageTitle = 'Tambah Data Retur Keluar';
 
 @endphp
 @extends('layouts.dashboard.header')
@@ -16,9 +16,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Masuk</a>
+            <a href="#" class="text-14">Data Retur Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Data Retur Masuk</a>
+            <a href="#" class="text-14">Tambah Data Retur Keluar</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('retur.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('returOut.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('retur.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('returOut.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
@@ -66,13 +66,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                        <select name="pemesanan_id" id="" class="form-control">
+                                        <select name="po_id" id="" class="form-control">
                                             <option value="0">--Pilih Pesanan--</option>
                                             @foreach ($pemesanan as $pesan)
-                                                <option value="{{$pesan->id}}" {{ old('pemesanan_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_pemesan}}</option>
+                                                <option value="{{$pesan->id}}" {{ old('po_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_penerima}}</option>
                                             @endforeach
                                         </select>
-                                        @error('pemesanan_id')
+                                        @error('po_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
