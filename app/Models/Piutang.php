@@ -21,8 +21,8 @@ class Piutang extends Model
     {
         return static::with('user','bank')->orderBy('id','desc')->get();
     }
-    public function po()
+    public function pemesanan()
     {
-        return $this->belongsTo('App\Models\Po');
+        return $this->belongsTo('App\Models\Pemesanan','barang_id','id');
     }
 }

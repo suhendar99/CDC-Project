@@ -1,6 +1,6 @@
 @php
         $icon = 'shopping_cart';
-        $pageTitle = 'Data Piutang';
+        $pageTitle = 'Data Piutang Masuk';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Piutang</a>
+            <a href="#" class="text-14">Data Piutang Masuk</a>
           </div>
         </div>
     </div>
@@ -46,12 +46,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Piutang</th>
-                                <th>Waktu Termin</th>
-                                <th>Jumlah Uang</th>
-                                <th>Bunga</th>
-                                <th>Nama User</th>
-                                <th>Nama Bank</th>
+                                <th>No transaksi</th>
+                                <th>Jumlah Hutang</th>
+                                <th>Tanggal Awal</th>
+                                <th>Jatuh Tempo</th>
+                                <th>Nama Pembeli</th>
+                                {{-- <th>Nama Barang</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -77,12 +77,12 @@
             ajax : "{{ route('piutang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode_piutang', name: 'kode_piutang'},
-                {data : 'termin', name: 'termin'},
-                {data : 'jumlah', name: 'jumlah'},
-                {data : 'bunga', name: 'bunga'},
-                {data : 'user', name: 'user'},
-                {data : 'bank.nama', name: 'bank_id'},
+                {data : 'pemesanan.kode', name: 'barang_id'},
+                {data : 'hutang', name: 'hutang'},
+                {data : 'tanggal', name: 'tanggal'},
+                {data : 'jatuh_tempo', name: 'jatuh_tempo'},
+                {data : 'nama_pembeli', name: 'nama_pembeli'},
+                // {data : 'barang.nama', name: 'barang_id'},
             ]
         });
 
