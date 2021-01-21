@@ -21,7 +21,6 @@ class CreateBarangPesanansTable extends Migration
             $table->integer('jumlah_barang');
             $table->string('satuan');
             $table->bigInteger('harga');
-            $table->bigInteger('total_harga');
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });

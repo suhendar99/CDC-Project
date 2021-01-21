@@ -22,7 +22,7 @@ class BarangSeeder extends Seeder
                 'pemasok_id' => 1,
                 'kategori_id' => 1,
                 'kode_barang' => $faker->unique()->ean13,
-                'nama_barang' => $faker->text($maxNbChars = 20),
+                'nama_barang' => 'Beras Cianjur',
                 'jumlah' => $jumlah,
                 'harga_barang' => $harga,
                 'harga_total' => $harga * $jumlah,

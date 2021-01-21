@@ -194,8 +194,8 @@ class BarangController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        $barang = Barang::find($id);
         // dd($barang);
+        $barang = Barang::find($id);
         if($request->ajax()){
             $data = FotoBarang::where('barang_id',$barang->id)->get();
             return DataTables::of($data)

@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemesanan';
+        $pageTitle = 'Data Pemesanan Masuk';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemesanan</a>
+            <a href="#" class="text-14">Data Pemesanan Masuk</a>
           </div>
         </div>
     </div>
@@ -149,7 +149,7 @@
             ajax : "{{ route('pemesanan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'barangPesanan.barang.nama_barang', name: 'name'},
+                {data : 'nama', name: 'nama'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
                 {data : 'nama_pemesan', name: 'nama_pemesan'},
                 {data : 'tanggal_pemesanan', name: 'tanggal_pemesanan'},
