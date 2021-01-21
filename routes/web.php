@@ -161,6 +161,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         });
 
         Route::resource('retur', 'ReturController');
+        Route::resource('returOut', 'ReturOutController');
 
         Route::get('kwitansi', 'KwitansiController@index')->name('kwitansi.index');
 

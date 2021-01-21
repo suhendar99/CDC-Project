@@ -1,7 +1,7 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Edit Data Retur';
-        
+        $pageTitle = 'Edit Data Retur Masuk';
+
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -16,9 +16,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur</a>
+            <a href="#" class="text-14">Data Retur Masuk</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Edit Data Retur</a>
+            <a href="#" class="text-14">Edit Data Retur Masuk</a>
           </div>
         </div>
     </div>

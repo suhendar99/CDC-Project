@@ -93,14 +93,16 @@ class PoController extends Controller
      */
     public function create(Bank $bank)
     {
+        // dd(Auth::user()->pengurusGudang->gudang);
         $user = User::where('id',Auth::user()->id)->with('pengurusGudang.gudang')->first();
-        $pemasok = Pemasok::all();
+        // dd($user);
+        $pmsk = Pemasok::all();
         $count = $user->pengurusGudang->gudang->count();
         if($count < 1){
             return back()->with('error','Anda Belum Memiliki Gudang!');
         } else {
             // $bank = $bank->all();
-            return view($this->indexPath.'create',compact('pemasok'));
+            return view($this->indexPath.'create',compact('pmsk'));
         }
     }
     public function show($id)
