@@ -10,6 +10,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\RekapitulasiPembelian;
 
 class StorageInController extends Controller
 {
@@ -49,7 +50,7 @@ class StorageInController extends Controller
                 ], 200);
                 # code...
             }
-            
+
         } catch (Throwable $t) {
             return response()->json([
                 'message' => $t->getMessage()
@@ -98,12 +99,23 @@ class StorageInController extends Controller
             'user_id' => auth()->user()->id,
             'waktu' => now('Asia/Jakarta')
         ]);
-
         Storage::create([
             'storage_in_kode' => $kode,
             'jumlah' => $request->jumlah,
             'satuan' => $request->satuan,
             'waktu' => now('Asia/Jakarta')
+        ]);
+
+        RekapitulasiPembelian::create([
+            'storage_in_id' => $masuk->id,
+            'tanggal_pembelian' => $masuk->waktu,
+            'no_pembelian' => $masuk->kode,
+            'nama_penjual' => $masuk->barang->pemasok->nama,
+            'barang' => $masuk->barang->nama_barang,
+            'jumlah' => $masuk->jumlah,
+            'satuan' => $masuk->satuan,
+            'harga' => $masuk->barang->harga_barang,
+            'total' => $masuk->barang->harga_total
         ]);
 
         return back()->with('success', __( 'Storage In!' ));
