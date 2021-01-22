@@ -171,16 +171,16 @@
                         {{-- {{ Request::is('v1/piutang*') ? 'active' : false }}
                         {{ Request::is('v1/piutangOut*') ? 'active' : false }} --}}
                     ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Rekapitulasi</a>
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
-                            {{-- {{ Request::is('v1/piutang*') ? 'show' : false }}
-                            {{ Request::is('v1/piutangOut*') ? 'show' : false }} --}}
+                            {{-- {{ Request::is('v1/piutang*') ? 'show' : false }} --}}
+                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
                             <li class="{{--{{ Request::is('v1/piutang*') ? 'active' : false }}"--}}">
                                 <a href="{{--{{route('piutang.index')}}--}}">Penjualan</a>
                             </li>
-                            <li class="{{--{{ Request::is('v1/piutangOut *') ? 'active' : false }}--}}">
-                                <a href="{{--{{route('piutangOut.index')}}--}}">Pembelian</a>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
                             </li>
                         </ul>
                     </li>

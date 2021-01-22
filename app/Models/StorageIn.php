@@ -57,4 +57,8 @@ class StorageIn extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
     	return $this->hasOne('App\Models\Storage', 'storage_in_kode', 'kode');
     }
+    public function rekapitulasi()
+    {
+    	return $this->hasMany('App\Models\RekapitulasiPembelian');
+    }
 }
