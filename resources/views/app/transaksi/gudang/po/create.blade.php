@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Tambah Pemesanan';
+    $pageTitle = 'Tambah Pemesanan Keluar';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -16,7 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemesanan</a>
+            <a href="#" class="text-14">Data Pemesanan Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
@@ -32,7 +32,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Rincian Tujuan Pemesanan</h4>
+                                <h4 class="card-title">Rincian Tujuan Pemesanan Keluar</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -40,7 +40,7 @@
                                         <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectGudang" class="form-control @error('gudang_id') is-invalid @enderror" name="gudang_id"  >
                                             <option value="none">-- Pilih Gudang --</option>
-                                            @foreach(Auth::user()->gudang as $b)
+                                            @foreach(Auth::user()->pengurusGudang->gudang as $b)
                                             <option value="{{$b->id}}">{{$b->nama}}</option>
                                             @endforeach
                                         </select>
@@ -68,7 +68,7 @@
                                             <label>Nama Penerima <small class="text-success">*Harus dipilih</small></label>
                                             <select name="pemasok_id" id="pemasok" class="form-control">
                                                 <option value="">--Pilih Nama Penerima--</option>
-                                                @foreach ($pemasok as $p)
+                                                @foreach ($pmsk as $p)
                                                     <option value="{{$p->id}}">{{$p->nama}}</option>
                                                 @endforeach
                                             </select>
@@ -145,7 +145,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-between">
-                                        <h4 class="card-title">Rincian Barang PO</h4>
+                                        <h4 class="card-title">Rincian Pemesanan Keluar</h4>
                                         <button type="button" class="btn btn-sm bg-my-success " onclick="appendBarang()">Tambah Barang PO</button>
                                     </div>
                                 </div>
@@ -156,7 +156,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 mt-2">
-                        <button id="btnPo" type="button" class="btn btn-sm bg-my-primary btn-block" disabled>Buat PO</button>
+                        <button id="btnPo" type="button" class="btn btn-sm bg-my-primary btn-block" disabled>Buat Pemesanan</button>
                     </div>
                 </div>
             </form>
@@ -256,7 +256,7 @@
                     <div class="form-group">
                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah[]" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                          <input type="number" min="0" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah[]" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                           <div class="input-group-append">
                             <span class="input-group-text" id="satuanAppend${key}"></span>
                           </div>
@@ -271,7 +271,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
-                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga[]" value="{{ old('harga') }}" >
+                        <input type="number" min="0" class="form-control @error('harga') is-invalid @enderror" name="harga[]" value="{{ old('harga') }}" >
                         @error('harga')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -283,7 +283,7 @@
                     <div class="form-group">
                         <label>Diskon <small class="text-success">*Jika Tidak Ada Kosongkan</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon[]" value="{{ old('diskon') }}" aria-describedby="satuanAppend">
+                          <input type="number" min="0" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon[]" value="{{ old('diskon') }}" aria-describedby="satuanAppend">
                           <div class="input-group-append">
                             <span class="input-group-text">%</span>
                           </div>
@@ -299,7 +299,7 @@
                     <div class="form-group">
                         <label>Pajak <small class="text-success">*Jika Tidak Ada Kosongkan</small></label>
                         <div class="input-group mb-3">
-                          <input type="number" type="number" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[]" value="10" aria-describedby="satuanAppend" readonly>
+                          <input type="number" min="0" id="pajak" class="form-control @error('pajak') is-invalid @enderror" name="pajak[]" value="10" aria-describedby="satuanAppend" readonly>
                           <div class="input-group-append">
                             <span class="input-group-text" >%</span>
                           </div>

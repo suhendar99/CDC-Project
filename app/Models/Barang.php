@@ -83,4 +83,9 @@ class Barang extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
         return $this->hasMany('App\Models\Retur', 'barang_kode', 'kode_barang');
     }
+    public function returOut()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\ReturOut', 'barang_kode', 'kode_barang');
+    }
 }

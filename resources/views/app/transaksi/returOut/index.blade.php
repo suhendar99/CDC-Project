@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Retur Masuk';
+        $pageTitle = 'Data Retur Keluar';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,9 +13,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Transaksi</a>
+            <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Masuk</a>
+            <a href="#" class="text-14">Data Retur Keluar</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('retur.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a>
+                                <a href="{{route('returOut.create')}}" class="btn btn-primary btn-sm">Buat Retur Keluar</a>
                             </div>
                         </div>
                     </div>
@@ -147,11 +147,11 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('retur.index') }}",
+            ajax : "{{ route('returOut.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'pemesanan.kode', name: 'kode'},
-                {data : 'pemesanan.nama_pemesan', name: 'nama_pemesan'},
+                {data : 'po.kode_po', name: 'kode'},
+                {data : 'po.nama_penerima', name: 'nama_penerima'},
                 {data : 'barang', render:function(data,a,b,c){
                         return '( '+data.kode_barang+' ) '+data.nama_barang;
                     }
@@ -203,7 +203,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/retur/'+id
+            formDelete.action = '/v1/returOut/'+id
 
             const Toast = Swal.mixin({
             toast: true,
