@@ -33,15 +33,6 @@ class GudangController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $data = $this->Data->getData();
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($data){
-                    return '<a href="/v1/gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="/v1/gudang/'.$data->id.'/rak" class="btn btn-secondary btn-sm">Rak</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                })
-                ->make(true);
-        }
         $data = Gudang::withCount('rak')
         ->whereHas('akunGudang', function($query){
             $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);

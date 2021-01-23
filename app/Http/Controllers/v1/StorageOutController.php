@@ -11,8 +11,10 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\BarangPesanan;
 use App\Models\Pemesanan;
 use App\Models\Kwitansi;
+use App\Models\RekapitulasiPenjualan;
 use App\Models\SuratJalan;
 use PDF;
 
@@ -135,7 +137,7 @@ class StorageOutController extends Controller
 
             $hasil = 0;
 
-            for ($i=0; $i < count($stok); $i++) { 
+            for ($i=0; $i < count($stok); $i++) {
                 # code...
                 $jumlahStok = $stok[$i]->jumlah;
 
@@ -189,7 +191,7 @@ class StorageOutController extends Controller
 
             $kode_out = $faker->unique()->ean13;
 
-            StorageOut::create($request->only('gudang_id', 'pemesanan_id')+[
+            $out = StorageOut::create($request->only('gudang_id', 'pemesanan_id')+[
                 'barang_kode' => $kode_barang,
                 'jumlah' => $barang->jumlah_barang,
                 'satuan' => $barang->satuan,
@@ -197,23 +199,47 @@ class StorageOutController extends Controller
                 'user_id' => auth()->user()->id,
                 'waktu' => now('Asia/Jakarta')
             ]);
+
         }
 
 
         $kode_kwi = $faker->unique()->ean13;
         $kode_surat = $faker->unique()->ean13;
 
-        Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'gudang_id', 'keterangan')+[
+        $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'gudang_id', 'keterangan')+[
             'user_id' => auth()->user()->id,
             'kode' => $kode_kwi,
             'tanggal' => now('Asia/Jakarta')
         ]);
 
-        SuratJalan::create($request->only('tempat', 'pengirim', 'pemesanan_id')+[
+        $surat = SuratJalan::create($request->only('tempat', 'pengirim', 'pemesanan_id')+[
             'penerima' => $pesanan->nama_pemesan,
             'kode' => $kode_surat,
             'user_id' => auth()->user()->id,
             'tanggal' => now('Asia/Jakarta')
+        ]);
+        $bp = BarangPesanan::where('pemesanan_id',$out->pemesanan->id)->get();
+        $jumlah = 0;
+        $total = 0;
+        $satuan = [];
+        foreach ($bp as $key => $value) {
+            $jumlah += $value->jumlah_barang;
+            $total += $value->harga;
+            $harga_total = $jumlah * $total;
+            $satuan = $value->satuan;
+        }
+        RekapitulasiPenjualan::create([
+            'storage_out_id' => $out->id,
+            'tanggal_penjualan' => $out->waktu,
+            'no_penjualan' => $out->kode,
+            'no_kwitansi' => $kwitansi->kode,
+            'no_surat_jalan' => $surat->kode,
+            'nama_pembeli' => $out->pemesanan->nama_pemesan,
+            'barang' => $out->pemesanan->barangPesanan[0]->barang->nama_barang,
+            'jumlah' => $jumlah,
+            'satuan' => $satuan,
+            'harga' => $total,
+            'total' => $harga_total
         ]);
 
         return back()->with('success', __( 'Storage Out!' ));

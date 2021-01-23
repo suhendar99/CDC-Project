@@ -188,5 +188,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Piutang
         Route::resource('piutang', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
+        // Rekapitulasi
+        Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
+        Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
     });
 });
