@@ -80,14 +80,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="float-right">
-                                        @if ($d->metode_pembayaran == null)
-                                            @if ($d->status == 1)
-                                            @else
-                                            <a href="{{route('acceptPoGudang',$d->id)}}" class="btn btn-sm bg-my-primary px-4">Setujui</a>
-                                            @endif
-                                        @else
-                                            <a href="{{route('accept.po.gudang.cash',$d->id)}}" class="btn btn-sm bg-my-primary px-4">Setujui</a>
-                                        @endif
+                                        <a href="{{route('accept.po.gudang',$d->id)}}" class="btn btn-sm bg-my-primary px-4">Setujui</a>
                                     </div>
                                 </div>
                             </div>
