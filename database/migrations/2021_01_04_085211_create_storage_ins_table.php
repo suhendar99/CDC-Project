@@ -24,6 +24,10 @@ class CreateStorageInsTable extends Migration
             $table->bigInteger('jumlah');
             $table->string('satuan');
             $table->dateTime('waktu');
+            $table->string('nomor_kwitansi');
+            $table->string('foto_kwitansi');
+            $table->string('nomor_surat_jalan');
+            $table->string('foto_surat_jalan');
             $table->timestamps();
         });
     }
