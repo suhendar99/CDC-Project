@@ -87,7 +87,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
         Route::resource('pemilik-gudang', 'PemilikGudangController');
-
+        // Batas Piutang
+        Route::resource('batasPiutang', 'BatasPiutangController');
         // Bank
         Route::resource('bank', 'BankController');
         Route::resource('akun-bank', 'AkunBankController');
