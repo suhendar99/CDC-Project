@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\StorageIn;
@@ -82,8 +83,11 @@ class StorageInController extends Controller
             'barang_kode' => 'required|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
-            'satuan' => 'required'
-            // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            'satuan' => 'required',
+            'nomor_kwitansi' => 'required|numeric',
+            'nomor_surat_jalan' => 'required|numeric',
+            'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'foto_surat_jalan' => 'required|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($v->fails()) {
@@ -94,9 +98,19 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
-        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan')+[
+        $foto_kwitansi = $request->file('foto_kwitansi');
+        $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
+        $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+
+        $foto_surat_jalan = $request->file('foto_surat_jalan');
+        $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
+        $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+
+        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan', 'nomor_kwitansi', 'nomor_surat_jalan')+[
             'kode' => $kode,
             'user_id' => auth()->user()->id,
+            'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
+            'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
             'waktu' => now('Asia/Jakarta')
         ]);
         Storage::create([
@@ -173,7 +187,11 @@ class StorageInController extends Controller
             'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:barangs,id',
             'jumlah' => 'required|numeric',
-            'satuan' => 'required|string'
+            'satuan' => 'required|string',
+            'nomor_kwitansi' => 'required|numeric',
+            'nomor_surat_jalan' => 'required|numeric',
+            'foto_kwitansi' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'foto_surat_jalan' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -184,8 +202,33 @@ class StorageInController extends Controller
         // $faker = \Faker\Factory::create('id_ID');
 
         // $kode = $faker->unique()->ean13;
+        $storage = StorageIn::findOrFail($id);
 
-        StorageIn::findOrFail($id)->update($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan'));
+        $storage->update($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan', 'nomor_kwitansi', 'nomor_surat_jalan'));
+
+        if ($request->file('foto_kwitansi')) {
+            File::delete($storage->foto_kwitansi);
+
+            $foto_kwitansi = $request->file('foto_kwitansi');
+            $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
+            $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+
+            $storage->update([
+                'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
+            ]);
+        }
+
+        if ($request->file('foto_surat_jalan')) {
+            File::delete($storage->foto_surat_jalan);
+
+            $foto_surat_jalan = $request->file('foto_surat_jalan');
+            $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
+            $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+
+            $storage->update([
+                'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
+            ]);
+        }
 
         return back()->with('success', __( 'Storage In Updated!' ));
     }
@@ -198,7 +241,11 @@ class StorageInController extends Controller
      */
     public function destroy($id)
     {
-        StorageIn::findOrFail($id)->delete();
+        $data = StorageIn::findOrFail($id);
+
+        File::delete($data->foto_kwitansi);
+        File::delete($data->foto_surat_jalan);
+        $data->delete();
 
         return back()->with('success', __( 'Storage In Deleted!' ));
     }
