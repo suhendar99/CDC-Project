@@ -13,6 +13,8 @@ class PelangganSeeder extends Seeder
     {
         $akun = [
             'nama' => 'Pak Pelanggan',
+            'alamat' => 'Jl A',
+            'telepon' => '085445825212',
             'desa_id' => 1101010001,
             'kecamatan_id' => 1101010,
             'kabupaten_id' => 1101,
