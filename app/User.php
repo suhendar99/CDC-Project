@@ -59,6 +59,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Models\PengurusGudang','pengurus_gudang_id','id');
     }
+    public function gudang()
+    {
+        return $this->hasMany('App\Models\Gudang','user_id','id');
+    }
     public function pengurus()
     {
         return $this->belongsTo('App\Models\PengurusGudang','pengurus_gudang_id','id')->where('status', 0);

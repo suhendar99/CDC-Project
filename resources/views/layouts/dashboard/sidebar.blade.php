@@ -54,6 +54,7 @@
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                         {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
+                        {{ Request::is('v1/koperasi*') ? 'active' : false }}
                         @endif
                     ">
                         @if (isset($admin) || isset($pengurusGudang))
@@ -68,6 +69,7 @@
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
                             {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
+                            {{ Request::is('v1/koperasi*') ? 'show' : false }}
                             @endif
                         ">
                         @endif
@@ -112,6 +114,11 @@
                                 {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
                             ">
                                 <a href="{{route('batasPiutang.index')}}">Batas Piutang</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/koperasi*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('koperasi.index')}}">Data Koperasi</a>
                             </li>
                             @endif
                             @if(isset($pemasok))

@@ -82,6 +82,8 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'keanggotaan' => $data['keanggotaan'],
+                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'pelanggan_id' => $pelanggan->id,
                 'email_verified_at' => $data['email_verified_at'],
@@ -100,6 +102,8 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'keanggotaan' => $data['keanggotaan'],
+                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'pemasok_id' => $pemasok->id,
                 'email_verified_at' => $data['email_verified_at'],
@@ -113,6 +117,8 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'keanggotaan' => $data['keanggotaan'],
+                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'karyawan_id' => $karyawan->id,
                 'email_verified_at' => $data['email_verified_at'],
@@ -126,6 +132,8 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'keanggotaan' => $data['keanggotaan'],
+                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'bank_id' => $bank->id,
                 'email_verified_at' => $data['email_verified_at'],
@@ -139,6 +147,8 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
+                'keanggotaan' => $data['keanggotaan'],
+                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'pengurus_gudang_id' => $pengurusGudang->id,
                 'email_verified_at' => $data['email_verified_at'],
