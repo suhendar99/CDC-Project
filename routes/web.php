@@ -123,6 +123,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
+        // Pemesanan
+        Route::get('print/{id}', 'PemesananController@print')->name('po.print');
+        Route::resource('pesanan', 'PemesananController');
+        Route::get('preview/{id}', 'PemesananController@preview')->name('po.preview');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
@@ -130,6 +134,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('print/{id}', 'PoController@print')->name('po.print');
     Route::group(['middleware' => ['karyawan']], function () {
         // Purchase Order
+        Route::get('print/{id}', 'PoController@print')->name('po.print');
         Route::resource('po', 'PoController');
         Route::get('preview/{id}', 'PoController@preview')->name('po.preview');
         // Storage
@@ -166,7 +171,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::get('kwitansi', 'KwitansiController@index')->name('kwitansi.index');
 
-        Route::resource('pemesanan', 'PemesananController');
+        Route::get('pemesanan', 'PemesananController@index')->name('pemesanan.index');
 
         Route::get('kwitansi/print', 'StorageOutController@printKwitansi')->name('kwitansi.print');
         Route::get('surat-jalan/print', 'StorageOutController@printSuratJalan')->name('surat-jalan.print');

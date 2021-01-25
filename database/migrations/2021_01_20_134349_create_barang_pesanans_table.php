@@ -16,11 +16,14 @@ class CreateBarangPesanansTable extends Migration
         Schema::create('barang_pesanans', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
+            $table->string('nama_barang',100);
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan');
             $table->bigInteger('harga');
+            $table->integer('diskon')->nullable();
+            $table->integer('pajak')->nullable();
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });
