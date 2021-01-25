@@ -1,3 +1,6 @@
+@php
+    $koperasi = App\Models\Koperasi::all();
+@endphp
 @extends('layouts.app')
 
 @section('content')
@@ -30,12 +33,33 @@
                         @csrf
                         <input type="hidden" name="email_verified_at" value="">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-12">{{ __('Keanggotaan Koperasi') }}</label>
+
+                                    <div class="col-md-12">
+                                        <select name="keanggotaan" id="keanggotaan" class="form-control @error('keanggotaan') is-invalid @enderror">
+                                            <option value="null">--Pilih keanggotaan--</option>
+                                            <option value="1">Anggota</option>
+                                            <option value="0">Bukan Anggota</option>
+                                        </select>
+
+                                        @error('keanggotaan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-none hide">
+                            <div class="" id="nameFull">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Nama Lengkap') }}</label>
 
-                                    <div class="col-md-12">
-                                        <input id="name" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" required autocomplete="nama" autofocus>
+                                    <div class="col-md-12 nama">
+                                        <input id="nama_lengkap" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" required autocomplete="nama" autofocus>
 
                                         @error('nama')
                                             <span class="invalid-feedback" role="alert">
@@ -45,18 +69,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Tujuan Mendaftar') }}</label>
 
                                     <div class="col-md-12">
                                         <select name="role" id="role" class="form-control">
-                                            {{-- <option value="">--Pilih Role--</option> --}}
+                                            <option value="">--Pilih Role--</option>
                                             <option value="pelanggan">Membeli</option>
-                                            {{-- <option value="pemasok">Penjual Barang</option> --}}
-                                            {{-- <option value="karyawan">Karyawan</option> --}}
-                                            {{-- <option value="bank">Bank</option> --}}
+                                            <option value="pemasok">Penjual Barang</option>
+                                            <option value="karyawan">Karyawan</option>
+                                            <option value="bank">Bank</option>
                                             <option value="gudang">Menjual</option>
+                                        </select>
+
+                                        @error('role')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <input type="hidden" name="role" value="pelanggan">
+                            <div class="col-md-6" id="koperasi">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-12">{{ __('Pilih Koperasi') }}</label>
+
+                                    <div class="col-md-12">
+                                        <select name="koperasi_id" id="koperasi" class="form-control">
+                                            <option value="">--Pilih Koperasi--</option>
+                                            @forelse ($koperasi as $item)
+                                                <option value="{{$item->id}}">{{$item->nama_koperasi}}</option>
+                                            @empty
+                                                <option>Data Koperasi Kosong !</option>
+                                            @endforelse
                                         </select>
 
                                         @error('role')
@@ -68,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="show" style="display: none;">
+                        <div class="row d-none hide" id="show" style="display: none;">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Jenis Usaha') }}</label>
@@ -92,7 +139,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row d-none hide">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Username') }}</label>
@@ -126,7 +173,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row d-none hide">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="password" class="col-md-12">{{ __('Password') }}</label>
@@ -159,7 +206,7 @@
                                 <div class="float-left">
                                     <a href="{{route('login')}}">Sudah punya akun ?</a>
                                 </div>
-                                <div class="float-right">
+                                <div class="float-right d-none hide">
                                     <button type="submit" class="btn btn-primary btn-sm">
                                         {{ __('Register') }}
                                     </button>
@@ -184,6 +231,25 @@
             $('#show').fadeOut();
         }
     });
+    console.log($('#show').val());
+    $('#keanggotaan').on('change', function(){
+        var id = $(this).val();
+        if (id == 1) {
+            $('.d-none').removeClass('d-none');
+            $('.d-none').show();
+            $('#nameFull').removeClass('col-md-12');
+            $('#nameFull').addClass('col-md-6');
+            $('#koperasi').show();
+        } else if (id == 0) {
+            $('.d-none').removeClass('d-none');
+            $('.d-none').show();
+            $('#nameFull').removeClass('col-md-6');
+            $('#nameFull').addClass('col-md-12');
+            $('#koperasi').hide();
+        } else {
+            $(".hide").addClass('d-none');
+        }
+    })
     const togglePassword = document.querySelector('#togglePassword');
     const togglePasswordConfirm = document.querySelector('#togglePasswordConfirm');
     const password = document.querySelector('#password');

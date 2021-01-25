@@ -9,6 +9,7 @@ use Illuminate\Contracts\Validation\Rule;
 use App\Models\Po;
 use App\Models\PoItem;
 use App\Models\Bank;
+use App\Models\BatasPiutang;
 use App\Models\Pemasok;
 use App\Models\PiutangOut;
 use App\User;
@@ -60,15 +61,12 @@ class PoController extends Controller
         return $pdf->stream();
         // return view($this->indexPath.'print', compact('data','date'));
     }
-    public function showAccept($id)
-    {
-        return view($this->indexPathPemasok.'piutang',compact('id'));
-    }
     public function acceptGudang(Request $request, $id)
     {
         $po = Po::find($id);
+        $batasPiutang = BatasPiutang::find(1);
+        $tempo = $batasPiutang->jumlah_hari;
         if ($po->metode_pembayaran == null) {
-            $tempo = $request->tempo;
             $po->update([
                 'status' => 1
             ]);
@@ -76,7 +74,7 @@ class PoController extends Controller
                 'status' => 1,
                 'jatuh_tempo' => date('Y-m-d', strtotime($po->created_at.' +'.$tempo.' days'))
             ]);
-            return redirect('v1/po-masuk-pemasok')->with('success','Po telah disetujui');
+            return back()->with('success','Po telah disetujui');
         } else {
             $po->update([
                 'status' => 1

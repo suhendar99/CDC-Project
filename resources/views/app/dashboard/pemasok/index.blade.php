@@ -3,6 +3,9 @@
   $pageTitle = 'Dashboard Pemasok';
   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
+//   $barang = App\Models\Barang::all();
+//   $gudang = App\Models\Gudang::all();
+//   $pembeli = App\Models\PenurusGudang::all();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -28,7 +31,7 @@
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-primary">work</i>
                   </div>
@@ -46,7 +49,7 @@
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-warning">house_siding</i>
                   </div>
@@ -64,7 +67,7 @@
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-danger"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-danger">people</i>
                   </div>
@@ -82,7 +85,7 @@
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-success"></div>
             <div class="card-body dashboard">
-                <div class="row"> 
+                <div class="row">
                   <div class="col-4 valign-center">
                     <i class="material-icons md-48 text-my-success">extension</i>
                   </div>

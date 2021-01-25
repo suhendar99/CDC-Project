@@ -76,6 +76,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('user', 'UserController');
         Route::get('/user/{id}/approve', 'UserController@approve')->name('admin.users.approve');
         Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
+        // Koperasi
+        Route::resource('koperasi', 'KoperasiController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Pembeli
@@ -87,7 +89,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('kategoriBarang', 'KategoriBarangController');
 
         Route::resource('pemilik-gudang', 'PemilikGudangController');
-
+        // Batas Piutang
+        Route::resource('batasPiutang', 'BatasPiutangController');
         // Bank
         Route::resource('bank', 'BankController');
         Route::resource('akun-bank', 'AkunBankController');
@@ -95,9 +98,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pemasok']], function () {
         // Brang Po Masuk
         Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
-        Route::get('accept-po/gudang/{id}','PoController@showAccept')->name('acceptPoGudang');
-        Route::post('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
-        Route::get('accept-po-gudang-cash/{id}','PoController@acceptGudang')->name('accept.po.gudang.cash');
+        Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
         Route::get('previewPemasok/{id}', 'PoController@preview')->name('po.previewPemasok');
         // Barang
         Route::resource('barang', 'BarangController');

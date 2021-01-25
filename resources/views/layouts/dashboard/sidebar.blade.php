@@ -53,6 +53,8 @@
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
+                        {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
+                        {{ Request::is('v1/koperasi*') ? 'active' : false }}
                         @endif
                     ">
                         @if (isset($admin) || isset($pengurusGudang))
@@ -66,6 +68,8 @@
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
+                            {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
+                            {{ Request::is('v1/koperasi*') ? 'show' : false }}
                             @endif
                         ">
                         @endif
@@ -105,6 +109,16 @@
                                 {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                             ">
                                 <a href="{{route('kategoriBarang.index')}}">Kategori Induk</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('batasPiutang.index')}}">Batas Piutang</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/koperasi*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('koperasi.index')}}">Data Koperasi</a>
                             </li>
                             @endif
                             @if(isset($pemasok))
@@ -293,11 +307,6 @@
                         <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
                     </li> --}}
                     @if (isset($admin))
-                    <li class="
-                        {{ Request::is('v1/po*') ? 'active' : false }}
-                    ">
-                        <a href="{{route('po.index')}}" class="valign-center"><i class="material-icons">receipt_long</i>Purchase Order</a>
-                    </li>
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
                     </li>
