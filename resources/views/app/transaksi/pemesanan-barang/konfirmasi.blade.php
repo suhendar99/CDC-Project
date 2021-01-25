@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Preview Purchase Order';
+    $pageTitle = 'Preview Pemesanan';
     $preview = true;
 @endphp
 
@@ -17,8 +17,6 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Purchase Order</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
         </div>
@@ -29,25 +27,25 @@
         <div class="col-md-12">
             <div class="card my-3">
                 <div class="card-header">
-                    <h4 class="card-title float-left">Preview Surat Purchase Order</h4>
+                    <h4 class="card-title float-left">Preview Pemesanan</h4>
                     <div class="float-right">
-                        <a href="{{route('po.print',$data->id)}}" target="_blank" class="btn bg-my-success">
+                        <a href="{{route('print',$data->id)}}" target="_blank" class="btn bg-my-success">
                             <div class="d-flex valign-center">
                                 <i class="material-icons md-18 p-0 mr-1">download</i>Download
                             </div>
                         </a>
-                        @if (Auth::user()->pemasok_id != null)
+                        {{-- @if (Auth::user()->pemasok_id != null)
                             <a href="{{route('po.masuk.pemasok')}}" class="btn bg-my-primary">Kembali</a>
                         @elseif (Auth::user()->pengurus_gudang_id != null)
                             <a href="{{route('po.index')}}" class="btn bg-my-primary">Kembali</a>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
             </div>
             <div class="card my-3">
                 <div class="card-body">
                     <div class="print-page border-all">
-                        @include('app.transaksi.gudang.po.print')
+                        @include('app.transaksi.pemesanan-barang.print')
                     </div>
                 </div>
             </div>

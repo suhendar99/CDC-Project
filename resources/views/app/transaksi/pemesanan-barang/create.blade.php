@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Tambah Pemesanan Keluar';
+    $pageTitle = 'Pemesanan';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -16,8 +16,6 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemesanan Keluar</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
         </div>
@@ -32,7 +30,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Rincian Tujuan Pemesanan Keluar</h4>
+                                <h4 class="card-title">Rincian Tujuan Pemesanan</h4>
                             </div>
                             <div class="card-body">
                                 <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
@@ -140,7 +138,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-md-12 d-flex justify-content-between">
-                                        <h4 class="card-title">Rincian Pemesanan Keluar</h4>
+                                        <h4 class="card-title">Rincian Pemesanan</h4>
                                         <button type="button" class="btn btn-sm bg-my-success " onclick="appendBarang()">Tambah Barang PO</button>
                                     </div>
                                 </div>
