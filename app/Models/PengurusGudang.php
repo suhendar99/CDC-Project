@@ -13,6 +13,10 @@ class PengurusGudang extends Model
     {
         return $this->hasMany('App\User','pengurus_gudang_id','id');
     }
+    public function pemesanan()
+    {
+        return $this->hasMany('App\Models\Pemesanan');
+    }
 
     public function getData()
     {
