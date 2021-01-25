@@ -35,6 +35,18 @@ class Kwitansi extends Model
     	// belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Gudang');
     }
+
+    /**
+     * Kwitansi has many Retur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function retur()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = kwitansi_id, localKey = id)
+        return $this->hasMany('App\Models\Retur');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');

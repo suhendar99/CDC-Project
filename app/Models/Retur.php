@@ -19,10 +19,10 @@ class Retur extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function pemesanan()
+    public function kwitansi()
     {
     	// belongsTo(RelatedModel, foreignKey = pemesanan_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Pemesanan');
+    	return $this->belongsTo('App\Models\Kwitansi');
     }
 
     /**
@@ -33,6 +33,6 @@ class Retur extends Model
     public function barang()
     {
     	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+    	return $this->belongsToMany('App\Models\Barang', 'barang_retur_masuks', 'retur_id', 'barang_id');
     }
 }

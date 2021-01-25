@@ -49,9 +49,9 @@
                                 <th>No</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
-                                <th>Nama Pemesan</th>
+                                <th>Harga</th>
                                 <th>Tanggal Pemesanan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -149,17 +149,28 @@
             ajax : "{{ route('pemesanan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama', name: 'nama'},
-                {data : 'jumlah_barang', name: 'jumlah_barang'},
-                {data : 'nama_pemesan', name: 'nama_pemesan'},
-                {data : 'tanggal_pemesanan', name: 'tanggal_pemesanan'},
+                {data : 'barang.nama_barang', name: 'barang'},
+                {data : function(data, a, b, c) {
+                    return data.jumlah_barang+' '+data.satuan;
+                }, name: 'jumlah'},
+                {data : 'harga', name: 'harga'},
+                {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
                 // {
                 //   data : 'pengurus.gudang', render:function(data,a,b,c){
                 //         return data[0].nama;
                 //   }
                 // },
-                {data : 'action', name: 'action'}
-            ]
+                // {data : 'action', name: 'action'}
+            ],
+            order: [[2, 'asc']],
+            rowGroup: {
+                dataSrc: 'pesanan.kode',
+                startRender: function(rows, group){
+                    console.log(rows.data()[0]);
+                    return 'Barang Pemesanan Kode: '+group+' || Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+` <a href="#" class="btn btn-danger btn-sm float-right" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a>`;
+                },
+                endRender: null
+            }
         });
 
         function detail(id){

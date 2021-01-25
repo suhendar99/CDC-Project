@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
+use App\Models\Kwitansi;
 use App\Models\Barang;
 use App\Models\Retur;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,11 @@ class ReturController extends Controller
      */
     public function index(Request $request)
     {
+        // dd($data = Barang::with('retur')
+        //     ->orderBy('id', 'desc')
+        //     ->get());
         if($request->ajax()){
-            $data = Retur::with('barang', 'pemesanan')
+            $data = Retur::with('barang', 'kwitansi.pemesanan')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -43,10 +47,23 @@ class ReturController extends Controller
      */
     public function create()
     {
-        $barang = Barang::all();
-        $pemesanan = Pemesanan::all();
+        $kwitansi = Kwitansi::with('pemesanan')->get();
+        // $barang = Barang::all();
 
-        return view('app.transaksi.retur.create', compact('barang', 'pemesanan'));
+        return view('app.transaksi.retur.create', compact('kwitansi'));
+    }
+
+    public function barangPesanan($id)
+    {
+        $kwi = Kwitansi::find($id);
+
+        $barang = Barang::whereHas('barangPesanan', function($query)use($kwi){
+            $query->where('pemesanan_id', $kwi->pemesanan_id);
+        })->get();
+
+        return response()->json([
+            'data' => $barang
+        ], 200);
     }
 
     /**
@@ -57,20 +74,31 @@ class ReturController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'barang_kode' => 'required|exists:barangs,kode_barang',
-            'pemesanan_id' => 'required|exists:pemesanans,id',
+            'barang_id' => 'required|exists:barangs,id',
+            'kwitansi_id.*' => 'required|exists:kwitansis,id',
             'tanggal_pengembalian' => 'required|date',
             'keterangan' => 'required|string|max:65534'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         if ($v->fails()) {
+            dd($v);
             return back()->withErrors($v)->withInput();
         }
 
-        Retur::create($request->only('barang_kode', 'pemesanan_id', 'tanggal_pengembalian', 'keterangan'));
+        $retur = Retur::create($request->only('kwitansi_id', 'tanggal_pengembalian', 'keterangan'));
+
+        foreach ($request->barang_id as $value) {
+            DB::table('barang_retur_masuks')->insert([
+                'barang_id' => $value,
+                'retur_id' => $retur->id,
+                'created_at' => now('Asia/Jakarta')
+            ]);
+        }
+
 
         return redirect(route('retur.index'))->with('success', __( 'Retur Created!' ));
     }
@@ -94,11 +122,11 @@ class ReturController extends Controller
      */
     public function edit($id)
     {
-        $barang = Barang::all();
-        $pemesanan = Pemesanan::all();
-        $data = Retur::findOrFail($id);
+        // $barang = Barang::all();
+        $kwitansi = Kwitansi::all();
+        $data = Retur::with('barang')->findOrFail($id);
 
-        return view('app.transaksi.retur.edit', compact('barang', 'pemesanan', 'data'));
+        return view('app.transaksi.retur.edit', compact('kwitansi', 'data'));
     }
 
     /**
@@ -112,8 +140,8 @@ class ReturController extends Controller
     {
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'barang_kode' => 'required|exists:barangs,kode_barang',
-            'pemesanan_id' => 'required|exists:pemesanans,id',
+            'barang_id' => 'required|exists:barangs,id',
+            'kwitansi_id.*' => 'required|exists:kwitansis,id',
             'tanggal_pengembalian' => 'required|date',
             'keterangan' => 'required|string|max:65534'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
@@ -123,7 +151,19 @@ class ReturController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        Retur::findOrFail($id)->update($request->only('barang_kode', 'pemesanan_id', 'tanggal_pengembalian', 'keterangan'));
+        Retur::findOrFail($id)->update($request->only('kwitansi_id', 'tanggal_pengembalian', 'keterangan'));
+
+        $data = DB::table('barang_retur_masuks')
+        ->where('retur_id', $id)
+        ->delete();
+
+        foreach ($request->barang_id as $value) {
+            DB::table('barang_retur_masuks')->insert([
+                'barang_id' => $value,
+                'retur_id' => $id,
+                'created_at' => now('Asia/Jakarta')
+            ]);
+        }
 
         return redirect(route('retur.index'))->with('success', __( 'Retur Updated!' ));
     }

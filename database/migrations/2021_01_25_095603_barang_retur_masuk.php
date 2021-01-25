@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRetursTable extends Migration
+class BarangReturMasuk extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateRetursTable extends Migration
      */
     public function up()
     {
-        Schema::create('returs', function (Blueprint $table) {
+        Schema::create('barang_retur_masuks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kwitansi_id')->constrained('kwitansis')->onDelete('cascade');
-            $table->date('tanggal_pengembalian');
-            $table->text('keterangan');
+            $table->foreignId('retur_id')->constrained('returs')->onDelete('cascade');
+            $table->foreignId('barang_id')->constrained('barangs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateRetursTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('returs');
+        Schema::dropIfExists('barang_retur_masuks');
     }
 }

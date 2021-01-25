@@ -47,7 +47,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Pemesanan</th>
+                                <th>Kode Kwitansi</th>
                                 <th>Nama Pemesan</th>
                                 <th>Barang</th>
                                 <th>Tanggal Pengembalian</th>
@@ -150,10 +150,18 @@
             ajax : "{{ route('retur.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'pemesanan.kode', name: 'kode'},
-                {data : 'pemesanan.nama_pemesan', name: 'nama_pemesan'},
+                {data : 'kwitansi.kode', name: 'kode'},
+                {data : 'kwitansi.pemesanan.nama_pemesan', name: 'nama_pemesan'},
                 {data : 'barang', render:function(data,a,b,c){
-                        return '( '+data.kode_barang+' ) '+data.nama_barang;
+                        let van = '';
+                        console.log(data)
+                        for (var i = data.length - 1; i >= 0; i--) {
+                            let col = '<li>( '+data[i].kode_barang+' ) '+data[i].nama_barang+'</li>';
+                            van += col;
+                        }
+
+                        let o = '<ul>'+ van + '</ul>';
+                        return o;
                     }
                 },
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},

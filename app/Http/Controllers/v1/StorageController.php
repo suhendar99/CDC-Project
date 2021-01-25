@@ -30,7 +30,7 @@ class StorageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Ubah Penyimpanan</a>';
+                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Atur Penyimpanan</a>';
                 })
                 ->make(true);
         }
