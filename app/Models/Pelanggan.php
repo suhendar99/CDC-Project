@@ -33,6 +33,10 @@ class Pelanggan extends Model
     {
         return $this->hasMany('App\Models\Penerimaan');
     }
+    public function pemesanan()
+    {
+        return $this->hasMany('App\Models\Pemesanan');
+    }
 
     public function getData()
     {

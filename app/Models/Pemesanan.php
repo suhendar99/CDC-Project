@@ -52,7 +52,26 @@ class Pemesanan extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
     	return $this->hasMany('App\Models\StorageOut');
     }
-
+    /**
+     * Pemesanan has many Retur.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function retur()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->hasMany('App\Models\Retur');
+    }
+    public function pelanggan()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->belongsTo('App\Models\Pelanggan');
+    }
+    public function pengurusGudang()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
+    	return $this->belongsTo('App\Models\PengurusGudang');
+    }
     public function piutang()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)

@@ -277,35 +277,13 @@
                             </ul>
                         </li>
                     @endif
-                    {{-- <li>
-                        <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
-                        <ul class="collapse list-unstyled" id="reportSubmenu">
-                            <li>
-                                <a href="#">Penerimaan Barang</a>
-                            </li>
-                            <li>
-                                <a href="#">Penerimaan Pembayaran</a>
-                            </li>
-                            <li>
-                                <a href="#">Retur Barang</a>
-                            </li>
-                            <li>
-                                <a href="#">Abolish Barang</a>
-                            </li>
-                            <li>
-                                <a href="#">Pengiriman Barang</a>
-                            </li>
-                            <li>
-                                <a href="#">Mutasi Barang Gudang</a>
-                            </li>
-                            <li>
-                                <a href="#">Stok Barang</a>
-                            </li>
-                        </ul>
-                    </li> --}}
-                    {{-- <li>
-                        <a href="#" class="valign-center"><i class="material-icons">info</i>Tentang</a>
-                    </li> --}}
+                    @if (isset($pelanggan))
+                    <li class="
+                        {{ Request::is('v1/pesanan*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('pesanan.create')}}" class="valign-center"><i class="material-icons">dashboard</i>Pesanan</a>
+                    </li>
+                    @endif
                     @if (isset($admin))
                     <li>
                         <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>

@@ -12,12 +12,19 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
+use App\Models\PengurusGudang;
 use App\Models\Piutang;
+use App\Models\Storage;
 use App\User;
 use Carbon\Carbon;
+use PDF;
 
 class PemesananController extends Controller
 {
+    public function __construct()
+    {
+        $this->indexPath = 'app.transaksi.pemesanan-barang.';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -55,9 +62,19 @@ class PemesananController extends Controller
      */
     public function create()
     {
-        $pelanggan = Pelanggan::all();
+        $pGudang = PengurusGudang::all();
         $barang = Barang::all();
-        return view('app.data-master.pemesanan.create',compact('pelanggan','barang'));
+        return view($this->indexPath.'create',compact('pGudang','barang'));
+    }
+    public function print($id)
+    {
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $data = Pemesanan::where('id',$id)->with('barangPesanan')->first();
+        // PDF::;
+        $pdf = PDF::loadview($this->indexPath.'print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
+        return $pdf->stream();
+        // return view($this->indexPath.'print', compact('data','date'));
     }
 
     /**
@@ -69,63 +86,95 @@ class PemesananController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
+            'penerima_po' => 'required|string|max:50',
+            'nama_pemesan' => 'nullable|string|max:50',
+            'telepon' => 'required|numeric',
+            'email_penerima' => 'nullable|email',
             'alamat_pemesan' => 'required',
-            'telepon_penerima' => 'required',
-            'metode_pembayaran' => 'nullable|numeric',
-            'barang.*' => 'required',
-            'jumlah.*' => 'required',
-            'harga.*' => 'required',
-            'satuan.*' => 'required'
-        ]);
+            'pembayaran' => 'required',
+            'metode_pembayaran' => 'nullable',
 
+            'nama_barang.*' => 'required|string|max:100',
+            'satuan.*' => 'required|string|max:10',
+            'jumlah.*' => 'required|numeric|min:1',
+            'harga.*' => 'required|numeric',
+            'diskon.*' => 'nullable|numeric',
+            'pajak.*' => 'nullable|numeric',
+        ]);
         if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        } else {
-            $pelanggan = $request->pelanggan_id;
-            $search = Pelanggan::find($pelanggan);
-            $nama = $search->nama;
-            $kode = 'PM'.rand(10000,99999);
-            // $kodeBarang = explode(' ',$kodeBar);
-            // dd($v->errors()->all(),$request->all());
-            $pemesanan = Pemesanan::create(array_merge($request->only('alamat_pemesan','metode_pembayaran'),[
-                'kode' => $kode,
-                'telepon' => $request->telepon_penerima,
-                'nama_pemesan' => $nama,
-                'tanggal_pemesanan' => Carbon::now()
-            ]));
-            $arrayLength = count($request->satuan);
-            for ($i=0; $i < $arrayLength; $i++) {
-                // dd($kodeBarang[$i]);
-                $kodeBarang = 'BRP'.rand(10000,99999);
-                BarangPesanan::create([
-                    'pemesanan_id' => $pemesanan->id,
-                    'kode' => $kodeBarang,
-                    'barang_kode' => $request->barang[$i],
-                    'satuan' => $request->satuan[$i],
-                    'jumlah_barang' => $request->jumlah[$i],
-                    'harga' => $request->harga[$i],
-                ]);
-            }
-            if ($request->pembayaran == 'later') {
-                $poItem = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
-                $harga = 0;
-                $jumlah = 0;
-                foreach ($poItem as $key => $value) {
-                    $harga += $value->harga;
-                    $jumlah += $value->jumlah_barang;
-                    $subtotal = $harga*$jumlah;
-                }
-                $hutang = $subtotal;
-                // dd($hutang);
-                Piutang::create([
-                    'barang_id' => $pemesanan->id,
-                    'tanggal'=> Carbon::now(),
-                    'nama_pembeli' => $nama,
-                    'hutang' => $hutang,
-                ]);
-            }
-            return back()->with('success','Data Telah ditambahkan');
+            dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+        $pengurus_gudang = $request->pengurus_gudang_id;
+        $search = PengurusGudang::find($pengurus_gudang);
+        $nama = $search->nama;
+
+        $date = date('ymd');
+        $latest = Pemesanan::orderBy('id','desc')->first();
+        if ($latest == null) {
+            $counter = 1;
+        } else {
+            $counter = $latest->id+1;
+        }
+        $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+
+        $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','pengurus_gudang_id','penerima_po','telepon','email_penerima','alamat_pemesan','metode_pembayaran'),[
+            'kode' => $kode,
+            'nama_pemesan' => $nama
+        ]));
+        $arrayLength = count($request->barang);
+        for ($i=0; $i < $arrayLength; $i++) {
+            $kodes = 'PM'.rand(10000,99999);
+            list($v, $n) = explode('-', $request->barang[$i]);
+            BarangPesanan::create([
+                'kode' => $kodes,
+                'pemesanan_id' => $pemesanan->id,
+                'nama_barang' => $n,
+                'satuan' => $request->satuan[$i],
+                'barang_kode' => $v,
+                'jumlah_barang' => $request->jumlah[$i],
+                'harga' => $request->harga[$i],
+                'diskon' => $request->diskon[$i],
+                'pajak' => $request->pajak[$i],
+            ]);
+        }
+        if ($request->pembayaran == 'later') {
+            $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+            $totalPajak = 0;
+            $totalDiskon = 0;
+            $subtotalHarga = 0;
+            // $harga = 0;
+            // $jumlah = 0;
+            // $disc =0;
+            // $paj = 0;
+            foreach ($BarangPesanan as $key => $value) {
+                $harga = $value->harga;
+                $jumlah = $value->jumlah;
+                $disc = $value->diskon;
+                $paj = $value->pajak;
+                $subtotal = $harga*$jumlah;
+                $diskon = $subtotal*$disc/100;
+                $pajak = $subtotal*$paj/100;
+
+                $totalPajak = $totalPajak + $pajak;
+                $totalDiskon = $totalDiskon + $diskon;
+                $subtotalHarga = $subtotalHarga + $subtotal;
+            }
+            $totHar = $subtotalHarga+$totalPajak;
+            $hutang = $totHar-$totalDiskon;
+            // dd($hutang);
+            Piutang::create([
+                'barang_id' => $pemesanan->id,
+                'tanggal'=> Carbon::now(),
+                'nama_pembeli' => Auth::user()->pelanggan->nama,
+                'hutang' => $hutang,
+            ]);
+        }
+        $data = Pemesanan::where('id',$pemesanan->id)->with('barangPesanan','pengurusGudang')->first();
+        $date = date_format($data->created_at,'d-m-Y');
+        // dd($data);
+        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
     }
 
     /**
@@ -137,7 +186,7 @@ class PemesananController extends Controller
     public function show($id)
     {
         $data = Pelanggan::with('user')->where('id',$id)->get();
-        $ser = User::where('pelanggan_id',$id)->get();
+        $ser = User::where('pengurus_gudang_id',$id)->get();
         foreach ($ser as $key => $value) {
             $user = $value;
         }
