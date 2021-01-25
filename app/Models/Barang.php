@@ -74,15 +74,16 @@ class Barang extends Model
     }
 
     /**
-     * Barang has many Retur.
+     * Barang belongs to .
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function retur()
     {
-        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
-        return $this->hasMany('App\Models\Retur', 'barang_kode', 'kode_barang');
+        // belongsTo(RelatedModel, foreignKey = _id, keyOnRelatedModel = id)
+        return $this->belongsToMany('App\Models\Retur', 'barang_retur_masuks', 'barang_id', 'retur_id');
     }
+
     public function returOut()
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)

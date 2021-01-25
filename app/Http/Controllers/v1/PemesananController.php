@@ -26,7 +26,7 @@ class PemesananController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Pemesanan::with('barangPesanan.barang')
+            $data = BarangPesanan::with('pesanan', 'barang')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -34,26 +34,15 @@ class PemesananController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
-                ->addColumn('nama', function($data){
-                    $nama = [];
-                    foreach ($data->barangPesanan as $key => $value) {
-                        $nama = $value->barang->nama_barang;
-                        // dd($value->barang->nama_barang);
-                    }
-                    return $nama;
-                })
-                ->addColumn('jumlah_barang', function($data){
-                    // dd($data->barangPesanan->toArray());
-                    $jumlah = 0;
-                    foreach ($data->barangPesanan as $key => $value) {
-                        $jumlah += $value->barang->jumlah;
-                        // dd($value->barang->nama_barang);
-                    }
-                    // $jumlah = $data->barangPesanan[0]->jumlah_barang;
-                    // dd($jumlah);
-                    return $jumlah;
-                })
-                ->rawColumns(['nama','jumlah_barang','action'])
+                // ->addColumn('nama', function($data){
+                //     $nama = [];
+                //     foreach ($data->barangPesanan as $key => $value) {
+                //         $nama = $value->barang->nama_barang;
+                //         // dd($value->barang->nama_barang);
+                //     }
+                //     return $nama;
+                // })
+                ->rawColumns(['action'])
                 ->make(true);
         }
         return view('app.data-master.pemesanan.index');

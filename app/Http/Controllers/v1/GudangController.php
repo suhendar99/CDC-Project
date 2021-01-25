@@ -131,7 +131,7 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $createGudang = $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto,
                     'user_id' => $user_id
                 ]));
@@ -141,7 +141,7 @@ class GudangController extends Controller
                     'gudang_id' => $gudang_id
                 ]));
             } else {
-                $createGudang = $this->Data::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'user_id' => $user_id
                 ]));
 
@@ -157,7 +157,7 @@ class GudangController extends Controller
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
-        return back()->with('success',$this->alert.'Disimpan !');
+        return redirect(route('rak.index', $gudang->id))->with('success',$this->alert.'Disimpan !');
     }
 
     /**

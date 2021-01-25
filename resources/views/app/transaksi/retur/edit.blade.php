@@ -52,28 +52,28 @@
                                 @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
-                                            @foreach ($barang as $b)
-                                                <option value="{{$b->kode_barang}}" {{ $data->barang_kode == $b->kode_barang ? 'selected' : ''}}>{{$b->nama_barang}}</option>
+                                        <label>Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="kwitansi_id" id="" class="form-control">
+                                            <option value="0">--Pilih Pesanan--</option>
+                                            @foreach ($kwitansi as $pesan)
+                                                <option value="{{$pesan->id}}" {{ $data->kwitansi_id == $pesan->id ? 'selected' : ''}}>Kode: {{$pesan->kode}} || Kode Pemesanan: {{ $pesan->pemesanan->kode }}</option>
                                             @endforeach
                                         </select>
-                                        @error('barang_kode')
+                                        @error('kwitansi_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                        <select name="pemesanan_id" id="" class="form-control">
-                                            <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($pemesanan as $pesan)
-                                                <option value="{{$pesan->id}}" {{ $data->pemesanan_id == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_pemesan}}</option>
+                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
+                                        <select name="barang_id[]" id="barang" class="form-control" multiple="multiple">
+                                            <option value="0" disabled>--Pilih Barang--</option>
+                                            @foreach ($data->barang as $barang)
+                                                <option value="{{$barang->id}}"  selected>Kode Barang: {{$barang->kode_barang}} || Nama Barang: {{ $barang->nama_barang }}</option>
                                             @endforeach
                                         </select>
-                                        @error('pemesanan_id')
+                                        @error('barang_kode')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -116,5 +116,35 @@
 @endsection
 @push('script')
 <script>
+    $('#kwitansi').change(function(event) {
+        /* Act on the event */
+
+        // $('#barang').html()
+        let id = $('#kwitansi').val();
+
+        $.ajax({
+            url: "/api/v1/barang/pesanan/"+id,
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                let barang = response.data;
+
+                $('#barang').html('<option value="0" disabled>--Pilih Barang--</option>');
+
+                for (let i = barang.length - 1; i >= 0; i--) {
+                    // Things[i]
+                    $('#barang').append($('<option>').text(`Kode Barang: ${barang[i].kode_barang} || Nama Barang: ${barang[i].nama_barang}`).attr('value', barang[i].id));
+                }
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
+                console.log('error')
+                $('#barang').html('<option value="0" disabled>--Tidak Ada Barang--</option>');
+            }
+        });
+    });
 </script>
 @endpush
