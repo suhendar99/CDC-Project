@@ -76,6 +76,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('user', 'UserController');
         Route::get('/user/{id}/approve', 'UserController@approve')->name('admin.users.approve');
         Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
+        // Koperasi
+        Route::resource('koperasi', 'KoperasiController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Pembeli

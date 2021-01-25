@@ -7,7 +7,7 @@
   $storageIn = \App\Models\StorageIn::all();
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
-  // $rightbar = true;
+  $gudang = App\Models\Gudang::where('user_id',Auth::user()->id)->get();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -168,69 +168,23 @@
           <i class="material-icons md-36 text-my-success">insert_chart</i>
           <span class="text-18">Statistik Gudang</span>
         </div>
-        <hr class="p-0">
         <div class=" row">
-          <div class=" col-md-6 col-sm-12">
-            <div class=" row">
-              <div class="col-6 border-right">
-                <center>
-                  <div id="calendar"></div>
-                </center>
+          <div class="col-4 border-right">
+            <center>
+              <div id="calendar"></div>
+            </center>
+          </div>
+          <div class="col-md-4 col-sm-12">
+            <div class="row">
+              <div class="col-12 valign-center">
+                <i class="material-icons md-24 text-my-success mr-1">bar_chart</i><span style="font-size: 14px">Grafik Pembelian Hari Ini</span>
               </div>
-              <div class="col-6" style="font-size: .8rem;">
-                <span style="font-size: 1rem">Hari Ini</span><br><hr class="mb-1">
-                <div class="float-left">
-                  Item Terjual
-                </div>
-                <div class="float-right">
-                  20 Item
-                </div>
-                <br>
-                <hr class="my-1">
-                <div class="float-left">
-                  Barang Dikirim
-                </div>
-                <div class="float-right">
-                  10 Item
-                </div>
-                <br>
-                <hr class="my-1">
-                <div class="float-left">
-                  Barang Diterima
-                </div>
-                <div class="float-right">
-                  10 Item
-                </div>
-                <br>
-                <hr class="my-1">
-                <div class="float-left">
-                  Pesanan Lunas
-                </div>
-                <div class="float-right">
-                  18 Item
-                </div>
-                <br>
-                <hr class="my-1">
-                <div class="float-left">
-                  Pesanan Belum Lunas
-                </div>
-                <div class="float-right">
-                  2 Item
-                </div>
-                <br>
-                <hr class="my-1">
-                <div class="float-left">
-                  Total Pendapatan
-                </div>
-                <div class="float-right">
-                  Rp. 200.000
-                </div>
-                <br>
-                <hr class="my-1">
+              <div class="col-12">
+                <div id="pembelianChart"></div>
               </div>
             </div>
           </div>
-          <div class=" col-md-6 col-sm-12">
+          <div class=" col-md-4 col-sm-12">
             <div class="row">
               <div class="col-12 valign-center">
                 <i class="material-icons md-24 text-my-success mr-1">bar_chart</i><span style="font-size: 14px">Grafik Penjualan Hari Ini</span>
@@ -239,9 +193,6 @@
                 <div id="frekuensichart"></div>
               </div>
             </div>
-          </div>
-          <div class="col-md-12">
-
           </div>
         </div>
 
@@ -320,6 +271,8 @@
 
 {{-- Map Section --}}
 <script>
+    var group = []
+    var gudang = JSON.parse('{!! json_encode($gudang) !!}')
     var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="">Badan Perencanaan Pembangunan Daerah Kabupaten Bekasi</a>',
                         maxZoom:20, }),
@@ -343,11 +296,23 @@
         "Google Satelite"   : gsatelite,
         "Google Hybrid"     : ghybrid
     };
+    gudang.forEach(async function (element) {
+        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`<b>Gudang : ${element.nama}</b><br />Milik : ${element.pemilik}`))
+        // function popupDetail(data,index) {
+        //     isiDetail += `
+
+        //     `
+        // }
+    })
+    let gudangGudang = L.layerGroup(group)
+
     var map = L.map('mapid', {
-            center: [-6.241586, 106.992416],
-            zoom: 10,
-            layers: [ghybrid]
+        center: [-6.967647303787534, 107.65589059670471],
+        zoom: 10,
+        layers: [ghybrid, gudangGudang]
     });
+    // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
+    // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
 </script>
 {{--  --}}
@@ -426,6 +391,64 @@
   var chart = new ApexCharts(document.querySelector("#frekuensichart"), options);
 
   chart.render();
+
+  var options = {
+    chart: {
+      type: 'bar',
+      height: '200px',
+      toolbar: {
+          show: false,
+      },
+      animations: {
+          enabled: true,
+          easing: 'easein',
+          speed: 800,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 350
+          }
+      }
+    },
+    markers: {
+      size: 0,
+    },
+    series: [{
+      name: 'Penjualan Bulanan',
+      data: [30,40,35,50]
+    }],
+    xaxis: {
+      categories: ['Beras','Jagung','Bawang Merah','Apel']
+    },
+    yaxis: {
+      show: true,
+      title: {
+          text: 'Jumlah Item',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: '#373d3f',
+              fontSize: '12px',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+          },
+      }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    tooltip: {
+        enabled: true
+    }
+  }
+
+  var pembelian = new ApexCharts(document.querySelector("#pembelianChart"), options);
+
+  pembelian.render();
 </script>
 {{--  --}}
 @endpush
