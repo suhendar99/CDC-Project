@@ -35,9 +35,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="float-right">
+                            {{-- <div class="float-right">
                                 <a href="{{route('pemesanan.create')}}" class="btn btn-primary btn-sm">Tambah Pesanan</a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

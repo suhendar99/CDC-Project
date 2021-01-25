@@ -265,15 +265,21 @@
                                 {{ Request::is('v1/laporan-barang-keluar*') ? 'show' : false }}
                                 {{ Request::is('v1/laporan-po*') ? 'show' : false }}
                             " id="reportSubmenu">
-                                <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
-                                    <a href="{{route('laporan.barang.masuk')}}">Barang Masuk</a>
-                                </li>
                                 <li class="{{ Request::is('v1/laporan-barang-keluar*') ? 'active' : false }}">
-                                    <a href="{{route('laporan.barang.keluar')}}">Barang Keluar</a>
+                                    <a href="{{route('laporan.barang.keluar')}}">Penjualan</a>
                                 </li>
-                                <li class="{{ Request::is('v1/laporan-po*') ? 'active' : false }}">
+                                <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.masuk')}}">Pembelian</a>
+                                </li>
+                                <li {{--class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}"--}}>
+                                    <a href="{{--{{route('laporan.barang.masuk')}}--}}">Stok Barang</a>
+                                </li>
+                                <li {{--class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}"--}}>
+                                    <a href="{{--{{route('laporan.barang.masuk')}}--}}">Neraca untung Rugi</a>
+                                </li>
+                                {{-- <li class="{{ Request::is('v1/laporan-po*') ? 'active' : false }}">
                                     <a href="{{route('laporan.po')}}">Purcase Order</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endif

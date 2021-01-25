@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Purchase Order</title>
+	<title>Pemesanan</title>
 	@if (isset($preview))
 		<link rel="stylesheet" type="text/css" href="{{asset('css/print.css')}}">
 	@endif
@@ -176,7 +176,7 @@
 		<table class="table">
 			<tr>
 				<td colspan="3" class="text-24 bold pt-2 pr-2 pb-2 text-right">
-					Purchase Order
+					Pemesanan
 				</td>
 			</tr>
 			@php
@@ -222,7 +222,7 @@
 			</tr>
 			<tr>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
-					{{$data->gudang->nama}}
+					{{Auth::user()->pelanggan->nama}}
 				</td>
 				<td></td>
 				<td colspan="3" class="pt-2 pl-2 pb-2 bold">
@@ -232,16 +232,16 @@
 			<tr class="text-14">
 				<td>Telp</td>
 				<td>:</td>
-				<td class="text-right">{{$data->gudang->kontak}}</td>
+				<td class="text-right">{{Auth::user()->pelanggan->telepon}}</td>
 				<td></td>
 				<td>Telp</td>
 				<td>:</td>
-				<td class="text-right">{{$data->telepon_penerima}}</td>
+				<td class="text-right">{{$data->telepon}}</td>
 			</tr>
 			<tr class="text-14">
 				<td>Email</td>
 				<td>:</td>
-				<td class="text-right">{{$data->gudang->user->email}}</td>
+				<td class="text-right">{{Auth::user()->email}}</td>
 				<td></td>
 				<td>Email</td>
 				<td>:</td>
@@ -252,7 +252,7 @@
 				<td class="valign-top">Alamat</td>
 				<td class="valign-top">:</td>
 				<td class="text-right">
-					{{$data->alamat_penerima}}
+					{{$data->alamat_pemesan}}
 				</td>
 			</tr>
 		</table>
@@ -273,9 +273,9 @@
 					$totalDiskon = 0;
 					$subtotalHarga = 0;
 				@endphp
-				@foreach($data->po_item as $key => $d)
+				@foreach($data->barangPesanan as $key => $d)
 				@php
-					$subtotal = $d->harga*$d->jumlah;
+					$subtotal = $d->harga*$d->jumlah_barang;
 					$diskon = $subtotal*$d->diskon/100;
 					$hasilPajak = $subtotal*$d->pajak/100;
 					// $total = $subtotal+$hasilPajak;
@@ -290,7 +290,7 @@
 						{{$d->nama_barang}}
 					</td>
 					<td>
-						{{$d->jumlah.' '.$d->satuan}}
+						{{$d->jumlah_barang.' '.$d->satuan}}
 					</td>
 					<td>
 						Rp. {{number_format($d->harga,0,',','.')}}
@@ -351,15 +351,15 @@
 			<tr>
 				<td width="10%"></td>
 				<td width="30%" class="border-bottom text-center">
-					{{$data->gudang->nama}}
+					{{-- {{$data->pengurusGudang->nama}} --}}
 					<br><br><br><br>
-					{{$data->gudang->pemilik}}
+					{{$data->pengurusGudang->nama}}
 				</td>
 				<td width="20%"></td>
 				<td width="30%" class="border-bottom text-center">
+					{{-- {{$data->nama_pemesan}} --}}
+                    <br><br><br><br>
 					{{$data->penerima_po}}
-					<br><br><br><br>
-					{{$data->nama_penerima}}
 				</td>
 				<td width="10%"></td>
 			</tr>

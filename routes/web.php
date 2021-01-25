@@ -124,9 +124,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
         // Pemesanan
-        Route::get('print/{id}', 'PemesananController@print')->name('po.print');
+        Route::get('prints/{id}', 'PemesananController@print')->name('print');
         Route::resource('pesanan', 'PemesananController');
-        Route::get('preview/{id}', 'PemesananController@preview')->name('po.preview');
+        Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
