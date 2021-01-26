@@ -58,12 +58,11 @@
                         <img src="{{ asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="float-left">
                                         <h5>{{ $gudang->nama }}</h5>
+                                        <span>{{ $gudang->nomor_gudang }}</span>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
                                     <div class="float-right">
                                         <div class="dropdown">
                                             <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>

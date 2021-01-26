@@ -13,6 +13,7 @@ class GudangSeeder extends Seeder
     public function run()
     {
         $value = [
+            'nomor_gudang' => 'GUD/19950312/892712334',
             'nama' => 'Gudang Beras',
             'lat' => '-6.406742565978931',
             'long' => '106.78298950195314',
