@@ -52,6 +52,8 @@ class StorageOutController extends Controller
         $date = date('d-m-Y');
         $data = Kwitansi::with('pemesanan','gudang','user')->first();
         // PDF::;
+        $customPaper = array(0,0,283.80,567.00);
+
         $counter = $data->count();
         $kode = sprintf("%'.04d", (String)$counter);
         $pdf = PDF::loadview('app.transaksi.kwitansi.print', compact('data','date','kode'));
