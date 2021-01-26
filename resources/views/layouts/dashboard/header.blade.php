@@ -127,8 +127,8 @@
                             <!-- Copyright -->
                             <div class="footer-copyright text-center pt-4 text-dark fixed">
                                 <div class="copyright">
-                                    <span>© 2020 Copyright:</span>
-                                    <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
+                                    <span>© Copyright:</span>
+                                    <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a><span> 2020</span>
                                 </div>
                             </div>
                             <!-- Copyright -->
