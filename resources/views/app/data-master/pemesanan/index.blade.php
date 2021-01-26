@@ -46,11 +46,11 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
                                 <th>Harga</th>
-                                {{-- <th>Tanggal Pemesanan</th> --}}
+                                <th>Tanggal Pemesanan</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
@@ -148,13 +148,14 @@
             pageLength : 10,
             ajax : "{{ route('pemesanan.index') }}",
             columns : [
-                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'barang.kode_barang', name: 'kode_barang'},
                 {data : 'barang.nama_barang', name: 'barang'},
                 {data : function(data, a, b, c) {
                     return data.jumlah_barang+' '+data.satuan;
                 }, name: 'jumlah'},
-                {data : 'harga', name: 'harga'}
-                // {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
+                {data : 'harga', name: 'harga'},
+                {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
                 // {
                 //   data : 'pengurus.gudang', render:function(data,a,b,c){
                 //         return data[0].nama;
@@ -166,10 +167,12 @@
             rowGroup: {
                 dataSrc: 'pesanan.kode',
                 startRender: function(rows, group){
-                    console.log(rows.data()[0]);
-                    return 'Barang Pemesanan Kode: '+group+' || Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+` <a href="#" class="btn btn-danger btn-sm float-right" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a>`;
+                    return '<div class="float-left">Nomor Pemesanan: '+rows.data()[0].pesanan.nomor_pemesanan+' <br> Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+`</div> <a href="#" class="btn btn-danger btn-sm float-right" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a>`;
                 },
-                endRender: null
+                endRender: function(rows, group){
+                    // console.log(rows.data().length);
+                    return 'Jumlah Barang yang dipesan: '+rows.data().length;
+                },
             }
         });
 
