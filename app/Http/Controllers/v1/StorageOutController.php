@@ -88,7 +88,13 @@ class StorageOutController extends Controller
         $gudang = Gudang::all();
         $pemesanan = Pemesanan::all();
 
-        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan'));
+        $surat = SuratJalan::all();
+        $number = $surat->count();
+        $alpha = "LK";
+        $date = date("ymdHis");
+        $kode_surat = sprintf("%04s",abs($number+1));
+
+        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan', 'kode_surat'));
     }
 
     /**
@@ -108,7 +114,9 @@ class StorageOutController extends Controller
             'jumlah_uang_digits' => 'required|integer',
             'jumlah_uang_word' => 'required|string',
             'keterangan' => 'required|string',
-            'tempat' => 'required|string'
+            'tempat' => 'required|string',
+            'profil_lembaga' => 'required|string|max:6|min:3',
+            'tanggal_surat' => 'required|date'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -204,7 +212,48 @@ class StorageOutController extends Controller
 
 
         $kode_kwi = $faker->unique()->ean13;
-        $kode_surat = $faker->unique()->ean13;
+
+        $surat = SuratJalan::all();
+        $number = $surat->count();
+        $alpha = "LK";
+        $date = date("ymdHis");
+        $kode_surat = sprintf("%04s",abs($number+1));
+
+        $jens = date("m", strtotime($request->tanggal_surat));
+        $hari = date("d", strtotime($request->tanggal_surat));
+        $tahun = date("Y", strtotime($request->tanggal_surat));
+
+        if ($jens == 1) {
+            $romawi = "I";
+        } elseif ($jens == 2) {
+            $romawi = "II";
+        } elseif ($jens == 3) {
+            $romawi = "III";
+        } elseif ($jens == 4) {
+            $romawi = "IV";
+        } elseif ($jens == 5) {
+            $romawi = "V";
+        } elseif ($jens == 6) {
+            $romawi = "VI";
+        } elseif ($jens == 7) {
+            $romawi = "VII";
+        } elseif ($jens == 8) {
+            $romawi = "VIII";
+        } elseif ($jens == 9) {
+            $romawi = "IX";
+        } elseif ($jens == 10) {
+            $romawi = "X";
+        } elseif ($jens == 11) {
+            $romawi = "XI";
+        } elseif ($jens == 12) {
+            $romawi = "XII";
+        }
+
+        $tanggal_surat = $hari.'/'.$romawi.'/'.$tahun;
+        
+
+        $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
+        // $kode_surat = $faker->unique()->ean13;
 
         $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'gudang_id', 'keterangan')+[
             'user_id' => auth()->user()->id,
@@ -214,10 +263,11 @@ class StorageOutController extends Controller
 
         $surat = SuratJalan::create($request->only('tempat', 'pengirim', 'pemesanan_id')+[
             'penerima' => $pesanan->nama_pemesan,
-            'kode' => $kode_surat,
+            'kode' => $surat_kode,
             'user_id' => auth()->user()->id,
             'tanggal' => now('Asia/Jakarta')
         ]);
+
         $bp = BarangPesanan::where('pemesanan_id',$out->pemesanan->id)->get();
         $jumlah = 0;
         $total = 0;
@@ -228,6 +278,7 @@ class StorageOutController extends Controller
             $harga_total = $jumlah * $total;
             $satuan = $value->satuan;
         }
+
         RekapitulasiPenjualan::create([
             'storage_out_id' => $out->id,
             'tanggal_penjualan' => $out->waktu,
