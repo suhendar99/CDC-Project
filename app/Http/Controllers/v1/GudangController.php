@@ -157,7 +157,7 @@ class GudangController extends Controller
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
-        return redirect(route('rak.index', $gudang->id))->with('success',$this->alert.'Disimpan !');
+        return redirect(route('rak.create', $gudang_id))->with('success',$this->alert.'Disimpan !');
     }
 
     /**

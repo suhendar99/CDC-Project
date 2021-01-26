@@ -131,7 +131,8 @@ class PemesananController extends Controller
 
         $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','pengurus_gudang_id','penerima_po','telepon','email_penerima','alamat_pemesan','metode_pembayaran'),[
             'kode' => $kode,
-            'nama_pemesan' => $nama
+            'nama_pemesan' => $nama,
+            'tanggal_pemesanan' => now('Asia/Jakarta')
         ]));
         $arrayLength = count($request->barang);
         // dd($request->barang);

@@ -17,6 +17,7 @@ class CreateTingkatanRaksTable extends Migration
             $table->id();
             $table->foreignId('rak_id')->constrained('raks')->onDelete('cascade');
             $table->string('nama');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

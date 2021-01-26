@@ -214,14 +214,14 @@
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.tingkat == null) {
-                            return 'Belum Diupdate';
+                            return 'Belum Diatur';
                         } else {
                             return data.tingkat.rak.nama;
                         }
                     }, name: 'rak'},
                 {data : function(data,a,b,c){
                         if (data.tingkat == null) {
-                            return 'Belum Diupdate';
+                            return 'Belum Diatur';
                         } else {
                             return data.tingkat.nama;
                         }

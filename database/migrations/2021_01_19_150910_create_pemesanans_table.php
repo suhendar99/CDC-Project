@@ -23,6 +23,7 @@ class CreatePemesanansTable extends Migration
             $table->string('telepon');
             $table->string('email_penerima');
             $table->string('alamat_pemesan');
+            $table->date('tanggal_pemesanan');
             $table->string('metode_pembayaran')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();

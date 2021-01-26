@@ -50,7 +50,7 @@
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
                                 <th>Harga</th>
-                                <th>Tanggal Pemesanan</th>
+                                {{-- <th>Tanggal Pemesanan</th> --}}
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
@@ -153,8 +153,8 @@
                 {data : function(data, a, b, c) {
                     return data.jumlah_barang+' '+data.satuan;
                 }, name: 'jumlah'},
-                {data : 'harga', name: 'harga'},
-                {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
+                {data : 'harga', name: 'harga'}
+                // {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
                 // {
                 //   data : 'pengurus.gudang', render:function(data,a,b,c){
                 //         return data[0].nama;
