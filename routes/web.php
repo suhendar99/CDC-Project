@@ -169,7 +169,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('retur', 'ReturController');
         Route::resource('returOut', 'ReturOutController');
 
+        // Kwitansi
         Route::get('kwitansi', 'KwitansiController@index')->name('kwitansi.index');
+
+        // Surat Jalan
+        Route::get('surat-jalan', 'SuratJalanController@index')->name('surat-jalan.index');
 
         Route::get('pemesanan', 'PemesananController@index')->name('pemesanan.index');
 

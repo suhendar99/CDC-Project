@@ -116,6 +116,51 @@ class PemesananController extends Controller
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+        date_default_timezone_set('Asia/Jakarta');
+
+        $tanggal = date("Ymd");
+        $tahun = date("y");
+        $bulan = date("m");
+
+        // Number To Romawi
+        $map = array(
+            'M' => 1000, 
+            'CM' => 900, 
+            'D' => 500, 
+            'CD' => 400, 
+            'C' => 100, 
+            'XC' => 90, 
+            'L' => 50, 
+            'XL' => 40, 
+            'X' => 10, 
+            'IX' => 9, 
+            'V' => 5, 
+            'IV' => 4, 
+            'I' => 1 
+        );
+        $tahunRomawi = '';
+        $bulanRomawi = '';
+
+        while ($tahun > 0) {
+            foreach ($map as $romawi => $int) {
+                if ($tahun >= $int) {
+                    $tahun -= $int;
+                    $tahunRomawi .= $romawi;
+                    break;
+                }
+            }
+        }
+
+        while ($bulan > 0) {
+            foreach ($map as $roman => $num) {
+                if ($bulan >= $num) {
+                    $bulan -= $num;
+                    $bulanRomawi .= $roman;
+                    break;
+                }
+            }
+        }
+
         $pengurus_gudang = $request->pengurus_gudang_id;
         $search = PengurusGudang::find($pengurus_gudang);
         $nama = $search->nama;
@@ -127,11 +172,19 @@ class PemesananController extends Controller
         } else {
             $counter = $latest->id+1;
         }
-        $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+
+        $faker = \Faker\Factory::create('id_ID');
+
+        $kode_faker = $faker->unique()->regexify('[0-9]{9}');
+
+        // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+        $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
         $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','pengurus_gudang_id','penerima_po','telepon','email_penerima','alamat_pemesan','metode_pembayaran'),[
-            'kode' => $kode,
-            'nama_pemesan' => $nama
+            'kode' => $kode_faker,
+            'nomor_pemesanan' => $kode,
+            'nama_pemesan' => $nama,
+            'tanggal_pemesanan' => now('Asia/Jakarta')
         ]));
         $arrayLength = count($request->barang);
         // dd($request->barang);
