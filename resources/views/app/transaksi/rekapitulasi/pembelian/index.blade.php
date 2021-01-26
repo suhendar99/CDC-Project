@@ -37,9 +37,10 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            {{-- <div class="float-right">
-                                <a href="{{route('rekapitulasiPembelian.create')}}" class="btn btn-primary btn-sm">Tambah Kategori Induk</a>
-                            </div> --}}
+                            <div class="float-right">
+                                <a href="{{route('rekapPembelian.download.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
+                                <a href="{{route('rekapPembelian.download.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportRekapitulasiPenjualan;
 use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class RekapitulasiPenjualanController extends Controller
 {
@@ -35,6 +39,27 @@ class RekapitulasiPenjualanController extends Controller
                 ->make(true);
         }
         return view($this->path.'index');
+    }
+    public function downloadRekapitulasiPenjualanPdf()
+    {
+        $data = RekapitulasiPenjualan::all();
+        if ($data->isEmpty()) {
+            return back()->with('failed','Data Kosong !');
+        } else {
+            $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+            set_time_limit(300);
+            return $pdf->stream('Rekapitulasi-Penjualan-'.Carbon::now());
+            return view($this->path.'pdf',compact('data'));
+        }
+    }
+    public function downloadRekapitulasiPenjualanExcel()
+    {
+        $data = RekapitulasiPenjualan::all();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportRekapitulasiPenjualan($data))->download('Rekapitulasi-Penjualan-'.Carbon::now().'.xlsx');
     }
 
     /**

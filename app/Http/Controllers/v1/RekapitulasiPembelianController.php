@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportRekapitulasiPembelian;
 use App\Http\Controllers\Controller;
 use App\Models\Po;
 use App\Models\RekapitulasiPembelian;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class RekapitulasiPembelianController extends Controller
 {
@@ -36,6 +39,27 @@ class RekapitulasiPembelianController extends Controller
                 ->make(true);
         }
         return view($this->path.'index');
+    }
+    public function downloadRekapitulasiPembelianPdf()
+    {
+        $data = RekapitulasiPembelian::all();
+        if ($data->isEmpty()) {
+            return back()->with('failed','Data Kosong !');
+        } else {
+            $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+            set_time_limit(300);
+            return $pdf->stream('Rekapitulasi-Pembelian-'.Carbon::now());
+            return view($this->path.'pdf',compact('data'));
+        }
+    }
+    public function downloadRekapitulasiPembelianExcel()
+    {
+        $data = RekapitulasiPembelian::all();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportRekapitulasiPembelian($data))->download('Rekapitulasi-Pembelian-'.Carbon::now().'.xlsx');
     }
 
     /**
