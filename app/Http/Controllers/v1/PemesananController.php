@@ -71,10 +71,20 @@ class PemesananController extends Controller
         set_time_limit(120);
         $date = date('d-m-Y');
         $data = Pemesanan::where('id',$id)->with('barangPesanan')->first();
+        $email = User::where('pengurus_gudang_id',$data->pengurusGudang->id)->get();
+        foreach ($email as $key => $value) {
+            $user = $value;
+        }
         // PDF::;
-        $pdf = PDF::loadview($this->indexPath.'print', compact('data','date'))->setOptions(['defaultFont' => 'poppins']);
+        $pdf = PDF::loadview($this->indexPath.'print', compact('data','date','user'))->setOptions(['defaultFont' => 'poppins']);
         return $pdf->stream();
         // return view($this->indexPath.'print', compact('data','date'));
+    }
+    public function preview($id)
+    {
+        $data = Pemesanan::where('id',$id)->with('barangPesanan')->first();
+        $date = date_format($data->created_at,'d-m-Y');
+        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
     }
 
     /**
@@ -125,9 +135,13 @@ class PemesananController extends Controller
             'tanggal_pemesanan' => now('Asia/Jakarta')
         ]));
         $arrayLength = count($request->barang);
+        // dd($request->barang);
         for ($i=0; $i < $arrayLength; $i++) {
             $kodes = 'PM'.rand(10000,99999);
             list($v, $n) = explode('-', $request->barang[$i]);
+            if ($v == null || $n == null) {
+                return back()->with('error','Isikan dengan benar !');
+            }
             BarangPesanan::create([
                 'kode' => $kodes,
                 'pemesanan_id' => $pemesanan->id,
@@ -174,8 +188,11 @@ class PemesananController extends Controller
         }
         $data = Pemesanan::where('id',$pemesanan->id)->with('barangPesanan','pengurusGudang')->first();
         $date = date_format($data->created_at,'d-m-Y');
-        // dd($data);
-        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
+        $email = User::where('pengurus_gudang_id',$request->pengurus_gudang_id)->get();
+        foreach ($email as $key => $value) {
+            $user = $value;
+        }
+        return view($this->indexPath.'konfirmasi',compact('data','date','user'));
     }
 
     /**
