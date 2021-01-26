@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-md-12">{{ __('Keanggotaan Koperasi') }}</label>
+                                    <label for="name" class="col-md-12">{{ __('Keanggotaan Koperasi') }} <small class="text-danger">*harus pilih</small></label>
 
                                     <div class="col-md-12">
                                         <select name="keanggotaan" id="keanggotaan" class="form-control @error('keanggotaan') is-invalid @enderror">
@@ -94,11 +94,11 @@
                             <input type="hidden" name="role" value="pelanggan">
                             <div class="col-md-6" id="koperasi">
                                 <div class="form-group">
-                                    <label for="name" class="col-md-12">{{ __('Pilih Koperasi') }}</label>
+                                    <label for="name" class="col-md-12">{{ __('Pilih Koperasi') }} </label>
 
                                     <div class="col-md-12">
                                         <select name="koperasi_id" id="koperasi" class="form-control">
-                                            <option value="">--Pilih Koperasi--</option>
+                                            {{-- <option value="">--Pilih Koperasi--</option> --}}
                                             @forelse ($koperasi as $item)
                                                 <option value="{{$item->id}}">{{$item->nama_koperasi}}</option>
                                             @empty

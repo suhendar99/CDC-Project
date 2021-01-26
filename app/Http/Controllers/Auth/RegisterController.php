@@ -75,20 +75,36 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         if ($data['role'] == 'pelanggan') {
-            $pelanggan = Pelanggan::create([
-                'nama' => $data['nama'],
-            ]);
+            if ($data['keanggotaan'] == 1) {
+                $pelanggan = Pelanggan::create([
+                    'nama' => $data['nama'],
+                ]);
 
-            return User::create([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'keanggotaan' => $data['keanggotaan'],
-                'koperasi_id' => $data['koperasi_id'],
-                'password' => Hash::make($data['password']),
-                'pelanggan_id' => $pelanggan->id,
-                'email_verified_at' => $data['email_verified_at'],
-                'status' => 1
-            ]);
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'keanggotaan' => $data['keanggotaan'],
+                    'koperasi_id' => $data['koperasi_id'],
+                    'password' => Hash::make($data['password']),
+                    'pelanggan_id' => $pelanggan->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            } else {
+                $pelanggan = Pelanggan::create([
+                    'nama' => $data['nama'],
+                ]);
+
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'keanggotaan' => $data['keanggotaan'],
+                    'password' => Hash::make($data['password']),
+                    'pelanggan_id' => $pelanggan->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            }
         } elseif ($data['role'] == 'pemasok') {
             $pin = mt_rand(100, 999)
                     .mt_rand(100, 999);
