@@ -136,6 +136,28 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label>No Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    {{ $kode_surat }}/SJ/
+                                                </span>
+                                            </div>
+                                            <input class="form-control @error('profil_lembaga') is-invalid @enderror" type="text" placeholder="Nama profil lembaga... Maks. 6 karakter" name="profil_lembaga"></input>
+                                            <input class="form-control @error('tanggal_surat') is-invalid @enderror" type="date" placeholder="Tanggal..." name="tanggal_surat"></input>
+                                        </div>
+                                        @error('profil_lembaga')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        @error('tanggal_surat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
  
                                 <div class="tab">Storage Out:
