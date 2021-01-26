@@ -48,7 +48,7 @@
                                 <th>No</th>
                                 <th>No transaksi</th>
                                 <th>Jumlah Hutang</th>
-                                <th>Tanggal Awal</th>
+                                <th>Waktu Transaksi</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Nama Pembeli</th>
                                 {{-- <th>Nama Barang</th> --}}

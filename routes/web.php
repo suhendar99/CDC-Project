@@ -191,6 +191,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
         Route::post('laporan-barang-keluar-excel','LaporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
 
+        Route::get('laporan-barang','LaporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
+        Route::post('laporan-barang-pdf','LaporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
+        Route::post('laporan-barang-excel','LaporanPengurusGudangController@LaporanBarangExcel')->name('laporan.barang.excel');
+
         Route::get('laporan-po','LaporanPengurusGudangController@showLaporanPo')->name('laporan.po');
         Route::post('laporan-po-pdf','LaporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
         Route::post('laporan-po-excel','LaporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
@@ -201,5 +205,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Rekapitulasi
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
+
+        Route::get('rekapPenjualan/downloadPdf', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanPdf')->name('rekapPenjualan.download.pdf');
+        Route::get('rekapPenjualan/downloadExcel', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanExcel')->name('rekapPenjualan.download.excel');
+
+        Route::get('rekapPembelian/downloadPdf', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianPdf')->name('rekapPembelian.download.pdf');
+        Route::get('rekapPembelian/downloadExcel', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianExcel')->name('rekapPembelian.download.excel');
     });
 });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportLaporanBarang;
 use App\Exports\ExportLaporanBarangKeluar;
 use App\Exports\ExportLaporanBarangMasuk;
 use App\Exports\ExportLaporanPo;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gudang;
 use App\Models\Po;
 use App\Models\PoItem;
+use App\Models\Storage;
 use App\Models\StorageIn;
 use App\Models\StorageOut;
 use Carbon\Carbon;
@@ -23,6 +25,7 @@ class laporanPengurusGudangController extends Controller
     {
         $this->path = 'app.laporan.pengurus-gudang.barang-masuk.';
         $this->pathKeluar = 'app.laporan.pengurus-gudang.barang-keluar.';
+        $this->pathStorage = 'app.laporan.pengurus-gudang.barang.';
         $this->pathPo = 'app.laporan.pengurus-gudang.po.';
     }
     public function showLaporanBarangMasuk()
@@ -190,6 +193,89 @@ class laporanPengurusGudangController extends Controller
                 $input = $request->all();
                 set_time_limit(99999);
                 return (new ExportLaporanBarangKeluar($awal,$akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+        }
+    }
+    public function showLaporanBarang()
+    {
+        return view($this->pathStorage.'index');
+    }
+    public function LaporanBarangPdf(Request $request)
+    {
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $awal = $request->awal;
+            $akhir = $request->akhir;
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = Storage::with('storageIn')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+
+                $pdf = PDF::loadview($this->pathStorage.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan'.$sumber.$akhir.'.pdf');
+                return view($this->pathStorage.'pdf',compact('data','awal','akhir','sumber','month'));
+            } elseif ($awal != null && $akhir != null) {
+                if ($akhir < $awal) {
+                    return back()->with('failed','Mohon Periksa Tanggal Anda !');
+                }
+                $data = Storage::with('storageIn')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+
+                $pdf = PDF::loadview($this->pathStorage.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan'.$akhir.'.pdf');
+                return view($this->pathStorage.'pdf',compact('data','awal','akhir','month'));
+            }
+            $null = Storage::all();
+            if ($null == null) {
+                return back()->with('error','Tidak ada data !');
+            }
+        }
+    }
+    public function LaporanBarangExcel(Request $request)
+    {
+        if ($request->month != null && $request->has('month')) {
+            $v = Validator::make($request->all(),[
+                'month' => 'required'
+            ]);
+        } elseif ($request->awal != null && $request->akhir != null) {
+            $v = Validator::make($request->all(),[
+                'awal' => 'required',
+                'akhir' => 'required'
+            ]);
+        }
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $awal = $request->awal;
+            $akhir = $request->akhir;
+            $bulan = $request->month;
+            $month = $request->has('month');
+            $hii = $request->input('month');
+            $data = Storage::all();
+            if($data->count() < 1){
+                return back()->with('failed','Data Kosong!');
+            }
+                $input = $request->all();
+                set_time_limit(99999);
+                return (new ExportLaporanBarang($awal,$akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
     public function showLaporanPo()

@@ -20,6 +20,7 @@ class CreatePengurusGudangsTable extends Migration
             $table->string('telepon',20)->nullable();
             $table->string('nik')->nullable();
             $table->string('tempat_lahir')->nullable();
+            $table->bigInteger('no_rek')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('agama')->nullable();
             $table->string('pekerjaan')->nullable();
@@ -30,6 +31,7 @@ class CreatePengurusGudangsTable extends Migration
             $table->string('foto_ktp')->nullable();
             $table->string('foto_ktp_selfie')->nullable();
             $table->integer('status')->default(0);
+            $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->foreignId('kecamatan_id')->nullable()->constrained('kecamatans')->onDelete('set null');
             $table->foreignId('kabupaten_id')->nullable()->constrained('kabupatens')->onDelete('set null');
