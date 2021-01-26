@@ -297,12 +297,12 @@
         "Google Hybrid"     : ghybrid
     };
     gudang.forEach(async function (element) {
-        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`<b>Gudang : ${element.nama}</b><br />Milik : ${element.pemilik}`))
-        // function popupDetail(data,index) {
-        //     isiDetail += `
-
-        //     `
-        // }
+        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
+        <b>Gudang : ${element.nama}</b><br />
+        Milik : ${element.pemilik}<br />
+        <a href="#" class="btn btn-primary btn-sm btn-block text-white" onclick="detailGudang(${element.id})">LihatDetail</a>
+        `))
+        console.log(element.id);
     })
     let gudangGudang = L.layerGroup(group)
 
@@ -315,7 +315,20 @@
     // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
 </script>
-{{--  --}}
+
+{{-- Detail Gudang Section --}}
+<script>
+    function detailGudang(id) {
+        $.ajax({
+            type: "get",
+            url: "/api/v1/getGudang/"+id,
+            dataType: "json",
+            success: function (response) {
+                console.log(response.data);
+            }
+        });
+    }
+</script>
 
 {{-- Calendar Section --}}
 <script type="text/javascript">
