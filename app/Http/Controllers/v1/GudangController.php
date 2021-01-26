@@ -127,13 +127,22 @@ class GudangController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
+            date_default_timezone_set('Asia/Jakarta');
+
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode = $faker->unique()->regexify('[0-9]{9}');
+
+            $date = date("Ymd");
+
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
                 $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto,
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
+                    'nomor_gudang' => "GUD/".$date.'/'.$kode
                 ]));
 
                 $gudang_id = $createGudang->id;
@@ -142,7 +151,8 @@ class GudangController extends Controller
                 ]));
             } else {
                 $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
+                    'nomor_gudang' => "GUD/".$date.'/'.$kode
                 ]));
 
                 $gudang_id = $createGudang->id;
@@ -157,7 +167,7 @@ class GudangController extends Controller
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
-        return redirect(route('rak.index', $gudang->id))->with('success',$this->alert.'Disimpan !');
+        return redirect(route('rak.create', $gudang_id))->with('success',$this->alert.'Disimpan !');
     }
 
     /**

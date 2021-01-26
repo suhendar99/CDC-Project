@@ -113,6 +113,20 @@
                                             </tr>
                                         </thead>
                                     </table>
+                                    <br>
+                                    <h4>Surat Jalan</h4>
+                                    <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Pengirim</th>
+                                                <th>Penerima</th>
+                                                <th>Tempat</th>
+                                                {{-- <th>Gudang</th> --}}
+                                                {{-- <th>Action</th> --}}
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -214,14 +228,14 @@
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.tingkat == null) {
-                            return 'Belum Diupdate';
+                            return 'Belum Diatur';
                         } else {
                             return data.tingkat.rak.nama;
                         }
                     }, name: 'rak'},
                 {data : function(data,a,b,c){
                         if (data.tingkat == null) {
-                            return 'Belum Diupdate';
+                            return 'Belum Diatur';
                         } else {
                             return data.tingkat.nama;
                         }
@@ -249,6 +263,23 @@
                         return "( "+data.pemesanan.kode + " ) " + data.pemesanan.nama_pemesan;
                     }, name: 'nama_pemesan'},
                 {data : 'gudang.nama', name: 'gudang'}
+                // {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_surat_jalan = $('#table_surat_jalan').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('surat-jalan.index') }}",
+            columns : [
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'kode', name: 'kode'},
+                {data : 'pengirim', name: 'pengirim'},
+                {data : 'penerima', name: 'penerima'},
+                {data : 'tempat', name: 'tempat'}
                 // {data : 'action', name: 'action'}
             ]
         });

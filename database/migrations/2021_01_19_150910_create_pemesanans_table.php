@@ -16,6 +16,7 @@ class CreatePemesanansTable extends Migration
         Schema::create('pemesanans', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
+            $table->string('nomor_pemesanan')->unique();
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
             $table->string('penerima_po');
@@ -23,6 +24,7 @@ class CreatePemesanansTable extends Migration
             $table->string('telepon');
             $table->string('email_penerima');
             $table->string('alamat_pemesan');
+            $table->date('tanggal_pemesanan');
             $table->string('metode_pembayaran')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();

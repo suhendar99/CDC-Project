@@ -15,6 +15,7 @@ class CreateGudangsTable extends Migration
     {
         Schema::create('gudangs', function (Blueprint $table) {
             $table->id();
+            $table->string('nomor_gudang')->unique();
             $table->string('nama');
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
@@ -28,6 +29,7 @@ class CreateGudangsTable extends Migration
             $table->text('alamat');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

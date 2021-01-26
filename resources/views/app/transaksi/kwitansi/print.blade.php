@@ -8,6 +8,7 @@
 </head>
 <body>
 	<style type="text/css">
+
 		.table{
 			width: 100%;
 			background: transparent;
@@ -86,6 +87,7 @@
 
 		#body{
 			margin-top: 2rem;
+			border: 1px solid #000;
 		}
 
 		.border-bottom{
@@ -174,77 +176,79 @@
 		}
 
 	</style>
-	<section id="body">
-		<table class="table">
-			{{-- @php
-			$path = 'images/logo-cdc.png';
-			$type = pathinfo($path, PATHINFO_EXTENSION);
-			$img = file_get_contents($path);
-			$base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
-			@endphp --}}
-			<tr>
-				<td width="60%" class="text-center">
-					<u><span class="text-24 bold">PT JAYA KENCANA</span></u><br>
-					<span class="text-14">Jalan Pangeran Ngehe No 203, Cipagalo,</span><br>
-					<span class="text-14">Kec. Bojongsoang, Kab. Bandung</span><br>
-					<span class="text-14">Jawa Barat</span>
+	<div class="bord">
+		<section id="body">
+			<table class="table">
+				{{-- @php
+				$path = 'images/logo-cdc.png';
+				$type = pathinfo($path, PATHINFO_EXTENSION);
+				$img = file_get_contents($path);
+				$base64 = 'data:image/' . $type . ';base64,' . base64_encode($img);
+				@endphp --}}
+				<tr>
+					<td width="60%" class="text-center">
+						<u><span class="text-24 bold">PT JAYA KENCANA</span></u><br>
+						<span class="text-14">Jalan Pangeran Ngehe No 203, Cipagalo,</span><br>
+						<span class="text-14">Kec. Bojongsoang, Kab. Bandung</span><br>
+						<span class="text-14">Jawa Barat</span>
 
-				</td>
-				<td width="40%" class="text-18 text-right valign-top">
-					No . {{$kode}}
-				</td>
-			</tr>
-		</table>
-		<table class="table mt-2 pt-2">
-			<tr>
-				<td colspan="7" class="text-center text-24 pb-2">
-					<b><i>Kwitansi</i></b>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%" class="pl-2">
-					Sudah Diterima Dari
-				</td>
-				<td width="5%">:</td>
-				<td width="65%" class="border-bottom">
-					<p class="kwit">{{$data->terima_dari}}</p>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%" class="pl-2">
-					Banyaknya Uang
-				</td>
-				<td width="5%">:</td>
-				<td width="65%" class="border-bottom bg-grey">
-					<p class="kwit">{{$data->jumlah_uang_digits}}</p>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%" class="pl-2">
-					Untuk Pembayaran
-				</td>
-				<td width="5%">:</td>
-				<td width="65%" class="border-bottom">
-					<p class="kwit">{{$data->keterangan}}</p>
-				</td>
-			</tr>
-		</table>
-	</section>
-	<section id="footer">
-		<table class="table mt-2">
-			<tr>
-				<td width="40%" class=" text-center">
-					<span class="text24">
-						Terbilang : {{$dataTren.$data->jumlah_uang_word}}
-					</span>
-					
-				</td>
-				<td width="20%"></td>
-				<td width="40%" class="border-bottom text-center">
-					<i>{{$data->tempat.', '.$date}}</i>
-				</td>
-			</tr>
-		</table>
-	</section>
+					</td>
+					<td width="40%" class="text-18 text-right valign-top">
+						No . {{$kode}}
+					</td>
+				</tr>
+			</table>
+			<table class="table mt-2 pt-2">
+				<tr>
+					<td colspan="7" class="text-center text-24 pb-2">
+						<b><i>Kwitansi</i></b>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%" class="pl-2">
+						Sudah Diterima Dari
+					</td>
+					<td width="5%">:</td>
+					<td width="65%" class="border-bottom">
+						<p class="kwit">{{$data->terima_dari}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%" class="pl-2">
+						Banyaknya Uang
+					</td>
+					<td width="5%">:</td>
+					<td width="65%" class="border-bottom bg-grey">
+						<p class="kwit">{{$data->jumlah_uang_digits}}</p>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%" class="pl-2">
+						Untuk Pembayaran
+					</td>
+					<td width="5%">:</td>
+					<td width="65%" class="border-bottom">
+						<p class="kwit">{{$data->keterangan}}</p>
+					</td>
+				</tr>
+			</table>
+		</section>
+		<section id="footer">
+			<table class="table mt-2">
+				<tr>
+					<td width="40%" class=" text-center">
+						<span class="text24">
+							Terbilang : {{$data->jumlah_uang_word}}
+						</span>
+						
+					</td>
+					<td width="20%"></td>
+					<td width="40%" class="border-bottom text-center">
+						<i>{{$data->tempat.', '.$date}}</i>
+					</td>
+				</tr>
+			</table>
+		</section>
+	</div>
 </body>
 </html>

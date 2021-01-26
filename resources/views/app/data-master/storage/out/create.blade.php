@@ -136,6 +136,28 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label>No Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    {{ $kode_surat }}/SJ/
+                                                </span>
+                                            </div>
+                                            <input class="form-control @error('profil_lembaga') is-invalid @enderror" type="text" placeholder="Nama profil lembaga... Maks. 6 karakter" name="profil_lembaga"></input>
+                                            <input class="form-control @error('tanggal_surat') is-invalid @enderror" type="date" placeholder="Tanggal..." name="tanggal_surat"></input>
+                                        </div>
+                                        @error('profil_lembaga')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        @error('tanggal_surat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
  
                                 <div class="tab">Storage Out:
@@ -480,16 +502,16 @@ function fixStepIndicator(n) {
 
     var a = ['','satu ','dua ','tiga ','empat ', 'lima ','enam ','tujuh ','delapan ','sembilan ','sepuluh ','sebelas ','dua belas ','tiga belas ','empat belas ','lima belas ','enam belas ','tujuh belas ','delapan belas ','sembilan belas '];
     var b = ['', '', 'dua puluh','tiga puluh','empat puluh','lima puluh', 'enam puluh','tujuh puluh','delapan puluh','sembilan puluh'];
-    var c = ['', 'dua ratus', 'tiga ratus', 'empat ratus', 'lima ratus', 'enam ratus', 'tujuh ratus', 'delapan ratus', 'sembilan ratus'];
+    var c = ['', '', 'dua ratus', 'tiga ratus', 'empat ratus', 'lima ratus', 'enam ratus', 'tujuh ratus', 'delapan ratus', 'sembilan ratus'];
 
     function inWords (num) {
-        if ((num = num.toString()).length > 8) return 'overflow';
-        n = ('00000000' + num).substr(-8).match(/^(\d{2})(\d{1})(\d{2})(\d{1})(\d{2})$/);
+        if ((num = num.toString()).length > 10) return 'overflow';
+        n = ('000000000' + num).substr(-10).match(/^(\d{1})(\d{3})(\d{3})(\d{1})(\d{2})$/);
         console.log(n);
         if (!n) return; var str = '';
-        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-        str += (n[2] != 0) ? (c[Number(n[2])] + ' ' + a[n[2][1]]) + 'ribu ' : '';
-        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'ribu ' : '';
+        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'miliar ' : '';
+        str += (n[2] != 0) ? (a[Number(n[2])] || c[n[2][0]] + ' ' + b[n[2][1]] + ' ' + a[n[2][2]]) + 'juta ' : '';
+        str += (n[3] != 0) ? (a[Number(n[3])] || c[n[3][0]] + ' ' + b[n[3][1]] + ' ' + a[n[3][2]]) + 'ribu ' : '';
         str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'ratus ' : '';
         str += (n[5] != 0) ? ((str != '') ? ' ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
         console.log(str);
