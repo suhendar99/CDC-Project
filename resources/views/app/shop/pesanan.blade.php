@@ -58,18 +58,23 @@
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->storageIn->barang->harga_barang,0,',','.')}}</h6></div>
                                     </div>
                                     <div class="col-md-3">
-                                        <h6>Nama Penjual</h6>
+                                        <h6>Dari Gudang</h6>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="penjual"><h6>{{$data->storageIn->gudang->pemilik}}</h6></div>
+                                        <div class="float-left ml-2" id="penjual"><h6>{{$data->storageIn->gudang->nama}}</h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
-                                            <input id="jumlah" type="number" min="1" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" >
+                                            <div class="input-group">
+                                                <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="satuanAppend">{{ $data->storageIn->barang->satuan }}</span>
+                                                </div>
+                                            </div>
                                             @error('jumlah')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
