@@ -136,7 +136,7 @@ class StorageInController extends Controller
             'total' => $masuk->barang->harga_total
         ]);
 
-        return back()->with('success', __( 'Storage In!' ));
+        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil !' ));
     }
 
     /**
@@ -234,7 +234,7 @@ class StorageInController extends Controller
             ]);
         }
 
-        return back()->with('success', __( 'Storage In Updated!' ));
+        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil Di Edit!' ));
     }
 
     /**
@@ -251,6 +251,6 @@ class StorageInController extends Controller
         File::delete($data->foto_surat_jalan);
         $data->delete();
 
-        return back()->with('success', __( 'Storage In Deleted!' ));
+        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil Dihapus!' ));
     }
 }

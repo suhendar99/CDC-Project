@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Storage';
+        $pageTitle = 'Data Penyimpanan';
         // $dashboard = true;
         // $admin = true;
         // $rightbar = true;
@@ -16,7 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage</a>
+            <a href="#" class="text-14">Data Penyimpanan</a>
           </div>
         </div>
     </div>
@@ -34,20 +34,20 @@
                             <div class="float-left">
                                 <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Management Barang Masuk</a>
+                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Manajemen Barang Masuk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Management Penyimpanan Barang</a>
+                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Manajemen Penyimpanan Barang</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Management Barang Keluar</a>
+                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Manajemen Barang Keluar</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="float-right" id="btn-action">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Storage Masuk</th>
+                                                <th>Kode Penyimpanan Masuk</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang</th>
@@ -77,7 +77,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Storage / Barcode</th>
+                                                <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
@@ -87,11 +87,11 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
-                                    <h4>Storage Out</h4>
+                                    <h4>Penyimpanan Keluar</h4>
                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Storage / Barcode</th>
+                                                <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Keluar</th>

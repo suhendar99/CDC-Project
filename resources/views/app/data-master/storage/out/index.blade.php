@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Storage Keluar';
+        $pageTitle = 'Data Penyimpanan Keluar';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Keluar</a>
+            <a href="#" class="text-14">Data Penyimpanan Keluar</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('storage-out.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Keluar</a>
+                                <a href="{{route('storage-out.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Kode Storage / Barcode</th>
+                                <th>Kode Penyimpanan / Barcode</th>
                                 <th>Nama Gudang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang Masuk</th>

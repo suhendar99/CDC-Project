@@ -58,11 +58,11 @@
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->storageIn->barang->harga_barang,0,',','.')}}</h6></div>
                                     </div>
                                     <div class="col-md-3">
-                                        <h6>Nama Penjual</h6>
+                                        <h6>Dari Gudang</h6>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="penjual"><h6>{{$data->storageIn->gudang->pemilik}}</h6></div>
+                                        <div class="float-left ml-2" id="penjual"><h6>{{$data->storageIn->gudang->nama  }}</h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
