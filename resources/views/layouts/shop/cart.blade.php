@@ -63,10 +63,10 @@
 		<div class="card-header d-flex justify-content-between valign-center bg-my-warning">
 			<span class=" card-title"> Keranjang Saya</span><span class="close pointer" onclick="hideCart()"><i class=" material-icons md-12">close</i></span>
 		</div>
-		<div class="card-body">
+		<div class="card-body d-flex justify-content-between valign-center">
 			<div class="cart-list">
 				<div class="row">
-					<center><div class="text-danger">Hohon Login terlebih dahulu untuk mengetahui keranjang</div></center>
+					<center><div class="text-danger">Mohon Login terlebih dahulu untuk mengetahui keranjang</div></center>
 				</div>
 				<hr>
 			</div>
