@@ -31,19 +31,14 @@
             <div class="card card-block d-flex" id="card-form">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <div class="float-left">
-                                {{-- <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                                    <li class="nav-item">
-                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Kwitansi</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Surat Jalan</a>
-                                    </li>
-                                </ul> --}}
+                                <h5 class="card-title" id="text-ket">
+                                    Pilih Pemesanan Untuk Storage Keluar
+                                </h5>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-2">
                             <div class="float-right">
                                 <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
@@ -56,13 +51,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- One "tab" for each step in the form: -->
-                                <div class="tab">Pilih Pemesanan:
+                                <div class="tab" data-keterangan="Pilih Pemesanan Untuk Storage Keluar">
                                     <div class="form-group">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectSatuan" class="form-control @error('pemesanan_id') is-invalid @enderror" name="pemesanan_id" placeholder="Enter pemesanan_id">
                                             <option value="">--Pilih Pesanan--</option>
                                             @foreach($pemesanan as $pesan)
-                                            <option value="{{ $pesan->id }}">Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->kode }}</option>
+                                            <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}">Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
                                             @endforeach
                                         </select>
                                         @error('pemesanan_id')
@@ -73,7 +68,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab">Kwitansi
+                                <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>DIbayar oleh <small class="text-success">*Harus diisi</small></label>
@@ -115,7 +110,7 @@
                                     </div>
                                 </div>
  
-                                <div class="tab">Surat Jalan:
+                                <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Pengirim <small class="text-success">*Harus diisi</small></label>
@@ -160,7 +155,7 @@
                                     </div>
                                 </div>
  
-                                <div class="tab">Storage Out:
+                                <div class="tab" data-keterangan="Pilih Gudang Retail">
                                     <div class="form-group">
                                         <label>Gudang <small class="text-success">*Harus diisi</small></label>
                                         <select name="gudang_id" id="gudang" class="form-control">
@@ -360,6 +355,9 @@ function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
+  $('#text-ket').html($('.tab').get(n).attributes[0].value)
+  // console.log($('#text-ket').get(0).innerHTML = $('.tab').get(n).attributes[0].value)
+  // console.log($('.tab').get(n).attributes[0].value);
   // ... and fix the Previous/Next buttons:
   if (n == 0) {
     document.getElementById("prevBtn").style.display = "none";
@@ -435,6 +433,17 @@ function fixStepIndicator(n) {
 }
 </script>
 <script>
+    $('#selectSatuan').change(function(event) {
+        /* Act on the event */
+        let kode = $('#selectSatuan option:selected').data("kode")
+         console.log(kode)
+         for (var i = $('.tab').length - 1; i >= 1; i--) {
+             
+             let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
+             $('.tab').get(i).attributes[0].value = keterangan
+         }
+        // $('.tab').get(n).attributes[0].value
+    });
     onScan.attachTo(document, {
         suffixKeyCodes: [13],
         reactToPaste: true,

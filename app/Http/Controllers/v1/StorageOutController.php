@@ -50,7 +50,9 @@ class StorageOutController extends Controller
     {
         set_time_limit(120);
         $date = date('d-m-Y');
-        $data = Kwitansi::with('pemesanan','gudang','user')->first();
+        $data = Kwitansi::with('pemesanan.barangPesanan','gudang','user')->findOrFail($request->query('id'));
+
+        // dd($data);
         // PDF::;
         $customPaper = array(0,0,283.80,567.00);
 
@@ -58,6 +60,7 @@ class StorageOutController extends Controller
         $kode = sprintf("%'.04d", (String)$counter);
         $pdf = PDF::loadview('app.transaksi.kwitansi.print', compact('data','date','kode'));
         return $pdf->stream();
+        // return view('app.transaksi.kwitansi.print', compact('data','date','kode'));
     }
     /**
      * Display a listing of the resource.

@@ -3,16 +3,19 @@
 <head>
 	<title>Kwitansi Pembelian</title>
 	@if (isset($preview))
-		<link rel="stylesheet" type="text/css" href="{{asset('css/print.css')}}">
+		{{-- <link rel="stylesheet" type="text/css" href="{{asset('css/print.css')}}"> --}}
 	@endif
 </head>
 <body>
 	<style type="text/css">
+		/**{
+			font-family: 'Crimson Text', serif;
+		}*/
 
 		.table{
 			width: 100%;
 			background: transparent;
-			padding: 0.75rem;
+			padding: 0.3rem;
 		    vertical-align: center;
 			border: 0 !important;
 		    font-family: 'Poppins', sans-serif;
@@ -81,12 +84,18 @@
 		.table-po tr td{
 			background-color: #f1f1f1;
 			border: 2px solid #fff;
-			padding: .6rem 0;
+			padding: .3rem 0;
 			font-size: 12px;
 		}
 
 		#body{
 			margin-top: 2rem;
+			margin-left: 2rem;
+			margin-right: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		.bord{
 			border: 1px solid #000;
 		}
 
@@ -147,6 +156,9 @@
 		.text-10{
 			font-size: 10px;
 		}
+		.text-12{
+			font-size: 12px;
+		}
 		.text-14{
 			font-size: 14px;
 		}
@@ -164,15 +176,22 @@
 			font-weight: 800;
 		}
 
+		.line{
+			line-height: 1px;
+		}
+
 		p.kwit{
 		    width: 200px;
-		    line-height: 18px;
 		    color: #333;
 		    background-image: repeating-linear-gradient(180deg, transparent, transparent 19px, #333 20px);
 		}
 
 		.bg-grey{
 			background-color: #c6c6c6;
+		}
+
+		.jumlah{
+			font-size: 1.2em;
 		}
 
 	</style>
@@ -193,42 +212,55 @@
 						<span class="text-14">Jawa Barat</span>
 
 					</td>
-					<td width="40%" class="text-18 text-right valign-top">
-						No . {{$kode}}
+					<td width="40%" class="text-center text-24 pb-2">
+						<b><i>Kwitansi Pembayaran</i></b>
 					</td>
 				</tr>
 			</table>
-			<table class="table mt-2 pt-2">
+			<table class="table mt-2 pt-2 line">
 				<tr>
-					<td colspan="7" class="text-center text-24 pb-2">
-						<b><i>Kwitansi</i></b>
+					<td colspan="7" class="text-12">
+						No : {{$data->kode}}
 					</td>
 				</tr>
 				<tr>
-					<td width="30%" class="pl-2">
+					<td width="30%" class="text-12">
 						Sudah Diterima Dari
 					</td>
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom">
-						<p class="kwit">{{$data->terima_dari}}</p>
+						<p class="kwit text-12">{{$data->terima_dari}}</p>
 					</td>
 				</tr>
 				<tr>
-					<td width="30%" class="pl-2">
+					<td width="30%" class="text-12">
 						Banyaknya Uang
 					</td>
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom bg-grey">
-						<p class="kwit">{{$data->jumlah_uang_digits}}</p>
+						<p class="kwit text-12">{{$data->jumlah_uang_word}}</p>
 					</td>
 				</tr>
 				<tr>
-					<td width="30%" class="pl-2">
+					<td width="30%" class="text-12">
 						Untuk Pembayaran
 					</td>
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom">
-						<p class="kwit">{{$data->keterangan}}</p>
+						<p class="kwit text-12">
+							@foreach($data->pemesanan->barangPesanan as $barang)
+								{{$barang->nama_barang}}@if($loop->iteration == $loop->count).@else, @endif
+							@endforeach
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%" class="text-12">
+						Keterangan
+					</td>
+					<td width="5%">:</td>
+					<td width="65%" class="border-bottom">
+						<p class="kwit text-12">{{$data->keterangan}}</p>
 					</td>
 				</tr>
 			</table>
@@ -236,15 +268,20 @@
 		<section id="footer">
 			<table class="table mt-2">
 				<tr>
-					<td width="40%" class=" text-center">
-						<span class="text24">
-							Terbilang : {{$data->jumlah_uang_word}}
-						</span>
-						
+					<td width="40%" class="text-center" rowspan="2">
+						<div class="jumlah">
+							Jumlah : Rp. {{number_format($data->jumlah_uang_digits,0,',','.')}},-
+						</div>
 					</td>
 					<td width="20%"></td>
-					<td width="40%" class="border-bottom text-center">
+					<td width="40%" class="text-center text-14">
 						<i>{{$data->tempat.', '.$date}}</i>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%"></td>
+					<td width="40%" class="text-center" height="100px">
+						<div style="width: 250px;margin: 0 auto;font-size: 1.1em;">(  <span>...........................................</span>  )</div>
 					</td>
 				</tr>
 			</table>

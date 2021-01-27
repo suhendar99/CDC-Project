@@ -16,7 +16,7 @@ class CreateRekapitulasiPembeliansTable extends Migration
         Schema::create('rekapitulasi_pembelians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('storage_in_id')->constrained('storage_ins')->onDelete('cascade');
-            $table->date('tanggal_pembelian');
+            $table->dateTime('tanggal_pembelian', 0);
             $table->string('no_pembelian');
             $table->string('no_kwitansi')->nullable();
             $table->string('no_surat_jalan')->nullable();

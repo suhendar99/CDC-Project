@@ -109,7 +109,7 @@
                                                 <th>Jumlah Uang</th>
                                                 <th>Pemesanan</th>
                                                 <th>Gudang</th>
-                                                {{-- <th>Action</th> --}}
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -256,14 +256,14 @@
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
-                        return 'Rp '+data;
+                        return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
                 {data : function (data, type, row, meta) {
                         return "( "+data.pemesanan.kode + " ) " + data.pemesanan.nama_pemesan;
                     }, name: 'nama_pemesan'},
-                {data : 'gudang.nama', name: 'gudang'}
-                // {data : 'action', name: 'action'}
+                {data : 'gudang.nama', name: 'gudang'},
+                {data : 'action', name: 'action'}
             ]
         });
 

@@ -31,7 +31,7 @@ class KwitansiController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Ubah Penyimpanan</a>';
+                    return '<a href="/v1/kwitansi/print?id='.$data->id.'" class="btn btn-primary btn-sm">Kwitansi PDF</a>';
                 })
                 ->make(true);
         }

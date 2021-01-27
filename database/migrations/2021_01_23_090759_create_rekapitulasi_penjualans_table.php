@@ -16,7 +16,7 @@ class CreateRekapitulasiPenjualansTable extends Migration
         Schema::create('rekapitulasi_penjualans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('storage_out_id')->constrained('storage_outs')->onDelete('cascade');
-            $table->date('tanggal_penjualan');
+            $table->dateTime('tanggal_penjualan', 0);
             $table->string('no_penjualan');
             $table->string('no_kwitansi')->nullable();
             $table->string('no_surat_jalan')->nullable();
