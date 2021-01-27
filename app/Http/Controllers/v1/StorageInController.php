@@ -83,7 +83,7 @@ class StorageInController extends Controller
             'barang_kode' => 'required|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
-            'satuan' => 'required',
+            'harga_barang' => 'required|numeric',
             'nomor_kwitansi' => 'required|numeric',
             'nomor_surat_jalan' => 'required|numeric',
             'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
@@ -98,6 +98,8 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
+        $barang = Barang::where('kode_barang', $request->barang_kode)->first();
+
         $foto_kwitansi = $request->file('foto_kwitansi');
         $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
         $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
@@ -106,8 +108,9 @@ class StorageInController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan', 'nomor_kwitansi', 'nomor_surat_jalan')+[
+        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan')+[
             'kode' => $kode,
+            'satuan' => $barang->satuan,
             'user_id' => auth()->user()->id,
             'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
@@ -116,7 +119,8 @@ class StorageInController extends Controller
         Storage::create([
             'storage_in_kode' => $kode,
             'jumlah' => $request->jumlah,
-            'satuan' => $request->satuan,
+            'satuan' => $barang->satuan,
+            'harga_barang' => $request->harga_barang,
             'waktu' => now('Asia/Jakarta')
         ]);
 
@@ -127,7 +131,7 @@ class StorageInController extends Controller
             'nama_penjual' => $masuk->barang->pemasok->nama,
             'barang' => $masuk->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
-            'satuan' => $masuk->satuan,
+            'satuan' => $barang->satuan,
             'harga' => $masuk->barang->harga_barang,
             'total' => $masuk->barang->harga_total
         ]);
