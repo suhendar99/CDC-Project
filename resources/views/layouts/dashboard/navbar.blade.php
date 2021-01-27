@@ -112,6 +112,10 @@
         <i class="material-icons md-14">close</i>
     </button>
 </div>
+@elseif (session()->has('sukses'))
+<script>
+    alert("{{ session()->get('sukses') }}");
+</script>
 @endif
 
 

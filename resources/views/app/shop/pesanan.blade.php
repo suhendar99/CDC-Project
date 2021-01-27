@@ -36,10 +36,10 @@
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->storageIn->gudang->pemilik}}">
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pelanggan->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
-                            <input type="hidden" name="pengurus_gudang_id" value="{{$data->storageIn->gudang->id}}">
+                            <input type="hidden" name="pengurus_gudang_id" value="{{$data->storageIn->gudang->user->pengurus_gudang_id}}">
                             <input type="hidden" name="harga" id="harga" value="{{$data->storageIn->barang->harga_barang}}">
                             <input type="hidden" name="nama_barang" value="{{$data->storageIn->barang->nama_barang}}">
-                            <input type="hidden" name="satuan" value="{{$data->storageIn->barang->satuan}}">
+                            <input type="hidden" name="satuan" value="{{$data->storageIn->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->storageIn->barang->kode_barang}}">
                             <div class="container-fluid">
                                 <div class="row">

@@ -55,26 +55,16 @@ class ShopController extends Controller
     public function showPemesanan($id)
     {
         $data = Storage::find($id);
-
         return view($this->shopPath.'pesanan',compact('id','data'));
     }
     public function pemesanan(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
-            'penerima_po' => 'required|string|max:50',
-            'nama_pemesan' => 'nullable|string|max:50',
-            'telepon' => 'required|numeric',
-            'email_penerima' => 'nullable|email',
             'alamat_pemesan' => 'required',
             'pembayaran' => 'required',
+            'telepon' => 'required',
             'metode_pembayaran' => 'nullable',
-
-            'nama_barang.*' => 'required|string|max:100',
-            'satuan.*' => 'required|string|max:10',
-            'jumlah.*' => 'required|numeric|min:1',
-            'harga.*' => 'required|numeric',
-            'diskon.*' => 'nullable|numeric',
-            'pajak.*' => 'nullable|numeric',
+            'jumlah' => 'required|numeric|min:1',
         ]);
         if ($v->fails()) {
             dd($v->errors()->all());
@@ -167,7 +157,11 @@ class ShopController extends Controller
                 'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
             ]);
         }
-        return back()->with('success','Pesanan Telah dibuat !');
+        return redirect('/')->with('sukses','Pesanan Telah dibuat !');
+    }
+    public function cariKategori($id)
+    {
+        return $id;
     }
 	public function detail($id)
 	{

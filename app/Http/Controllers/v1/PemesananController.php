@@ -124,19 +124,19 @@ class PemesananController extends Controller
 
         // Number To Romawi
         $map = array(
-            'M' => 1000, 
-            'CM' => 900, 
-            'D' => 500, 
-            'CD' => 400, 
-            'C' => 100, 
-            'XC' => 90, 
-            'L' => 50, 
-            'XL' => 40, 
-            'X' => 10, 
-            'IX' => 9, 
-            'V' => 5, 
-            'IV' => 4, 
-            'I' => 1 
+            'M' => 1000,
+            'CM' => 900,
+            'D' => 500,
+            'CD' => 400,
+            'C' => 100,
+            'XC' => 90,
+            'L' => 50,
+            'XL' => 40,
+            'X' => 10,
+            'IX' => 9,
+            'V' => 5,
+            'IV' => 4,
+            'I' => 1
         );
         $tahunRomawi = '';
         $bulanRomawi = '';
@@ -311,7 +311,7 @@ class PemesananController extends Controller
         Pemesanan::findOrFail($id)
         ->update($request->only('barang_kode', 'jumlah_barang', 'nama_pemesan', 'tanggal_pemesanan', 'alamat_pemesan', 'metode_pembayaran', 'total_harga', 'satuan'));
 
-        return redirect(route('pemesanan.index'))->with('success', __( 'Pemesanan Updated' ));
+        return redirect(route('pemesanan.index'))->with('success', __( 'Pemesanan telah diedit' ));
     }
 
     /**
@@ -324,6 +324,6 @@ class PemesananController extends Controller
     {
         Pemesanan::findOrFail($id)->delete();
 
-        return back()->with('success', __( 'Pemesanan Deleted' ));
+        return back()->with('success', __( 'Pemesanan masuk telah dihapus' ));
     }
 }

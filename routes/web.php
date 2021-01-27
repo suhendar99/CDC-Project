@@ -19,6 +19,7 @@ Route::group(['namespace' => 'v1'], function () {
         return redirect('login');
     });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
+    Route::get('cari-kategori/{id}','ShopController@cariKategori')->name('cari.kategori');
     Route::get('shop/pesanan/{id}','ShopController@showPemesanan')->name('shop.pesanan');
     Route::post('shop/pemesanan/{id}','ShopController@pemesanan')->name('shop.pesanan.action');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
@@ -179,6 +180,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('surat-jalan', 'SuratJalanController@index')->name('surat-jalan.index');
 
         Route::get('pemesanan', 'PemesananController@index')->name('pemesanan.index');
+        Route::delete('pemesanan/{id}', 'PemesananController@destroy')->name('pemesanan.destroy');
 
         Route::get('kwitansi/print', 'StorageOutController@printKwitansi')->name('kwitansi.print');
         Route::get('surat-jalan/print', 'StorageOutController@printSuratJalan')->name('surat-jalan.print');
