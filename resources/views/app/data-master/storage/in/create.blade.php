@@ -110,12 +110,12 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend"></span>
                                             </div>
-                                            @error('jumlah')
-                                                  <span class="invalid-feedback" role="alert">
-                                                      <strong>{{ $message }}</strong>
-                                                  </span>
-                                            @enderror
                                         </div>
+                                        @error('jumlah')
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $message }}</strong>
+                                              </span>
+                                        @enderror
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Harga Jual Barang Per <span id="here">-</span> <small class="text-success">*Harus diisi</small></label>
