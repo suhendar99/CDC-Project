@@ -185,7 +185,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Laporan
         Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
         Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
-        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel'); 
+        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
 
         Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
         Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
@@ -202,6 +202,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Piutang
         Route::resource('piutang', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
+        // PDF & EXCEL Piutang In
+        Route::get('piutangIn/pdf','PiutangController@exportPdf')->name('piutang.pdf');
+        Route::get('piutangIn/excel','PiutangController@exportExcel')->name('piutang.excel');
+        // PDF & EXCEL Piutang Out
+        Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
+        Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');
         // Rekapitulasi
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
