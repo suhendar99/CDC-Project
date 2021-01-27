@@ -31,5 +31,15 @@ class BarangSeeder extends Seeder
         );
     	// dd($harga);
         DB::table('barangs')->insert($data);
+        DB::table('barangs')->insert([
+            'pemasok_id' => 1,
+            'kategori_id' => 7,
+            'kode_barang' => $faker->unique()->ean13,
+            'nama_barang' => 'Jagung Belanda',
+            'jumlah' => 100,
+            'harga_barang' => 10000,
+            'harga_total' => 10000 * 100,
+            'satuan' => 'Kg'
+        ]);
     }
 }

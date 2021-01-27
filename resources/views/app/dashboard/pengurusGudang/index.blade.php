@@ -210,7 +210,7 @@
 <div class="row my-4">
     <div class="col-md-12 col-sm-12">
       <div class="valign-center">
-        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Bulky</span>
+        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Bulky (Barang Yang Ada di Gudang Pemasok)</span>
       </div>
       <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
           <div class="MultiCarousel-inner">
@@ -242,7 +242,7 @@
     </div>
     <div class="col-md-12 col-sm-12">
       <div class="valign-center">
-        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Retail</span>
+        <i class="material-icons md-24 text-my-warning mr-1">work</i><span  class="text-18">Daftar Barang Retail (Barang Yang Ada di Gudang)</span>
       </div>
       <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
           <div class="MultiCarousel-inner">
