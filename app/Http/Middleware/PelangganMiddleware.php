@@ -19,6 +19,6 @@ class PelangganMiddleware
         if (Auth::user()->pelanggan_id != null) {
             return $next($request);
         }
-        return abort(401);
+        return back()->with('failed','Anda Bukan Pelanggan !');
     }
 }
