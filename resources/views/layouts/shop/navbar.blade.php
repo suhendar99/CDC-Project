@@ -26,5 +26,10 @@
             </form>
         </div>
         @endguest
-	</nav>
+    </nav>
+    @if (session()->has('sukses'))
+    <script>
+        alert("{{ session()->get('sukses') }}");
+    </script>
+    @endif
 </div>
