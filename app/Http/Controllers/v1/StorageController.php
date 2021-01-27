@@ -81,6 +81,10 @@ class StorageController extends Controller
         $masuk = StorageIn::find($id);
         $rak = Rak::with('tingkat')->where('gudang_id', $masuk->gudang_id)->get();
 
+        if ($rak->count() == 0) {
+            return redirect(route('rak.create', $masuk->gudang_id))->with('failed', __( 'Gudang '.$masuk->nama.' belum memiliki Rak. Harap buat data Rak!' ));
+        }
+
         return view('app.data-master.storage.create', compact('rak', 'masuk'));
     }
 

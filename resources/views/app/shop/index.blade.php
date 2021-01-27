@@ -111,7 +111,7 @@
 										<span class="product-name">{{$b->storageIn->barang->nama_barang}}</span>
 									</div>
 									<div class="col-12">
-										<span class="product-price">Rp. {{ number_format($b->storageIn->barang->harga_barang,0,',','.')}}</span>
+										<span class="product-price">Rp. {{ number_format($b->storageIn->storage->harga_barang,0,',','.')}},-</span>
 									</div>
 	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
 	                                    <div class="dropdown">

@@ -91,10 +91,10 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
+                                        <select name="barang_kode" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
                                             @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}}>{{$barang->nama_barang}}</option>
+                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_kode')
@@ -105,26 +105,22 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" placeholder="Enter jumlah barang">
-                                        @error('jumlah')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <div class="input-group">
+                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="satuanAppend"></span>
+                                            </div>
+                                            @error('jumlah')
+                                                  <span class="invalid-feedback" role="alert">
+                                                      <strong>{{ $message }}</strong>
+                                                  </span>
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
-                                            <option value="kg">kg</option>
-                                            <option value="ons">ons</option>
-                                            <option value="gram">gram</option>
-                                            <option value="ml">ml</option>
-                                            <option value="m3">m<sup>3</sup></option>
-                                            <option value="m2">m<sup>2</sup></option>
-                                            <option value="m">m</option>
-                                            <option value="gram">cm</option>
-                                        </select>
-                                        @error('satuan')
+                                        <label>Harga Jual Barang Per <span id="here">-</span> <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan Harga Jual Barang">
+                                        @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -164,6 +160,20 @@
 @push('script')
 <script src="{{ asset('js/onscan.js') }}"></script>
 <script>
+    $('#barang').change(function(event) {
+        /* Act on the event */
+        let satuan = $('#barang option:selected').data("satuan")
+         console.log(satuan)
+         $('#satuanAppend').text(satuan)
+         $('#here').text(satuan)
+
+         // for (var i = $('.tab').length - 1; i >= 1; i--) {
+             
+         //     let keterangan = $('#satuanAppend').get(i).attributes[0].value+' '+kode;
+         // }
+        // $('.tab').get(n).attributes[0].value
+    });
+
     onScan.attachTo(document, {
         suffixKeyCodes: [13],
         reactToPaste: true,

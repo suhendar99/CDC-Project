@@ -18,6 +18,7 @@ class CreateStoragesTable extends Migration
             $table->string('storage_in_kode');
             $table->foreign('storage_in_kode')->references('kode')->on('storage_ins')->onDelete('cascade');
             $table->bigInteger('jumlah');
+            $table->bigInteger('harga_barang');
             $table->string('satuan');
             $table->dateTime('waktu');
             $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('cascade');

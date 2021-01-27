@@ -65,6 +65,7 @@
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang</th>
+                                                <th>Harga Jual Barang</th>
                                                 <th>Rak</th>
                                                 <th>Tingkatan Rak</th>
                                                 <th>Action</th>
@@ -226,6 +227,10 @@
                 {data : function (data, type, row, meta) {
                         return data.jumlah + " " + data.satuan;
                     }, name: 'jumlah'},
+                {data : function(data,a,b,c){
+                        return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                    }, name: 'harga_barang'
+                },
                 {data : function(data,a,b,c){
                         if (data.tingkat == null) {
                             return 'Belum Diatur';
