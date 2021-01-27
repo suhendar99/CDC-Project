@@ -307,7 +307,7 @@
         var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
         <b>Gudang : ${element.nama}</b><br />
         Milik : ${element.pemilik}<br />
-        <a href="#" class="btn btn-primary btn-sm btn-block text-white" onclick="detailGudang(${element.id})">LihatDetail</a>
+        <a href="#" class="btn btn-primary btn-sm btn-block text-white" onclick="detailGudang(${element.id})">Lihat Detail</a>
         `))
         console.log(element.id);
     })

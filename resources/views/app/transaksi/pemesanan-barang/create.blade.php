@@ -1,6 +1,7 @@
 @php
     $icon = 'receipt_long';
     $pageTitle = 'Pemesanan';
+    $nosidebar = true;
 @endphp
 
 @extends('layouts.dashboard.header')

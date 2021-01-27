@@ -14,13 +14,16 @@ Web Routes
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('shop', 'ShopController@index')->name('shop');
-    Route::get('/', function(){
+    Route::get('/', 'ShopController@index')->name('shop');
+    Route::get('/login', function(){
         return redirect('login');
     });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
+    Route::get('shop/pesanan/{id}','ShopController@showPemesanan')->name('shop.pesanan');
+    Route::post('shop/pemesanan/{id}','ShopController@pemesanan')->name('shop.pesanan.action');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');
+    Route::get('search', 'ShopController@index')->name('home.search.barang');
     Route::post('searchBarang', 'SearchController@barang')->name('search.barang');
 });
 
@@ -50,7 +53,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pengaturan-akun-admin','PengaturanAkunController@showFormUpdateAkunAdmin')->name('setAdmin.show');
     Route::post('pengaturan-akun-admins','PengaturanAkunController@updateAkunAdmin')->name('setAdmin.action');
         // Pelanggan
-    Route::get('pengaturan-akun-pelanggan','PengaturanAkunController@showFormUpdateAkunPelanggan')->name('setPelanggan.show');
+        Route::get('pengaturan-akun-pelanggan','PengaturanAkunController@showFormUpdateAkunPelanggan')->name('setPelanggan.show');
     Route::post('pengaturan-akun-pelanggans','PengaturanAkunController@updateAkunPelanggan')->name('setPelanggan.action');
         // Pemasok
     Route::get('pengaturan-akun-pemasok','PengaturanAkunController@showFormUpdateAkunPemasok')->name('setPemasok.show');
@@ -59,11 +62,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pengaturan-akun-pengurusGudang','PengaturanAkunController@showFormUpdateAkunPengurusGudang')->name('setPengurusGudang.show');
     Route::post('pengaturan-akun-pengurusGudangs','PengaturanAkunController@updateAkunPengurusGudang')->name('setPengurusGudang.action');
         // Karyawan
-    Route::get('pengaturan-akun-karyawan','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
-    Route::post('pengaturan-akun-karyawans','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
+        Route::get('pengaturan-akun-karyawan','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
+        Route::post('pengaturan-akun-karyawans','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
         // Bank
-    Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
-    Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
+        Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
+        Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
         // Update Password
     Route::get('pengaturan-password-akun','PengaturanAkunController@updatePassword')->name('setPass.show');
     Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
@@ -124,8 +127,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang funtuk pembeli
         Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
         // Pemesanan
+        Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');
-        Route::resource('pesanan', 'PemesananController');
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
@@ -185,7 +188,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Laporan
         Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
         Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
-        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel'); 
+        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
 
         Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
         Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
@@ -202,6 +205,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Piutang
         Route::resource('piutang', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
+        // PDF & EXCEL Piutang In
+        Route::get('piutangIn/pdf','PiutangController@exportPdf')->name('piutang.pdf');
+        Route::get('piutangIn/excel','PiutangController@exportExcel')->name('piutang.excel');
+        // PDF & EXCEL Piutang Out
+        Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
+        Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');
         // Rekapitulasi
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
