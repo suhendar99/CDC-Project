@@ -81,10 +81,12 @@
 			</div> --}}
 			<div class="row mt-2 mb-4">
 				<div class="col-md-2 col-4">
-					<button type="button" id="filter" class="btn bg-my-primary btn-sm btn-block valign-center justify-content-center px-2"><i class="material-icons p-0">filter_alt</i> Filter<n-/button>
+					<button type="button" id="filter" class="btn bg-my-primary btn-sm btn-block valign-center justify-content-center px-2"><i class="material-icons p-0">filter_alt</i> Filter</button>
 				</div>
 				<div class="col-md-10 col-8">
-					@include('layouts.dashboard.search')
+					<form action="{{route('home.search.barang')}}" method="get" style="width: 100%;">
+                        <input type=" text" name="search" class=" form-control rounded-40" placeholder=" Cari Barang ...">
+                    </form>
 				</div>
 			</div>
 			<div class="row" id="product-list">
@@ -92,32 +94,32 @@
 				<div class="col-md-3 col-4">
 					{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 						<div class="card item-card">
-							@if(count($b->foto) < 1 || $b->foto == null)
-							<img src="https://cf.shopee.co.id/file/08744f5b0e1ab3e2d537df5bbf5b2bb4">
+							@if(count($b->storageIn->barang->foto) < 1 || $b->storageIn->barang->foto == null)
+							<img src="{!! asset('/images/image-not-found.jpg') !!}">
 							@else
 							{{-- {{dd($b)}} --}}
-							<img src="{{asset($b->foto[0]->foto)}}">
+							<img src="{{asset($b->storageIn->barang->foto[0]->foto)}}">
 							@endif
 							<div class="card-body">
 								<div class="row">
 									<div class="col-12">
 										<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
-										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->kategori->nama}}</span>
+										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageIn->barang->kategori->nama}}</span>
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->nama_barang}}</span>
+										<span class="product-name">{{$b->storageIn->barang->nama_barang}}</span>
 									</div>
 									<div class="col-12">
-										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}}</span>
+										<span class="product-price">Rp. {{ number_format($b->storageIn->barang->harga_barang,0,',','.')}}</span>
 									</div>
 	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
 	                                    <div class="dropdown">
 	                                        <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 	                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
-	                                            <a href="{{route('shop.detail',$b->id)}}" class="dropdown-item">Pesan Langsung</a>
-	                                            <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a>
-	                                            <a href="https://api.whatsapp.com/send?phone=+62{{intval($b->pemasok->telepon)}}" target="_blank" class="dropdown-item" >Chat</a>
+	                                            <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
+	                                            {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
+	                                            <a href="https://api.whatsapp.com/send?phone=+62{{intval($b->storageIn->user->pengurusGudang->telepon)}}" target="_blank" class="dropdown-item" >Chat</a>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -132,7 +134,7 @@
 				<div class="col-md-12 d-flex justify-content-center">
 					<center>
 						<span class="oops">Oops!</span>
-						<p class="not-found">Maaf, Barang tidak ditemukan. Mohon Cari Kembali</p>
+						<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
 					</center>
 				</div>
 				@endforelse
