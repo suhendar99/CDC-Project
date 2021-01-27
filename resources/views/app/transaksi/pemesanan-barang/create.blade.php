@@ -84,12 +84,16 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    @if (Auth::user()->keanggotaan == 1)
+                                    {{-- @if (Auth::user()->keanggotaan == 1) --}}
                                     <div class="col-md-4">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
+                                            @if (Auth::user()->keanggotaan == 1)
                                                 <option value="now">Bayar Sekarang</option>
                                                 <option value="later">Bayar Nanti</option>
+                                            @else
+                                                <option value="now">Bayar Sekarang</option>
+                                            @endif
                                         </select>
                                         @error('pembayaran')
                                         <span class="invalid-feedback" role="alert">
@@ -111,14 +115,14 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    @else
+                                    {{-- @else
                                         <input type="hidden" name="pembayaran" value="later">
-                                    @endif
-                                    @if (Auth::user()->keanggotaan == 0)
+                                    @endif --}}
+                                    {{-- @if (Auth::user()->keanggotaan == 0)
                                     <div class="col-md-8">
-                                    @else
+                                    @else --}}
                                     <div class="col-md-12">
-                                    @endif
+                                    {{-- @endif --}}
                                         <div class="form-group">
                                             <label>Alamat Penerima <small class="text-success">*Harus diisi</small></label>
                                             <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ old('alamat_pemesan') }}"></textarea>

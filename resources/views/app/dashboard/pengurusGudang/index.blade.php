@@ -103,60 +103,67 @@
     </div>
 </div>
 <div class="row my-4">
-  <div class="col-md-4">
-    <div class="card" style="height: 350px;">
+  <div class="d-none" id="show">
+    <div class="card" style="height: 400px;">
       <div class="line-strip bg-my-warning"></div>
       <div class="card-body">
         <div class="valign-center">
           <i class="material-icons md-36 text-my-warning">house_siding</i>
-          <span class="text-18">Detail Gudang Saya</span>
+          <span class="text-18" id="titleGudang"></span>
         </div>
         <hr class="p-0">
         <center>
           <img src="{{asset('images/logo-cdc.png')}}" style="height: 120px;" class="scale-down pb-4">
         </center>
         <div class="row">
-          <div class="col-md-4">
-            Nama
+          <div class="col-md-5">
+            No Induk Gudang
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="float-left">:</div>
-            <div class="float-right">Gudang Koperasi Nganu</div>
+            <div class="float-left ml-2" id="nig"></div>
           </div>
-          <div class="col-md-4">
-            Kontak
+          <div class="col-md-5">
+            Nama Gudang
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="float-left">:</div>
-            <div class="float-right">081212345121</div>
+            <div class="float-left ml-2" id="namaGudang"></div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
+            Kontak gudang
+          </div>
+          <div class="col-md-7">
+            <div class="float-left">:</div>
+            <div class="float-left ml-2" id="telepon"></div>
+          </div>
+          <div class="col-md-5">
             Hari Kerja
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="float-left">:</div>
-            <div class="float-right">Senin - Jumat</div>
+            <div class="float-left ml-2" id="hariKerja"></div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
             Jam Kerja
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="float-left">:</div>
-            <div class="float-right">09:00 - 17:00</div>
+            <div class="float-left ml-2" id="jamKerja"></div>
           </div>
-          <div class="col-md-4">
-            Alamat
+          <div class="col-md-5">
+            Alamat Gudang
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <div class="float-left">:</div>
-            <div class="float-right">Jl. Pangeran Nganu No.200</div>
+            <div class="float-left ml-2" id="alamat"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md-8">
-    <div style="height: 350px; width: 100%;" id="mapid"></div>
+  <div class="col-md-12" id="mapMap">
+    <div style="height: 400px; width: 100%;" id="mapid"></div>
   </div>
 </div>
 <div class="row my-4">
@@ -297,12 +304,12 @@
         "Google Hybrid"     : ghybrid
     };
     gudang.forEach(async function (element) {
-        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`<b>Gudang : ${element.nama}</b><br />Milik : ${element.pemilik}`))
-        // function popupDetail(data,index) {
-        //     isiDetail += `
-
-        //     `
-        // }
+        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
+        <b>Gudang : ${element.nama}</b><br />
+        Milik : ${element.pemilik}<br />
+        <a href="#" class="btn btn-primary btn-sm btn-block text-white" onclick="detailGudang(${element.id})">LihatDetail</a>
+        `))
+        console.log(element.id);
     })
     let gudangGudang = L.layerGroup(group)
 
@@ -315,7 +322,41 @@
     // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
 </script>
-{{--  --}}
+
+{{-- Detail Gudang Section --}}
+<script>
+    function detailGudang(id) {
+        $('#mapMap').removeClass('col-md-12');
+        $('#mapMap').addClass('col-md-7');
+        $('#show').removeClass('d-none');
+        $('#show').addClass('col-md-5');
+
+        $('#titleGudang').text(`Wait.......`);
+        $('#nig').text(`Wait.......`);
+        $('#namaGudang').text(`Wait.......`);
+        $('#telepon').text(`Wait.......`);
+        $('#hariKerja').text(`Wait.......`);
+        $('#jamKerja').text(`Wait.......`);
+        $('#alamat').text(`Wait.......`);
+        $.ajax({
+            type: "get",
+            url: "/api/v1/getGudang/"+id,
+            dataType: "json",
+            success: function (response) {
+                var data = response.data;
+                $.each(data, function (a, b) {
+                    $('#titleGudang').text(`Detail Gudang `+b.nama);
+                    $('#nig').text(b.nomor_gudang);
+                    $('#namaGudang').text(b.nama);
+                    $('#telepon').text(b.kontak);
+                    $('#hariKerja').text(b.hari);
+                    $('#jamKerja').text(b.jam_buka+` - `+b.jam_tutup);
+                    $('#alamat').text(b.alamat);
+                });
+            }
+        });
+    }
+</script>
 
 {{-- Calendar Section --}}
 <script type="text/javascript">
