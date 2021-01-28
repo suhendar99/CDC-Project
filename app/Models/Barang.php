@@ -36,6 +36,17 @@ class Barang extends Model
     }
 
     /**
+     * Barang has many Stock.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stock()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\StockBarang', 'barang_kode', 'kode_barang');
+    }
+
+    /**
      * Barang has many StorageIn.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

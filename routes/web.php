@@ -162,6 +162,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('storage/penyimpanan/{id}', 'StorageController@edit')->name('storage.rak');
         Route::post('storage/penyimpanan/{id}/simpan', 'StorageController@update')->name('storage.rak.simpan');
 
+        // Ubah Harga Barang
+        Route::get('barang/stock/{id}', 'StockBarangController@editHarga')->name('harga.edit');
+        Route::put('barang/stock/{id}/simpan', 'StockBarangController@simpanHarga')->name('harga.simpan');
+
         Route::group(['middleware' => 'pemilik'], function() {
             // Gudang
             Route::post('gudang/search', 'GudangController@search')->name('gudang.search');

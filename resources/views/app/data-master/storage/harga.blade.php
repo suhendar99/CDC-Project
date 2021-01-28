@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Storage Masuk';
+        $pageTitle = 'Atur Harga Barang '.$data->barang->nama_barang.' Di Gudang '.$data->gudang->nama;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,11 +13,11 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Gudang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Pengelolaan Barang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Buat Data</a>
+            <a href="#" class="text-14">Atuh Harga Barang</a>
           </div>
         </div>
     </div>
@@ -46,29 +46,19 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('storage.rak.simpan', $masuk->storageIn->kode)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('harga.simpan', $id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Rak <small class="text-success">*Harus diisi</small></label>
-                                        <select name="rak_id" id="rak" class="form-control">
-                                            <option value="0">--Pilih Rak--</option>
-                                            @foreach ($rak as $list)
-                                                <option value="{{$list->id}}" {{ old('rak_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('rak_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Tingkat Rak <small class="text-success">*Harus diisi</small></label>
-                                        <select name="tingkat_id" id="tingkat" class="form-control">
-                                            <option value="0">--Pilih Tingkat--</option>
-                                        </select>
-                                        @error('tingkat_id')
+                                    <div class="form-group col-md-12">
+                                        <label>Harga Barang Per-{{ $satuan }} <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="satuanAppend">RP.</span>
+                                            </div>
+                                            <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend">
+                                        </div>
+                                        @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -93,32 +83,5 @@
 @endsection
 @push('script')
 <script>
-    $('#rak').change(function(event) {
-        /* Act on the event */
-        let id = $('#rak').val();
-        $.ajax({
-            url: "/api/v1/storage/rak/"+id,
-            method: "GET",
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: (response)=>{
-                let tingkat = response.data;
-
-                $('#tingkat').html('');
-
-                for (let i = tingkat.length - 1; i >= 0; i--) {
-                    // Things[i]
-                    $('#tingkat').append($('<option>').text(tingkat[i].nama).attr('value', tingkat[i].id));
-                }
-            },
-            error: (xhr)=>{
-                let res = xhr.responseJSON;
-                console.log(res)
-                console.log('error')
-                $('#tingkat').html('');
-            }
-        });
-    });
 </script>
 @endpush

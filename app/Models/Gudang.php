@@ -80,6 +80,28 @@ class Gudang extends Model
     }
 
     /**
+     * Gudang has many Pemesanan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesanan()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
+        return $this->hasMany('App\Models\Pemesanan');
+    }
+
+    /**
+     * Gudang has many Stock.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stock()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
+        return $this->hasMany('App\Models\StockBarang');
+    }
+
+    /**
      * Gudang has many Kwitansi.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

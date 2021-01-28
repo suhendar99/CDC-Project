@@ -103,7 +103,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-6">
                                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
@@ -117,15 +117,16 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    {{-- <div class="form-group col-md-3">
                                         <label>Harga Jual Barang Per <span id="here">-</span> <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan Harga Jual Barang">
+                                        <input type="number" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan Harga Jual Barang" aria-describedby="ada_harga" id="harga_barang">
+                                        <small id="ada_harga" class="form-text text-primary"></small>
                                         @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="form-group">
                                         <label>Gudang <small class="text-success">*Harus diisi</small></label>
@@ -298,6 +299,31 @@
                 }
             });
         });
+
+        // $('#barang').change(function(event) {
+        //     /* Act on the event */
+        //     let kode = $('#barang').val()
+
+        //     $.ajax({
+        //         url: "/api/v1/check/barang/"+kode,
+        //         method: "GET",
+        //         contentType: false,
+        //         cache: false,
+        //         processData: false,
+        //         success: (response)=>{
+        //             // console.log(response.data)
+        //             let harga = response.data.harga_barang;
+
+        //             $('#harga_barang').val(harga)
+        //             $('#ada_harga').text('Harga untuk barang yang sama di gudang ini')
+        //         },
+        //         error: (xhr)=>{
+        //             let res = xhr.responseJSON;
+        //             console.log(res)
+        //             console.log('error')
+        //         }
+        //     });
+        // });
     });
 </script>
 @endpush

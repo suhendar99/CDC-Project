@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Storage Keluar';
+        $pageTitle = 'Buat Data Barang Keluar';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,9 +13,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Gudang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Keluar</a>
+            <a href="#" class="text-14">Data Barang Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Buat Data</a>
           </div>
@@ -34,7 +34,7 @@
                         <div class="col-md-10">
                             <div class="float-left">
                                 <h5 class="card-title" id="text-ket">
-                                    Pilih Pemesanan Untuk Storage Keluar
+                                    Pilih Pemesanan Untuk Barang Keluar
                                 </h5>
                             </div>
                         </div>
@@ -51,13 +51,13 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- One "tab" for each step in the form: -->
-                                <div class="tab" data-keterangan="Pilih Pemesanan Untuk Storage Keluar">
+                                <div class="tab" data-keterangan="Pilih Pemesanan Untuk Barang Keluar">
                                     <div class="form-group">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectSatuan" class="form-control @error('pemesanan_id') is-invalid @enderror" name="pemesanan_id" placeholder="Enter pemesanan_id">
                                             <option value="">--Pilih Pesanan--</option>
                                             @foreach($pemesanan as $pesan)
-                                            <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}">Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
+                                            <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}" @if($poci != null && $pesan->id == $poci) selected @endif>Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
                                             @endforeach
                                         </select>
                                         @error('pemesanan_id')
@@ -72,7 +72,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>DIbayar oleh <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Enter terima_dari barang">
+                                            <input type="text" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Masukan pembayar...">
                                             @error('terima_dari')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Jumlah Uang <small class="text-success">*Harus diisi</small></label>
-                                            <input type="number" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Enter jumlah_uang_digits barang" id="number">
+                                            <input type="number" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Masukan jumlah uang yang dibayar..." id="number">
                                             @error('jumlah_uang_digits')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Tempat Pembuatan Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Enter tempat">
+                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
                                         @error('tempat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -111,7 +111,7 @@
                                 </div>
  
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
-                                    <div class="form-row">
+                                    {{-- <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Pengirim <small class="text-success">*Harus diisi</small></label>
                                             <input type="text" class="form-control @error('pengirim') is-invalid @enderror" name="pengirim" value="{{ old('pengirim') }}" placeholder="Enter pengirim">
@@ -130,7 +130,7 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label>No Surat Jalan <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
@@ -139,7 +139,7 @@
                                                     {{ $kode_surat }}/SJ/
                                                 </span>
                                             </div>
-                                            <input class="form-control @error('profil_lembaga') is-invalid @enderror" type="text" placeholder="Nama profil lembaga... Maks. 6 karakter" name="profil_lembaga"></input>
+                                            <input class="form-control @error('profil_lembaga') is-invalid @enderror" type="text" placeholder="Nama profil lembaga... (Maks. 6 karakter)" name="profil_lembaga"></input>
                                             <input class="form-control @error('tanggal_surat') is-invalid @enderror" type="date" placeholder="Tanggal..." name="tanggal_surat"></input>
                                         </div>
                                         @error('profil_lembaga')
@@ -188,145 +188,6 @@
                                   <span class="step"></span>
                                 </div>
                             </div>
-                            {{-- <div class="col-md-12 col-sm-6">
-                                <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>DIbayar oleh <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Enter terima_dari barang">
-                                                @error('terima_dari')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Jumlah Uang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="number" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Enter jumlah_uang_digits barang" id="number">
-                                                @error('jumlah_uang_digits')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <input type="hidden" name="jumlah_uang_word" id="word">
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                                <select id="selectSatuan" class="form-control @error('pemesanan_id') is-invalid @enderror" name="pemesanan_id" placeholder="Enter pemesanan_id">
-                                                    @foreach($pemesanan as $pesan)
-                                                    <option value="{{ $pesan->id }}">Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->kode }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('pemesanan_id')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Tempat Pembuatan Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Enter tempat">
-                                                @error('tempat')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Keterangan <small class="text-success">*Harus diisi</small></label>
-                                            <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
-                                            @error('keterangan')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="pills-second" role="tabpanel" aria-labelledby="pills-second-tab">
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Pengirim <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('pengirim') is-invalid @enderror" name="pengirim" value="{{ old('pengirim') }}" placeholder="Enter pengirim">
-                                                @error('pengirim')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Penerima <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('penerima') is-invalid @enderror" name="penerima" value="{{ old('penerima') }}" placeholder="Enter penerima">
-                                                @error('penerima')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div class="form-group">
-                                        <label>Gudang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="gudang" class="form-control">
-                                            <option value="">--Pilih Gudang--</option>
-                                            @foreach ($gudang as $list)
-                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('gudang_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    
-
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                            <select name="barang_kode" id="barang" class="form-control">
-                                                <option value="">-Pilih Barang-</option>
-                                            </select>
-                                            @error('barang_kode')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
-                                            <input type="number" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" placeholder="Enter jumlah barang">
-                                            @error('jumlah')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                            <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan" placeholder="Enter satuan">
-                                                <option value="kg">kg</option>
-                                                <option value="ons">ons</option>
-                                                <option value="gram">gram</option>
-                                                <option value="ml">ml</option>
-                                                <option value="m3">m<sup>3</sup></option>
-                                                <option value="m2">m<sup>2</sup></option>
-                                                <option value="m">m</option>
-                                                <option value="gram">cm</option>
-                                            </select>
-                                            @error('satuan')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                      
-                            </div> --}}
                         </div>
                         {{-- <div class="row">
                               <div class="col-md-12">
@@ -406,10 +267,25 @@ function validateForm() {
   var x, y, i, valid = true;
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
+  let z = x[currentTab].getElementsByTagName("select");
+
+  if (z.length > 0) {
+    for (let j = 0; j < z.length; j++) {
+        // If a field is empty...
+        if (z[j].value === "") {
+          // add an "invalid" class to the field:
+          // z[j].className += "";
+          alert("Mohon pilih data terlebih dahulu.");
+          // and set the current valid status to false:
+          valid = false;
+        }
+    }
+  }
+
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
-    if (y[i].value == "") {
+    if (y[i].value === "") {
       // add an "invalid" class to the field:
       y[i].className += " invalid";
       // and set the current valid status to false:
