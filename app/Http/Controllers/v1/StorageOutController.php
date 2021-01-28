@@ -92,7 +92,7 @@ class StorageOutController extends Controller
     public function create(Request $request)
     {
         $gudang = Gudang::all();
-        $pemesanan = Pemesanan::all();
+        $pemesanan = Pemesanan::doesntHave('storageOut')->get();
 
         $poci = $request->query('pemesanan', null);
 
@@ -115,7 +115,7 @@ class StorageOutController extends Controller
     {
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'gudang_id' => 'required|exists:gudangs,id',
+            // 'gudang_id' => 'required|exists:gudangs,id',
             'pemesanan_id' => 'required|exists:pemesanans,id',
             // 'pengirim' => 'required|string|max:50',
             'terima_dari' => 'required|string|max:50',
@@ -183,7 +183,8 @@ class StorageOutController extends Controller
 
             $kode_out = $faker->unique()->ean13;
 
-            $out = StorageOut::create($request->only('gudang_id', 'pemesanan_id')+[
+            $out = StorageOut::create($request->only('pemesanan_id')+[
+                'gudang_id' => $gudang->id,
                 'barang_kode' => $kode_barang,
                 'jumlah' => $barang->jumlah_barang,
                 'satuan' => $barang->satuan,
@@ -195,8 +196,11 @@ class StorageOutController extends Controller
         }
 
         foreach ($pesanan->barangPesanan as $kodex){
-            $jumlahAkhir = Storage::whereHas('storageIn', function($query)use($kodex){
-                $query->where('barang_kode', $kodex->barang_kode);
+            $jumlahAkhir = Storage::whereHas('storageIn', function($query)use($kodex, $gudang){
+                $query->where([
+                        ['gudang_id', $gudang->id],
+                        ['barang_kode', $kodex->barang_kode]
+                    ]);
             })->sum('jumlah');
 
             StockBarang::where([
@@ -253,9 +257,10 @@ class StorageOutController extends Controller
         $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
         // $kode_surat = $faker->unique()->ean13;
 
-        $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'gudang_id', 'keterangan')+[
+        $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'keterangan')+[
             'user_id' => auth()->user()->id,
             'kode' => $kode_kwi,
+            'gudang_id' => $gudang->id,
             'tanggal' => now('Asia/Jakarta')
         ]);
 

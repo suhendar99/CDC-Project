@@ -109,7 +109,7 @@
                                         @enderror
                                     </div>
                                 </div>
- 
+
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     {{-- <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -154,8 +154,8 @@
                                         @enderror
                                     </div>
                                 </div>
- 
-                                <div class="tab" data-keterangan="Pilih Gudang Retail">
+
+                                {{-- <div class="tab" data-keterangan="Pilih Gudang Retail">
                                     <div class="form-group">
                                         <label>Gudang <small class="text-success">*Harus diisi</small></label>
                                         <select name="gudang_id" id="gudang" class="form-control">
@@ -170,7 +170,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div style="overflow:auto;">
                                   <div  style="float:right;">
                                     <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-danger btn-sm">Previous</button>
@@ -179,13 +179,13 @@
                                     {{-- </div> --}}
                                   </div>
                                 </div>
- 
+
                                 <!-- Circles which indicates the steps of the form: -->
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
                                   <span class="step"></span>
                                   <span class="step"></span>
-                                  <span class="step"></span>
+                                  {{-- <span class="step"></span> --}}
                                 </div>
                             </div>
                         </div>
@@ -314,7 +314,7 @@ function fixStepIndicator(n) {
         let kode = $('#selectSatuan option:selected').data("kode")
          console.log(kode)
          for (var i = $('.tab').length - 1; i >= 1; i--) {
-             
+
              let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
              $('.tab').get(i).attributes[0].value = keterangan
          }
@@ -424,7 +424,7 @@ function fixStepIndicator(n) {
     //                 console.log(response.data)
 
     //                 for (var i = response.data.length - 1; i >= 0; i--) {
-                        
+
     //                     for (var j = response.data[i].storage_in.length - 1; j >= 0; j--) {
     //                         array.push(response.data[i].storage_in[j].storage.jumlah);
     //                     }
