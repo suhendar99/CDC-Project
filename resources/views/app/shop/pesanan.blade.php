@@ -25,7 +25,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form action="{{route('shop.pesanan.action',$id)}}" method="post">
+            <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -138,8 +138,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 mt-2">
-                        <button type="submit" class="btn btn-sm bg-my-primary btn-block">Buat Pemesanan</button>
+                    <div class="col-md-6 mt-2">
+                        <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
                     </div>
                 </div>
             </form>
@@ -149,9 +152,18 @@
 @endsection
 @push('script')
 <script type="text/javascript">
-    // var harga = '{{$data->storageIn->barang->harga_barang}}';
-    // var penerima = '{{$data->storageIn->gudang->pemilik}}';
-    // $('#harga').val(harga);
-    // $('#penerima').val(penerima)
+    $('#postKeranjang').click(function(){
+        $('form[name=keranjang]').attr('action',"{{route('keranjang.store',$id)}}");
+        $('form[name=keranjang]').submit();
+    })
+
+    $('#selectPembayaran').change(function(){
+        pembayaran = $(this).val()
+        if (pembayaran == 'now') {
+            $('#pilihMetode').removeClass('d-none')
+        } else {
+            $('#pilihMetode').addClass('d-none')
+        }
+    })
 </script>
 @endpush
