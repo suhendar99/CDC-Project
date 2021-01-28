@@ -9,6 +9,7 @@ use App\Province;
 use App\City;
 use App\Models\Barang;
 use App\Models\BarangPesanan;
+use App\Models\Keranjang;
 use App\Models\Pemesanan;
 use App\Models\Piutang;
 use App\Models\Storage;
@@ -53,8 +54,9 @@ class ShopController extends Controller
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
         // $data = SaranaPrasaranaUptd::find($id);
+        $barangKeranjang = Keranjang::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('created_at','desc')->get();
 		$category = $this->category->getData();
-		return view($this->shopPath.'index', compact('category','barang','else'));
+		return view($this->shopPath.'index', compact('category','barang','else','barangKeranjang'));
 	}
 
     public function showPemesanan($id)
@@ -73,7 +75,6 @@ class ShopController extends Controller
             'jumlah' => 'required|numeric|min:1',
         ]);
         if ($v->fails()) {
-            dd($v->errors()->all());
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }

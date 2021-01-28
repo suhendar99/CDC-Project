@@ -37,6 +37,8 @@ Route::get('/home', function (){
 })->name('home');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+    // Keranjang
+    Route::post('keranjang/{id}','KeranjangController@saveKeranjang')->name('keranjang.store');
     // Complete Foto KTP
     Route::post('KTP/{id}','KtpController@fotoKtp')->name('foto.ktp');
     // End Complete Foto KTP
