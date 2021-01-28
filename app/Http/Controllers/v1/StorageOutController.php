@@ -11,6 +11,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\StockBarang;
 use App\Models\BarangPesanan;
 use App\Models\Pemesanan;
 use App\Models\Kwitansi;
@@ -88,10 +89,12 @@ class StorageOutController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $gudang = Gudang::all();
         $pemesanan = Pemesanan::all();
+
+        $poci = $request->query('pemesanan', null);
 
         $surat = SuratJalan::all();
         $number = $surat->count();
@@ -99,7 +102,7 @@ class StorageOutController extends Controller
         $date = date("ymdHis");
         $kode_surat = sprintf("%04s",abs($number+1));
 
-        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan', 'kode_surat'));
+        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci'));
     }
 
     /**
@@ -114,7 +117,7 @@ class StorageOutController extends Controller
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:gudangs,id',
             'pemesanan_id' => 'required|exists:pemesanans,id',
-            'pengirim' => 'required|string|max:50',
+            // 'pengirim' => 'required|string|max:50',
             'terima_dari' => 'required|string|max:50',
             'jumlah_uang_digits' => 'required|integer',
             'jumlah_uang_word' => 'required|string',
@@ -130,21 +133,23 @@ class StorageOutController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        $pesanan = Pemesanan::with('barangPesanan')->findOrFail($request->pemesanan_id);
+        $pesanan = Pemesanan::with('barangPesanan', 'gudang')->findOrFail($request->pemesanan_id);
+        $gudang = $pesanan->gudang;
 
         foreach ($pesanan->barangPesanan as $barang) {
             $kode_barang = $barang->barang_kode;
 
-            $stok = Storage::whereHas('storageIn', function($query)use($kode_barang){
-                $query->where('barang_kode', $kode_barang);
+            $stok = Storage::whereHas('storageIn', function($query)use($kode_barang, $gudang){
+                $query->where([
+                    ['gudang_id', $gudang->id],
+                    ['barang_kode', $kode_barang]
+                ]);
             })
             ->orderBy('waktu', 'asc')
             ->get();
 
             $jumlahBarang = count($stok) - 1;
             $now = 0;
-
-
 
             $jumlah = $barang->jumlah_barang;
 
@@ -173,32 +178,6 @@ class StorageOutController extends Controller
                 }
             }
 
-            // while ( $jumlah != 0 ) {
-            //     if ($now <= $jumlahBarang) {
-            //         $jumlahStok = $stok[$now]->jumlah;
-
-            //         if ($jumlahStok != 0) {
-            //             $jumlahStok = $jumlahStok - $jumlah;
-            //             if ($jumlahStok >= 0) {
-            //                 $stok[$now]->update([
-            //                     'jumlah' => $jumlahStok
-            //                 ]);
-
-            //                 break;
-            //             }elseif($jumlahStok < 0){
-            //                 $stok[$now]->update([
-            //                     'jumlah' => 0
-            //                 ]);
-
-            //                 $jumlah = abs($jumlahStok);
-            //                 $now++;
-            //             }
-            //             // dd($jumlah);
-            //         }else{
-            //             $now++;
-            //         }
-            //     }
-            // }
 
             $faker = \Faker\Factory::create('id_ID');
 
@@ -213,6 +192,20 @@ class StorageOutController extends Controller
                 'waktu' => now('Asia/Jakarta')
             ]);
 
+        }
+
+        foreach ($pesanan->barangPesanan as $kodex){
+            $jumlahAkhir = Storage::whereHas('storageIn', function($query)use($kodex){
+                $query->where('barang_kode', $kodex->barang_kode);
+            })->sum('jumlah');
+
+            StockBarang::where([
+                ['gudang_id', $gudang->id],
+                ['barang_kode', $kodex->barang_kode]
+            ])
+            ->update([
+                'jumlah' => $jumlahAkhir
+            ]);
         }
 
 
@@ -266,7 +259,8 @@ class StorageOutController extends Controller
             'tanggal' => now('Asia/Jakarta')
         ]);
 
-        $surat = SuratJalan::create($request->only('tempat', 'pengirim', 'pemesanan_id')+[
+        $surat = SuratJalan::create($request->only('tempat', 'pemesanan_id')+[
+            'pengirim' => auth()->user()->pengurusGudang->nama,
             'penerima' => $pesanan->nama_pemesan,
             'kode' => $surat_kode,
             'user_id' => auth()->user()->id,
@@ -315,7 +309,7 @@ class StorageOutController extends Controller
     public function detail($id)
     {
         try {
-            $data = StorageOut::with('barang', 'gudang', 'user.pengurusGudang')->where('id', $id)->first();
+            $data = StorageOut::with('barang', 'gudang = $pesanan->gudang;', 'user.pengurusGudang')->where('id', $id)->first();
 
             return response()->json([
                 'data' => $data

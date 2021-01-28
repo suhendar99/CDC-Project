@@ -94,24 +94,24 @@
 				<div class="col-md-3 col-4">
 					{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 						<div class="card item-card">
-							@if(count($b->storageIn->barang->foto) < 1 || $b->storageIn->barang->foto == null)
+							@if(count($b->barang->foto) < 1 || $b->barang->foto == null)
 							<img src="{!! asset('/images/image-not-found.jpg') !!}">
 							@else
 							{{-- {{dd($b)}} --}}
-							<img src="{{asset($b->storageIn->barang->foto[0]->foto)}}">
+							<img src="{{asset($b->barang->foto[0]->foto)}}">
 							@endif
 							<div class="card-body">
 								<div class="row">
 									<div class="col-12">
 										<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
-										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageIn->barang->kategori->nama}}</span>
+										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->barang->kategori->nama}}</span>
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->storageIn->barang->nama_barang}}</span>
+										<span class="product-name">{{$b->barang->nama_barang}}</span>
 									</div>
 									<div class="col-12">
-										<span class="product-price">Rp. {{ number_format($b->storageIn->storage->harga_barang,0,',','.')}},</span>
+										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},</span>
 									</div>
 	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
 	                                    <div class="dropdown">
@@ -119,7 +119,7 @@
 	                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
 	                                            <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
 	                                            {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
-	                                            <a href="https://api.whatsapp.com/send?phone=+62{{intval($b->storageIn->user->pengurusGudang->telepon)}}" target="_blank" class="dropdown-item" >Chat</a>
+	                                            <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->gudang->user->pengurusGudang->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
 	                                        </div>
 	                                    </div>
 	                                </div>

@@ -12,6 +12,7 @@ use App\Models\TingkatanRak;
 use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Barang;
+use App\Models\StockBarang;
 use App\Models\Gudang;
 
 class StorageController extends Controller
@@ -23,19 +24,42 @@ class StorageController extends Controller
      */
     public function index(Request $request)
     {
+        // $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+        // ->get();
+        // dd($data);
         if($request->ajax()){
-            $data = Storage::with('storageIn.barang', 'tingkat.rak', 'storageIn.gudang')
+            $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Atur Penyimpanan</a>';
+                    return '<a href="/v1/barang/stock/'.$data->id.'" class="btn btn-secondary btn-sm">Atur Harga Barang</a>';
                 })
                 ->make(true);
         }
 
         return view('app.data-master.storage.index');
+    }
+
+    public function check($kode)
+    {
+        $data = Storage::whereHas('storageIn', function($query)use($kode){
+            $query->where('barang_kode', $kode);
+        })
+        ->orderBy('id', 'desc')
+        ->first();
+
+        if ($data === null) {
+            return response()->json([
+                'message' => __( 'Kode tidak diketahui' )
+            ], 400);
+        } else {
+            return response()->json([
+                'data' => $data
+            ], 200);
+        }
+        
     }
 
     /**
@@ -78,11 +102,11 @@ class StorageController extends Controller
      */
     public function edit($id)
     {
-        $masuk = StorageIn::find($id);
-        $rak = Rak::with('tingkat')->where('gudang_id', $masuk->gudang_id)->get();
+        $masuk = Storage::with('storageIn.gudang')->find($id);
+        $rak = Rak::with('tingkat')->where('gudang_id', $masuk->storageIn->gudang_id)->get();
 
         if ($rak->count() == 0) {
-            return redirect(route('rak.create', $masuk->gudang_id))->with('failed', __( 'Gudang '.$masuk->nama.' belum memiliki Rak. Harap buat data Rak!' ));
+            return redirect(route('rak.create', $masuk->storageIn->gudang_id))->with('failed', __( 'Gudang '.$masuk->storageIn->gudang->nama.' belum memiliki Rak. Harap buat data Rak!' ));
         }
 
         return view('app.data-master.storage.create', compact('rak', 'masuk'));

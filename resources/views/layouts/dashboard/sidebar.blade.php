@@ -150,7 +150,7 @@
                                 <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
                             </li>
                             <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
-                                <a href="{{route('storage.index')}}">Manajemen Barang</a>
+                                <a href="{{route('storage.index')}}">Pengelolaan Barang</a>
                             </li>
                         </ul>
                     </li>

@@ -67,11 +67,18 @@ class Pemesanan extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
     	return $this->belongsTo('App\Models\Pelanggan');
     }
-    public function pengurusGudang()
+
+    /**
+     * Pemesanan belongs to Gudang.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function gudang()
     {
-    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->belongsTo('App\Models\PengurusGudang');
+        // belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Gudang');
     }
+
     public function piutang()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)

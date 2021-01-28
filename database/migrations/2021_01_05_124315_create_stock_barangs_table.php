@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoragesTable extends Migration
+class CreateStockBarangsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateStoragesTable extends Migration
      */
     public function up()
     {
-        Schema::create('storages', function (Blueprint $table) {
+        Schema::create('stock_barangs', function (Blueprint $table) {
             $table->id();
-            $table->string('storage_in_kode');
-            $table->foreign('storage_in_kode')->references('kode')->on('storage_ins')->onDelete('cascade');
+            $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
+            $table->string('barang_kode');
+            $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->bigInteger('jumlah');
             $table->string('satuan');
-            $table->dateTime('waktu');
-            $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('cascade');
+            $table->bigInteger('harga_barang')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateStoragesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storages');
+        Schema::dropIfExists('stock_barangs');
     }
 }

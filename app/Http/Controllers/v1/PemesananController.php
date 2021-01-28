@@ -64,6 +64,7 @@ class PemesananController extends Controller
     {
         $pGudang = PengurusGudang::all();
         $barang = Barang::all();
+
         return view($this->indexPath.'create',compact('pGudang','barang'));
     }
     public function print($id)
