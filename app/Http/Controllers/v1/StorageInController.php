@@ -11,6 +11,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\StockBarang;
 use App\Models\RekapitulasiPembelian;
 
 class StorageInController extends Controller
@@ -83,7 +84,6 @@ class StorageInController extends Controller
             'barang_kode' => 'required|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
-            'harga_barang' => 'required|numeric',
             'nomor_kwitansi' => 'required|numeric',
             'nomor_surat_jalan' => 'required|numeric',
             'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
@@ -116,13 +116,31 @@ class StorageInController extends Controller
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
             'waktu' => now('Asia/Jakarta')
         ]);
+
         Storage::create([
             'storage_in_kode' => $kode,
             'jumlah' => $request->jumlah,
             'satuan' => $barang->satuan,
-            'harga_barang' => $request->harga_barang,
             'waktu' => now('Asia/Jakarta')
         ]);
+
+        $checkStock = StockBarang::where([
+            ['gudang_id', $request->gudang_id],
+            ['barang_kode', $request->barang_kode]
+        ])->first();
+
+        if($checkStock !== null){
+            $updateJumlah = $checkStock->jumlah + $request->jumlah;
+
+            $checkStock->update([
+                'jumlah' => $updateJumlah,
+                'satuan' => $barang->satuan
+            ]);
+        }else{
+            StockBarang::create($request->only('gudang_id', 'barang_kode', 'jumlah')+[
+                'satuan' => $barang->satuan
+            ]);
+        }
 
         RekapitulasiPembelian::create([
             'storage_in_id' => $masuk->id,
@@ -136,7 +154,7 @@ class StorageInController extends Controller
             'total' => $masuk->barang->harga_total
         ]);
 
-        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil !' ));
+        return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
     }
 
     /**
@@ -234,7 +252,7 @@ class StorageInController extends Controller
             ]);
         }
 
-        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil Di Edit!' ));
+        return back()->with('success', __( 'Data Barang Masuk Berhasil diubah!' ));
     }
 
     /**
@@ -251,6 +269,6 @@ class StorageInController extends Controller
         File::delete($data->foto_surat_jalan);
         $data->delete();
 
-        return back()->with('success', __( 'Penyimpanan Masuk Telah Berhasil Dihapus!' ));
+        return back()->with('success', __( 'Data Barang Masuk dihapus!' ));
     }
 }

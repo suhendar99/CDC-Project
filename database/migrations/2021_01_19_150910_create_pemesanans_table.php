@@ -17,8 +17,8 @@ class CreatePemesanansTable extends Migration
             $table->id();
             $table->string('kode')->unique();
             $table->string('nomor_pemesanan')->unique();
-            $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
-            $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
+            $table->foreignId('pelanggan_id')->constrained('pelanggans')->onDelete('cascade');
+            $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->string('penerima_po');
             $table->string('nama_pemesan');
             $table->string('telepon');

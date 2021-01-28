@@ -34,13 +34,13 @@
                             <div class="float-left">
                                 <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                     <li class="nav-item">
-                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Manajemen Barang Masuk</a>
+                                        <a href="#pills-second" class="nav-link" id="pills-second-tab" data-toggle="pill" role="tab" aria-controls="pills-second" aria-selected="false" onclick="storageIn()">Pengelolaan Barang Masuk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Manajemen Penyimpanan Barang</a>
+                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Pengelolaan Penyimpanan Barang</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Manajemen Barang Keluar</a>
+                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Pengelolaan Barang Keluar</a>
                                     </li>
                                 </ul>
                             </div>
@@ -61,13 +61,11 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Penyimpanan Masuk</th>
-                                                <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
+                                                <th>Nama Gudang</th>
                                                 <th>Jumlah Barang</th>
+                                                <th>Penyimpanan</th>
                                                 <th>Harga Jual Barang</th>
-                                                <th>Rak</th>
-                                                <th>Tingkatan Rak</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -87,7 +85,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
-                                    <h4>Penyimpanan Keluar</h4>
+                                    <h4>Barang Keluar</h4>
                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
@@ -221,30 +219,38 @@
             ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'storage_in_kode', name: 'kode'},
-                {data : 'storage_in.gudang.nama', name: 'gudang'},
-                {data : 'storage_in.barang.nama_barang', name: 'nama_barang'},
-                {data : function (data, type, row, meta) {
+                {data : 'gudang.nama', name: 'gudang'},
+                {data : 'barang.nama_barang', name: 'nama_barang'},
+                {data : function(data,a,b,c){
                         return data.jumlah + " " + data.satuan;
+                    }, name: 'jumlah'
+                },
+                {data : function (data, type, row, meta) {
+                        let van = '';
+                        // console.log(data)
+                        let storageIn = data.barang.storage_in;
+
+                        for (var i = storageIn.length - 1; i >= 0; i--) {
+                            let tingkat = `<a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="text-primary">Atur Penyimpanan</a>`;
+                            if (storageIn[i].storage.tingkat != null) {
+                                tingkat = storageIn[i].storage.tingkat.rak.nama+'<br>Tingkat: '+storageIn[i].storage.tingkat.nama+'<br><a href="/v1/storage/penyimpanan/'+storageIn[i].storage.id+'" class="text-primary">Atur Penyimpanan</a>';
+                            }
+                            let col = '<div style="border-bottom: 1px solid #000;padding-bottom: 2px;"> Kode masuk: '+storageIn[i].kode+'<br>Jumlah: '+storageIn[i].storage.jumlah+' '+storageIn[i].storage.satuan+'<br>Rak: '+tingkat+'</div>';
+                            van += col;
+                        }
+
+                        let o = '<div>'+ van + '</div>';
+                        return o;
+                        
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
-                        return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                        if (data.harga_barang !== null) {
+                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                        } else {
+                            return 'Harga belum diatur.';
+                        }
                     }, name: 'harga_barang'
                 },
-                {data : function(data,a,b,c){
-                        if (data.tingkat == null) {
-                            return 'Belum Diatur';
-                        } else {
-                            return data.tingkat.rak.nama;
-                        }
-                    }, name: 'rak'},
-                {data : function(data,a,b,c){
-                        if (data.tingkat == null) {
-                            return 'Belum Diatur';
-                        } else {
-                            return data.tingkat.nama;
-                        }
-                    }, name: 'tingkat'},
                 {data : 'action', name: 'action'}
             ]
         });

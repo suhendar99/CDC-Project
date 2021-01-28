@@ -13,6 +13,7 @@ use App\Models\Keranjang;
 use App\Models\Pemesanan;
 use App\Models\Piutang;
 use App\Models\Storage;
+use App\Models\StockBarang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,19 +33,23 @@ class ShopController extends Controller
         if ($request->has('search') && $request->search !== '') {
             $search = trim($request->search);
             if($search == ''){
-                $barang = $this->storage->with('storageIn.barang.foto')->orderBy('id','desc')->paginate(20);
+                $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                ->orderBy('id','desc')->paginate(20);
             }else{
-           $barang = $this->storage->with('storageIn.barang.foto')->orderBy('id','desc')
-                ->whereHas('storageIn.barang',function($q) use ($search){
+                $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                ->orderBy('id','desc')
+                ->whereHas('barang',function($q) use ($search){
                     $q->where('nama_barang','LIKE',"%".$search."%")
                     ->orWhere('harga_barang','LIKE',"%".$search."%");
                 })
                 ->paginate(20);
             }
         } else {
-            $barang = $this->storage->with('storageIn.barang.foto')->orderBy('id','desc')->paginate(20);
+            $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+            ->orderBy('id','desc')
+            ->paginate(20);
 
-            // dd($barang->storageIn->barang);
+            // dd($barang);
         }
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
@@ -56,9 +61,10 @@ class ShopController extends Controller
 
     public function showPemesanan($id)
     {
-        $data = Storage::find($id);
+        $data = StockBarang::find($id);
         return view($this->shopPath.'pesanan',compact('id','data'));
     }
+
     public function pemesanan(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
@@ -131,7 +137,11 @@ class ShopController extends Controller
         // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
         $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
-        $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','pengurus_gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+        $store = Storage::find($id);
+
+        $harga = $store->harga_barang * $request->jumlah;
+
+        $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
             'kode' => $kode_faker,
             'nomor_pemesanan' => $kode,
             'nama_pemesan' => $request->nama_pemesan,
@@ -146,8 +156,9 @@ class ShopController extends Controller
             'nama_barang' => $request->nama_barang,
             'satuan' => $request->satuan,
             'jumlah_barang' => $request->jumlah,
-            'harga' => $request->harga,
+            'harga' => $harga
         ]);
+
         if ($request->pembayaran == 'later') {
             $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
             // dd($hutang);

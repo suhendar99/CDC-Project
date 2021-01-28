@@ -167,7 +167,7 @@
             rowGroup: {
                 dataSrc: 'pesanan.kode',
                 startRender: function(rows, group){
-                    return '<div class="float-left">Nomor Pemesanan: '+rows.data()[0].pesanan.nomor_pemesanan+' <br> Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+`</div> <a href="#" class="btn btn-danger btn-sm float-right" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a>`;
+                    return '<div class="float-left">Nomor Pemesanan: '+rows.data()[0].pesanan.nomor_pemesanan+' <br> Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+`</div><div class="float-right"><a href="/v1/storage/out/create?pemesanan=${rows.data()[0].pemesanan_id}" class="btn btn-info btn-sm">Proses Pesanan</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
                 },
                 endRender: function(rows, group){
                     // console.log(rows.data().length);
