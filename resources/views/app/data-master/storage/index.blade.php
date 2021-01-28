@@ -61,8 +61,8 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Nama Barang</th>
                                                 <th>Nama Gudang</th>
+                                                <th>Nama Barang</th>
                                                 <th>Jumlah Barang</th>
                                                 <th>Penyimpanan</th>
                                                 <th>Harga Jual Barang</th>
@@ -227,21 +227,23 @@
                 },
                 {data : function (data, type, row, meta) {
                         let van = '';
-                        // console.log(data)
+                        console.log(data)
                         let storageIn = data.barang.storage_in;
 
                         for (var i = storageIn.length - 1; i >= 0; i--) {
-                            let tingkat = `<a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="text-primary">Atur Penyimpanan</a>`;
-                            if (storageIn[i].storage.tingkat != null) {
-                                tingkat = storageIn[i].storage.tingkat.rak.nama+'<br>Tingkat: '+storageIn[i].storage.tingkat.nama+'<br><a href="/v1/storage/penyimpanan/'+storageIn[i].storage.id+'" class="text-primary">Atur Penyimpanan</a>';
+                            if(storageIn[i].gudang_id === data.gudang_id){
+                                let tingkat = `<a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="text-primary">Atur Penyimpanan</a>`;
+                                if (storageIn[i].storage.tingkat != null) {
+                                    tingkat = storageIn[i].storage.tingkat.rak.nama+'<br>Tingkat: '+storageIn[i].storage.tingkat.nama+'<br><a href="/v1/storage/penyimpanan/'+storageIn[i].storage.id+'" class="text-primary">Atur Penyimpanan</a>';
+                                }
+                                let col = '<div style="border-bottom: 1px solid #999;padding-bottom: 2px;"> Kode masuk: '+storageIn[i].kode+'<br>Jumlah: '+storageIn[i].storage.jumlah+' '+storageIn[i].storage.satuan+'<br>Rak: '+tingkat+'</div>';
+                                van += col;
                             }
-                            let col = '<div style="border-bottom: 1px solid #000;padding-bottom: 2px;"> Kode masuk: '+storageIn[i].kode+'<br>Jumlah: '+storageIn[i].storage.jumlah+' '+storageIn[i].storage.satuan+'<br>Rak: '+tingkat+'</div>';
-                            van += col;
                         }
 
                         let o = '<div>'+ van + '</div>';
                         return o;
-                        
+
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {

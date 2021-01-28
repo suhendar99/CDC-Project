@@ -129,9 +129,9 @@
                                     </div> --}}
                                 </div>
                                 <div class="form-group">
-                                        <label>Gudang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Pilih Gudang Retail <small class="text-success">*Harus diisi</small></label>
                                         <select name="gudang_id" id="" class="form-control">
-                                            <option value="0">--Pilih Gudang--</option>
+                                            <option value="0">--Pilih Gudang Retail--</option>
                                             @foreach ($gudang as $list)
                                                 <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
                                             @endforeach
@@ -169,7 +169,7 @@
          $('#here').text(satuan)
 
          // for (var i = $('.tab').length - 1; i >= 1; i--) {
-             
+
          //     let keterangan = $('#satuanAppend').get(i).attributes[0].value+' '+kode;
          // }
         // $('.tab').get(n).attributes[0].value

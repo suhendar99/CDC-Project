@@ -54,9 +54,14 @@ class ShopController extends Controller
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
         // $data = SaranaPrasaranaUptd::find($id);
-        $barangKeranjang = Keranjang::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('created_at','desc')->get();
-		$category = $this->category->getData();
-		return view($this->shopPath.'index', compact('category','barang','else','barangKeranjang'));
+        if (Auth::user()) {
+            $barangKeranjang = Keranjang::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('created_at','desc')->get();
+            $category = $this->category->getData();
+            return view($this->shopPath.'index', compact('category','barang','else','barangKeranjang'));
+        }else {
+            $category = $this->category->getData();
+            return view($this->shopPath.'index', compact('category','barang','else'));
+        }
 	}
 
     public function showPemesanan($id)
