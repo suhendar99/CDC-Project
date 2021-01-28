@@ -69,7 +69,7 @@ class StorageController extends Controller
      */
     public function create()
     {
-        
+
     }
 
     /**
@@ -142,7 +142,7 @@ class StorageController extends Controller
 
         $storage->update($request->only('tingkat_id'));
 
-        return redirect(route('storage.index'))->with('success', __( 'Saved!' ));
+        return redirect(route('storage.index'))->with('success', __( 'Tersimpan !' ));
     }
 
     /**

@@ -20,7 +20,7 @@ Route::group(['namespace' => 'v1'], function () {
     });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
     Route::get('cari-kategori/{id}','ShopController@cariKategori')->name('cari.kategori');
-    Route::get('shop/pesanan/{id}','ShopController@showPemesanan')->name('shop.pesanan');
+    Route::get('shop/pesanan/{id}','ShopController@showPemesanan')->name('shop.pesanan')->middleware('auth');
     Route::post('shop/pemesanan/{id}','ShopController@pemesanan')->name('shop.pesanan.action');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
     Route::post('ongkirShop', 'PembelianController@check_ongkir');

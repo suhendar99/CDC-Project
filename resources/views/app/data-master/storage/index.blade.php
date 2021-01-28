@@ -47,7 +47,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="float-right" id="btn-action">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Storage / Barcode</th>
+                                                <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
@@ -89,7 +89,7 @@
                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Kode Storage / Barcode</th>
+                                                <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Keluar</th>

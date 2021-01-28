@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-9">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->barang->harga_barang,0,',','.')}}</h6></div>
+                                        <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->harga_barang,0,',','.')}}</h6></div>
                                     </div>
                                     <div class="col-md-3">
                                         <h6>Dari Gudang</h6>
