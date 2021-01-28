@@ -37,7 +37,7 @@
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pelanggan->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="pengurus_gudang_id" value="{{$data->storageIn->gudang->user->pengurus_gudang_id}}">
-                            <input type="hidden" name="harga" id="harga" value="{{$data->storageIn->barang->harga_barang}}">
+                            <input type="hidden" name="harga" id="harga" value="{{$data->storageIn->storage->harga_barang}}">
                             <input type="hidden" name="nama_barang" value="{{$data->storageIn->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->storageIn->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->storageIn->barang->kode_barang}}">
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-9">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->storageIn->barang->harga_barang,0,',','.')}}</h6></div>
+                                        <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->storageIn->storage->harga_barang,0,',','.')}}</h6></div>
                                     </div>
                                     <div class="col-md-3">
                                         <h6>Dari Gudang</h6>

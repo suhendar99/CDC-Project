@@ -255,7 +255,7 @@ class StorageOutController extends Controller
         }
 
         $tanggal_surat = $hari.'/'.$romawi.'/'.$tahun;
-        
+
 
         $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
         // $kode_surat = $faker->unique()->ean13;
@@ -298,7 +298,7 @@ class StorageOutController extends Controller
             'total' => $harga_total
         ]);
 
-        return back()->with('success', __( 'Storage Out!' ));
+        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
     }
 
     /**
@@ -367,7 +367,7 @@ class StorageOutController extends Controller
 
         StorageOut::findOrFail($id)->update($request->only('barang_kode', 'gudang_id', 'jumlah', 'satuan'));
 
-        return back()->with('success', __( 'Storage Out Updated!' ));
+        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil Di Edit !' ));
     }
 
     /**
@@ -380,6 +380,6 @@ class StorageOutController extends Controller
     {
         StorageOut::findOrFail($id)->delete();
 
-        return back()->with('success', __( 'Storage In Deleted!' ));
+        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil Di Hapus !' ));
     }
 }

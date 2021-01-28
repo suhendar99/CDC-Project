@@ -182,23 +182,6 @@
                         </ul>
                     </li>
                     <li class="
-                        {{-- {{ Request::is('v1/piutang*') ? 'active' : false }}
-                        {{ Request::is('v1/piutangOut*') ? 'active' : false }} --}}
-                    ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
-                        <ul class="collapse list-unstyled
-                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
-                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
-                        " id="rekapitulasiSubmenu">
-                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
-                            </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="
                         {{ Request::is('v1/piutang*') ? 'active' : false }}
                         {{ Request::is('v1/piutangOut*') ? 'active' : false }}
                     ">
@@ -212,6 +195,23 @@
                             </li>
                             <li class="{{ Request::is('v1/piutangOut *') ? 'active' : false }}">
                                 <a href="{{route('piutangOut.index')}}">Piutang keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                    ">
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                        " id="rekapitulasiSubmenu">
+                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
                             </li>
                         </ul>
                     </li>
@@ -276,9 +276,9 @@
                                 <li class="{{ Request::is('v1/laporan-barang*') ? 'active' : false }}">
                                     <a href="{{route('laporan.barang')}}">Stok Barang</a>
                                 </li>
-                                <li {{--class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}"--}}>
-                                    <a href="{{--{{route('laporan.barang.masuk')}}--}}">Neraca untung Rugi</a>
-                                </li>
+                                {{-- <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.masuk')}}">Neraca untung Rugi</a>
+                                </li> --}}
                                 {{-- <li class="{{ Request::is('v1/laporan-po*') ? 'active' : false }}">
                                     <a href="{{route('laporan.po')}}">Purcase Order</a>
                                 </li> --}}
