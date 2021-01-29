@@ -42,15 +42,17 @@ class PoController extends Controller
         $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
         return view($this->indexPathPemasok.'index',compact('data'));
     }
-    public function index(Po $po)
+    public function index()
     {
-        $user = User::where('id',Auth::user()->id)->with('pengurusGudang.gudang')->first();
-        $arrayGudang = [];
-        foreach ($user->pengurusGudang->gudang as $key => $value) {
-            $arrayGudang[] = $value->id;
-        }
-        $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
+        $data = Po::where('pengurus_gudang_id',Auth::user()->pengurus_gudang_id)->orderBy('id','desc')->paginate(4);
         return view($this->indexPath.'index',compact('data'));
+    }
+    public function preview($id)
+    {
+        $data = Po::where('id',$id)->with('po_item')->first();
+        dd($data);
+        $date = date_format($data->created_at,'d-m-Y');
+        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
     }
 
     public function print($id)
@@ -85,6 +87,7 @@ class PoController extends Controller
         }
 
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -231,12 +234,7 @@ class PoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function preview($id)
-    {
-        $data = Po::where('id',$id)->with('po_item','gudang.user')->first();
-        $date = date_format($data->created_at,'d-m-Y');
-        return view($this->indexPath.'konfirmasiPo',compact('data','date'));
-    }
+
 
     /**
      * Display the specified resource.

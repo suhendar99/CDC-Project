@@ -33,7 +33,11 @@ Route::get('/verification','Auth\RegisterController@verify');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', function (){
-	return redirect('v1/dashboard');
+    if (Auth::user()->name != null) {
+        return redirect('/v1/dashboard');
+    } else {
+        return redirect('shop');
+    }
 })->name('home');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
@@ -86,6 +90,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('koperasi', 'KoperasiController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
+        // Armada Pengiriman
+        Route::resource('armada', 'ArmadaPengirimanController');
         // Pembeli
         Route::resource('pelanggan', 'PelangganController');
 

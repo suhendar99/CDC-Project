@@ -1,7 +1,6 @@
 @php
         $icon = 'dashboard';
         $pageTitle = 'Dashboard Admin';
-        $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
         $dashboard = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -19,9 +18,9 @@
           </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 valign-center py-2">
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
         @include('layouts.dashboard.search')
-    </div>
+    </div> --}}
 </div>
 <div class="row my-2">
     <div class="col-md-3 col-sm-6">
