@@ -34,12 +34,29 @@ class StorageController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/barang/stock/'.$data->id.'" class="btn btn-secondary btn-sm">Atur Harga Barang</a>';
+                    return '<a href="/v1/barang/stock/'.$data->id.'" class="btn btn-dark btn-sm">Atur Harga Barang</a>';
                 })
                 ->make(true);
         }
 
         return view('app.data-master.storage.index');
+    }
+
+    public function detail(Request $request)
+    {
+        if ($request->query('id')) {
+            $data = StockBarang::with('barang.storageIn.storage.tingkat.rak')->find($request->query('id'));
+
+            if ($data != null) {
+                return response()->json([
+                    'data' => $data
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => __( 'Data Stock Barang tidak ditemukan.' )
+                ], 400);
+            }
+        }
     }
 
     public function check($kode)
