@@ -30,26 +30,46 @@ class ShopController extends Controller
 	}
 	public function index(Request $request)
 	{
-        if ($request->has('search') && $request->search !== '') {
-            $search = trim($request->search);
-            if($search == ''){
-                $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
-                ->orderBy('id','desc')->paginate(20);
-            }else{
+        if (Auth::user()->pelanggan_id != null) {
+            if ($request->has('search') && $request->search !== '') {
+                $search = trim($request->search);
+                if($search == ''){
+                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                    ->orderBy('id','desc')->paginate(20);
+                }else{
+                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                    ->orderBy('id','desc')
+                    ->whereHas('barang',function($q) use ($search){
+                        $q->where('nama_barang','LIKE',"%".$search."%")
+                        ->orWhere('harga_barang','LIKE',"%".$search."%");
+                    })
+                    ->paginate(20);
+                }
+            } else {
                 $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
                 ->orderBy('id','desc')
-                ->whereHas('barang',function($q) use ($search){
-                    $q->where('nama_barang','LIKE',"%".$search."%")
-                    ->orWhere('harga_barang','LIKE',"%".$search."%");
-                })
                 ->paginate(20);
+
+                // dd($barang);
             }
         } else {
-            $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
-            ->orderBy('id','desc')
-            ->paginate(20);
-
-            // dd($barang);
+            if ($request->has('search') && $request->search !== '') {
+                $search = trim($request->search);
+                if($search == ''){
+                    $barang = Barang::with('pemasok', 'kategori')
+                    ->orderBy('id','desc')->paginate(20);
+                }else{
+                    $barang = Barang::with('pemasok', 'kategori')
+                    ->orderBy('id','desc')
+                    ->where('nama_barang','LIKE',"%".$search."%")
+                    ->orWhere('harga_barang','LIKE',"%".$search."%")
+                    ->paginate(20);
+                }
+            } else {
+                $barang = Barang::with('pemasok', 'kategori')
+                ->orderBy('id','desc')
+                ->paginate(20);
+            }
         }
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();

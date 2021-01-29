@@ -14,8 +14,8 @@ Web Routes
 */
 
 Route::group(['namespace' => 'v1'], function () {
-    Route::get('/', 'ShopController@index')->name('shop');
-    Route::get('/login', function(){
+    Route::get('/shop', 'ShopController@index')->name('shop');
+    Route::get('/', function(){
         return redirect('login');
     });
     Route::get('detail/{id}','ShopController@detail')->name('shop.detail');
