@@ -13,7 +13,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Pemesanan Masuk</a>
           </div>
@@ -48,7 +48,7 @@
                             <tr>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
-                                <th>Jumlah Barang</th>
+                                <th>Jumlah Barang Dibeli</th>
                                 <th>Harga</th>
                                 <th>Tanggal Pemesanan</th>
                                 {{-- <th>Action</th> --}}
@@ -154,7 +154,10 @@
                 {data : function(data, a, b, c) {
                     return data.jumlah_barang+' '+data.satuan;
                 }, name: 'jumlah'},
-                {data : 'harga', name: 'harga'},
+                {data : 'harga', render:function(data,a,b,c){
+                        return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                    }
+                },
                 {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
                 // {
                 //   data : 'pengurus.gudang', render:function(data,a,b,c){
@@ -167,7 +170,12 @@
             rowGroup: {
                 dataSrc: 'pesanan.kode',
                 startRender: function(rows, group){
-                    return '<div class="float-left">Nomor Pemesanan: '+rows.data()[0].pesanan.nomor_pemesanan+' <br> Nama Pemesan: '+rows.data()[0].pesanan.nama_pemesan+`</div><div class="float-right"><a href="/v1/storage/out/create?pemesanan=${rows.data()[0].pemesanan_id}" class="btn btn-info btn-sm">Proses Pesanan</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
+                    console.log(rows.data()[0].pesanan);
+                    if (rows.data()[0].pesanan.storage_out.length < 1) {
+                        return `<div class="float-left">Nomor Pemesanan: ${rows.data()[0].pesanan.nomor_pemesanan} <br> Nama Pemesan: ${rows.data()[0].pesanan.nama_pemesan}</div><div class="float-right"><a href="/v1/storage/out/create?pemesanan=${rows.data()[0].pemesanan_id}" class="btn btn-info btn-sm">Proses Pesanan</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
+                    } else {
+                        return `<div class="float-left">Nomor Pemesanan: ${rows.data()[0].pesanan.nomor_pemesanan} <br> Nama Pemesan: ${rows.data()[0].pesanan.nama_pemesan}</div><div class="float-right"><span class="badge badge-success py-2 px-1" style="font-size: .7rem">Pemesanan Selesai Diproses</span>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
+                    }
                 },
                 endRender: function(rows, group){
                     // console.log(rows.data().length);

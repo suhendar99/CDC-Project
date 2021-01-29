@@ -63,8 +63,8 @@
                                             <tr>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
-                                                <th>Jumlah Barang</th>
-                                                <th>Penyimpanan</th>
+                                                <th>Stok Barang</th>
+                                                <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
                                                 <th>Action</th>
                                             </tr>
@@ -139,7 +139,7 @@
     @csrf
     @method('DELETE')
 </form>
-<!-- Modal -->
+<!-- Modal Detail Barang Masuk -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
@@ -208,6 +208,42 @@
       </div>
     </div>
 </div>
+
+<!-- Modal Penyimpanan Stok Barang -->
+<div class="modal fade" id="modalPenyimapanStok" tabindex="-1" aria-labelledby="penyimpananStok" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="penyimpananStok">Detail Penyimpanan Stok</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12">
+                  <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Kode Masuk Barang</th>
+                            <th>Jumlah Barang</th>
+                            <th>Rak</th>
+                            <th>Tingkat Rak</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                      <tbody id="dataPenyimpanan">
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -227,22 +263,10 @@
                 },
                 {data : function (data, type, row, meta) {
                         let van = '';
-                        console.log(data)
+                        // console.log(data)
                         let storageIn = data.barang.storage_in;
 
-                        for (var i = storageIn.length - 1; i >= 0; i--) {
-                            if(storageIn[i].gudang_id === data.gudang_id){
-                                let tingkat = `<a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="text-primary">Atur Penyimpanan</a>`;
-                                if (storageIn[i].storage.tingkat != null) {
-                                    tingkat = storageIn[i].storage.tingkat.rak.nama+'<br>Tingkat: '+storageIn[i].storage.tingkat.nama+'<br><a href="/v1/storage/penyimpanan/'+storageIn[i].storage.id+'" class="text-primary">Atur Penyimpanan</a>';
-                                }
-                                let col = '<div style="border-bottom: 1px solid #999;padding-bottom: 2px;"> Kode masuk: '+storageIn[i].kode+'<br>Jumlah: '+storageIn[i].storage.jumlah+' '+storageIn[i].storage.satuan+'<br>Rak: '+tingkat+'</div>';
-                                van += col;
-                            }
-                        }
-
-                        let o = '<div>'+ van + '</div>';
-                        return o;
+                        return `<a class="btn btn-info btn-sm col-md-12" data-toggle="modal" data-target="#modalPenyimapanStok" onclick="penyimpanan(${data.id},${data.gudang_id},${data.barang_kode})" data-id="${data.id}" style="cursor: pointer;" title="Detail">Detail</a>`;
 
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
@@ -390,6 +414,43 @@
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+        }
+
+        function penyimpanan(id, gudangId, barangKode){
+            $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
+
+            $.ajax({
+                url: "/api/v1/detail/penyimpanan/stock?id="+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    $('#dataPenyimpanan').html(``);
+                    let van = '';
+                    // console.log(response.data)
+                    let storageIn = response.data.barang.storage_in;
+
+                    for (var i = storageIn.length - 1; i >= 0; i--) {
+                        let space = `<tr style="font-size: .8rem;">
+                            <td id="kodeBarang">${storageIn[i].kode}</td>
+                            <td id="jumlahBarang">${storageIn[i].storage.jumlah}&nbsp;${storageIn[i].storage.satuan}</td>
+                            <td id="rak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.rak.nama) : ('Belum Diatur')}</td>
+                            <td id="tingkatRak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.nama) : ('Belum Diatur')}</td>
+                            <td id="aksi"><a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>
+                        </tr>`;
+
+                        van += space;
+                    }
+
+                    $('#dataPenyimpanan').append(van);
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">Tidak Ada Data</td></tr>`);
                     console.log(res)
                 }
             });
