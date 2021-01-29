@@ -16,12 +16,13 @@ class CreatePoItemsTable extends Migration
         Schema::create('po_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('po_id')->nullable()->constrained('pos')->onDelete('cascade');
+            $table->string('kode')->unique();
             $table->string('nama_barang',100);
-            $table->integer('jumlah');
-            $table->string('satuan',10);
-            $table->integer('harga');
-            $table->integer('diskon')->nullable();
-            $table->integer('pajak')->nullable();
+            $table->string('barang_kode')->nullable();
+            $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->integer('jumlah_barang');
+            $table->string('satuan');
+            $table->bigInteger('harga');
             $table->timestamps();
         });
     }

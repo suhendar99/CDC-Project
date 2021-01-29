@@ -59,20 +59,20 @@
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     @if(!isset($nosidebar))
-                    @if (Auth::user()->pelanggan_id != null)
-                        <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
-                    @elseif(Auth::user()->pemasok_id != null)
-                        <a class="dropdown-item" href="{{route('setPemasok.show')}}">Perbaharui Akun</a>
-                    @elseif(Auth::user()->karyawan_id != null)
-                        <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
-                    @elseif(Auth::user()->pengurus_gudang_id != null)
-                        <a class="dropdown-item" href="{{route('setPengurusGudang.show')}}">Perbaharui Akun</a>
-                    @elseif(Auth::user()->bank_id != null)
-                        <a class="dropdown-item" href="{{route('setBank.show')}}">Perbaharui Akun</a>
-                    @else
-                        <a class="dropdown-item" href="{{route('setAdmin.show')}}">Perbaharui Akun</a>
-                    @endif
-                    <a class="dropdown-item" href="{{route('setPass.show')}}">Perbaharui Password</a>
+                        @if (Auth::user()->pelanggan_id != null)
+                            <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
+                        @elseif(Auth::user()->pemasok_id != null)
+                            <a class="dropdown-item" href="{{route('setPemasok.show')}}">Perbaharui Akun</a>
+                        @elseif(Auth::user()->karyawan_id != null)
+                            <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
+                        @elseif(Auth::user()->pengurus_gudang_id != null)
+                            <a class="dropdown-item" href="{{route('setPengurusGudang.show')}}">Perbaharui Akun</a>
+                        @elseif(Auth::user()->bank_id != null)
+                            <a class="dropdown-item" href="{{route('setBank.show')}}">Perbaharui Akun</a>
+                        @else
+                            <a class="dropdown-item" href="{{route('setAdmin.show')}}">Perbaharui Akun</a>
+                        @endif
+                        <a class="dropdown-item" href="{{route('setPass.show')}}">Perbaharui Password</a>
                     @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();

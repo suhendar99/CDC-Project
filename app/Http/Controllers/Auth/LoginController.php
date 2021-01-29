@@ -58,11 +58,7 @@ class LoginController extends Controller
                 return redirect('/')->with('error','Akun Anda sedang menunggu persetujuan administrator kami.');
                 // return redirect('/')->with('error','Akun Anda sedang menunggu persetujuan administrator kami.');
             } else {
-                if (Auth::user()->pelanggan_id != null) {
-                    return redirect('/');
-                } else {
-                    return redirect()->route('home');
-                }
+                return redirect('/shop');
             }
         }else{
             return redirect()->route('login')

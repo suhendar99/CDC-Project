@@ -1,3 +1,4 @@
+@if (Auth::user()->pelanggan_id != null)
 @if (Auth::user() == true)
 <div id="cart-button" class=" active">
 	<div class="card bg-my-warning pointer rad-mod" onclick="showCart()">
@@ -105,6 +106,7 @@
 		</div>
 	</div>
 </div>
+@endif
 @endif
 @push('script')
     <script>
