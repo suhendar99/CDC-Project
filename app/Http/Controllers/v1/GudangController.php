@@ -85,6 +85,27 @@ class GudangController extends Controller
         ], 200);
     }
 
+    public function changeStatus($id)
+    {
+        $data = Gudang::find($id);
+
+        if ($data != null) {
+            $status = ($data->status == 0) ? 1 : 0;
+
+            $data->update([
+                'status' => $status
+            ]);
+            
+            return response()->json([
+                'data' => $data
+            ],200);
+        } else {
+            return response()->json([
+                'message' => __( 'Data tidak ditemukan.' )
+            ],400);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *

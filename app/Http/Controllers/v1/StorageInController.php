@@ -67,7 +67,12 @@ class StorageInController extends Controller
      */
     public function create()
     {
-        $gudang = Gudang::all();
+        $gudang = Gudang::whereHas('akunGudang', function($query){
+            $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+        })
+        ->where('status', 1)
+        ->get();
+
         return view('app.data-master.storage.in.create', compact('gudang'));
     }
 
