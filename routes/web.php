@@ -88,6 +88,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
         // Koperasi
         Route::resource('koperasi', 'KoperasiController');
+        // Pengaturan Transaksi
+        Route::resource('pengaturanTransaksi', 'PengaturanTransaksiController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Armada Pengiriman

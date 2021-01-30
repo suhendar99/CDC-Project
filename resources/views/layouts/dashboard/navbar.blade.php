@@ -58,7 +58,9 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/shop">Belanja</a>
+                    @if (Auth::user()->name == null)
+                        <a class="dropdown-item" href="/shop">Belanja</a>
+                    @endif
                     @if(!isset($nosidebar))
                         @if (Auth::user()->pelanggan_id != null)
                             <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>

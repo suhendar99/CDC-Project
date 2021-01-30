@@ -300,8 +300,26 @@
                     </li>
                     @endif
                     @if (isset($admin))
-                    <li>
-                        <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
+                    <li class="
+                        {{ Request::is('v1/setApp*') ? 'active' : false }}
+                        {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}
+                    ">
+                        <a href="#colapsePengaturan" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">settings</i> Pengaturan</a>
+                        <ul id="colapsePengaturan" class="collapse list-unstyled
+                            {{ Request::is('v1/setApp*') ? 'show' : false }}
+                            {{ Request::is('v1/pengaturanTransaksi*') ? 'show' : false }}
+                        ">
+                            <li class="
+                            {{ Request::is('v1/setApp*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('setApp.index')}}">Aplikasi</a>
+                            </li>
+                            <li class="
+                            {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pengaturanTransaksi.index')}}">Transaksi</a>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                 </ul>
