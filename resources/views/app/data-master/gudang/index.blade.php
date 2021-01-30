@@ -58,20 +58,25 @@
                         <img src="{{ asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="float-left">
-                                        <h5>{{ $gudang->nama }}</h5>
-                                        <span>{{ $gudang->nomor_gudang }}</span>
-                                    </div>
-                                    <div class="float-right">
-                                        <div class="dropdown">
-                                            <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                            <div class="dropdown-menu" aria-labelledby="dropmenu">
-                                                <a href="{{ route('gudang.edit', $gudang->id) }}" class="dropdown-item">Edit</a>
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $gudang->id }})" data-id="{{ $gudang->id }}">Detail</a>
-                                                <a href="{{ route('rak.index', $gudang->id) }}" class="dropdown-item">Rak Gudang</a>
-                                                <a href="#" class="dropdown-item" onclick="sweet({{ $gudang->id }})">Delete</a>
+                                <div class="col-md-8">
+                                    <h5>{{ $gudang->nama }}</h5>
+                                    <span>{{ $gudang->nomor_gudang }}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="dropdown">
+                                                <a href="#" title="Menu" class="dropdown-toggle p-2 float-right" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <div class="dropdown-menu" aria-labelledby="dropmenu">
+                                                    <a href="{{ route('gudang.edit', $gudang->id) }}" class="dropdown-item">Edit</a>
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $gudang->id }})" data-id="{{ $gudang->id }}">Detail</a>
+                                                    <a href="{{ route('rak.index', $gudang->id) }}" class="dropdown-item">Rak Gudang</a>
+                                                    <a href="#" class="dropdown-item" onclick="sweet({{ $gudang->id }})">Delete</a>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-outline-info btn-sm float-right statusGudang" style="font-size: .7rem;margin-top: 1px;" data-status="{{ $gudang->status }}" data-gudang-id="{{ $gudang->id }}" title="Status Gudang">Loading</button>
                                         </div>
                                     </div>
                                 </div>
@@ -213,6 +218,51 @@
     //         ]
     //     });
 
+        $(document).ready(function() {
+            $.each($('.statusGudang'), function(index, val) {
+                if ($(this).data('status') != 0) {
+                    $(this).removeClass('btn-outline-info');
+                    $(this).addClass('btn-info').text('Aktif');
+                } else {
+                    $(this).removeClass('btn-info');
+                    $(this).addClass('btn-outline-info').text('Tidak Aktif');
+                }
+                 /* iterate through array or object */
+                $(this).click(function(event) {
+                    /* Act on the event */
+                    let id = $(this).data('gudangId');
+                    let status = $(this).data('status');
+                    $(this).text('Loading');
+                    
+                    $.ajax({
+                        url: "/api/v1/gudang/"+id+"/status",
+                        method: "GET",
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: (response)=>{
+                            let result = response.data.status;
+
+                            if (result != 0) {
+                                $(this).removeClass('btn-outline-info');
+                                $(this).addClass('btn-info').text('Aktif');
+                                $(this).attr('data-status', 1);
+                            } else {
+                                $(this).removeClass('btn-info');
+                                $(this).addClass('btn-outline-info').text('Tidak Aktif');
+                                $(this).attr('data-status', 0);
+                            }
+                        },
+                        error: (xhr)=>{
+                            let res = xhr.responseJSON;
+                            console.log(res)
+                        }
+                    });
+                });
+            });
+
+        });
+
         function detail(id){
             $('#foto').text("Mendapatkan Data.......")
             $('.nama').text("Mendapatkan Data.......")
@@ -261,6 +311,7 @@
                 }
             });
         }
+
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
             formDelete.action = '/v1/gudang/'+id

@@ -47,6 +47,7 @@
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/sidebar.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/switch.css')}}">
     {{-- <link rel="stylesheet" href="{{ asset('css/rightbar.css')}}"> --}}
     <link rel="stylesheet" href="{{ asset('css/carousel.css')}}">
     @if(isset($shop))

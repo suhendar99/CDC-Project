@@ -24,11 +24,14 @@ class StorageController extends Controller
      */
     public function index(Request $request)
     {
-        // $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+        // $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.akunGudang.user')
         // ->get();
         // dd($data);
         if($request->ajax()){
             $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+            ->whereHas('gudang.akunGudang', function($query){
+                $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
