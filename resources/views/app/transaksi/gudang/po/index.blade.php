@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="float-right">
-                                <a href="{{route('po.create')}}" class="btn btn-primary btn-sm">Tambah Pemesanan</a>
+                                <a href="/shop" class="btn btn-primary btn-sm">Kembali Pesan</a>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between valign-center my-2">
-                                    <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a>
+                                    {{-- <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a> --}}
                                     <div>
                                         @if($d->status == 0)
                                         <span class="badge rounded-pill bg-my-primary p-2">Pesanan Sedang Diproses</span>
@@ -58,16 +58,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 border-right">
-                                    Dari : <br><span class="text-14 bold">{{$d->gudang->pemilik}}</span>
+                                    Dari : <br><span class="text-14 bold">{{$d->nama_pemesan}}</span>
                                 </div>
                                 <div class="col-md-6">
                                     Ke : <br><span class="text-14 bold">{{$d->penerima_po}}</span>
                                 </div>
-                                <div class="col-md-6 border-right">
-                                    Email : <br><span class="text-14 bold">{{$d->gudang->user->email}}</span>
-                                </div>
-                                <div class="col-md-6">
-                                    Email : <br><span class="text-14 bold">{{$d->email_penerima}}</span>
+                                <div class="col-md-12 border-right">
+                                    Nomor Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
                                 </div>
                                 <div class="col-md-12">
                                     <hr class=" my-1">
@@ -85,6 +82,13 @@
                     <center>-- Anda Belum Pernah Melakukan Pesanan --</center>
                 </div>
                 @endforelse
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            <div class="text-center">
+                <center>
+                    {{$data->links()}}
+                </center>
             </div>
         </div>
     </div>

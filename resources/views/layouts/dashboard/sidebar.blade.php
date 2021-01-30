@@ -55,6 +55,7 @@
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                         {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
                         {{ Request::is('v1/koperasi*') ? 'active' : false }}
+                        {{ Request::is('v1/armada*') ? 'active' : false }}
                         @endif
                     ">
                         @if (isset($admin) || isset($pengurusGudang))
@@ -70,6 +71,7 @@
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
                             {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
                             {{ Request::is('v1/koperasi*') ? 'show' : false }}
+                            {{ Request::is('v1/armada*') ? 'show' : false }}
                             @endif
                         ">
                         @endif
@@ -119,6 +121,11 @@
                                 {{ Request::is('v1/koperasi*') ? 'active' : false }}
                             ">
                                 <a href="{{route('koperasi.index')}}">Data Koperasi</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/armada*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('armada.index')}}">Data Armada Pengiriman</a>
                             </li>
                             @endif
                             @if(isset($pemasok))
@@ -293,8 +300,26 @@
                     </li>
                     @endif
                     @if (isset($admin))
-                    <li>
-                        <a href="{{route('setApp.index')}}" class="valign-center"><i class="material-icons">settings</i>Pengaturan</a>
+                    <li class="
+                        {{ Request::is('v1/setApp*') ? 'active' : false }}
+                        {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}
+                    ">
+                        <a href="#colapsePengaturan" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">settings</i> Pengaturan</a>
+                        <ul id="colapsePengaturan" class="collapse list-unstyled
+                            {{ Request::is('v1/setApp*') ? 'show' : false }}
+                            {{ Request::is('v1/pengaturanTransaksi*') ? 'show' : false }}
+                        ">
+                            <li class="
+                            {{ Request::is('v1/setApp*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('setApp.index')}}">Aplikasi</a>
+                            </li>
+                            <li class="
+                            {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pengaturanTransaksi.index')}}">Transaksi</a>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                 </ul>
