@@ -21,6 +21,7 @@ class CreateStockBarangsTable extends Migration
             $table->bigInteger('jumlah');
             $table->string('satuan');
             $table->bigInteger('harga_barang')->nullable();
+            $table->float('diskon', 11, 2)->nullable();
             $table->timestamps();
         });
     }

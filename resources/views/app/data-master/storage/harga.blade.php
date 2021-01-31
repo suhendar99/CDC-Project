@@ -50,7 +50,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label>Harga Barang Per-{{ $satuan }} <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
@@ -59,6 +59,20 @@
                                             <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend">
                                         </div>
                                         @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Diskon Barang <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <input type="numeric" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon" value="{{ $diskon }}" aria-describedby="diskonR" placeholder="00.00">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="diskonR">%</span>
+                                            </div>
+                                        </div>
+                                        @error('diskon')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

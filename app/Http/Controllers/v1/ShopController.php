@@ -35,6 +35,9 @@ class ShopController extends Controller
                 $search = trim($request->search);
                 if($search == ''){
                     $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                    ->whereHas('gudang', function($query){
+                        $query->where('status', 1);
+                    })
                     ->orderBy('id','desc')->paginate(20);
                 }else{
                     $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
@@ -43,10 +46,16 @@ class ShopController extends Controller
                         $q->where('nama_barang','LIKE',"%".$search."%")
                         ->orWhere('harga_barang','LIKE',"%".$search."%");
                     })
+                    ->whereHas('gudang', function($query){
+                        $query->where('status', 1);
+                    })
                     ->paginate(20);
                 }
             } else {
                 $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                ->whereHas('gudang', function($query){
+                    $query->where('status', 1);
+                })
                 ->orderBy('id','desc')
                 ->paginate(20);
 
@@ -162,7 +171,7 @@ class ShopController extends Controller
         // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
         $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
-        $store = Storage::find($id);
+        $store = StockBarang::find($id);
 
         $harga = $store->harga_barang * $request->jumlah;
 

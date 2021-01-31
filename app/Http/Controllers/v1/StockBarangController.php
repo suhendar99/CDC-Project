@@ -25,23 +25,25 @@ class StockBarangController extends Controller
         $data = StockBarang::with('barang', 'gudang')->findOrFail($id);
 
         $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
+        $diskon = ($data->diskon === null) ? null : $data->diskon ;
 
         $satuan = $data->satuan;
 
-        return view('app.data-master.storage.harga', compact('harga', 'id', 'satuan', 'data'));
+        return view('app.data-master.storage.harga', compact('harga', 'id', 'satuan', 'data', 'diskon'));
     }
 
     public function simpanHarga(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
             'harga_barang' => 'required|integer|min:0',
+            'diskon' => 'required|numeric|min:0',
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
 
-        StockBarang::findOrFail($id)->update($request->only('harga_barang'));
+        StockBarang::findOrFail($id)->update($request->only('harga_barang', 'diskon'));
 
         return redirect(route('storage.index'))->with('success', __( 'Harga Barang telah disimpan.' ));
     }
