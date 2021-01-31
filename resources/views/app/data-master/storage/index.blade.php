@@ -66,6 +66,7 @@
                                                 <th>Stok Barang</th>
                                                 <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
+                                                <th>Diskon Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -276,6 +277,15 @@
                             return 'Harga belum diatur.';
                         }
                     }, name: 'harga_barang'
+                },
+                {data : function(data,a,b,c){
+                        if (data.diskon !== null) {
+                            // return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                            return data.diskon+" %";
+                        } else {
+                            return 'Diskon belum diatur.';
+                        }
+                    }, name: 'diskon'
                 },
                 {data : 'action', name: 'action'}
             ]
