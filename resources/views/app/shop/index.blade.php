@@ -145,7 +145,7 @@
 										<span class="product-name">Dari {{$b->pelanggan->nama}} <br /> Desa {{$b->pelanggan->desa->nama}}</span>
 									</div>
 									<div class="col-12">
-										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},</span>
+										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
 									</div>
 	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
 	                                    <div class="dropdown">
@@ -198,7 +198,7 @@
                                         <span class="product-name">Dari {{$b->pemasok->nama}} <br /> Desa {{$b->pemasok->desa->nama}}</span>
                                     </div>
                                     <div class="col-12">
-                                        <span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},</span>
+                                        <span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
                                     </div>
                                     <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                                         <div class="dropdown">
