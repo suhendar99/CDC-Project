@@ -17,6 +17,14 @@ class Pelanggan extends Model
     {
         return $this->hasMany('App\Models\Order');
     }
+    public function barangWarung()
+    {
+        return $this->hasMany('App\Models\BarangWarung', 'pelanggan_id', 'id');
+    }
+    public function pemesananPembeli()
+    {
+        return $this->hasMany('App\Models\PemesananPembeli', 'pelanggan_id', 'id');
+    }
     public function desa()
     {
         return $this->belongsTo('App\Models\Desa');

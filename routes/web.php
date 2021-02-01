@@ -136,7 +136,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
-        Route::get('barangs','BarangController@getBarangByPelanggan')->name('get-barang');
+        Route::resource('barangWarung', 'BarangWarungController');
         // Pemesanan
         Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');

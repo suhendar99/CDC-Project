@@ -25,6 +25,11 @@ class StorageOut extends Model
     	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
 
+    public function barangWarung()
+    {
+        return $this->hasMany('App\Models\BarangWarung', 'storage_out_kode', 'kode');
+    }
+
     /**
      * StorageIn belongs to Gudang.
      *

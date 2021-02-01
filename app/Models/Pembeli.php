@@ -13,4 +13,8 @@ class Pembeli extends Model
     {
         return $this->hasMany('App\User');
     }
+    public function pemesananPembeli()
+    {
+        return $this->hasMany('App\Models\PemesananPembeli', 'pembeli_id', 'id');
+    }
 }

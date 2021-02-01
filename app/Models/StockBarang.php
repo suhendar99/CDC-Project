@@ -35,4 +35,9 @@ class StockBarang extends Model
     	// belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Gudang');
     }
+
+    public function barangWarung()
+    {
+        return $this->hasMany('App\Models\BarangWarung', 'stok_id', 'id');
+    }
 }

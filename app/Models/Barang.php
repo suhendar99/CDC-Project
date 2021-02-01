@@ -23,6 +23,10 @@ class Barang extends Model
     {
         return static::with('kategori','pemasok')->orderBy('id','desc')->get();
     }
+    public function pemesananPembeliItem()
+    {
+        return $this->hasMany('App\Models\PemesananPembeliItem', 'pemesanan_pembeli_id', 'id');
+    }
 
     /**
      * Barang has many StorageIn.
