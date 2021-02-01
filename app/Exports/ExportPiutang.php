@@ -16,7 +16,7 @@ class ExportPiutang implements FromView,ShouldAutoSize
 
     function __construct($data){
         $this->data = $data;
-        $this->path = 'app.transaksi.rekapitulasi.pembelian.';
+        $this->path = 'app.data-master.piutang.';
     }
     public function view(): View
     {

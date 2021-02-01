@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
+use App\models\Bulky;
 use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
+use App\Models\Pembeli;
 use App\Models\PengurusGudang;
 use App\Notifications\NewUser;
 use App\Providers\RouteServiceProvider;
@@ -74,7 +76,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if ($data['role'] == 'pelanggan') {
+        if ($data['role'] == 'warung') {
             if ($data['keanggotaan'] == 1) {
                 $pelanggan = Pelanggan::create([
                     'nama' => $data['nama'],
@@ -118,44 +120,38 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
-                'keanggotaan' => $data['keanggotaan'],
-                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'pemasok_id' => $pemasok->id,
                 'email_verified_at' => $data['email_verified_at'],
                 'status' => 1
             ]);
-        } elseif ($data['role'] == 'karyawan') {
-            $karyawan = Karyawan::create([
+        } elseif ($data['role'] == 'bulky') {
+            $bulki = Bulky::create([
                 'nama' => $data['nama'],
             ]);
 
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
-                'keanggotaan' => $data['keanggotaan'],
-                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
-                'karyawan_id' => $karyawan->id,
+                'bulky_id' => $bulki->id,
                 'email_verified_at' => $data['email_verified_at'],
                 'status' => 1
             ]);
-        } elseif ($data['role'] == 'bank') {
-            $bank = Bank::create([
+        } elseif ($data['role'] == 'pembeli') {
+            $pembeli = Pembeli::create([
                 'nama' => $data['nama'],
             ]);
 
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
-                'keanggotaan' => $data['keanggotaan'],
-                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
-                'bank_id' => $bank->id,
+                'pembeli_id' => $pembeli->id,
                 'email_verified_at' => $data['email_verified_at'],
                 'status' => 1
             ]);
-        } elseif ($data['role'] == 'gudang') {
+        } elseif ($data['role'] == 'retail') {
             $pengurusGudang = PengurusGudang::create([
                 'nama' => $data['nama'],
             ]);
@@ -163,13 +159,11 @@ class RegisterController extends Controller
             return User::create([
                 'username' => $data['username'],
                 'email' => $data['email'],
-                'keanggotaan' => $data['keanggotaan'],
-                'koperasi_id' => $data['koperasi_id'],
                 'password' => Hash::make($data['password']),
                 'pengurus_gudang_id' => $pengurusGudang->id,
                 'email_verified_at' => $data['email_verified_at'],
                 'status' => 2,
-                'jenis' => $data['jenis']
+                // 'jenis' => $data['jenis']
             ]);
             if ($data['jenis'] == null) {
                 return back()->with('error', 'Mohon pilih Jenis Usaha !');

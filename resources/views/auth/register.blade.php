@@ -1,11 +1,12 @@
 @php
     $koperasi = App\Models\Koperasi::all();
+    $set = App\Models\PengaturanAplikasi::find(1);
 @endphp
 @extends('layouts.app')
 
 @section('content')
 <div class="container ">
-    <div class="row fullscreen">
+    <div class="row fullscreen" style="margin-top: -50px;">
         <div class="col-md-7">
             @if (session()->has('success'))
 		    <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -23,7 +24,17 @@
 		            <span aria-hidden="true">&times;</span>
 		        </button>
 		    </div>
-		    @endif
+            @endif
+            <div class="col-md-12">
+                <div class="text-center mb-1">
+                    <img src="{{asset($set->logo_app)}}" alt="" height="65" width="85">
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <div class="text-center">
+                    <h6><b>( <span class="text-my-primary">Consolidated</span> <span class="text-warning">Distribution Center</span> )</b></h6>
+                </div>
+            </div>
             <div class="card shadow">
                 <div class="ml-4 p-2 font"><i class="fas fa-user-plus text-warning"></i> <small>{{ __('Register') }}</small></div>
                 <hr class="m-0">
@@ -33,6 +44,30 @@
                         @csrf
                         <input type="hidden" name="email_verified_at" value="">
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="col-md-12">{{ __('Role') }} <small class="text-danger">*harus pilih</small></label>
+
+                                    <div class="col-md-12">
+                                        <select name="role" id="role" class="form-control @error('role') is-invalid @enderror">
+                                            <option value="">--Pilih Role--</option>
+                                            <option value="pemasok">Pemasok</option>
+                                            <option value="bulky">Bulky</option>
+                                            <option value="retail">Retail</option>
+                                            <option value="warung">Warung</option>
+                                            <option value="pembeli">pembeli</option>
+                                        </select>
+
+                                        @error('role')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-none" id="anggota">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Keanggotaan Koperasi') }} <small class="text-danger">*harus pilih</small></label>
@@ -69,29 +104,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="name" class="col-md-12">{{ __('Tujuan Mendaftar') }}</label>
-
-                                    <div class="col-md-12">
-                                        <select name="role" id="role" class="form-control">
-                                            <option value="">--Pilih Role--</option>
-                                            <option value="pelanggan">Membeli</option>
-                                            <option value="pemasok">Penjual Barang</option>
-                                            <option value="karyawan">Karyawan</option>
-                                            <option value="bank">Bank</option>
-                                            <option value="gudang">Menjual</option>
-                                        </select>
-
-                                        @error('role')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <input type="hidden" name="role" value="pelanggan">
                             <div class="col-md-6" id="koperasi">
                                 <div class="form-group">
                                     <label for="name" class="col-md-12">{{ __('Pilih Koperasi') }} </label>
@@ -107,30 +119,6 @@
                                         </select>
 
                                         @error('role')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row d-none hide" id="show" style="display: none;">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="name" class="col-md-12">{{ __('Jenis Usaha') }}</label>
-
-                                    <div class="col-md-12">
-                                        <select name="jenis" id="" class="form-control">
-                                            {{-- <option value="">--Pilih Jenis Usaha--</option> --}}
-                                            <option value="0">Perorangan</option>
-                                            <option value="1">Instansi</option>
-                                            {{-- <option value="karyawan">Karyawan</option> --}}
-                                            {{-- <option value="bank">Bank</option> --}}
-                                            {{-- <option value="gudang">Pengurus Gudang</option> --}}
-                                        </select>
-
-                                        @error('jenis')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -222,16 +210,24 @@
 @endsection
 @push('script')
 <script>
-    $('#show').hide();
+    $('#anggota').hide();
     $('#role').on('change', function () {
         var role = $(this).val();
-        if (role == 'gudang') {
-            $('#show').fadeIn();
+        if (role == 'warung') {
+            $('#anggota').show();
+            $('#anggota').removeClass('d-none');
         } else {
-            $('#show').fadeOut();
+            $('.d-none').removeClass('d-none');
+            $('.d-none').show();
+            $('#nameFull').removeClass('col-md-6');
+            $('#nameFull').addClass('col-md-12');
+            $('#koperasi').hide();
+            $('#anggota').addClass('d-none');
+        }
+        if (role == "") {
+            $(".hide").addClass('d-none');
         }
     });
-    console.log($('#show').val());
     $('#keanggotaan').on('change', function(){
         var id = $(this).val();
         if (id == 1) {

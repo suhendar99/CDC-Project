@@ -202,21 +202,21 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
         // Laporan
-        Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
-        Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
-        Route::post('laporan-barang-masuk-excel','LaporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
+        Route::get('laporan-barang-masuk','laporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
+        Route::post('laporan-barang-masuk-pdf','laporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
+        Route::post('laporan-barang-masuk-excel','laporanPengurusGudangController@LaporanBarangMasukExcel')->name('laporan.barang.masuk.excel');
 
-        Route::get('laporan-barang-keluar','LaporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
-        Route::post('laporan-barang-keluar-pdf','LaporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
-        Route::post('laporan-barang-keluar-excel','LaporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
+        Route::get('laporan-barang-keluar','laporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
+        Route::post('laporan-barang-keluar-pdf','laporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
+        Route::post('laporan-barang-keluar-excel','laporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
 
-        Route::get('laporan-barang','LaporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
-        Route::post('laporan-barang-pdf','LaporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
-        Route::post('laporan-barang-excel','LaporanPengurusGudangController@LaporanBarangExcel')->name('laporan.barang.excel');
+        Route::get('laporan-barang','laporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
+        Route::post('laporan-barang-pdf','laporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
+        Route::post('laporan-barang-excel','laporanPengurusGudangController@LaporanBarangExcel')->name('laporan.barang.excel');
 
-        Route::get('laporan-po','LaporanPengurusGudangController@showLaporanPo')->name('laporan.po');
-        Route::post('laporan-po-pdf','LaporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
-        Route::post('laporan-po-excel','LaporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
+        Route::get('laporan-po','laporanPengurusGudangController@showLaporanPo')->name('laporan.po');
+        Route::post('laporan-po-pdf','laporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
+        Route::post('laporan-po-excel','laporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
         // End Laporan
         // Piutang
         Route::resource('piutang', 'PiutangController');

@@ -11,6 +11,7 @@ use App\Models\Barang;
 use App\Models\BarangPesanan;
 use App\Models\Keranjang;
 use App\Models\Pemesanan;
+use App\Models\PengaturanTransaksi;
 use App\Models\Piutang;
 use App\Models\Storage;
 use App\Models\StockBarang;
@@ -76,6 +77,7 @@ class ShopController extends Controller
         // $data = SaranaPrasaranaUptd::find($id);
         if (Auth::user()) {
             $barangKeranjang = Keranjang::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('created_at','desc')->get();
+
             $category = $this->category->getData();
             return view($this->shopPath.'index', compact('category','barang','else','barangKeranjang'));
         }else {
@@ -86,8 +88,9 @@ class ShopController extends Controller
 
     public function showPemesanan($id)
     {
+        $biaya = PengaturanTransaksi::find(1);
         $data = StockBarang::find($id);
-        return view($this->shopPath.'pesanan',compact('id','data'));
+        return view($this->shopPath.'pesanan',compact('id','data','biaya'));
     }
 
     public function pemesanan(Request $request, $id)
@@ -164,7 +167,7 @@ class ShopController extends Controller
 
         $store = Storage::find($id);
 
-        $harga = $store->harga_barang * $request->jumlah;
+        $harga = $request->harga * $request->jumlah;
 
         $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
             'kode' => $kode_faker,
@@ -181,20 +184,22 @@ class ShopController extends Controller
             'nama_barang' => $request->nama_barang,
             'satuan' => $request->satuan,
             'jumlah_barang' => $request->jumlah,
+            'pajak' => $request->pajak,
+            'biaya_admin' => $request->biaya_admin,
             'harga' => $harga
         ]);
 
         if ($request->pembayaran == 'later') {
-            $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+            // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
             // dd($hutang);
             Piutang::create([
                 'barang_id' => $pemesanan->id,
                 'tanggal'=> Carbon::now(),
                 'nama_pembeli' => Auth::user()->pelanggan->nama,
-                'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+                'hutang' => $harga,
             ]);
         }
-        return redirect('/')->with('sukses','Pesanan Telah dibuat !');
+        return redirect('/shop')->with('sukses','Pesanan Telah dibuat !');
     }
     public function cariKategori($id)
     {

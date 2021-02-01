@@ -2,6 +2,10 @@
     $icon = 'receipt_long';
     $pageTitle = 'Pemesanan';
     $nosidebar = true;
+    $hargaBarang = $data->harga_barang;
+    $pajak = $biaya->pajak * $hargaBarang/100;
+    $biayaAdmin = $biaya->biaya_admin;
+    $totalBiaya = $hargaBarang - $pajak + $biayaAdmin;
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -37,32 +41,41 @@
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pelanggan->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
-                            <input type="hidden" name="harga" id="harga" value="{{$data->harga_barang}}">
+                            <input type="hidden" name="harga" id="harga" value="{{$totalBiaya}}">
                             <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->barang->kode_barang}}">
+                            <input type="hidden" name="pajak" value="{{$pajak}}">
+                            <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <h6>Nama Barang</h6>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-8">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="nama"><h6>{{$data->barang->nama_barang}}</h6></div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <h6>Harga Barang</h6>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-8">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->harga_barang,0,',','.')}}</h6></div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <h6>Dari Gudang</h6>
                                     </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-8">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->gudang->nama}}</h6></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajak,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="float-left">:</div>
+                                        <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiaya,0,',','.')}} </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">

@@ -22,6 +22,8 @@ class CreatePoItemsTable extends Migration
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan');
+            $table->integer('pajak');
+            $table->integer('biaya_admin');
             $table->bigInteger('harga');
             $table->timestamps();
         });

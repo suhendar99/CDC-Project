@@ -18,7 +18,6 @@
         <th style="border: 1px solid black">Waktu Transaksi</th>
         <th style="border: 1px solid black">Nama Pembeli</th>
         <th style="border: 1px solid black">Jumlah Hutang</th>
-        <th style="border: 1px solid black">Nama Barang</th>
         <th style="border: 1px solid black">Jatuh Tempo</th>
     </tr>
     </thead>
@@ -27,15 +26,11 @@
         @foreach($data as $a)
             <tr>
                 <td style="border: 1px solid black">{{ $no++ }}</td>
+                <td style="border: 1px solid black">{{ $a->pemesanan->kode }}</td>
                 <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
-                <td style="border: 1px solid black">{{ $a->no_pembelian }}</td>
-                <td style="border: 1px solid black">{{ $a->no_kwitansi }}</td>
-                <td style="border: 1px solid black">{{ $a->no_surat_jalan }}</td>
-                <td style="border: 1px solid black">{{ $a->nama_penjual }}</td>
-                <td style="border: 1px solid black">{{ $a->barang }}</td>
-                <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>
-                <td style="border: 1px solid black">{{ $a->harga }}</td>
-                <td style="border: 1px solid black">{{ $a->total }}</td>
+                <td style="border: 1px solid black">{{ $a->nama_pembeli }}</td>
+                <td style="border: 1px solid black">{{ $a->hutang }}</td>
+                <td style="border: 1px solid black">{{ $a->jatuh_tempo }}</td>
             </tr>
         @endforeach
     </tbody>

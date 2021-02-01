@@ -25,8 +25,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('jenis')->comment('0 = Perorangan, 1 = Instansi')->nullable();
             $table->foreignId('koperasi_id')->nullable()->constrained('koperasis')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
-            $table->foreignId('karyawan_id')->nullable()->constrained('karyawans')->onDelete('cascade');
-            $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
+            $table->foreignId('bulky_id')->nullable()->constrained('bulkies')->onDelete('cascade');
+            $table->foreignId('pembeli_id')->nullable()->constrained('pembelis')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
             $table->timestamp('approved_at')->nullable();

@@ -4,7 +4,7 @@
             <div class="sidebar-content">
                 <div class="sidebar-header">
                     <center>
-                        @if($set->logo_tab != null)
+                        @if($set->logo_app != null)
                         <img src="{{asset($set->logo_app)}}" height="50" class="scale-down my-3">
                         @else
                         <img src="{{asset('images/logo-app.png')}}" height="50" class="scale-down my-3">
