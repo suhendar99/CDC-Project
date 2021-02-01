@@ -201,6 +201,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
+        Route::get('/v1/rak/{id}/status', 'RakController@changeStatus');
         // Laporan
         Route::get('laporan-barang-masuk','LaporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
         Route::post('laporan-barang-masuk-pdf','LaporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');

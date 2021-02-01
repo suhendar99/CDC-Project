@@ -29,13 +29,39 @@ class RakController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data)use($gudang){
-                    return '<a href="/v1/gudang/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    if ($data->status == 0) {
+                        return '<a href="/v1/gudang/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" href="#" class="btn btn-outline-dark btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Tidak Penuh</button>';
+                    } else {
+                        return '<a href="/v1/gudang/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" class="btn btn-success btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Penuh</button>';
+                    }
+                    
                 })
                 ->make(true);
         }
         $gudang = Gudang::findOrFail($gudang);
 
         return view('app.data-master.gudang.rak.index', compact('gudang'));
+    }
+
+    public function changeStatus($id)
+    {
+        $data = Rak::find($id);
+
+        if ($data != null) {
+            $status = ($data->status == 0) ? 1 : 0;
+
+            $data->update([
+                'status' => $status
+            ]);
+            
+            return response()->json([
+                'data' => $data
+            ],200);
+        } else {
+            return response()->json([
+                'message' => __( 'Data tidak ditemukan.' )
+            ],400);
+        }
     }
 
     /**
@@ -69,7 +95,8 @@ class RakController extends Controller
             'panjang' => 'required|numeric|min:0',
             'lebar' => 'required|numeric|min:0',
             'tinggi' => 'required|numeric|min:0',
-            'tingkat' => 'required|numeric|min:0'
+            'tingkat' => 'required|numeric|min:0',
+            'kapasitas_berat' => 'required|numeric|min:0'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -79,9 +106,9 @@ class RakController extends Controller
 
         $faker = \Faker\Factory::create('id_ID');
 
-        $rak = Rak::create($request->only('nama', 'lebar', 'panjang', 'tinggi')+[
+        $rak = Rak::create($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat')+[
             'gudang_id' => $gudang,
-            'kode' => $faker->unique()->regexify('([A-Z]{5})+([0-9]{7})')
+            'kode' => $faker->unique()->regexify('([A-Z]{3})+([0-9]{7})')
         ]);
 
         for ($i=1; $i <= (integer)$request->tingkat; $i++) { 

@@ -7,7 +7,7 @@
   $storageIn = \App\Models\StorageIn::all();
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
-  $gudang = App\Models\Gudang::where('user_id',Auth::user()->id)->get();
+  $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->get();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -124,6 +124,20 @@
             <div class="float-left ml-2" id="nig"></div>
           </div>
           <div class="col-md-5">
+            Status Gudang
+          </div>
+          <div class="col-md-7">
+            <div class="float-left">:</div>
+            <div class="float-left ml-2" id="status"></div>
+          </div>
+          <div class="col-md-5">
+            Ruang Penyimpanan Gudang
+          </div>
+          <div class="col-md-7">
+            <div class="float-left">:</div>
+            <div class="float-left ml-2" id="statusPenuh"></div>
+          </div>
+          <div class="col-md-5">
             Nama Gudang
           </div>
           <div class="col-md-7">
@@ -238,12 +252,29 @@
         "Google Hybrid"     : ghybrid
     };
     gudang.forEach(async function (element) {
+        let hitungan = 0;
+
+        $.each(element.rak, function(index, val) {
+           if (val.status == 1) {
+              hitungan++
+           }
+        });
+        let rak = 'btn-primary';
+
+        if (element.rak.length == 0) {
+          rak = 'btn-dark';
+        } else if (hitungan == element.rak.length) {
+          rak = 'btn-danger';
+        }else{
+          rak = 'btn-primary';
+        }
+
         var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
         <b>Gudang : ${element.nama}</b><br />
         Milik : ${element.pemilik}<br />
-        <a href="#" class="btn btn-primary btn-sm btn-block text-white" onclick="detailGudang(${element.id})">Lihat Detail</a>
+        <a href="#" class="btn ${rak} btn-sm btn-block text-white" onclick="detailGudang(${element.id})">Lihat Detail</a>
         `))
-        console.log(element.id);
+        // console.log(element.id);
     })
     let gudangGudang = L.layerGroup(group)
 
@@ -267,6 +298,8 @@
 
         $('#titleGudang').text(`Wait.......`);
         $('#nig').text(`Wait.......`);
+        $('#status').text(`Wait.......`)
+        $('#statusPenuh').text('Wait.......');
         $('#namaGudang').text(`Wait.......`);
         $('#telepon').text(`Wait.......`);
         $('#hariKerja').text(`Wait.......`);
@@ -279,8 +312,22 @@
             success: function (response) {
                 var data = response.data;
                 $.each(data, function (a, b) {
+                    let hitungan = 0;
                     $('#titleGudang').text(`Detail Gudang `+b.nama);
                     $('#nig').text(b.nomor_gudang);
+                    $('#status').text((b.status == 0) ? 'Tidak Aktif' : 'Aktif');
+                    $.each(b.rak, function(index, val) {
+                       if (val.status == 1) {
+                          hitungan++
+                       }
+                    });
+                    if (b.rak.length == 0) {
+                      $('#statusPenuh').text('Belum ada rak');
+                    } else if (hitungan == b.rak.length) {
+                      $('#statusPenuh').html('<span class="text-danger">Gudang sudah penuh</span>')
+                    }else{
+                      $('#statusPenuh').text('Masih ada ruang')
+                    }
                     $('#namaGudang').text(b.nama);
                     $('#telepon').text(b.kontak);
                     $('#hariKerja').text(b.hari);
