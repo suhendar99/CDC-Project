@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Karyawan extends Model
+class Bulky extends Model
 {
-    protected $table = 'karyawans';
+    protected $table = 'bulkies';
     protected $guarded = [];
 
     public function user()

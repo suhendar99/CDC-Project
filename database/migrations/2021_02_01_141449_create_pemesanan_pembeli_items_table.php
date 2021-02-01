@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePoItemsTable extends Migration
+class CreatePemesananPembeliItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,18 @@ class CreatePoItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('po_items', function (Blueprint $table) {
+        Schema::create('pemesanan_pembeli_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('po_id')->nullable()->constrained('pos')->onDelete('cascade');
             $table->string('kode')->unique();
             $table->string('nama_barang',100);
-            $table->string('barang_kode')->nullable();
+            $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan');
+            $table->bigInteger('harga');
             $table->integer('pajak');
             $table->integer('biaya_admin');
-            $table->bigInteger('harga');
+            $table->foreignId('pemesanan_pembeli_id')->constrained('pemesanan_pembelis')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -36,6 +36,6 @@ class CreatePoItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('po_items');
+        Schema::dropIfExists('pemesanan_pembeli_items');
     }
 }

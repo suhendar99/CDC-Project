@@ -55,10 +55,18 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'pemilik@makerindo.com',
-            'username' => 'pemilik',
+            'email' => 'retail@makerindo.com',
+            'username' => 'retail',
             'password' => Hash::make('12341234'),
             'pengurus_gudang_id' => 1,
+            'approved_at' => now(),
+            'status' => 1
+        ]);
+        User::create([
+            'email' => 'bulky@makerindo.com',
+            'username' => 'bulky',
+            'password' => Hash::make('12341234'),
+            'bulky_id' => 1,
             'approved_at' => now(),
             'status' => 1
         ]);
@@ -71,13 +79,13 @@ class UserSeeder extends Seeder
             'approved_at' => now(),
             'status' => 1
         ]);
-        // User::create([
-        //     'email' => 'bank@makerindo.com',
-        //     'username' => 'Bank',
-        //     'password' => Hash::make('12341234'),
-        //     'bank_id' => 1,
-        //     'approved_at' => now(),
-        //     'status' => 1
-        // ]);
+        User::create([
+            'email' => 'pembeli@makerindo.com',
+            'username' => 'pembeli',
+            'password' => Hash::make('12341234'),
+            'pembeli_id' => 1,
+            'approved_at' => now(),
+            'status' => 1
+        ]);
     }
 }
