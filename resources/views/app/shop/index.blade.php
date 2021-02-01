@@ -85,7 +85,7 @@
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->barang->nama_barang}}</span>
+										<span class="product-name">{{$b->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
 									</div>
 									<div class="col-12">
 										<span class="product-name">Dari {{$b->gudang->nama}} <br /> Desa {{$b->gudang->desa->nama}}</span>
@@ -125,27 +125,27 @@
 				<div class="col-md-3 col-4">
 					{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 						<div class="card item-card">
-							@if(count($b->stok->barang->foto) < 1 || $b->stok->barang->foto == null)
+							@if(count($b->storageOut->barang->foto) < 1 || $b->storageOut->barang->foto == null)
 							<img src="{!! asset('/images/image-not-found.jpg') !!}">
 							@else
 							{{-- {{dd($b)}} --}}
-							<img src="{{asset($b->stok->barang->foto[0]->foto)}}">
+							<img src="{{asset($b->storageOut->barang->foto[0]->foto)}}">
 							@endif
 							<div class="card-body">
 								<div class="row">
 									<div class="col-12">
 										<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
-										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->stok->barang->kategori->nama}}</span>
+										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageOut->barang->kategori->nama}}</span>
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->stok->barang->nama_barang}}</span>
+										<span class="product-name">{{$b->storageOut->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
 									</div>
 									<div class="col-12">
 										<span class="product-name">Dari {{$b->pelanggan->nama}} <br /> Desa {{$b->pelanggan->desa->nama}}</span>
 									</div>
 									<div class="col-12">
-										<span class="product-price">Rp. {{ number_format($b->stok->harga_barang,0,',','.')}},</span>
+										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},</span>
 									</div>
 	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
 	                                    <div class="dropdown">
@@ -192,7 +192,7 @@
                                         <span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
                                     </div>
                                     <div class="col-12">
-                                        <span class="product-name">{{$b->nama_barang}}</span>
+                                        <span class="product-name">{{$b->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
                                     </div>
                                     <div class="col-12">
                                         <span class="product-name">Dari {{$b->pemasok->nama}} <br /> Desa {{$b->pemasok->desa->nama}}</span>

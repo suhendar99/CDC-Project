@@ -239,6 +239,23 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="
+                        {{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}
+                    ">
+                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/pemesananMasukPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
+                        " id="transaksiSubmenu">
+                            <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
+                                <a href="{{route('pemesananMasukPembeli.index')}}">Pemesanan Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
+                                <a href="{{route('pemesananKeluarPembeli.index')}}">Pemesanan Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
                     {{-- <li>
                         <a href="#transSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">receipt_long</i>Data Transaksi</a>

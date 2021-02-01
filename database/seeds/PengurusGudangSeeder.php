@@ -19,6 +19,7 @@ class PengurusGudangSeeder extends Seeder
             'kecamatan_id' => 1101010,
             'kabupaten_id' => 1101,
             'provinsi_id' => 11,
+            'status' => 1,
         ];
         DB::table('pengurus_gudangs')->insert($akun);
     }

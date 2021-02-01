@@ -15,10 +15,10 @@ class CreateBarangWarungsTable extends Migration
     {
         Schema::create('barang_warungs', function (Blueprint $table) {
             $table->id();
-            // $table->string('stok_kode');
-            // $table->foreign('stok_kode')->references('kode')->on('stock_barangs')->onDelete('cascade');
-            $table->foreignId('stok_id')->nullable()->constrained('stock_barangs')->onDelete('cascade');
+            $table->string('storage_out_kode');
+            $table->foreign('storage_out_kode')->references('kode')->on('storage_outs')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
+            $table->bigInteger('harga_barang')->nullable();
             $table->bigInteger('jumlah');
             $table->string('satuan', 20);
             $table->dateTime('waktu');
