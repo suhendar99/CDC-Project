@@ -137,7 +137,8 @@ class GudangController extends Controller
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
             'alamat' => 'required|string|max:200',
-            'kapasitas' => 'required|numeric',
+            'kapasitas_meter' => 'required|numeric|min:0',
+            'kapasitas_berat' => 'required|numeric|min:0',
             'desa_id' => 'required',
             'pemilik' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
@@ -160,7 +161,7 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/".$date.'/'.$kode
@@ -171,7 +172,7 @@ class GudangController extends Controller
                     'gudang_id' => $gudang_id
                 ]));
             } else {
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/".$date.'/'.$kode
                 ]));
@@ -199,7 +200,7 @@ class GudangController extends Controller
      */
     public function show($id)
     {
-        $data = Gudang::with('desa.kecamatan.kabupaten.provinsi')->where('id',$id)->get();
+        $data = Gudang::with('desa.kecamatan.kabupaten.provinsi', 'rak')->where('id',$id)->get();
 
         return response()->json([
             'data' => $data
@@ -234,7 +235,8 @@ class GudangController extends Controller
             'long' => 'required',
             'alamat' => 'required|string|max:200',
             'kontak' => 'required|string|regex:/(08)[0-9]{9}/',
-            'kapasitas' => 'required|numeric',
+            'kapasitas_meter' => 'required|numeric|min:0',
+            'kapasitas_berat' => 'required|numeric|min:0',
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
             'hari' => 'required|',
@@ -251,12 +253,12 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
                     'foto' => 'upload/foto/gudang/'.$foto
                 ]));
 
             } else {
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas','jam_buka','jam_tutup','hari','desa_id','pemilik')));
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik')));
             }
         }
         return back()->with('success',$this->alert.'Diedit !');

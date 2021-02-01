@@ -21,7 +21,8 @@ class CreateGudangsTable extends Migration
             $table->string('long')->nullable();
             $table->string('kontak');
             $table->string('pemilik');
-            $table->integer('kapasitas');
+            $table->integer('kapasitas_meter');
+            $table->float('kapasitas_berat', 11, 2);
             $table->time('jam_buka');
             $table->time('jam_tutup');
             $table->string('hari');

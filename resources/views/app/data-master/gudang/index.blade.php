@@ -61,6 +61,21 @@
                                 <div class="col-md-8">
                                     <h5>{{ $gudang->nama }}</h5>
                                     <span>{{ $gudang->nomor_gudang }}</span>
+                                    @php
+                                        $status = 0;
+                                        foreach ($gudang->rak as $value) {
+                                            if ($value->status == 1) {
+                                                $status++;
+                                            }
+                                        }
+
+                                        if ($gudang->rak_count != 0 && $status == $gudang->rak_count) {
+                                            echo '<span class="text-danger">Gudang Penuh</span>';
+                                        } else {
+                                            echo "";
+                                        }
+                                        
+                                    @endphp
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
@@ -133,52 +148,62 @@
                 <span>Foto Gudang</span><br>
                 <div id="foto" class="my-4"></div>
             </div>
-              <div class="col-12">
+              <div class="col-6">
                   <table class="table">
                       <tbody>
                         <tr>
                             <th scope="row">Nama Gudang</th>
-                            <td class="nama"></td>
+                            <td id="nama"></td>
                         </tr>
                         <tr>
                           <th scope="row">Kontak</th>
-                          <td class="kontak"></td>
+                          <td id="kontak"></td>
                         </tr>
                         <tr>
                           <th scope="row">hari Kerja</th>
-                          <td class="hari"></td>
+                          <td id="hari"></td>
                         </tr>
                         <tr>
                           <th scope="row">Jam Buka</th>
-                          <td class="buka"></td>
+                          <td id="buka"></td>
                         </tr>
                         <tr>
                           <th scope="row">Jam Tutup</th>
-                          <td class="tutup"></td>
+                          <td id="tutup"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Kapasitas</th>
-                          <td class="kapasitas"></td>
+                          <th scope="row">Kapasitas Luas</th>
+                          <td id="kapasitas_meter"></td>
                         </tr>
+                        <tr>
+                          <th scope="row">Kapasitas Berat</th>
+                          <td id="kapasitas_berat"></td>
+                        </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="col-6">
+                  <table class="table">
+                      <tbody>
                         <tr>
                           <th scope="row">Provinsi</th>
-                          <td class="provinsi"></td>
+                          <td id="provinsi"></td>
                         </tr>
                         <tr>
                           <th scope="row">Kabupaten</th>
-                          <td class="kabupaten"></td>
+                          <td id="kabupaten"></td>
                         </tr>
                         <tr>
                           <th scope="row">Kecamatan</th>
-                          <td class="kecamatan"></td>
+                          <td id="kecamatan"></td>
                         </tr>
                         <tr>
                           <th scope="row">Desa</th>
-                          <td class="desa"></td>
+                          <td id="desa"></td>
                         </tr>
                         <tr>
                           <th scope="row">Alamat</th>
-                          <td class="alamat"></td>
+                          <td id="alamat"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -223,9 +248,11 @@
                 if ($(this).data('status') != 0) {
                     $(this).removeClass('btn-outline-info');
                     $(this).addClass('btn-info').text('Aktif');
+                    $(this).attr('title', 'Status Gudang Aktif');
                 } else {
                     $(this).removeClass('btn-info');
                     $(this).addClass('btn-outline-info').text('Tidak Aktif');
+                    $(this).attr('title', 'Status Gudang Tidak Aktif');
                 }
                  /* iterate through array or object */
                 $(this).click(function(event) {
@@ -247,10 +274,12 @@
                                 $(this).removeClass('btn-outline-info');
                                 $(this).addClass('btn-info').text('Aktif');
                                 $(this).attr('data-status', 1);
+                                $(this).attr('title', 'Status Gudang Aktif');
                             } else {
                                 $(this).removeClass('btn-info');
                                 $(this).addClass('btn-outline-info').text('Tidak Aktif');
                                 $(this).attr('data-status', 0);
+                                $(this).attr('title', 'Status Gudang Tidak  Aktif');
                             }
                         },
                         error: (xhr)=>{
@@ -265,17 +294,18 @@
 
         function detail(id){
             $('#foto').text("Mendapatkan Data.......")
-            $('.nama').text("Mendapatkan Data.......")
-            $('.kontak').text("Mendapatkan Data.......")
-            $('.alamat').text("Mendapatkan Data.......")
-            $('.hari').text("Mendapatkan Data.......")
-            $('.buka').text("Mendapatkan Data.......")
-            $('.tutup').text("Mendapatkan Data.......")
-            $('.kapasitas').text("Mendapatkan Data.......")
-            $('.provinsi').text("Mendapatkan Data.......")
-            $('.kabupaten').text("Mendapatkan Data.......")
-            $('.kecamatan').text("Mendapatkan Data.......")
-            $('.desa').text("Mendapatkan Data.......")
+            $('#nama').text("Mendapatkan Data.......")
+            $('#kontak').text("Mendapatkan Data.......")
+            $('#alamat').text("Mendapatkan Data.......")
+            $('#hari').text("Mendapatkan Data.......")
+            $('#buka').text("Mendapatkan Data.......")
+            $('#tutup').text("Mendapatkan Data.......")
+            $('#kapasitas_meter').text("Mendapatkan Data.......")
+            $('#kapasitas_berat').text("Mendapatkan Data.......")
+            $('#provinsi').text("Mendapatkan Data.......")
+            $('#kabupaten').text("Mendapatkan Data.......")
+            $('#kecamatan').text("Mendapatkan Data.......")
+            $('#desa').text("Mendapatkan Data.......")
             $.ajax({
                 url: "/api/v1/getGudang/"+id,
                 method: "GET",
@@ -287,17 +317,19 @@
                     $.each(response.data, function (a, b) {
                         // $('#btn-edit').attr('href', '/v1/saranaPrasaranaUPTD/'+b.id+'/edit').removeClass('btn-progress');
                         // $('#btn-delete').attr('onclick', 'sweet('+b.id+')').removeClass('btn-progress');
-                            $('.nama').text(b.nama)
-                            $('.kontak').text(b.kontak)
-                            $('.alamat').text(b.alamat)
-                            $('.hari').text(b.hari)
-                            $('.buka').text(b.jam_buka)
-                            $('.tutup').text(b.jam_tutup)
-                            $('.kapasitas').text(b.kapasitas+' \u33A1')
-                            $('.provinsi').text(b.desa.kecamatan.kabupaten.provinsi.nama)
-                            $('.kabupaten').text(b.desa.kecamatan.kabupaten.nama)
-                            $('.kecamatan').text(b.desa.kecamatan.nama)
-                            $('.desa').text(b.desa.nama)
+                        $('#nama').text(b.nama)
+                        $('#kontak').text(b.kontak)
+                        $('#alamat').text(b.alamat)
+                        $('#hari').text(b.hari)
+                        $('#buka').text(b.jam_buka)
+                        $('#tutup').text(b.jam_tutup)
+                        $('#kapasitas_meter').text(b.kapasitas_meter+' \u33A1')
+                        $('#kapasitas_berat').text(b.kapasitas_berat+' Ton')
+                        $('#provinsi').text(b.desa.kecamatan.kabupaten.provinsi.nama)
+                        $('#kabupaten').text(b.desa.kecamatan.kabupaten.nama)
+                        $('#kecamatan').text(b.desa.kecamatan.nama)
+                        $('#desa').text(b.desa.nama)
+
                         if (b.foto == null) {
                             $("#foto").text('- Tidak Ada Foto Barang -');
                         }else{
