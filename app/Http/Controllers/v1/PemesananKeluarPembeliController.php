@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\BarangWarung;
-use App\Models\Kategori;
+use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
-class BarangWarungController extends Controller
+class PemesananKeluarPembeliController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +16,8 @@ class BarangWarungController extends Controller
      */
     public function index()
     {
-        $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(5);
-        return view('app.data-master.barang-warung.index',compact('barangWarung'));
+        $data = Pemesanan::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        return view('app.transaksi.pemesanan-keluar-pembeli.index',compact('data'));
     }
 
     /**
@@ -51,7 +49,7 @@ class BarangWarungController extends Controller
      */
     public function show($id)
     {
-
+        //
     }
 
     /**
@@ -62,10 +60,7 @@ class BarangWarungController extends Controller
      */
     public function edit($id)
     {
-        $data = BarangWarung::find($id);
-        $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
-        $satuan = $data->satuan;
-        return view('app.data-master.barang-warung.updateHarga',compact('data','id','harga','satuan'));
+        //
     }
 
     /**
@@ -77,17 +72,7 @@ class BarangWarungController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $v = Validator::make($request->all(),[
-            'harga_barang' => 'required|integer|min:0',
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        }
-
-        BarangWarung::findOrFail($id)->update($request->only('harga_barang'));
-
-        return back()->with('success', __( 'Harga Barang telah disimpan.' ));
+        //
     }
 
     /**

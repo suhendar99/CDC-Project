@@ -38,10 +38,10 @@ class ShopController extends Controller
             if ($request->has('search') && $request->search !== '') {
                 $search = trim($request->search);
                 if($search == ''){
-                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')->paginate(20);
                 }else{
-                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('barang',function($q) use ($search){
                         $q->where('nama_barang','LIKE',"%".$search."%")
@@ -50,7 +50,7 @@ class ShopController extends Controller
                     ->paginate(20);
                 }
             } else {
-                $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')
+                $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
                 ->orderBy('id','desc')
                 ->paginate(20);
 
@@ -60,10 +60,10 @@ class ShopController extends Controller
             if ($request->has('search') && $request->search !== '') {
                 $search = trim($request->search);
                 if($search == ''){
-                    $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')
+                    $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')->paginate(20);
                 }else{
-                    $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')
+                    $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('stok.barang',function($q) use ($search){
                         $q->where('nama_barang','LIKE',"%".$search."%")
@@ -72,7 +72,7 @@ class ShopController extends Controller
                     ->paginate(20);
                 }
             } else {
-                $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')
+                $barang = BarangWarung::with('stok.barang', 'stok.barang.foto')->where('harga_barang','!=',null)
                 ->orderBy('id','desc')
                 ->paginate(20);
             }
@@ -80,17 +80,17 @@ class ShopController extends Controller
             if ($request->has('search') && $request->search !== '') {
                 $search = trim($request->search);
                 if($search == ''){
-                    $barang = Barang::with('pemasok', 'kategori')
+                    $barang = Barang::with('pemasok', 'kategori')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')->paginate(20);
                 }else{
-                    $barang = Barang::with('pemasok', 'kategori')
+                    $barang = Barang::with('pemasok', 'kategori')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->where('nama_barang','LIKE',"%".$search."%")
                     ->orWhere('harga_barang','LIKE',"%".$search."%")
                     ->paginate(20);
                 }
             } else {
-                $barang = Barang::with('pemasok', 'kategori')
+                $barang = Barang::with('pemasok', 'kategori')->where('harga_barang','!=',null)
                 ->orderBy('id','desc')
                 ->paginate(20);
             }

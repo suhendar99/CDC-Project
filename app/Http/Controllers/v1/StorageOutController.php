@@ -13,10 +13,12 @@ use App\Models\Gudang;
 use App\Models\Barang;
 use App\Models\StockBarang;
 use App\Models\BarangPesanan;
+use App\Models\BarangWarung;
 use App\Models\Pemesanan;
 use App\Models\Kwitansi;
 use App\Models\RekapitulasiPenjualan;
 use App\Models\SuratJalan;
+use Carbon\Carbon;
 use PDF;
 
 class StorageOutController extends Controller
@@ -135,6 +137,9 @@ class StorageOutController extends Controller
 
         $pesanan = Pemesanan::with('barangPesanan', 'gudang')->findOrFail($request->pemesanan_id);
         $gudang = $pesanan->gudang;
+        foreach ($pesanan->barangPesanan as $key => $value) {
+            $pesan = $value;
+        }
 
         foreach ($pesanan->barangPesanan as $barang) {
             $kode_barang = $barang->barang_kode;
@@ -191,6 +196,14 @@ class StorageOutController extends Controller
                 'kode' => $kode_out,
                 'user_id' => auth()->user()->id,
                 'waktu' => now('Asia/Jakarta')
+            ]);
+
+            BarangWarung::create([
+                'storage_out_kode' => $out->kode,
+                'pelanggan_id' => $pesanan->pelanggan_id,
+                'jumlah' => $pesan->jumlah_barang,
+                'satuan' => $pesan->satuan,
+                'waktu' => Carbon::now()
             ]);
 
         }
@@ -296,7 +309,6 @@ class StorageOutController extends Controller
             'harga' => $total,
             'total' => $harga_total
         ]);
-
         return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
     }
 

@@ -52,21 +52,28 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="float-left">
-                                        <h5 class="card-title">{{$d->stok->barang->nama_barang}}</h5>
+                                        <h5 class="card-title">{{$d->storageOut->barang->nama_barang}} ({{$d->jumlah}} {{$d->satuan}})</h5>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="float-right">
-                                        <a href="#" class="badge badge-warning">{{$d->stok->barang->kategori->nama}}</a>
+                                        <a href="#" class="badge badge-warning">{{$d->storageOut->barang->kategori->nama}}</a>
                                     </div>
                                 </div>
                             </div>
                             <br>
-                            <span class="card-text">Kode Barang : {{$d->barang_kode}}</span><br>
-                            <span class="card-text">Harga Barang : Rp {{number_format($d->stok->harga_barang,0,',','.')}} ({{$d->jumlah}} {{$d->satuan}})</span><br>
-                            <span class="card-text">Deskripsi Barang : {{$d->stok->barang->deskripsi}}</span>
+                            <span class="card-text">Kode Barang : {{$d->storageOut->barang_kode}}</span><br>
+                            <span class="card-text">Harga Barang : Rp {{number_format($d->harga_barang,0,',','.')}}</span><br>
+                            <span class="card-text">Deskripsi Barang : {{$d->storageOut->barang->deskripsi}}</span>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="float-right">
+                                        <a href="{{route('barangWarung.edit',$d->id)}}" class="btn btn-sm btn-success">Atur Harga</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

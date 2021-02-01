@@ -138,6 +138,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang funtuk pembeli
         Route::resource('barangWarung', 'BarangWarungController');
         // Pemesanan
+        Route::get('pemesananMasukPembeli','PemesananController@pemesananMasukPembeli')->name('pemesananMasukPembeli.index');
+        Route::resource('pemesananKeluarPembeli', 'PemesananKeluarPembeliController');
         Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
