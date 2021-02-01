@@ -15,7 +15,7 @@ class CreateBanksTable extends Migration
     {
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->year('tahun_berdiri')->nullable();
             $table->text('alamat')->nullable();
             $table->string('telepon',20)->nullable();

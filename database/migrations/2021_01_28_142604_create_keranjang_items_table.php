@@ -20,7 +20,7 @@ class CreateKeranjangItemsTable extends Migration
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
-            $table->string('satuan');
+            $table->string('satuan', 20);
             $table->bigInteger('harga');
             $table->foreignId('keranjang_id')->constrained('keranjangs')->onDelete('cascade');
             $table->timestamps();

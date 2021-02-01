@@ -23,7 +23,7 @@ class CreateStorageOutsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();
             $table->bigInteger('jumlah');
-            $table->string('satuan');
+            $table->string('satuan', 20);
             $table->dateTime('waktu');
             $table->timestamps();
         });
