@@ -20,7 +20,7 @@ class CreateBarangWarungsTable extends Migration
             $table->foreignId('stok_id')->nullable()->constrained('stock_barangs')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
             $table->bigInteger('jumlah');
-            $table->string('satuan');
+            $table->string('satuan', 20);
             $table->dateTime('waktu');
             $table->timestamps();
         });

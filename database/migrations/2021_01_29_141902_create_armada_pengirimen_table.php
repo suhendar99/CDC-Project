@@ -15,9 +15,9 @@ class CreateArmadaPengirimenTable extends Migration
     {
         Schema::create('armada_pengirimen', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->integer('harga');
-            $table->string('alamat');
+            $table->text('alamat');
             $table->timestamps();
         });
     }

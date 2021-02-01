@@ -16,13 +16,13 @@ class CreateKwitansisTable extends Migration
         Schema::create('kwitansis', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
-            $table->string('terima_dari');
+            $table->string('terima_dari', 50);
             $table->bigInteger('jumlah_uang_digits');
             $table->text('jumlah_uang_word');
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->text('keterangan');
             $table->date('tanggal');
-            $table->string('tempat');
+            $table->text('tempat');
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

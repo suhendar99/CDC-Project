@@ -20,12 +20,12 @@ class CreatePosTable extends Migration
             $table->foreignId('gudang_id')->nullable()->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
-            $table->string('penerima_po');
-            $table->string('nama_pemesan');
-            $table->string('telepon');
-            $table->string('alamat_pemesan');
+            $table->string('penerima_po', 50);
+            $table->string('nama_pemesan', 50);
+            $table->string('telepon', 30);
+            $table->text('alamat_pemesan');
             $table->dateTime('tanggal_pemesanan', 0);
-            $table->string('metode_pembayaran')->nullable();
+            $table->string('metode_pembayaran', 50)->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
