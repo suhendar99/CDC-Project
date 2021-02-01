@@ -15,10 +15,10 @@ class CreateKoperasisTable extends Migration
     {
         Schema::create('koperasis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_koperasi');
-            $table->string('alamat');
-            $table->string('sektor_usaha');
-            $table->string('jenis_koperasi');
+            $table->string('nama_koperasi', 50);
+            $table->text('alamat');
+            $table->string('sektor_usaha', 70);
+            $table->string('jenis_koperasi', 70);
             $table->timestamps();
         });
     }

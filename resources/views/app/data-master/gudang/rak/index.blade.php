@@ -53,6 +53,7 @@
                                 <th>Panjang</th>
                                 <th>Lebar</th>
                                 <th>Tinggi</th>
+                                <th>Maks. Kapasitas Berat</th>
                                 <th>Tingkat Rak</th>
                                 <th>Action</th>
                             </tr>
@@ -88,14 +89,12 @@
                   <table class="table">
                       <thead>
                           <tr>
+                              <th scope="row">Tingkat Rak</th>
                               <th scope="row">Nama Barang</th>
+                              <th scope="row">Stok Barang</th>
                           </tr>
                       </thead>
                       <tbody id="inputBarang">
-                        <tr>
-                            {{-- <th scope="row">Kode Barang</th> --}}
-                            <td class="kodeBarang"></td>
-                        </tr>
                         {{-- <tr>
                           <th scope="row">Nama Barang</th>
                           <td class="nama"></td>
@@ -125,38 +124,75 @@
 </div>
 @push('script')
     <script>
-        let table = $('#data_table').DataTable({
-            processing : true,
-            serverSide : true,
-            responsive: true,
-            ordering : false,
-            pageLength : 10,
-            ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
-            columns : [
-                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode', name: 'kode'},
-                {data : 'nama', name: 'nama'},
-                {
-                    data : 'panjang', render:function(data,a,b,c){
-                        return data + ' m';
+          var table = $('#data_table').DataTable({
+              processing : true,
+              serverSide : true,
+              responsive: true,
+              ordering : false,
+              pageLength : 10,
+              ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
+              columns : [
+                  // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                  {data : 'kode', name: 'kode'},
+                  {data : 'nama', name: 'nama'},
+                  {
+                      data : 'panjang', render:function(data,a,b,c){
+                          return data + ' m';
+                      }
+                  },
+                  {
+                      data : 'lebar', render:function(data,a,b,c){
+                          return data + ' m';
+                      }
+                  },
+                  {
+                      data : 'tinggi', render:function(data,a,b,c){
+                          return data + ' m';
+                      }
+                  },
+                  {
+                      data : 'kapasitas_berat', render:function(data,a,b,c){
+                          return data + ' Ton';
+                      }
+                  },
+                  {data : 'tingkat_count', name: 'tingkat_count'},
+                  {data : 'action', name: 'action'},
+              ]
+          });
+
+        function change(id) {
+            // console.log($('#status-rak-'+id).get(0))
+            $('#status-rak-'+id).text('Loading');
+            
+            $.ajax({
+                url: "/api/v1/rak/"+id+"/status",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    table.ajax.reload();
+                    let result = response.data.status;
+
+                    if (result != 0) {
+                        $('#status-rak-'+id).removeClass('btn-outline-dark');
+                        $('#status-rak-'+id).addClass('btn-success').text('Penuh');
+                        // $('#status-rak-'+id).attr('data-status', 1);
+                    } else {
+                        $('#status-rak-'+id).removeClass('btn-success');
+                        $('#status-rak-'+id).addClass('btn-outline-dark').text('Tidak Penuh');
+                        // $('#status-rak-'+id).attr('data-status', 0);
                     }
                 },
-                {
-                    data : 'lebar', render:function(data,a,b,c){
-                        return data + ' m';
-                    }
-                },
-                {
-                    data : 'tinggi', render:function(data,a,b,c){
-                        return data + ' m';
-                    }
-                },
-                {data : 'tingkat_count', name: 'tingkat_count'},
-                {data : 'action', name: 'action'}
-            ]
-        });
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+          };
 
         function detail(id){
+            $('#inputBarang').html(``);
             $.ajax({
                 url: "/api/v1/rak/"+id+"/barang",
                 method: "GET",
@@ -167,17 +203,23 @@
                     console.log(response.data)
                     let storage = response.data;
                     let array = [];
+                    let tingkat = ``;
 
                     $.each(response.data.tingkat, function(index, val) {
                          /* iterate through array or object */
+                          let store = ``;
                          $.each(val.storage, function(i, b) {
                               /* iterate through array or object */
                               $('#inputBarang').append(`<tr>
-                                  <td>${b.storage_in.barang.nama_barang}</td>
-                                </tr>`)
+                                <td>${val.nama}</td>  
+                                <td>${b.storage_in.barang.nama_barang}</td>
+                                <td>${b.jumlah + b.satuan}</td>
+                                </tr>`);
                              // array.push(b.storageIn.barang.nama)
                          });
+
                     });
+
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;

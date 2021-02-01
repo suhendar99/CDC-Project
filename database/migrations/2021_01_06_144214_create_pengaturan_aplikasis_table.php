@@ -17,8 +17,8 @@ class CreatePengaturanAplikasisTable extends Migration
             $table->id();
             $table->string('nama_tab', 50)->nullable();
             $table->string('nama_app', 50)->nullable();
-            $table->string('logo_tab')->nullable();
-            $table->string('logo_app')->nullable();
+            $table->text('logo_tab')->nullable();
+            $table->text('logo_app')->nullable();
             $table->string('copyright_text', 50)->nullable();
             $table->string('copyright_link', 50)->nullable();
             $table->timestamps();

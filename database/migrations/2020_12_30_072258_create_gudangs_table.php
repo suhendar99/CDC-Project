@@ -16,16 +16,17 @@ class CreateGudangsTable extends Migration
         Schema::create('gudangs', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_gudang')->unique();
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
-            $table->string('kontak');
-            $table->string('pemilik');
-            $table->integer('kapasitas');
+            $table->string('kontak', 30);
+            $table->string('pemilik', 50);
+            $table->integer('kapasitas_meter');
+            $table->float('kapasitas_berat', 11, 2);
             $table->time('jam_buka');
             $table->time('jam_tutup');
-            $table->string('hari');
-            $table->string('foto')->nullable();
+            $table->string('hari', 50);
+            $table->text('foto')->nullable();
             $table->text('alamat');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');

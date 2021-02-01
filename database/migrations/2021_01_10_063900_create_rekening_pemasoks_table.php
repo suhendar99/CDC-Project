@@ -17,8 +17,8 @@ class CreateRekeningPemasoksTable extends Migration
             $table->id();
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('set null');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
-            $table->string('pemilik');
-            $table->string('no_rek');
+            $table->string('pemilik', 50);
+            $table->string('no_rek', 50);
             $table->timestamps();
         });
     }

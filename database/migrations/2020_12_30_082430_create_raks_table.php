@@ -17,10 +17,11 @@ class CreateRaksTable extends Migration
             $table->id();
             $table->string('kode')->unique();
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->integer('tinggi');
             $table->integer('panjang');
             $table->integer('lebar');
+            $table->integer('kapasitas_berat');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

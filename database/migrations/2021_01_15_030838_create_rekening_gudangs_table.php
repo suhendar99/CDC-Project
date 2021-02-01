@@ -17,8 +17,8 @@ class CreateRekeningGudangsTable extends Migration
             $table->id();
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('set null');
             $table->foreignId('gudang_id')->nullable()->constrained('gudangs')->onDelete('cascade');
-            $table->string('atas_nama');
-            $table->string('no_rek');
+            $table->string('atas_nama', 50);
+            $table->string('no_rek', 30);
             $table->timestamps();
         });
     }

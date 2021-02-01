@@ -17,7 +17,7 @@ class CreatePiutangsTable extends Migration
             $table->id();
             $table->foreignId('barang_id')->constrained('pemesanans')->onDelete('cascade');
             $table->date('tanggal');
-            $table->string('nama_pembeli');
+            $table->string('nama_pembeli', 50);
             $table->date('jatuh_tempo')->nullable();
             $table->integer('hutang');
             $table->boolean('status')->default(0);
