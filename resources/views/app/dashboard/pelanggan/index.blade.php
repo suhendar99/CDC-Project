@@ -1,6 +1,6 @@
 @php
   $icon = 'dashboard';
-  $pageTitle = 'Dashboard Pelanggan';
+  $pageTitle = 'Dashboard Pelanggan Warung';
   $dashboard = true;
   $gudang = App\Models\Gudang::all();
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Pelanggan</a>
+            <a href="#" class="text-14">Pelanggan Warung</a>
           </div>
         </div>
     </div>

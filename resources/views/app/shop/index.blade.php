@@ -85,7 +85,13 @@
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
+										<span class="product-name">{{$b->barang->nama_barang}} (
+                                            @if ($b->jumlah == 0)
+                                                Kosong
+                                            @else
+                                                {{$b->jumlah}} {{$b->satuan}}
+                                            @endif
+                                        )</span>
 									</div>
 									<div class="col-12">
 										<span class="product-name">Dari {{$b->gudang->nama}} <br /> Desa {{$b->gudang->desa->nama}}</span>
@@ -139,7 +145,13 @@
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->storageOut->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
+										<span class="product-name">{{$b->storageOut->barang->nama_barang}} (
+                                            @if ($b->jumlah == 0)
+                                                Kosong
+                                            @else
+                                                {{$b->jumlah}} {{$b->satuan}}
+                                            @endif
+                                        )</span>
 									</div>
 									<div class="col-12">
 										<span class="product-name">Dari {{$b->pelanggan->nama}} <br /> Desa {{$b->pelanggan->desa->nama}}</span>
@@ -192,7 +204,13 @@
                                         <span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
                                     </div>
                                     <div class="col-12">
-                                        <span class="product-name">{{$b->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
+                                        <span class="product-name">{{$b->nama_barang}} (
+                                            @if ($b->jumlah == 0)
+                                                Kosong
+                                            @else
+                                                {{$b->jumlah}} {{$b->satuan}}
+                                            @endif
+                                        )</span>
                                     </div>
                                     <div class="col-12">
                                         <span class="product-name">Dari {{$b->pemasok->nama}} <br /> Desa {{$b->pemasok->desa->nama}}</span>
