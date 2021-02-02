@@ -8,7 +8,7 @@
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
   $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
-  $pemesanan = App\Models\Pemesanan::orderBy('tanggal_pemesanan','desc')->paginate(3);
+  $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -109,37 +109,39 @@
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12" style="font-size: .8rem;">
+                <div class="col-12" style="font-size: .7rem;">
                   <span style="font-size: 1rem">Log Pemesanan</span><br><hr class="mb-2">
                   <table class="table table-striped">
                     <thead>
                       <tr>
                         <th scope="col">No</th>
-                        <th scope="col">Waktu</th>
-                        <th scope="col">Pembeli</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Jam</th>
+                        <th scope="col">Aktivitas Transaksi</th>
                       </tr>
                     </thead>
                     <tbody>
-                      @forelse ($pemesanan as $key => $value)
+                      @forelse ($logTransaksi as $key => $value)
                       <tr>
                         <th scope="row">{{$key+1}}</th>
-                        <td>{{\Carbon\Carbon::parse($value->tanggal_pemesanan)->translatedFormat('d F Y H:i:s')}}</td>
-                        <td>{{$value->nama_pemesan}}</td>
+                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
+                        <td>{{$value->Aktifitas_transaksi}}</td>
                       </tr>
                       @empty
                       <tr>
-                        <td colspan="3"><center>Data Kosong !</center></td>
+                        <td colspan="4"><center>Data Kosong !</center></td>
                       </tr>
                       @endforelse
                     </tbody>
                   </table>
                     <div class="col-12 d-flex">
                         <div class="ml-auto p-2">
-                            @if ($pemesanan->count() > 1)
+                            {{-- @if ($logTransaksi->count() > 1) --}}
                             <center>
-                                {{$pemesanan->links()}}
+                                {{$logTransaksi->links()}}
                             </center>
-                            @endif
+                            {{-- @endif --}}
                         </div>
                     </div>
                 </div>

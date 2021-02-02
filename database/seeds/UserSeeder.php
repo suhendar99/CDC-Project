@@ -62,7 +62,6 @@ class UserSeeder extends Seeder
             'approved_at' => now(),
             'status' => 1
         ]);
-
         User::create([
             'email' => 'bulky@makerindo.com',
             'username' => 'bulky',

@@ -11,6 +11,7 @@ use App\Models\Provinsi;
 use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Rak;
+use App\Models\RakBulky;
 use App\Models\Bank;
 use App\Models\RekeningBulky;
 use App\Models\Gudang;
@@ -41,6 +42,15 @@ class GudangBulkyController extends Controller
         }
 
         return view('app.data-master.gudangBulky.index', compact('data'));
+    }
+
+    public function detailBarang($id)
+    {
+        $data = RakBulky::with('tingkat.storage.storageMasukBulky.barang')->find($id);
+
+        return response()->json([
+            'data' => $data
+        ], 200);
     }
 
     public function search(Request $request)

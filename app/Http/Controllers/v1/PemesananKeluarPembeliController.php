@@ -17,6 +17,7 @@ class PemesananKeluarPembeliController extends Controller
     public function index()
     {
         $data = Pemesanan::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        // dd($data);
         return view('app.transaksi.pemesanan-keluar-pembeli.index',compact('data'));
     }
 

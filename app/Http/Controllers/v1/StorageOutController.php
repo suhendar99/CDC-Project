@@ -16,6 +16,7 @@ use App\Models\BarangPesanan;
 use App\Models\BarangWarung;
 use App\Models\Pemesanan;
 use App\Models\Kwitansi;
+use App\Models\LogTransaksi;
 use App\Models\RekapitulasiPenjualan;
 use App\Models\SuratJalan;
 use Carbon\Carbon;
@@ -212,11 +213,17 @@ class StorageOutController extends Controller
             ]);
 
             BarangWarung::create([
+                'kode' => rand(1000000,9999999),
                 'storage_out_kode' => $out->kode,
                 'pelanggan_id' => $pesanan->pelanggan_id,
                 'jumlah' => $pesan->jumlah_barang,
                 'satuan' => $pesan->satuan,
                 'waktu' => Carbon::now()
+            ]);
+            $log = LogTransaksi::create([
+                'tanggal' => now(),
+                'jam' => now(),
+                'Aktifitas_transaksi' => 'Pengiriman Barang'
             ]);
 
         }

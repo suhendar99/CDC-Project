@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\LogTransaksi;
 use App\Models\Po;
 use App\Models\ReturOut;
 use Illuminate\Http\Request;
@@ -64,6 +65,11 @@ class ReturOutController extends Controller
         }
 
         ReturOut::create($request->only('barang_kode', 'po_id', 'tanggal_pengembalian', 'keterangan'));
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Retur Barang Keluar'
+        ]);
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Created!' ));
     }

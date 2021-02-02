@@ -103,7 +103,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-3">
                                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
@@ -112,6 +112,20 @@
                                             </div>
                                         </div>
                                         @error('jumlah')
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $message }}</strong>
+                                              </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Harga Beli <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Rp.</span>
+                                            </div>
+                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
+                                        </div>
+                                        @error('harga_beli')
                                               <span class="invalid-feedback" role="alert">
                                                   <strong>{{ $message }}</strong>
                                               </span>

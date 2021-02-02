@@ -11,6 +11,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\LogTransaksi;
 use App\Models\StockBarang;
 use App\Models\RekapitulasiPembelian;
 
@@ -89,6 +90,7 @@ class StorageInController extends Controller
             'barang_kode' => 'required|exists:barangs,kode_barang',
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
+            'harga_beli' => 'required|numeric',
             'nomor_kwitansi' => 'required|numeric',
             'nomor_surat_jalan' => 'required|numeric',
             'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
@@ -113,7 +115,7 @@ class StorageInController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan')+[
+        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'kode' => $kode,
             'satuan' => $barang->satuan,
             'user_id' => auth()->user()->id,
@@ -157,6 +159,11 @@ class StorageInController extends Controller
             'satuan' => $barang->satuan,
             'harga' => $masuk->barang->harga_barang,
             'total' => $masuk->barang->harga_total
+        ]);
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Penerimaan Barang'
         ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));

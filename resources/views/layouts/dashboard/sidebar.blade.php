@@ -59,7 +59,7 @@
                         {{ Request::is('v1/armada*') ? 'active' : false }}
                         @endif
                     ">
-                        @if (isset($admin) || isset($pengurusGudang))
+                        @if (isset($admin))
                         <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
                         <ul id="dataSubmenu" class="collapse list-unstyled
                             @if (isset($admin))
@@ -141,18 +141,103 @@
                     @endif
                     @if (isset($pengurusGudang))
                     <li class="
-                        {{ Request::is('v1/gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/gudang-retail*') ? 'active' : false }}
                         {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
                         {{ Request::is('v1/storage*') ? 'active' : false }}
                     ">
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/gudang-retail*') ? 'show' : false }}
                             {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
                             {{ Request::is('v1/storage*') ? 'show' : false }}
                         " id="gudangSubmenu">
-                            <li class="{{ Request::is('v1/gudang*') ? 'active' : false }}">
-                                <a href="{{route('gudang.index')}}">Identitas Gudang</a>
+                            <li class="{{ Request::is('v1/gudang-retail*') ? 'active' : false }}">
+                                <a href="{{route('gudang-retail.index')}}">Identitas Gudang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
+                                <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
+                                <a href="{{route('storage.index')}}">Pengelolaan Barang</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/po*') ? 'active' : false }}
+                        {{ Request::is('v1/returIn*') ? 'active' : false }}
+                        {{ Request::is('v1/returOut*') ? 'active' : false }}
+                        {{ Request::is('v1/pemesanan*') ? 'active' : false }}
+                    ">
+                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/po*') ? 'show' : false }}
+                            {{ Request::is('v1/returIn*') ? 'show' : false }}
+                            {{ Request::is('v1/returOut*') ? 'show' : false }}
+                            {{ Request::is('v1/pemesanan*') ? 'show' : false }}
+                        " id="transaksiSubmenu">
+                            <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
+                                <a href="{{route('pemesanan.index')}}">Pesanan Pelanggan</a>
+                            </li>
+                            <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
+                                <a href="{{route('po.index')}}">Pembelian Barang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
+                                <a href="{{route('returIn.index')}}">Retur Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
+                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/piutangIn*') ? 'active' : false }}
+                        {{ Request::is('v1/piutangOut*') ? 'active' : false }}
+                    ">
+                        <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Piutang</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/piutangIn*') ? 'show' : false }}
+                            {{ Request::is('v1/piutangOut*') ? 'show' : false }}
+                        " id="piutangSubmenu">
+                            <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
+                                <a href="{{route('piutangIn.index')}}">Piutang Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
+                                <a href="{{route('piutangOut.index')}}">Piutang Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                    ">
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                        " id="rekapitulasiSubmenu">
+                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
+                    @if (isset($pengurusGudangBulky))
+                    <li class="
+                        {{ Request::is('v1/gudang-bulky*') ? 'active' : false }}
+                        {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/storage*') ? 'active' : false }}
+                    ">
+                        <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/gudang-bulky*') ? 'show' : false }}
+                            {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/storage*') ? 'show' : false }}
+                        " id="gudangSubmenu">
+                            <li class="{{ Request::is('v1/gudang-bulky*') ? 'active' : false }}">
+                                <a href="{{route('gudang-bulky.index')}}">Identitas Gudang</a>
                             </li>
                             <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
                                 <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
@@ -229,7 +314,7 @@
                     <li class="
                         {{ Request::is('v1/barangWarung*') ? 'active' : false }}
                     ">
-                        <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Barang</a>
+                        <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Warung</a>
                         <ul id="barangWarung" class="collapse list-unstyled
                             {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                         ">
@@ -243,17 +328,47 @@
                     <li class="
                         {{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}
                         {{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/pemesananMasukPembeli*') ? 'show' : false }}
                             {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/returMasukPembeli*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
                                 <a href="{{route('pemesananMasukPembeli.index')}}">Pesanan Pelanggan</a>
                             </li>
                             <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
                                 <a href="{{route('pemesananKeluarPembeli.index')}}">Pembelian Barang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}">
+                                <a href="{{route('returMasukPembeli.index')}}">Retur Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
+                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/dashboard*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                    ">
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                        " id="rekapitulasiSubmenu">
+                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
                             </li>
                         </ul>
                     </li>

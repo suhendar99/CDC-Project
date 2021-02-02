@@ -1,5 +1,5 @@
 @php
-    if(!isset(Auth::user()->pelanggan_id) && !isset(Auth::user()->karyawan_id) && !isset(Auth::user()->bank_id) && !isset(Auth::user()->pemasok_id) && !isset(Auth::user()->pengurus_gudang_id)) {
+    if(!isset(Auth::user()->pelanggan_id) && !isset(Auth::user()->karyawan_id) && !isset(Auth::user()->bank_id) && !isset(Auth::user()->pemasok_id) && !isset(Auth::user()->pengurus_gudang_id) && !isset(Auth::user()->pengurus_gudang_bulky_id)) {
         $admin = true;
     } elseif (isset(Auth::user()->karyawan_id)) {
         $karyawan = true;
@@ -11,6 +11,8 @@
         $pelanggan = true;
     } elseif (isset(Auth::user()->pengurus_gudang_id)) {
         $pengurusGudang = true;
+    } elseif (isset(Auth::user()->pengurus_gudang_bulky_id)) {
+        $pengurusGudangBulky = true;
     }
 
     $jeruk = 'Jeruk';

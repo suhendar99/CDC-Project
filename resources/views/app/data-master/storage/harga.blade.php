@@ -45,6 +45,39 @@
                 </div>
                 <div class="card-body ">
                     <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                          <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Barang</th>
+                                    <th>Jumlah Barang</th>
+                                    <th>Harga Beli</th>
+                                    <th>Harga Per-{{ $base_harga->satuan }}</th>
+                                    <th>Ambil Untung</th>
+                                    <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
+                                </tr>
+                            </thead>
+                              <tbody id="dataPenyimpanan">
+                                <tr>
+                                    <td>{{ $base_harga->barang->nama_barang }}</td>
+                                    <td>{{ $base_harga->jumlah }} {{ $base_harga->satuan }}</td>
+                                    <td>Rp. {{ number_format($base_harga->harga_beli,0,',','.') }}</td>
+                                    <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="satuanAppend">%</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span id="sugest">0</span>
+                                    </td>
+                                </tr>
+                              </tbody>
+                          </table>
+                        </div>
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('harga.simpan', $id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
@@ -97,5 +130,20 @@
 @endsection
 @push('script')
 <script>
+    let hargaBeli = '{{ $base_harga->harga_beli }}';
+    let jumlahBarang = '{{ $base_harga->jumlah }}';
+    let hargaSatuan = 0;
+    let untung = 0;
+    let akhir = 0;
+
+    $('#keuntungan').keyup(function(event) {
+        /* Act on the event */
+        hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+        untung = hargaSatuan * ($(this).val() / 100);
+        akhir = hargaSatuan + untung;
+
+        $('#sugest').text('Rp. '+(akhir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+        $('#harga_barang').val(akhir);
+    });
 </script>
 @endpush
