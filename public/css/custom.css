@@ -113,7 +113,20 @@ img .scale-down{
 }
 
 .select2-container {
-	width: 100% !important;
+	width : 100%;
+}
+
+
+.select2-container.select2-container--open{
+	width : fit-content;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: .3rem;
+    width: 20px;
 }
 
 .pointer{

@@ -36,8 +36,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('piutang.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
-                                <a href="{{route('piutang.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a>
+                                <a href="{{route('piutangIn.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
+                                <a href="{{route('piutangIn.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('piutang.index') }}",
+            ajax : "{{ route('piutangIn.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'pemesanan.kode', name: 'barang_id'},

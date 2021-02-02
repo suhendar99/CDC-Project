@@ -89,6 +89,10 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
     </style>
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.5/css/unicons.css">
+
+    @stack('style')
 </head>
 <body>
     @if(isset($shop))
