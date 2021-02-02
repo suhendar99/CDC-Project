@@ -40,4 +40,14 @@ class Desa extends Model
         return $this->hasMany('App\Models\Gudang');
     }
 
+    /**
+     * Desa has many Bulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function bulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = desa_id, localKey = id)
+        return $this->hasMany('App\Models\GudangBulky');
+    }
 }
