@@ -224,18 +224,27 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Kapasitas Gudang ( &#13217; ) <small class="text-success">*Harus diisi</small></label>
-                                                <input type="number" min="1" class="form-control @error('kapasitas') is-invalid @enderror" name="kapasitas" value="{{ $data->kapasitas }}" placeholder="Masukan Luas gudang">
-                                                @error('kapasitas')
+                                            <div class="form-group col-md-3">
+                                                <label>Kapasitas Luas Gudang (&#13217;)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('kapasitas_meter') is-invalid @enderror" name="kapasitas_meter" value="{{ $data->kapasitas_meter }}" placeholder="Masukan Luas gudang">
+                                                @error('kapasitas_meter')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label style="font-size: 11px;">Kapasitas Berat Gudang (Ton)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="numeric" min="1" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ $data->kapasitas_berat }}" placeholder="Masukan Kapasitas Barang Di Gudang">
+                                                @error('kapasitas_berat')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ $data->pemilik }}" placeholder="Enter pemilik">
+                                                <label>Nama Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ $data->pemilik }}" placeholder="Masukan Nama Pemilik Gudang">
                                                 @error('pemilik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

@@ -52,7 +52,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ $data->nomor_kwitansi }}" placeholder="Enter Nomor Kwitansi">
+                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ $data->nomor_kwitansi }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ $data->nomor_surat_jalan }}" placeholder="Enter Nomor Surat Jalan">
+                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ $data->nomor_surat_jalan }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -72,7 +72,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Foto Kwitansi <small class="text-success">*Tidak Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" placeholder="Enter Foto Kwitansi">
+                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" placeholder="Masukan Foto Kwitansi">
                                         @error('foto_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Foto Surat Jalan <small class="text-success">*Tidak Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" placeholder="Enter Foto Surat Jalan">
+                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" placeholder="Masukan Foto Surat Jalan">
                                         @error('foto_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

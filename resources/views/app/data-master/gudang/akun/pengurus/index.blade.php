@@ -149,7 +149,7 @@
             ajax : "{{ route('pengurus-gudang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'name', name: 'name'},
+                {data : 'pengurus.nama', name: 'name'},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
                 {
