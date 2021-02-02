@@ -10,6 +10,8 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\RakBulky;
 use App\Models\TingkatanRak;
 use App\Models\GudangBulky;
+use App\Models\TingkatRakBulky;
+// use App\Models\Gudang;
 
 class RakBulkyController extends Controller
 {
@@ -21,7 +23,7 @@ class RakBulkyController extends Controller
     public function index(Request $request, $gudang)
     {
         if($request->ajax()){
-            $data = RakBulky::with('gudang', 'tingkat')
+            $data = RakBulky::with('bulky', 'tingkat')
             ->where('gudang_bulky_id', $gudang)
             ->withCount('tingkat')
             ->orderBy('id', 'desc')
@@ -32,20 +34,20 @@ class RakBulkyController extends Controller
                     if ($data->status == 0) {
                         return '<a href="/v1/gudang-bulky/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" href="#" class="btn btn-outline-dark btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Tidak Penuh</button>';
                     } else {
-                        return '<a href="/v1/gudang/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" class="btn btn-success btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Penuh</button>';
+                        return '<a href="/v1/gudang-bulky/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" class="btn btn-success btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Penuh</button>';
                     }
                     
                 })
                 ->make(true);
         }
-        $gudang = Gudang::findOrFail($gudang);
+        $gudang = GudangBulky::findOrFail($gudang);
 
-        return view('app.data-master.gudang.rak.index', compact('gudang'));
+        return view('app.data-master.gudangBulky.rak.index', compact('gudang'));
     }
 
     public function changeStatus($id)
     {
-        $data = Rak::find($id);
+        $data = RakBulky::find($id);
 
         if ($data != null) {
             $status = ($data->status == 0) ? 1 : 0;
@@ -71,9 +73,9 @@ class RakBulkyController extends Controller
      */
     public function create($gudang)
     {
-        $gudang = Gudang::findOrFail($gudang);
+        $gudang = GudangBulky::findOrFail($gudang);
 
-        return view('app.data-master.gudang.rak.create', compact('gudang'));
+        return view('app.data-master.gudangBulky.rak.create', compact('gudang'));
     }
 
     /**
@@ -106,19 +108,19 @@ class RakBulkyController extends Controller
 
         $faker = \Faker\Factory::create('id_ID');
 
-        $rak = Rak::create($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat')+[
-            'gudang_id' => $gudang,
-            'kode' => $faker->unique()->regexify('([A-Z]{3})+([0-9]{7})')
+        $rak = RakBulky::create($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat')+[
+            'gudang_bulky_id' => $gudang,
+            'kode' => $faker->unique()->regexify('([A-Z]{2})+([0-9]{7})')
         ]);
 
         for ($i=1; $i <= (integer)$request->tingkat; $i++) { 
-            TingkatanRak::create([
+            TingkatRakBulky::create([
                 'nama' => 'tingkat '.$i,
-                'rak_id' => $rak->id
+                'rak_bulky_id' => $rak->id
             ]);
         }
 
-        return redirect(route('rak.index', ['gudang' => $gudang]))->with('success', __( 'Rak Created!' ));
+        return redirect(route('rak.bulky.index', ['gudang' => $gudang]))->with('success', __( 'Rak Created!' ));
     }
 
     /**
@@ -140,10 +142,10 @@ class RakBulkyController extends Controller
      */
     public function edit($gudang, $id)
     {
-        $data = Rak::withCount('tingkat')->findOrFail($id);
-        $gudang = Gudang::findOrFail($gudang);
+        $data = RakBulky::withCount('tingkat')->findOrFail($id);
+        $gudang = GudangBulky::findOrFail($gudang);
 
-        return view('app.data-master.gudang.rak.edit', compact('gudang', 'data'));
+        return view('app.data-master.gudangBulky.rak.edit', compact('gudang', 'data'));
     }
 
     /**
@@ -166,7 +168,8 @@ class RakBulkyController extends Controller
             'panjang' => 'required|numeric|min:0',
             'lebar' => 'required|numeric|min:0',
             'tinggi' => 'required|numeric|min:0',
-            'tingkat' => 'required|numeric|min:0'
+            'tingkat' => 'required|numeric|min:0',
+            'kapasitas_berat' => 'required|numeric|min:0'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -176,22 +179,25 @@ class RakBulkyController extends Controller
 
         // $faker = \Faker\Factory::create('id_ID');
 
-        $rak = Rak::findOrFail($id)->update($request->only('nama', 'lebar', 'panjang', 'tinggi'));
+        $rak = RakBulky::withCount('tingkat')->findOrFail($id);
 
-        $rakTingkat = TingkatanRak::where('rak_id', $id)->get();
+        $rak->update($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat'));
 
-        foreach ($rakTingkat as $value) {
-            $value->delete();
+        if ($request->tingkat > $rak->tingkat_count) {
+            for ($i=((integer)$rak->tingkat_count + 1); $i <= (integer)$request->tingkat; $i++) { 
+                TingkatRakBulky::create([
+                    'nama' => 'tingkat '.$i,
+                    'rak_bulky_id' => $id
+                ]);
+            }
+        } elseif ($request->tingkat < $rak->tingkat_count) {
+            for ($i=((integer)$rak->tingkat_count - 1); $i >= (integer)$request->tingkat; $i--) { 
+                TingkatRakBulky::orderBy('id', 'desc')->first()->delete();
+            }
         }
+        
 
-        for ($i=1; $i <= (integer)$request->tingkat; $i++) { 
-            TingkatanRak::create([
-                'nama' => 'tingkat '.$i,
-                'rak_id' => $id
-            ]);
-        }
-
-        return redirect(route('rak.index', ['gudang' => $gudang]))->with('success', __( 'Rak Updated!' ));
+        return redirect(route('rak.bulky.index', ['gudang' => $gudang]))->with('success', __( 'Rak Updated!' ));
     }
 
     /**
@@ -202,7 +208,7 @@ class RakBulkyController extends Controller
      */
     public function destroy($gudang, $id)
     {
-        Rak::whereHas('gudang', function($query)use($gudang){
+        RakBulky::whereHas('bulky', function($query)use($gudang){
             $query->where('id', $gudang);
         })->findOrFail($id)->delete();
 

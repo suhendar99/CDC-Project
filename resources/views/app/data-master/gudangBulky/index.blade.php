@@ -85,7 +85,7 @@
                                                 <div class="dropdown-menu" aria-labelledby="dropmenu">
                                                     <a href="{{ route('gudang-bulky.edit', $gudang->id) }}" class="dropdown-item">Edit</a>
                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $gudang->id }})" data-id="{{ $gudang->id }}">Detail</a>
-                                                    <a href="{{ route('rak.index', $gudang->id) }}" class="dropdown-item">Rak Gudang</a>
+                                                    <a href="{{ route('rak.bulky.index', $gudang->id) }}" class="dropdown-item">Rak Gudang</a>
                                                     <a href="#" class="dropdown-item" onclick="sweet({{ $gudang->id }})">Delete</a>
                                                 </div>
                                             </div>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Jumlah Rak: {{ $gudang->rak_count }} <a href="{{ route('rak.index', $gudang->id) }}" class="text-primary">Detail</a></li>
+                            <li class="list-group-item">Jumlah Rak: {{ $gudang->rak_count }} <a href="{{ route('rak.bulky.index', $gudang->id) }}" class="text-primary">Detail</a></li>
                             <li class="list-group-item">Hari Kerja: {{ $gudang->hari }}</li>
                             <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
                         </ul>

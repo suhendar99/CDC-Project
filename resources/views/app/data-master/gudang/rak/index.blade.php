@@ -152,7 +152,7 @@
                   },
                   {
                       data : 'kapasitas_berat', render:function(data,a,b,c){
-                          return data + ' Ton';
+                          return data + ' Kg';
                       }
                   },
                   {data : 'tingkat_count', name: 'tingkat_count'},

@@ -20,7 +20,7 @@ class CreateStorageBulkiesTable extends Migration
             $table->bigInteger('jumlah');
             $table->string('satuan');
             $table->dateTime('waktu');
-            $table->foreignId('tingkat_id')->nullable()->constrained('tingkat_rak_bulkies')->onDelete('cascade');
+            $table->foreignId('tingkat_id')->nullable()->constrained('tingkat_rak_bulkies')->onDelete('set null');
             $table->timestamps();
         });
     }
