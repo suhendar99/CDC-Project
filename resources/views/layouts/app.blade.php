@@ -63,6 +63,7 @@
 <body>
     @php
         $set = App\Models\PengaturanAplikasi::find(1);
+        $tahun = Carbon\Carbon::now()->format('Y');
     @endphp
     <div id="app">
         {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -120,10 +121,10 @@
             @yield('content')
         </main>
         <!-- Copyright -->
-        <div class="footer-copyright text-center py-3 text-dark fixed">
+        <div class="footer-copyright text-center pt-4 text-dark fixed">
             <div class="copyright">
-                <span>© 2020 Copyright:</span>
-                <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
+                <span>© Copyright </span>
+                <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}} {{$tahun}}</a>
             </div>
         </div>
         <!-- Copyright -->

@@ -20,6 +20,6 @@ class BulkySeeder extends Seeder
             'kabupaten_id' => 1101,
             'provinsi_id' => 11,
         ];
-        DB::table('bulkies')->insert($akun);
+        DB::table('pengurus_gudang_bulkies')->insert($akun);
     }
 }
