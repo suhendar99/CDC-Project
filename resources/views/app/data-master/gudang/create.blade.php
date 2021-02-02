@@ -49,7 +49,7 @@
                                     {{-- <h5>Location</h5> --}}
                                     <div style="width: 100%; height: 300px;" id="map"></div>
                                     {{-- <small>*) Seret pin untuk mengisi latitude & longitude</small> --}}
-                                    <small>*) Drag & Drop Pin to set latitude & longitude</small>
+                                    <small>*) Drag & Drop marker untuk set latitude dan logitude lokasi gudang</small>
                                 </div>
                             </div>
                             <div class="row">
@@ -64,8 +64,8 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label>Latitude <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" id="latitude" class="form-control @error('lat') is-invalid @enderror" name="lat" value="{{ old('lat') }}" placeholder="Enter Latitude">
+                                                <label>Latitude / Garis Lintang <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" id="latitude" class="form-control @error('lat') is-invalid @enderror" name="lat" value="{{ old('lat') }}" placeholder="Masukan Latitude / Garis Lintang">
                                                 @error('lat')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -73,8 +73,8 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Longitude <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" id="longitude" class="form-control @error('long') is-invalid @enderror" name="long" value="{{ old('long') }}" placeholder="Enter Longitude">
+                                                <label>Longitude / Garus Bujur <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" id="longitude" class="form-control @error('long') is-invalid @enderror" name="long" value="{{ old('long') }}" placeholder="Masukan Longitude / Garis Bujur">
                                                 @error('long')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -88,7 +88,7 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="provinsi-select">Provinsi <small class="text-success">*Harus diisi</small></label>
+                                                <label for="provinsi-select">Provinsi <small class="text-success">*Harus dipilih</small></label>
                                                 <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                     @foreach($provinsi as $p)
@@ -103,7 +103,7 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="kabupaten-select">Kabupaten <small class="text-success">*Harus diisi</small></label>
+                                                <label for="kabupaten-select">Kabupaten <small class="text-success">*Harus dipilih</small></label>
                                                 <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                 </select>
@@ -121,7 +121,7 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="kecamatan-select">Kecamatan <small class="text-success">*Harus diisi</small></label>
+                                                <label for="kecamatan-select">Kecamatan <small class="text-success">*Harus dipilih</small></label>
                                                 <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                 </select>
@@ -133,7 +133,7 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="desa-select">Desa <small class="text-success">*Harus diisi</small></label>
+                                                <label for="desa-select">Desa <small class="text-success">*Harus dipilih</small></label>
                                                 <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                 </select>
@@ -152,7 +152,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Nama Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Enter Nama">
+                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}" placeholder="Masukan Nama Gudang">
                                                 @error('nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -161,7 +161,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Kontak <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('kontak') is-invalid @enderror" name="kontak" value="{{ old('kontak') }}" placeholder="Enter kontak">
+                                                <input type="text" class="form-control @error('kontak') is-invalid @enderror" name="kontak" value="{{ old('kontak') }}" placeholder="Masukan kontak Gudang">
                                                 @error('kontak')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -175,8 +175,8 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label>Foto <small class="text-success">*Boleh tidak  diisi</small></label>
-                                                <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}" placeholder="Enter foto">
+                                                <label>Foto <small class="text-success">*Boleh tidak diisi</small></label>
+                                                <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ old('foto') }}" placeholder="Masukan Foto Gudang">
                                                 @error('foto')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -185,7 +185,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Hari Kerja <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" value="{{ old('hari') }}" placeholder="Enter hari">
+                                                <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" value="{{ old('hari') }}" placeholder="Masukan Hari Kerja">
                                                 @error('hari')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -200,7 +200,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Jam Buka <small class="text-success">*Harus diisi</small></label>
-                                                <input type="time" class="form-control @error('jam_buka') is-invalid @enderror" name="jam_buka" value="{{ old('jam_buka') }}" placeholder="Enter jam buka">
+                                                <input type="time" class="form-control @error('jam_buka') is-invalid @enderror" name="jam_buka" value="{{ old('jam_buka') }}" placeholder="Masukan Jam Buka">
                                                 @error('jam_buka')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -209,7 +209,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Jam Tutup <small class="text-success">*Harus diisi</small></label>
-                                                <input type="time" class="form-control @error('jam_tutup') is-invalid @enderror" name="jam_tutup" value="{{ old('jam_tutup') }}" placeholder="Enter jam tutup">
+                                                <input type="time" class="form-control @error('jam_tutup') is-invalid @enderror" name="jam_tutup" value="{{ old('jam_tutup') }}" placeholder="Masukan Jam Tutup">
                                                 @error('jam_tutup')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -223,8 +223,8 @@
                                     <div class="col-md-12">
                                         <div class="form-row">
                                             <div class="form-group col-md-3">
-                                                <label>Kapasitas Luas Gudang ( &#13217; ) <small class="text-success">*Harus diisi</small></label>
-                                                <input type="number" min="1" class="form-control @error('kapasitas_meter') is-invalid @enderror" name="kapasitas_meter" value="{{ old('kapasitas_meter') }}" placeholder="Masukan Luas">
+                                                <label>Kapasitas Luas Gudang (&#13217;)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('kapasitas_meter') is-invalid @enderror" name="kapasitas_meter" value="{{ old('kapasitas_meter') }}" placeholder="Masukan Luas gudang">
                                                 @error('kapasitas_meter')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -232,8 +232,8 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group col-md-3">
-                                                <label>Kapasitas Berat Gudang ( Ton ) <small class="text-success">*Harus diisi</small></label>
-                                                <input type="numeric" min="1" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ old('kapasitas_berat') }}" placeholder="00.00">
+                                                <label style="font-size: 11px;">Kapasitas Berat Gudang (Ton)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="numeric" min="1" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ old('kapasitas_berat') }}" placeholder="Masukan Kapasitas Barang Di Gudang">
                                                 @error('kapasitas_berat')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -242,7 +242,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Nama Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ old('pemilik') }}" placeholder="Enter pemilik">
+                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ old('pemilik') }}" placeholder="Masukan Nama Pemilik Gudang">
                                                 @error('pemilik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -257,7 +257,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-4">
                                                 <label>Nomor Rekening <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ old('no_rek') }}" placeholder="Enter Nomor Rekening">
+                                                <input type="text" class="form-control @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ old('no_rek') }}" placeholder="Masukan Nomor Rekening Gudang">
                                                 @error('no_rek')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -265,7 +265,7 @@
                                                 @enderror
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label>Bank <small class="text-success">*Harus diisi</small></label>
+                                                <label>Bank <small class="text-success">*Harus dipilih</small></label>
                                                 <select class="form-control @error('bank_id') is-invalid @enderror" id="bank_id" name="bank_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                     @foreach($dataBank as $p)
@@ -280,7 +280,7 @@
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Pemilik Rekening <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('atas_nama') is-invalid @enderror" name="atas_nama" value="{{ old('atas_nama') }}" placeholder="Enter Pemilik Rekening">
+                                                <input type="text" class="form-control @error('atas_nama') is-invalid @enderror" name="atas_nama" value="{{ old('atas_nama') }}" placeholder="Masukan Pemilik Rekening">
                                                 @error('atas_nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

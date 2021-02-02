@@ -1,7 +1,7 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Tambah Data Pengurus';
-        
+
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -53,7 +53,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nama Akun <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->name }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Enter the Name Account...">
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->pengurus->nama }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Masukan Nama Akun Pengurus">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Username <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ $data->username }}" placeholder="Enter the username...">
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ $data->username }}" placeholder="Masukan Username Akun">
                                         @error('username')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>E-mail <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $data->email }}" aria-describedby="barangStatus" aria-describedby="barangStatus" placeholder="Enter the email...">
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $data->email }}" aria-describedby="barangStatus" aria-describedby="barangStatus" placeholder="Masukan Email Pengurus">
                                         <small id="barangStatus" class="form-text">Password akan dikirim ke E-mail ini.</small>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
