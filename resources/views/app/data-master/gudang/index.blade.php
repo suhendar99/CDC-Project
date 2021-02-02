@@ -55,7 +55,7 @@
                 @foreach($data as $gudang)
                 <div class="col-4">
                     <div class="card">
-                        <img src="{{ asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
+                        <img src="{{ ($gudang->foto == null) ? asset('images/image-not-found.jpg') : asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-8">
