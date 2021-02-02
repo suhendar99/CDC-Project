@@ -53,3 +53,4 @@ Route::get('/v1/barang/pesanan/{id}', 'v1\ReturController@barangPesanan');
 Route::get('/v1/detail/penyimpanan/stock', 'v1\StorageController@detail');
 Route::get('/v1/gudang/{id}/status', 'v1\GudangController@changeStatus');
 Route::get('/v1/rak/{id}/status', 'v1\RakController@changeStatus');
+Route::get('/v1/getPesanan/{id}', 'v1\PemesananController@getPesanan');

@@ -72,7 +72,20 @@ class StorageOutController extends Controller
      */
     public function printSuratJalan(Request $request)
     {
-        return view('app.transaksi.surat-jalan.print');
+        set_time_limit(120);
+        $date = date('d-m-Y');
+        $data = SuratJalan::whereId($request->query('id'))->with('user','pemesanan.gudang','pemesanan.barangPesanan')->first();
+
+        // dd($data);
+        // PDF::;
+        // $customPaper = array(0,0,283.80,567.00);
+
+        $counter = $data->count();
+        $kode = sprintf("%'.04d", (String)$counter);
+        $pdf = PDF::loadview('app.transaksi.surat-jalan.print', compact('data','date','kode'));
+        return $pdf->stream();
+
+        // return view('app.transaksi.surat-jalan.print');
     }
 
     public function findBarang($id)
