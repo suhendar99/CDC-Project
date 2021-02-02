@@ -33,6 +33,6 @@ class RakBulky extends Model
     public function tingkat()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = rak_id, localKey = id)
-    	return $this->hasMany('App\Models\TIngkatanRakBulky', 'rak_bulky_id');
+    	return $this->hasMany('App\Models\TIngkatRakBulky', 'rak_bulky_id');
     }
 }

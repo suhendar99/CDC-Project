@@ -49,10 +49,12 @@ Route::get('/v1/detail/bank/{id}', 'v1\BankController@detail');
 Route::get('/v1/geocode', 'v1\GudangController@geocode');
 Route::get('/v1/storage/rak/{id}', 'v1\StorageController@tingkatRak');
 Route::get('/v1/rak/{id}/barang', 'v1\GudangController@detailBarang');
+Route::get('/v1/bulky/rak/{id}/barang', 'v1\GudangBulkyController@detailBarang');
 Route::get('/v1/barang/pesanan/{id}', 'v1\ReturController@barangPesanan');
 Route::get('/v1/detail/penyimpanan/stock', 'v1\StorageController@detail');
 Route::get('/v1/gudang/{id}/status', 'v1\GudangController@changeStatus');
 Route::get('/v1/rak/{id}/status', 'v1\RakController@changeStatus');
+Route::get('/v1/bulky/rak/{id}/status', 'v1\RakBulkyController@changeStatus');
 Route::get('/v1/getGudang/{id}/user', function($id){
 	$data = App\Models\Gudang::where('user_id', $id)->get();
 

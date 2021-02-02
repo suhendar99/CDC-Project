@@ -33,6 +33,6 @@ class TingkatRakBulky extends Model
     public function storage()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = tingkatanRak_id, localKey = id)
-    	return $this->hasMany('App\Models\Storage', 'tingkat_id');
+    	return $this->hasMany('App\Models\StorageBulky', 'tingkat_id');
     }
 }

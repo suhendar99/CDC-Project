@@ -15,6 +15,17 @@ class BarangPemesananBulky extends Model
     protected $guarded = [];
 
     /**
+     * StockBarang belongs to Barang.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function barang()
+    {
+    	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
+    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+    }
+
+    /**
      * BarangPemesananBulky belongs to PemesananBulky.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

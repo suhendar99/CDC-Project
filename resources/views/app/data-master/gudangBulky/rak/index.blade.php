@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Rak Gudang';
+        $pageTitle = 'Data Rak Gudang Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,9 +15,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Gudang</a>
+            <a href="#" class="text-14">Data Gudang Bulky</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Rak Gudang</a>
+            <a href="#" class="text-14">Data Rak Gudang Bulky</a>
           </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('rak.create', ['gudang' => $gudang->id])}}" class="btn btn-primary btn-sm">Tambah Rak Gudang</a>
+                                <a href="{{route('rak.bulky.create', ['gudang' => $gudang->id])}}" class="btn btn-primary btn-sm">Tambah Rak Gudang Bulky</a>
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
               responsive: true,
               ordering : false,
               pageLength : 10,
-              ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
+              ajax : "{{ route('rak.bulky.index', ['gudang' => $gudang->id]) }}",
               columns : [
                   // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                   {data : 'kode', name: 'kode'},
@@ -152,7 +152,7 @@
                   },
                   {
                       data : 'kapasitas_berat', render:function(data,a,b,c){
-                          return data + ' Ton';
+                          return data + ' Kg';
                       }
                   },
                   {data : 'tingkat_count', name: 'tingkat_count'},
@@ -165,7 +165,7 @@
             $('#status-rak-'+id).text('Loading');
             
             $.ajax({
-                url: "/api/v1/rak/"+id+"/status",
+                url: "/api/v1/bulky/rak/"+id+"/status",
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -194,7 +194,7 @@
         function detail(id){
             $('#inputBarang').html(``);
             $.ajax({
-                url: "/api/v1/rak/"+id+"/barang",
+                url: "/api/v1/bulky/rak/"+id+"/barang",
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -208,15 +208,23 @@
                     $.each(response.data.tingkat, function(index, val) {
                          /* iterate through array or object */
                           let store = ``;
-                         $.each(val.storage, function(i, b) {
-                              /* iterate through array or object */
-                              $('#inputBarang').append(`<tr>
-                                <td>${val.nama}</td>  
-                                <td>${b.storage_in.barang.nama_barang}</td>
-                                <td>${b.jumlah + b.satuan}</td>
-                                </tr>`);
-                             // array.push(b.storageIn.barang.nama)
-                         });
+                          if (val.storage.length > 0) {
+                           $.each(val.storage, function(i, b) {
+                                /* iterate through array or object */
+                                $('#inputBarang').append(`<tr>
+                                  <td>${val.nama}</td>  
+                                  <td>${b.storage_in.barang.nama_barang}</td>
+                                  <td>${b.jumlah + b.satuan}</td>
+                                  </tr>`);
+                               // array.push(b.storageIn.barang.nama)
+                           });
+
+                          } else {
+                            $('#inputBarang').append(`<tr>
+                                  <td>${val.nama}</td>  
+                                  <td colspan="2">Barang Tidak Ada</td>
+                                  </tr>`);
+                          }
 
                     });
 
@@ -229,7 +237,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/gudang/{{ $gudang->id }}/rak/'+id
+            formDelete.action = '/v1/gudang-bulky/{{ $gudang->id }}/rak/'+id
 
             const Toast = Swal.mixin({
             toast: true,
