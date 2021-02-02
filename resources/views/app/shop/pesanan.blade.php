@@ -1,4 +1,4 @@
-@php
+ @php
     $icon = 'receipt_long';
     $pageTitle = 'Pemesanan';
     $nosidebar = true;

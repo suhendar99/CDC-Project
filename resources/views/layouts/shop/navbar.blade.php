@@ -20,6 +20,11 @@
                     {{ __('Dashboard') }}
                 </a>
             @endif
+            {{-- @if (Auth::user()->pembeli_id != null)
+                <a class="dropdown-item" href="{{ route('transaksiTerakhirPembeli') }}">
+                    {{ __('Transaksi Terakhir') }}
+                </a>
+            @endif --}}
             <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
