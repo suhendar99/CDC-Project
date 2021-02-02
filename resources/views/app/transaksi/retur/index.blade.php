@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('retur.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a>
+                                <a href="{{route('returIn.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('retur.index') }}",
+            ajax : "{{ route('returIn.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kwitansi.kode', name: 'kode'},

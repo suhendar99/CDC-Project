@@ -1,3 +1,4 @@
+{{-- {{dd('returOut : '.Request::is('v1/returOut/*'), 'retur : '.Request::is('v1/retur/*'))}} --}}
 <div id="sidebar">
     <div id="sidebar-child" class="shadow">
         <nav>
@@ -19,8 +20,8 @@
                         <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">dashboard</i>Dashboard</a>
                     </li>
                     @if (isset($bank))
-                        <li class="{{ Request::is('v1/piutang*') ? 'active' : false }}">
-                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutang*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
+                        <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
+                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutangIn*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
                         </li>
                         <li class="{{ Request::is('v1/bungaBank*') ? 'active' : false }}">
                             <a href="{{route('bungaBank.index')}}" class="valign-center {{ Request::is('v1/bungaBank*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Bunga  Bank</a>
@@ -163,25 +164,25 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
-                        {{ Request::is('v1/retur*') ? 'active' : false }}
+                        {{ Request::is('v1/returIn*') ? 'active' : false }}
                         {{ Request::is('v1/returOut*') ? 'active' : false }}
                         {{ Request::is('v1/pemesanan*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/po*') ? 'show' : false }}
-                            {{ Request::is('v1/retur*') ? 'show' : false }}
+                            {{ Request::is('v1/returIn*') ? 'show' : false }}
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
                             {{ Request::is('v1/pemesanan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
-                                <a href="{{route('pemesanan.index')}}">Pemesanan Masuk</a>
+                                <a href="{{route('pemesanan.index')}}">Pesanan Pelanggan</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
-                                <a href="{{route('po.index')}}">Pemesanan Keluar</a>
+                                <a href="{{route('po.index')}}">Pembelian Barang</a>
                             </li>
-                            <li class="{{ Request::is('v1/retur*') ? 'active' : false }}">
-                                <a href="{{route('retur.index')}}">Retur Masuk</a>
+                            <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
+                                <a href="{{route('returIn.index')}}">Retur Masuk</a>
                             </li>
                             <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
                                 <a href="{{route('returOut.index')}}">Retur Keluar</a>
@@ -189,19 +190,19 @@
                         </ul>
                     </li>
                     <li class="
-                        {{ Request::is('v1/piutang*') ? 'active' : false }}
+                        {{ Request::is('v1/piutangIn*') ? 'active' : false }}
                         {{ Request::is('v1/piutangOut*') ? 'active' : false }}
                     ">
                         <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Piutang</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/piutang*') ? 'show' : false }}
+                            {{ Request::is('v1/piutangIn*') ? 'show' : false }}
                             {{ Request::is('v1/piutangOut*') ? 'show' : false }}
                         " id="piutangSubmenu">
-                            <li class="{{ Request::is('v1/piutang*') ? 'active' : false }}">
-                                <a href="{{route('piutang.index')}}">Piutang Masuk</a>
+                            <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
+                                <a href="{{route('piutangIn.index')}}">Piutang Masuk</a>
                             </li>
-                            <li class="{{ Request::is('v1/piutangOut *') ? 'active' : false }}">
-                                <a href="{{route('piutangOut.index')}}">Piutang keluar</a>
+                            <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
+                                <a href="{{route('piutangOut.index')}}">Piutang Keluar</a>
                             </li>
                         </ul>
                     </li>
@@ -249,10 +250,10 @@
                             {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
-                                <a href="{{route('pemesananMasukPembeli.index')}}">Pemesanan Masuk</a>
+                                <a href="{{route('pemesananMasukPembeli.index')}}">Pesanan Pelanggan</a>
                             </li>
                             <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
-                                <a href="{{route('pemesananKeluarPembeli.index')}}">Pemesanan Keluar</a>
+                                <a href="{{route('pemesananKeluarPembeli.index')}}">Pembelian Barang</a>
                             </li>
                         </ul>
                     </li>

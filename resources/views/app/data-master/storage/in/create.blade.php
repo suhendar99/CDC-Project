@@ -129,18 +129,18 @@
                                     </div> --}}
                                 </div>
                                 <div class="form-group">
-                                        <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="" class="form-control">
-                                            <option value="0">--Pilih Gudang Retail--</option>
-                                            @foreach ($gudang as $list)
-                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('harga_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                    <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
+                                    <select name="gudang_id" id="" class="form-control">
+                                        <option value="0">--Pilih Gudang Retail--</option>
+                                        @foreach ($gudang as $list)
+                                            <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('harga_barang')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">

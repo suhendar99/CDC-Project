@@ -18,6 +18,12 @@ use App\Models\SuratJalan;
 
 class SuratJalanController extends Controller
 {
+
+    function __construct(SuratJalan $suratjalan){
+        $this->model = $suratjalan;
+        $this->path = 'app.data-master.storage.';
+        $this->route = '/v1/surat-jalan/';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,18 +32,25 @@ class SuratJalanController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = SuratJalan::with('pemesanan')
+            $data = $this->model::with('pemesanan')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/storage/penyimpanan/'.$data->id.'" class="btn btn-primary btn-sm">Ubah Penyimpanan</a>';
+                    return '<a href="'.$this->route.'print?id='.$data->id.'" target="_blank" class="btn btn-primary btn-sm">Cetak PDF</a>';
                 })
                 ->make(true);
         }
 
-        return view('app.data-master.storage.index');
+        return view($this->path.'index');
+    }
+
+    public function printPdf($id)
+    {
+        $data = $this->model::findOrFail($id);
+
+
     }
 
     /**

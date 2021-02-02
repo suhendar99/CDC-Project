@@ -106,7 +106,7 @@ class ReturController extends Controller
         ]);
 
 
-        return redirect(route('retur.index'))->with('success', __( 'Retur Created!' ));
+        return redirect(route('returIn.index'))->with('success', __( 'Retur Created!' ));
     }
 
     /**
@@ -171,7 +171,7 @@ class ReturController extends Controller
             ]);
         }
 
-        return redirect(route('retur.index'))->with('success', __( 'Retur Updated!' ));
+        return redirect(route('returIn.index'))->with('success', __( 'Retur Updated!' ));
     }
 
     /**
@@ -184,6 +184,6 @@ class ReturController extends Controller
     {
         Retur::findOrFail($id)->delete();
 
-        return redirect(route('retur.index'))->with('success', __( 'Retur Deleted!' ));
+        return redirect(route('returIn.index'))->with('success', __( 'Retur Deleted!' ));
     }
 }

@@ -86,47 +86,69 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
-                                    <h4>Barang Keluar <small class="text-info">(Pengiriman ke Pembeli)</small></h4>
-                                    <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Kode Penyimpanan / Barcode</th>
-                                                <th>Nama Gudang</th>
-                                                <th>Nama Barang</th>
-                                                <th>Jumlah Barang Keluar</th>
-                                                <th>Pemesanan</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <br>
-                                    <h4>Kwitansi</h4>
-                                    <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Pembayar</th>
-                                                <th>Jumlah Uang</th>
-                                                <th>Pemesanan</th>
-                                                <th>Gudang</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <br>
-                                    <h4>Surat Jalan</h4>
-                                    <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Pengirim</th>
-                                                <th>Penerima</th>
-                                                <th>Tempat</th>
-                                                {{-- <th>Gudang</th> --}}
-                                                {{-- <th>Action</th> --}}
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul class="nav nav-pills" id="sub-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a href="#sub-keluar" class="nav-link active rounded" id="sub-second-tab" data-toggle="pill" role="tab" aria-controls="sub-second" aria-selected="false" >Barang Keluar</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-kwitansi" class="nav-link rounded" id="sub-home-tab" data-toggle="pill" role="tab" aria-controls="sub-home" aria-selected="true" >Kwitansi</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-surat-jalan" class="nav-link rounded" id="sub-keluar-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Jalan</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12 pt-4">
+                                            <div class="tab-content" id="sub-tabContent">
+                                                <div class="tab-pane fade show active" id="sub-keluar" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Barang Keluar</h4>
+                                                    <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Kode Penyimpanan / Barcode</th>
+                                                                <th>Nama Gudang</th>
+                                                                <th>Nama Barang</th>
+                                                                <th>Jumlah Barang Keluar</th>
+                                                                <th>Pemesanan</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-kwitansi" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Kwitansi</h4>
+                                                    <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Pembayar</th>
+                                                                <th>Jumlah Uang</th>
+                                                                <th>Pemesanan</th>
+                                                                <th>Gudang</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-surat-jalan" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Surat Jalan</h4>
+                                                    <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Pengirim</th>
+                                                                <th>Penerima</th>
+                                                                <th>Tempat</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -326,8 +348,8 @@
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
-                {data : 'tempat', name: 'tempat'}
-                // {data : 'action', name: 'action'}
+                {data : 'tempat', name: 'tempat'},
+                {data : 'action', name: 'action'}
             ]
         });
 
