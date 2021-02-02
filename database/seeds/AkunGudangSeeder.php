@@ -18,5 +18,9 @@ class AkunGudangSeeder extends Seeder
         ];
 
         DB::table('akun_gudangs')->insert($value);
+        DB::table('akun_gudang_bulkys')->insert([
+            'bulky_id' => 1,
+            'pengurus_bulky_id' => 1
+        ]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Gudang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -13,19 +12,14 @@ use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\Rak;
 use App\Models\Bank;
-use App\Models\RekeningGudang;
+use App\Models\RekeningBulky;
+use App\Models\Gudang;
+use App\Models\GudangBulky;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
-class GudangController extends Controller
+class GudangBulkyController extends Controller
 {
-    public function __construct()
-    {
-        $this->Data = new Gudang;
-
-        $this->path = 'app.data-master.gudang.';
-        $this->alert = 'Data Berhasil ';
-    }
     /**
      * Display a listing of the resource.
      *
@@ -33,13 +27,20 @@ class GudangController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Gudang::withCount('rak')
-        ->whereHas('akunGudang', function($query){
-            $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+        $data = GudangBulky::withCount('rak')
+        ->whereHas('akunGudangBulky', function($query){
+            $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
         })
         ->paginate(6);
 
-        return view($this->path.'index', compact('data'));
+        if ($request->query('search') !== null) {
+        	$data = GudangBulky::where('nama', 'like', '%'.$request->query('search').'%')->whereHas('akunGudangBulky', function($query){
+	            $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+	        })
+	        ->paginate(6);
+        }
+
+        return view('app.data-master.gudangBulky.index', compact('data'));
     }
 
     public function search(Request $request)
@@ -76,18 +77,9 @@ class GudangController extends Controller
         ], 200);
     }
 
-    public function detailBarang($id)
-    {
-        $data = Rak::with('tingkat.storage.storageIn.barang')->find($id);
-
-        return response()->json([
-            'data' => $data
-        ], 200);
-    }
-
     public function changeStatus($id)
     {
-        $data = Gudang::find($id);
+        $data = GudangBulky::find($id);
 
         if ($data != null) {
             $status = ($data->status == 0) ? 1 : 0;
@@ -115,7 +107,7 @@ class GudangController extends Controller
     {
         $provinsi = Provinsi::all();
         $dataBank = Bank::all();
-        return view($this->path.'create', compact('provinsi','dataBank'));
+        return view('app.data-master.gudangBulky.create', compact('provinsi','dataBank'));
     }
 
     /**
@@ -160,36 +152,37 @@ class GudangController extends Controller
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/gudang"), $foto);
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
-                    'foto' => 'upload/foto/gudang/'.$foto,
+                $request->foto->move(public_path("upload/foto/bulky"), $foto);
+                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                    'foto' => 'upload/foto/bulky/'.$foto,
                     'user_id' => $user_id,
-                    'nomor_gudang' => "GUD/RTI/".$date.'/'.$kode
+                    'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
                 ]));
 
                 $gudang_id = $createGudang->id;
-                RekeningGudang::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
-                    'gudang_id' => $gudang_id
+                RekeningBulky::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
+                    'bulky_id' => $gudang_id
                 ]));
             } else {
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'user_id' => $user_id,
-                    'nomor_gudang' => "GUD/".$date.'/'.$kode
+                    'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
                 ]));
 
                 $gudang_id = $createGudang->id;
-                RekeningGudang::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
-                    'gudang_id' => $gudang_id
+                RekeningBulky::create(array_merge($request->only('bank_id','atas_nama','no_rek'),[
+                    'bulky_id' => $gudang_id
                 ]));
             }
 
-            DB::table('akun_gudangs')->insert([
-                'gudang_id' => $gudang_id,
-                'pengurus_id' => auth()->user()->pengurus_gudang_id,
+            DB::table('akun_gudang_bulkys')->insert([
+                'bulky_id' => $gudang_id,
+                'pengurus_bulky_id' => auth()->user()->pengurus_gudang_bulky_id,
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
-        return redirect(route('rak.create', $gudang_id))->with('success',$this->alert.'Disimpan !');
+        return redirect(route('rak.bulky.create', $gudang_id))->with('success',$this->alert.'Disimpan !');
+        // return back();
     }
 
     /**
@@ -200,7 +193,7 @@ class GudangController extends Controller
      */
     public function show($id)
     {
-        $data = Gudang::with('desa.kecamatan.kabupaten.provinsi', 'rak')->where('id',$id)->get();
+        $data = GudangBulky::with('desa.kecamatan.kabupaten.provinsi', 'rak')->where('id',$id)->get();
 
         return response()->json([
             'data' => $data
@@ -215,9 +208,9 @@ class GudangController extends Controller
      */
     public function edit($id)
     {
-        $data = Gudang::find($id);
+        $data = GudangBulky::find($id);
         $provinsi = Provinsi::all();
-        return view($this->path.'edit',compact('data', 'provinsi'));
+        return view('app.data-master.gudangBulky.edit',compact('data', 'provinsi'));
     }
 
     /**
@@ -247,21 +240,23 @@ class GudangController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $data = Gudang::find($id);
+            $data = GudangBulky::findOrFail($id);
             if ($request->file('foto')) {
                 File::delete($data->foto);
+
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/gudang"), $foto);
+                $request->foto->move(public_path("upload/foto/bulky"), $foto);
+
                 $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
-                    'foto' => 'upload/foto/gudang/'.$foto
+                    'foto' => 'upload/foto/bulky/'.$foto
                 ]));
 
             } else {
                 $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik')));
             }
         }
-        return back()->with('success',$this->alert.'Diedit !');
+        return back()->with('success','Diedit !');
     }
 
     /**
@@ -272,7 +267,7 @@ class GudangController extends Controller
      */
     public function destroy($id)
     {
-        $data = $this->Data->find($id);
+        $data = GudangBulky::findOrFail($id);
         File::delete($data->foto);
         $data->delete();
 
