@@ -85,7 +85,7 @@
 										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 									</div>
 									<div class="col-12">
-										<span class="product-name">{{$b->barang->nama_barang}}</span>
+										<span class="product-name">{{$b->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
 									</div>
 									<div class="col-12">
 										<span class="product-name">Dari {{$b->gudang->nama}} <br /> Desa {{$b->gudang->desa->nama}}</span>
@@ -100,6 +100,60 @@
 	                                            <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
 	                                            {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
 	                                            <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->gudang->user->pengurusGudang->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
+	                                        </div>
+	                                    </div>
+	                                </div>
+								</div>
+								{{-- <button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>
+								<button type="button" class="btn btn-warning btn-sm mx-1">Beli</button> --}}
+							</div>
+						</div>
+					{{-- </a> --}}
+				</div>
+				@empty
+				<div class="col-md-12 d-flex justify-content-center">
+					<center>
+						<span class="oops">Oops!</span>
+						<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
+					</center>
+				</div>
+				@endforelse
+            </div>
+            @elseif(Auth::user()->pembeli_id != null)
+            <div class="row" id="product-list">
+				@forelse($barang as $b)
+				<div class="col-md-3 col-4">
+					{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
+						<div class="card item-card">
+							@if(count($b->storageOut->barang->foto) < 1 || $b->storageOut->barang->foto == null)
+							<img src="{!! asset('/images/image-not-found.jpg') !!}">
+							@else
+							{{-- {{dd($b)}} --}}
+							<img src="{{asset($b->storageOut->barang->foto[0]->foto)}}">
+							@endif
+							<div class="card-body">
+								<div class="row">
+									<div class="col-12">
+										<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
+										<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageOut->barang->kategori->nama}}</span>
+										<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
+									</div>
+									<div class="col-12">
+										<span class="product-name">{{$b->storageOut->barang->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
+									</div>
+									<div class="col-12">
+										<span class="product-name">Dari {{$b->pelanggan->nama}} <br /> Desa {{$b->pelanggan->desa->nama}}</span>
+									</div>
+									<div class="col-12">
+										<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
+									</div>
+	                                <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
+	                                    <div class="dropdown">
+	                                        <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+	                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
+	                                            <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
+	                                            {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
+	                                            <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -138,13 +192,13 @@
                                         <span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
                                     </div>
                                     <div class="col-12">
-                                        <span class="product-name">{{$b->nama_barang}}</span>
+                                        <span class="product-name">{{$b->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
                                     </div>
                                     <div class="col-12">
                                         <span class="product-name">Dari {{$b->pemasok->nama}} <br /> Desa {{$b->pemasok->desa->nama}}</span>
                                     </div>
                                     <div class="col-12">
-                                        <span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},</span>
+                                        <span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
                                     </div>
                                     <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                                         <div class="dropdown">

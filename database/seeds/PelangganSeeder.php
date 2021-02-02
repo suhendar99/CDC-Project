@@ -12,7 +12,7 @@ class PelangganSeeder extends Seeder
     public function run()
     {
         $akun = [
-            'nama' => 'Pak Pelanggan',
+            'nama' => 'Pak Warung',
             'alamat' => 'Jl A',
             'telepon' => '085445825212',
             'desa_id' => 1101010001,

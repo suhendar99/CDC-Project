@@ -15,18 +15,18 @@ class CreatePengurusGudangsTable extends Migration
     {
         Schema::create('pengurus_gudangs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->text('alamat')->nullable();
             $table->string('telepon',20)->nullable();
-            $table->string('nik')->nullable();
-            $table->string('tempat_lahir')->nullable();
+            $table->string('nik', 30)->nullable();
+            $table->string('tempat_lahir', 50)->nullable();
             $table->bigInteger('no_rek')->nullable();
             $table->date('tgl_lahir')->nullable();
-            $table->string('agama')->nullable();
-            $table->string('pekerjaan')->nullable();
+            $table->string('agama', 30)->nullable();
+            $table->string('pekerjaan', 50)->nullable();
             $table->enum('jenis_kelamin',['Pria','Wanita'])->nullable();
             $table->enum('status_perkawinan',['Belum Kawin','Sudah'])->nullable();
-            $table->string('kewarganegaraan')->nullable();
+            $table->string('kewarganegaraan', 50)->nullable();
             $table->string('foto')->nullable();
             $table->string('foto_ktp')->nullable();
             $table->string('foto_ktp_selfie')->nullable();

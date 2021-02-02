@@ -16,7 +16,7 @@ class CreateTingkatanRaksTable extends Migration
         Schema::create('tingkatan_raks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rak_id')->constrained('raks')->onDelete('cascade');
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->integer('status')->default(0);
             $table->timestamps();
         });

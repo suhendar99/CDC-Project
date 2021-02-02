@@ -22,12 +22,12 @@ class CreateStorageInsTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();
             $table->bigInteger('jumlah');
-            $table->string('satuan');
+            $table->string('satuan', 50);
             $table->dateTime('waktu');
-            $table->string('nomor_kwitansi');
-            $table->string('foto_kwitansi');
-            $table->string('nomor_surat_jalan');
-            $table->string('foto_surat_jalan');
+            $table->string('nomor_kwitansi', 50);
+            $table->text('foto_kwitansi');
+            $table->string('nomor_surat_jalan', 50);
+            $table->text('foto_surat_jalan');
             $table->timestamps();
         });
     }

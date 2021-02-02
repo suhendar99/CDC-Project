@@ -17,11 +17,13 @@ class CreateBarangPesanansTable extends Migration
             $table->id();
             $table->string('kode')->unique();
             $table->string('nama_barang',100);
-            $table->string('barang_kode');
+            $table->string('barang_kode', 100);
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             $table->integer('jumlah_barang');
-            $table->string('satuan');
+            $table->string('satuan', 50);
             $table->bigInteger('harga');
+            $table->integer('pajak');
+            $table->integer('biaya_admin');
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->timestamps();
         });

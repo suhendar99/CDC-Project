@@ -3,12 +3,25 @@
         position: absolute;right: 1.7rem;top: .9rem;cursor: pointer;
     }
 </style>
+@php
+    $set = App\Models\PengaturanAplikasi::find(1);
+@endphp
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-    <div class="row fullscreen">
+    <div class="row fullscreen" style="margin-top: -50px;">
         <div class="col-md-7">
+            <div class="col-md-12">
+                <div class="text-center mb-3">
+                    <img src="{{($set->logo_app == null) ? asset('/images/logo-cdc.png') : asset($set->logo_app)}}" alt="" height="80" width="100" style="object-fit: scale-down">
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="text-center">
+                    <h6><b>( <span class="text-my-primary">Consolidated</span> <span class="text-warning">Distribution Center</span> )</b></h6>
+                </div>
+            </div>
             @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i data-feather="check-circle"></i>
@@ -78,6 +91,7 @@
                                     {{ __('Login') }}
                                 </button> or
                                 <a href="{{route('register')}}">Register</a>
+                                <a href="#" style="margin-left:115px;">Bantuan</a>
 
                                 {{-- @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">

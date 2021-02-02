@@ -4,7 +4,7 @@
             <div class="sidebar-content">
                 <div class="sidebar-header">
                     <center>
-                        @if($set->logo_tab != null)
+                        @if($set->logo_app != null)
                         <img src="{{asset($set->logo_app)}}" height="50" class="scale-down my-3">
                         @else
                         <img src="{{asset('images/logo-app.png')}}" height="50" class="scale-down my-3">
@@ -226,16 +226,33 @@
                     {{-- @endif --}}
                      @if (Auth::user()->pelanggan_id != null)
                     <li class="
-                        {{ Request::is('v1/barangs*') ? 'active' : false }}
+                        {{ Request::is('v1/barangWarung*') ? 'active' : false }}
                     ">
-                        <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Data Master</a>
-                        <ul id="dataSubmenu" class="collapse list-unstyled
-                            {{ Request::is('v1/barangs*') ? 'show' : false }}
+                        <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Barang</a>
+                        <ul id="barangWarung" class="collapse list-unstyled
+                            {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                         ">
                             <li class="
-                            {{ Request::is('v1/barangs*') ? 'active' : false }}
+                            {{ Request::is('v1/barangWarung*') ? 'active' : false }}
                             ">
-                                <a href="{{route('get-barang')}}">Barang</a>
+                                <a href="{{route('barangWarung.index')}}">Daftar Barang</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}
+                    ">
+                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/pemesananMasukPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
+                        " id="transaksiSubmenu">
+                            <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
+                                <a href="{{route('pemesananMasukPembeli.index')}}">Pemesanan Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
+                                <a href="{{route('pemesananKeluarPembeli.index')}}">Pemesanan Keluar</a>
                             </li>
                         </ul>
                     </li>
@@ -291,13 +308,6 @@
                                 </li> --}}
                             </ul>
                         </li>
-                    @endif
-                    @if (isset($pelanggan))
-                    <li class="
-                        {{ Request::is('v1/pesanan*') ? 'active' : false }}
-                    ">
-                        <a href="{{route('pesanan.create')}}" class="valign-center"><i class="material-icons">dashboard</i>Pesanan</a>
-                    </li>
                     @endif
                     @if (isset($admin))
                     <li class="

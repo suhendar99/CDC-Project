@@ -13,6 +13,7 @@ use App\Models\Barang;
 use App\Models\BarangPesanan;
 use App\Models\BatasPiutang;
 use App\Models\Pemasok;
+use App\Models\PengaturanTransaksi;
 use App\Models\PiutangOut;
 use App\User;
 use Auth;
@@ -252,7 +253,8 @@ class PoController extends Controller
     public function edit($id)
     {
         $data = Barang::find($id);
-        return view($this->indexPath.'pesanan',compact('id','data'));
+        $biaya = PengaturanTransaksi::find(1);
+        return view($this->indexPath.'pesanan',compact('id','data','biaya'));
     }
 
     /**
@@ -335,8 +337,7 @@ class PoController extends Controller
         $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
         $store = Barang::find($id);
-
-        $harga = $store->harga_barang * $request->jumlah;
+        $harga = $request->harga * $request->jumlah;
 
         $po = Po::create(array_merge($request->only('pengurus_gudang_id','pemasok_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
             'kode' => $kode_faker,
@@ -353,6 +354,8 @@ class PoController extends Controller
             'nama_barang' => $request->nama_barang,
             'satuan' => $request->satuan,
             'jumlah_barang' => $request->jumlah,
+            'pajak' => $request->pajak,
+            'biaya_admin' => $request->biaya_admin,
             'harga' => $harga
         ]);
 
@@ -362,8 +365,8 @@ class PoController extends Controller
             PiutangOut::create([
                 'barang_id' => $po->id,
                 'tanggal'=> Carbon::now(),
-                'nama_pembeli' => Auth::user()->pelanggan->nama,
-                'hutang' => $poItem->harga * $poItem->jumlah_barang,
+                'nama_pembeli' => Auth::user()->pengurusGudang->nama,
+                'hutang' => $harga,
             ]);
         }
         return redirect('/shop')->with('sukses','Pesanan Telah dibuat !');

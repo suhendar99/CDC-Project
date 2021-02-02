@@ -17,7 +17,7 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->unsignedInteger('province_id');
             $table->unsignedInteger('city_id');
-            $table->string('name');
+            $table->string('name', 100);
             $table->timestamps();
         });
     }

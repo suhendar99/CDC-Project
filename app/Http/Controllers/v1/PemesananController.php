@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
+use App\Models\PemesananPembeli;
 use App\Models\PengurusGudang;
 use App\Models\Piutang;
 use App\Models\Storage;
@@ -30,6 +31,11 @@ class PemesananController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function pemesananMasukPembeli()
+    {
+        $data = PemesananPembeli::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        return view('app.transaksi.pemesanan-masuk-pembeli.index',compact('data'));
+    }
     public function index(Request $request)
     {
         if($request->ajax()){

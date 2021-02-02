@@ -16,7 +16,7 @@ class CreateFotoBarangsTable extends Migration
         Schema::create('foto_barangs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('barang_id')->constrained('barangs')->onDelete('cascade');
-            $table->string('foto')->nullable();
+            $table->text('foto')->nullable();
             $table->timestamps();
         });
     }
