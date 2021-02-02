@@ -60,3 +60,4 @@ Route::get('/v1/getGudang/{id}/user', function($id){
 		'data' => $data
 	],200);
 });
+Route::get('/v1/getPesanan/{id}', 'v1\PemesananController@getPesanan');

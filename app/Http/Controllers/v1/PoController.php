@@ -14,6 +14,7 @@ use App\Models\Bank;
 use App\Models\Barang;
 use App\Models\BarangPesanan;
 use App\Models\BatasPiutang;
+use App\Models\LogTransaksi;
 use App\Models\Pemasok;
 use App\Models\PengaturanTransaksi;
 use App\Models\PiutangOut;
@@ -361,6 +362,11 @@ class PoController extends Controller
             'pajak' => $request->pajak,
             'biaya_admin' => $request->biaya_admin,
             'harga' => $harga
+        ]);
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Pemesanan Barang Keluar'
         ]);
 
         if ($request->pembayaran == 'later') {

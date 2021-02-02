@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
 use App\Models\Kwitansi;
 use App\Models\Barang;
+use App\Models\LogTransaksi;
 use App\Models\Retur;
 use Illuminate\Support\Facades\DB;
 
@@ -98,6 +99,11 @@ class ReturController extends Controller
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Retur Barang Masuk'
+        ]);
 
 
         return redirect(route('returIn.index'))->with('success', __( 'Retur Created!' ));
