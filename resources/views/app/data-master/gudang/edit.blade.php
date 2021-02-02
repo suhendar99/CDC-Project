@@ -64,7 +64,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Latitude <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" id="latitude" class="form-control @error('lat') is-invalid @enderror" name="lat" value="{{ $data->lat }}" placeholder="Enter Latitude">
+                                                <input type="text" id="latitude" class="form-control @error('lat') is-invalid @enderror" name="lat" value="{{ $data->lat }}" placeholder="Masukan Latitude / Garis Lintang">
                                                 @error('lat')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Longitude <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" id="longitude" class="form-control @error('long') is-invalid @enderror" name="long" value="{{ $data->long }}" placeholder="Enter Longitude">
+                                                <input type="text" id="longitude" class="form-control @error('long') is-invalid @enderror" name="long" value="{{ $data->long }}" placeholder="Masukan Longitude / Garis Bujur">
                                                 @error('long')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -154,7 +154,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Nama Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $data->nama }}" placeholder="Enter Nama">
+                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $data->nama }}" placeholder="Masukan Nama Gudang">
                                                 @error('nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -163,7 +163,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Kontak <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('kontak') is-invalid @enderror" name="kontak" value="{{ $data->kontak }}" placeholder="Enter kontak">
+                                                <input type="text" class="form-control @error('kontak') is-invalid @enderror" name="kontak" value="{{ $data->kontak }}" placeholder="Masukan kontak Gudang">
                                                 @error('kontak')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -178,7 +178,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Foto <small class="text-success">*Boleh tidak  diisi</small></label>
-                                                <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $data->foto }}" placeholder="Enter foto">
+                                                <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $data->foto }}" placeholder="Masukan Foto Gudang">
                                                 @error('foto')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -187,7 +187,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Hari Kerja <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" value="{{ $data->hari }}" placeholder="Enter hari">
+                                                <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" value="{{ $data->hari }}" placeholder="Masukan Hari Kerja">
                                                 @error('hari')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -202,7 +202,7 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label>Jam Buka <small class="text-success">*Harus diisi</small></label>
-                                                <input type="time" class="form-control @error('jam_buka') is-invalid @enderror" name="jam_buka" value="{{ $data->jam_buka }}" placeholder="Enter jam buka">
+                                                <input type="time" class="form-control @error('jam_buka') is-invalid @enderror" name="jam_buka" value="{{ $data->jam_buka }}" placeholder="Masukan Jam Buka">
                                                 @error('jam_buka')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -211,7 +211,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Jam Tutup <small class="text-success">*Harus diisi</small></label>
-                                                <input type="time" class="form-control @error('jam_tutup') is-invalid @enderror" name="jam_tutup" value="{{ $data->jam_tutup }}" placeholder="Enter jam tutup">
+                                                <input type="time" class="form-control @error('jam_tutup') is-invalid @enderror" name="jam_tutup" value="{{ $data->jam_tutup }}" placeholder="Masukan Jam Tutup">
                                                 @error('jam_tutup')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -224,18 +224,27 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Kapasitas Gudang ( &#13217; ) <small class="text-success">*Harus diisi</small></label>
-                                                <input type="number" min="1" class="form-control @error('kapasitas') is-invalid @enderror" name="kapasitas" value="{{ $data->kapasitas }}" placeholder="Enter kapasitas">
-                                                @error('kapasitas')
+                                            <div class="form-group col-md-3">
+                                                <label>Kapasitas Luas Gudang (&#13217;)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('kapasitas_meter') is-invalid @enderror" name="kapasitas_meter" value="{{ $data->kapasitas_meter }}" placeholder="Masukan Luas gudang">
+                                                @error('kapasitas_meter')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label style="font-size: 11px;">Kapasitas Berat Gudang (Ton)<small class="text-success">*Harus diisi</small></label>
+                                                <input type="numeric" min="1" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ $data->kapasitas_berat }}" placeholder="Masukan Kapasitas Barang Di Gudang">
+                                                @error('kapasitas_berat')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label>Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ $data->pemilik }}" placeholder="Enter pemilik">
+                                                <label>Nama Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ $data->pemilik }}" placeholder="Masukan Nama Pemilik Gudang">
                                                 @error('pemilik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -439,7 +448,7 @@
             document.getElementById('latitude').value = marker.getLatLng().lat;
             document.getElementById('longitude').value = marker.getLatLng().lng;
 
-            
+
         });
       // console.log(`${uLat}`, `${uLon}`);
     };

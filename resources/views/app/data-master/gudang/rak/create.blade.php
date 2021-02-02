@@ -1,7 +1,7 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Tambah Data Rak Gudang';
-        
+
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -53,7 +53,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Nama Rak <small class="text-success">*Harus diisi</small></label>
-                                    <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}"  placeholder="Enter Name...">
+                                    <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}"  placeholder="Masukan Nama Rak ">
                                     @error('nama')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Panjang ( Meter ) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('panjang') is-invalid @enderror" name="panjang" value="{{ old('panjang') }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Enter the length...">
+                                        <input type="number" class="form-control @error('panjang') is-invalid @enderror" name="panjang" value="{{ old('panjang') }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Masukan Panjang Rak">
                                         @error('panjang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Lebar ( Meter ) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('lebar') is-invalid @enderror" name="lebar" value="{{ old('lebar') }}" placeholder="Enter the width...">
+                                        <input type="number" class="form-control @error('lebar') is-invalid @enderror" name="lebar" value="{{ old('lebar') }}" placeholder="Masukan Lebar Rak">
                                         @error('lebar')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Tinggi ( Meter ) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('tinggi') is-invalid @enderror" name="tinggi" value="{{ old('tinggi') }}" placeholder="Enter the height...">
+                                        <input type="number" class="form-control @error('tinggi') is-invalid @enderror" name="tinggi" value="{{ old('tinggi') }}" placeholder="Masukan Tinggi Rak">
                                         @error('tinggi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -92,7 +92,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Maksimal Kapasitas Berat ( Kg ) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="numeric" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ old('kapasitas_berat') }}" placeholder="00.00">
+                                        <input type="numeric" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ old('kapasitas_berat') }}" placeholder="Masukan Maksimal Berat Pada Rak">
                                         @error('kapasitas_berat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Jumlah Tingkatan Rak <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('tingkat') is-invalid @enderror" name="tingkat" value="{{ old('tingkat') }}" placeholder="Enter number of shelf level...">
+                                        <input type="number" class="form-control @error('tingkat') is-invalid @enderror" name="tingkat" value="{{ old('tingkat') }}" placeholder="Masukan Jumlah Tingkatan Rak">
                                         @error('tingkat')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

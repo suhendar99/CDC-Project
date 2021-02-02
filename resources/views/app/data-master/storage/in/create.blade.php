@@ -51,7 +51,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Enter Nomor Kwitansi">
+                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Enter Nomor Surat Jalan">
+                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -71,7 +71,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Enter Foto Kwitansi">
+                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
                                         @error('foto_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Foto Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" value="{{ old('foto_surat_jalan') }}" placeholder="Enter Foto Surat Jalan">
+                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" value="{{ old('foto_surat_jalan') }}" placeholder="Masukan Foto Surat Jalan">
                                         @error('foto_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -127,20 +127,20 @@
                                             </span>
                                         @enderror
                                     </div> --}}
-                                    <div class="form-group col-12">
-                                            <label>Pilih Gudang Retail <small class="text-success">*Harus diisi</small></label>
-                                            <select name="gudang_id" id="" class="form-control" width="100%">
-                                                <option value="0">--Pilih Gudang Retail--</option>
-                                                @foreach ($gudang as $list)
-                                                    <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('harga_barang')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
+                                    <select name="gudang_id" id="" class="form-control">
+                                        <option value="0">--Pilih Gudang Retail--</option>
+                                        @foreach ($gudang as $list)
+                                            <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('harga_barang')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">

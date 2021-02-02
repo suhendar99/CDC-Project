@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
+                                <th>Nama Pengurus</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Gudang</th>
+                                <th>Tempat Kerja</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -149,7 +149,7 @@
             ajax : "{{ route('pengurus-gudang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'name', name: 'name'},
+                {data : 'pengurus.nama', name: 'name'},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
                 {

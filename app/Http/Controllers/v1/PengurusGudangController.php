@@ -157,10 +157,12 @@ class PengurusGudangController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
-
         $user = User::with('pengurus')->findOrFail($id);
 
-        $user->update($request->only('name', 'username', 'email'));
+        PengurusGudang::find($user->pengurus->id)->update([
+            'nama' => $request->name
+        ]);
+        $user->update($request->only('username', 'email'));
 
         DB::table('akun_gudangs')->where('pengurus_id', $user->pengurus_gudang_id)->update([
             'gudang_id' => $request->gudang_id

@@ -1,4 +1,4 @@
-@php
+p@php
         $icon = 'storage';
         $pageTitle = 'Buat Data Storage Keluar';
 @endphp
@@ -290,7 +290,7 @@
     //                 console.log(response.data)
 
     //                 for (var i = response.data.length - 1; i >= 0; i--) {
-                        
+
     //                     for (var j = response.data[i].storage_in.length - 1; j >= 0; j--) {
     //                         array.push(response.data[i].storage_in[j].storage.jumlah);
     //                     }

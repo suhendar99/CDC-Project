@@ -522,10 +522,10 @@
         }
 
         function storageIn() {
-            $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>`);
+            $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Masuk</a>`);
         }
         function storageOut() {
-            $('#btn-action').html(`<a href="{{route('storage.out.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Keluar</a>`);
+            $('#btn-action').html(`<a href="{{route('storage.out.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>`);
         }
         function cleanBtn() {
             $('#btn-action').empty();
