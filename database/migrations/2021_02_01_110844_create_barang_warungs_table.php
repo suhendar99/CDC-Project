@@ -15,6 +15,7 @@ class CreateBarangWarungsTable extends Migration
     {
         Schema::create('barang_warungs', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->unique();
             $table->string('storage_out_kode');
             $table->foreign('storage_out_kode')->references('kode')->on('storage_outs')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');

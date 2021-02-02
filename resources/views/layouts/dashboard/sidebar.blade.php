@@ -229,7 +229,7 @@
                     <li class="
                         {{ Request::is('v1/barangWarung*') ? 'active' : false }}
                     ">
-                        <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Barang</a>
+                        <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Warung</a>
                         <ul id="barangWarung" class="collapse list-unstyled
                             {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                         ">
@@ -243,17 +243,47 @@
                     <li class="
                         {{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}
                         {{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/pemesananMasukPembeli*') ? 'show' : false }}
                             {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/returMasukPembeli*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
                                 <a href="{{route('pemesananMasukPembeli.index')}}">Pesanan Pelanggan</a>
                             </li>
                             <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
                                 <a href="{{route('pemesananKeluarPembeli.index')}}">Pembelian Barang</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}">
+                                <a href="{{route('returMasukPembeli.index')}}">Retur Masuk</a>
+                            </li>
+                            <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
+                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/dashboard*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                    ">
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                        " id="rekapitulasiSubmenu">
+                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
                             </li>
                         </ul>
                     </li>
