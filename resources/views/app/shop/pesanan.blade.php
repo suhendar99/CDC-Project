@@ -102,6 +102,33 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    {{-- <div id="pengambilan" class="col-md-3 ">
+                                        <label>Metode Pengambilan <small class="text-success">*Harus diisi</small></label>
+                                        <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
+                                            <option value="">-- Pilih Metode --</option>
+                                            <option value="transfer">Diambil Sendiri</option>
+                                            <option value="wangpas">Dikirim</option>
+                                        </select>
+                                        @error('metode_pembayaran')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div id="ifKirim" class="col-md-3 ">
+                                        <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
+                                        <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
+                                            <option value="">-- Pilih Metode --</option>
+                                            <option value="transfer">Transfer Ke (Rekening Penjual)</option>
+                                            <option value="wangpas">Wangpas</option>
+                                            <option value="bayar di tempat">Bayar di tempat</option>
+                                        </select>
+                                        @error('metode_pembayaran')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div> --}}
                                     <div class="col-md-4">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >

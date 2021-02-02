@@ -11,6 +11,7 @@ use App\Models\Barang;
 use App\Models\BarangPesanan;
 use App\Models\BarangWarung;
 use App\Models\Keranjang;
+use App\Models\LogTransaksi;
 use App\Models\Pemesanan;
 use App\Models\PemesananPembeli;
 use App\Models\PengaturanTransaksi;
@@ -235,6 +236,11 @@ class ShopController extends Controller
         $stok = $store->jumlah - $barangPesanan->jumlah_barang;
         $store->update([
             'jumlah' => $stok
+        ]);
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Pemesanan Barang Masuk'
         ]);
 
         if ($request->pembayaran == 'later') {

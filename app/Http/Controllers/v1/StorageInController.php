@@ -11,6 +11,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\Models\LogTransaksi;
 use App\Models\StockBarang;
 use App\Models\RekapitulasiPembelian;
 
@@ -157,6 +158,11 @@ class StorageInController extends Controller
             'satuan' => $barang->satuan,
             'harga' => $masuk->barang->harga_barang,
             'total' => $masuk->barang->harga_total
+        ]);
+        $log = LogTransaksi::create([
+            'tanggal' => now(),
+            'jam' => now(),
+            'Aktifitas_transaksi' => 'Penerimaan Barang'
         ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
