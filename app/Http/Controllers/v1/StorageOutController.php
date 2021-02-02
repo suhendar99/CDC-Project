@@ -213,6 +213,7 @@ class StorageOutController extends Controller
             ]);
 
             BarangWarung::create([
+                'kode' => rand(1000000,9999999),
                 'storage_out_kode' => $out->kode,
                 'pelanggan_id' => $pesanan->pelanggan_id,
                 'jumlah' => $pesan->jumlah_barang,
