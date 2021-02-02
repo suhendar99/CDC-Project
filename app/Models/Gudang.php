@@ -81,6 +81,17 @@ class Gudang extends Model
     }
 
     /**
+     * Gudang has many PemesananBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesananBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
+        return $this->hasMany('App\Models\PemesananBulky', 'gudang_bulky_id');
+    }
+
+    /**
      * Gudang has many Pemesanan.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

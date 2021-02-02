@@ -80,6 +80,7 @@
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
+                                                <th>Harga Beli</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -355,6 +356,10 @@
                         return data.jumlah + " " + data.satuan;
                     },
                     name: 'jumlah'
+                },
+                {data : 'harga_beli', render:function(data,a,b,c){
+                        return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                    }
                 },
                 {data : 'action', name: 'action'}
             ]

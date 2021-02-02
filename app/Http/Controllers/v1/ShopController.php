@@ -9,9 +9,11 @@ use App\Province;
 use App\City;
 use App\Models\Barang;
 use App\Models\BarangPesanan;
+use App\Models\BarangPemesananBulky;
 use App\Models\BarangWarung;
 use App\Models\Keranjang;
 use App\Models\Pemesanan;
+use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
 use App\Models\PengaturanTransaksi;
 use App\Models\Piutang;
@@ -122,11 +124,16 @@ class ShopController extends Controller
     public function showPemesanan($id)
     {
         $biaya = PengaturanTransaksi::find(1);
+
         if (Auth::user()->pelanggan_id!= null) {
             $data = StockBarang::find($id);
         } elseif (Auth::user()->pembeli_id!= null) {
             $data = BarangWarung::find($id);
+        } else {
+            $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
+            ->find($id);
         }
+
         return view($this->shopPath.'pesanan',compact('id','data','biaya'));
     }
 
@@ -202,57 +209,57 @@ class ShopController extends Controller
 
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
             $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
-        $faker = \Faker\Factory::create('id_ID');
+            $faker = \Faker\Factory::create('id_ID');
 
-        $kode_faker = $faker->unique()->regexify('[0-9]{9}');
+            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
 
-        // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-        $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+            $kode = 'PEM/RTL/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
-        $store = StockBarang::find($id);
+            $store = StockBarang::find($id);
 
-        $harga = $store->harga_barang * $request->jumlah;
+            $harga = $store->harga_barang * $request->jumlah;
 
-        $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-            'kode' => $kode_faker,
-            'nomor_pemesanan' => $kode,
-            'nama_pemesan' => $request->nama_pemesan,
-            'tanggal_pemesanan' => now('Asia/Jakarta')
-        ]));
-        // dd($request->barang);
-        $kodes = 'BP'.rand(10000,99999);
-        BarangPesanan::create([
-            'kode' => $kodes,
-            'barang_kode' => $request->barangKode,
-            'pemesanan_id' => $pemesanan->id,
-            'nama_barang' => $request->nama_barang,
-            'satuan' => $request->satuan,
-            'pajak' => $request->pajak,
-            'biaya_admin' => $request->biaya_admin,
-            'jumlah_barang' => $request->jumlah,
-            'harga' => $harga
-        ]);
-
-        if ($request->pembayaran == 'later') {
-            $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
-            // dd($hutang);
-            Piutang::create([
-                'barang_id' => $pemesanan->id,
-                'tanggal'=> Carbon::now(),
-                'nama_pembeli' => Auth::user()->pelanggan->nama,
-                'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+            $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                'kode' => $kode_faker,
+                'nomor_pemesanan' => $kode,
+                'nama_pemesan' => $request->nama_pemesan,
+                'tanggal_pemesanan' => now('Asia/Jakarta')
+            ]));
+            // dd($request->barang);
+            $kodes = 'BP'.rand(10000,99999);
+            BarangPesanan::create([
+                'kode' => $kodes,
+                'barang_kode' => $request->barangKode,
+                'pemesanan_id' => $pemesanan->id,
+                'nama_barang' => $request->nama_barang,
+                'satuan' => $request->satuan,
+                'pajak' => $request->pajak,
+                'biaya_admin' => $request->biaya_admin,
+                'jumlah_barang' => $request->jumlah,
+                'harga' => $harga
             ]);
 
             if ($request->pembayaran == 'later') {
-                // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+                $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
                 // dd($hutang);
                 Piutang::create([
                     'barang_id' => $pemesanan->id,
                     'tanggal'=> Carbon::now(),
                     'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $harga,
+                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
                 ]);
-            }
+
+                if ($request->pembayaran == 'later') {
+                    // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+                    // dd($hutang);
+                    Piutang::create([
+                        'barang_id' => $pemesanan->id,
+                        'tanggal'=> Carbon::now(),
+                        'nama_pembeli' => Auth::user()->pelanggan->nama,
+                        'hutang' => $harga,
+                    ]);
+                }
             }
         } elseif (Auth::user()->pembeli_id != null) {
             $v = Validator::make($request->all(),[
@@ -358,6 +365,132 @@ class ShopController extends Controller
                     'nama_pembeli' => Auth::user()->pelanggan->nama,
                     'hutang' => $harga,
                 ]);
+            }
+        } else{
+            $v = Validator::make($request->all(),[
+                'alamat_pemesan' => 'required',
+                'pembayaran' => 'required',
+                'telepon' => 'required',
+                'metode_pembayaran' => 'nullable',
+                'jumlah' => 'required|numeric|min:1',
+            ]);
+            if ($v->fails()) {
+                // return back()->withErrors($v)->withInput();
+                return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+            }
+            date_default_timezone_set('Asia/Jakarta');
+
+            $tanggal = date("Ymd");
+            $tahun = date("y");
+            $bulan = date("m");
+
+            // Number To Romawi
+            $map = array(
+                'M' => 1000,
+                'CM' => 900,
+                'D' => 500,
+                'CD' => 400,
+                'C' => 100,
+                'XC' => 90,
+                'L' => 50,
+                'XL' => 40,
+                'X' => 10,
+                'IX' => 9,
+                'V' => 5,
+                'IV' => 4,
+                'I' => 1
+            );
+
+            $tahunRomawi = '';
+            $bulanRomawi = '';
+
+            while ($tahun > 0) {
+                foreach ($map as $romawi => $int) {
+                    if ($tahun >= $int) {
+                        $tahun -= $int;
+                        $tahunRomawi .= $romawi;
+                        break;
+                    }
+                }
+            }
+
+            while ($bulan > 0) {
+                foreach ($map as $roman => $num) {
+                    if ($bulan >= $num) {
+                        $bulan -= $num;
+                        $bulanRomawi .= $roman;
+                        break;
+                    }
+                }
+            }
+
+            $date = date('ymd');
+            $latest = PemesananBulky::orderBy('id','desc')->first();
+
+            if ($latest == null) {
+                $counter = 1;
+            } else {
+                $counter = $latest->id+1;
+            }
+
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
+
+            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+            $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
+
+            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+            $kode = 'PEM/BKY/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+
+            $store = StockBarangBulky::find($id);
+
+            $harga = $store->harga_barang * $request->jumlah;
+
+            $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                'gudang_retail_id' => $request->gudang_id,
+                'kode' => $kode_faker,
+                'nomor_pemesanan' => $kode,
+                'nama_pemesan' => $request->nama_pemesan,
+                'tanggal_pemesanan' => now('Asia/Jakarta')
+            ]));
+            // dd($request->barang);
+            $kodes = 'BP'.rand(10000,99999);
+            BarangPemesananBulky::create([
+                'kode' => $kodes,
+                'barang_kode' => $request->barangKode,
+                'pemesanan_bulky_id' => $pemesanan->id,
+                'nama_barang' => $request->nama_barang,
+                'satuan' => $request->satuan,
+                'pajak' => $request->pajak,
+                'biaya_admin' => $request->biaya_admin,
+                'jumlah_barang' => $request->jumlah,
+                'harga' => $harga
+            ]);
+
+            if ($request->pembayaran == 'later') {
+                $BarangPesanan = BarangPemesananBulky::where('pemesanan_bulky_id',$pemesanan->id)->get();
+                // dd($hutang);
+                Piutang::create([
+                    'barang_id' => $pemesanan->id,
+                    'tanggal'=> Carbon::now(),
+                    'nama_pembeli' => Auth::user()->pelanggan->nama,
+                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+                ]);
+
+                if ($request->pembayaran == 'later') {
+                    // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+                    // dd($hutang);
+                    Piutang::create([
+                        'barang_id' => $pemesanan->id,
+                        'tanggal'=> Carbon::now(),
+                        'nama_pembeli' => Auth::user()->pelanggan->nama,
+                        'hutang' => $harga,
+                    ]);
+                }
             }
         }
         return redirect('/shop')->with('sukses','Pesanan Telah dibuat !');

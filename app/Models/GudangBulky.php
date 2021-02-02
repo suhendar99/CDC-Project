@@ -66,7 +66,7 @@ class GudangBulky extends Model
     public function user()
     {
     	// belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('App\User', 'user_id', 'id');
     }
 
     /**
@@ -78,5 +78,16 @@ class GudangBulky extends Model
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
     	return $this->hasMany('App\Models\StockBarangBulky', 'bulky_id');
+    }
+
+    /**
+     * GudangBulky has many PemesananBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesananBulky()
+    {
+    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
+    	return $this->hasMany('App\Models\PemesananBulky', 'bulky_id');
     }
 }

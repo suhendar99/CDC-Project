@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\Po;
 use App\Models\PoItem;
+use App\Models\PemesananBulky;
+use App\Models\BarangPemesananBulky;
 use App\Models\Bank;
 use App\Models\Barang;
 use App\Models\BarangPesanan;
@@ -15,6 +17,7 @@ use App\Models\BatasPiutang;
 use App\Models\Pemasok;
 use App\Models\PengaturanTransaksi;
 use App\Models\PiutangOut;
+use App\Models\Gudang;
 use App\User;
 use Auth;
 use Carbon\Carbon;
@@ -45,7 +48,8 @@ class PoController extends Controller
     }
     public function index()
     {
-        $data = Po::where('pengurus_gudang_id',Auth::user()->pengurus_gudang_id)->orderBy('id','desc')->paginate(4);
+        $gudang = Gudang::select('id')->where('user_id', auth()->user()->id)->get();
+        $data = PemesananBulky::whereIn('gudang_retail_id',$gudang)->orderBy('id','desc')->paginate(4);
         return view($this->indexPath.'index',compact('data'));
     }
     public function preview($id)

@@ -69,7 +69,7 @@
                                 <div class="col-md-12">
                                     <hr class=" my-1">
                                     <span class=" text-18">Data Pemesanan Barang</span><br>
-                                    @foreach($d->po_item as $i)
+                                    @foreach($d->barangPesananBulky as $i)
                                     <span>{{$i->nama_barang}} ({{$i->jumlah.' '.$i->satuan}})</span>,
                                     @endforeach
                                 </div>
