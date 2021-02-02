@@ -58,21 +58,21 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 border-right">
-                                    Dari : <br><span class="text-14 bold">{{$d->gudang->pemilik}}</span>
+                                    Dari : <br><span class="text-14 bold">{{$d->bulky->pemilik}}</span>
                                 </div>
                                 <div class="col-md-6">
                                     Ke : <br><span class="text-14 bold">{{$d->penerima_po}}</span>
                                 </div>
                                 <div class="col-md-6 border-right">
-                                    Email : <br><span class="text-14 bold">{{$d->gudang->user->email}}</span>
+                                    Email Bulky : <br><span class="text-14 bold">{{$d->bulky->user->email}}</span>
                                 </div>
                                 <div class="col-md-6">
-                                    Email : <br><span class="text-14 bold">{{$d->email_penerima}}</span>
+                                    Email Retail : <br><span class="text-14 bold">{{$d->retail->user->email}}</span>
                                 </div>
                                 <div class="col-md-12">
                                     <hr class=" my-1">
                                     <span class=" text-18">Data Barang PO</span><br>
-                                    @foreach($d->po_item as $i)
+                                    @foreach($d->barangPesananBulky as $i)
                                     <span>{{$i->nama_barang}} ({{$i->jumlah.' '.$i->satuan}})</span>,
                                     @endforeach
                                 </div>

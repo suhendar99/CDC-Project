@@ -4,9 +4,10 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\StockBarang;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Models\StockBarang;
+use App\Models\StorageIn;
 
 class StockBarangController extends Controller
 {
@@ -24,12 +25,19 @@ class StockBarangController extends Controller
     {
         $data = StockBarang::with('barang', 'gudang')->findOrFail($id);
 
+        $base_harga = StorageIn::with('barang')
+        ->where([
+            ['gudang_id', $data->gudang_id],
+            ['barang_kode', $data->barang_kode]
+        ])->orderBy('id', 'desc')
+        ->first();
+
         $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
         $diskon = ($data->diskon === null) ? null : $data->diskon ;
 
         $satuan = $data->satuan;
 
-        return view('app.data-master.storage.harga', compact('harga', 'id', 'satuan', 'data', 'diskon'));
+        return view('app.data-master.storage.harga', compact('harga', 'id', 'satuan', 'data', 'diskon', 'base_harga'));
     }
 
     public function simpanHarga(Request $request, $id)
