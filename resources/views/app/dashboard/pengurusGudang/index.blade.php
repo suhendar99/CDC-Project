@@ -7,7 +7,7 @@
   $storageIn = \App\Models\StorageIn::all();
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
-  $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->get();
+  $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -40,7 +40,7 @@
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
                         <span class="text-my-primary">{{$storage->count()}} Jenis</span><br>
-                        <span class="text-my-subtitle">Barang</span>
+                        <span class="text-my-subtitle">Barang Retail</span>
                     </div>
                   </div>
                 </div>

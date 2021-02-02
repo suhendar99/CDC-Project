@@ -1,6 +1,6 @@
 @php
         $icon = 'text_snippet';
-        $pageTitle = 'Laporan Barang Masuk';
+        $pageTitle = 'Laporan Pembelian';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -17,7 +17,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">laporan</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Barang Masuk</a></div>
+            <a href="#" class="text-14">Pembelian</a></div>
         </div>
     </div>
     {{-- <div class="col-md-4 col-sm-12 valign-center py-2">

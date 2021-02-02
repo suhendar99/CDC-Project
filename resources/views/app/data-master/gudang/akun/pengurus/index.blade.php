@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
+                                <th>Nama Pengurus</th>
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>Gudang</th>
+                                <th>Tempat Kerja</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
