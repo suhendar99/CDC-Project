@@ -219,7 +219,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });
 
-        Route::resource('retur', 'ReturController');
+        Route::resource('returIn', 'ReturController');
         Route::resource('returOut', 'ReturOutController');
 
         // Kwitansi
@@ -255,11 +255,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-po-excel','laporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
         // End Laporan
         // Piutang
-        Route::resource('piutang', 'PiutangController');
+        Route::resource('piutangIn', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
         // PDF & EXCEL Piutang In
-        Route::get('piutangIn/pdf','PiutangController@exportPdf')->name('piutang.pdf');
-        Route::get('piutangIn/excel','PiutangController@exportExcel')->name('piutang.excel');
+        Route::get('piutangIn/pdf','PiutangController@exportPdf')->name('piutangIn.pdf');
+        Route::get('piutangIn/excel','PiutangController@exportExcel')->name('piutangIn.excel');
         // PDF & EXCEL Piutang Out
         Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
         Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');
