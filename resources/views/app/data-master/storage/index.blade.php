@@ -87,7 +87,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
-                                    <h4>Barang Keluar</h4>
+                                    <h4>Barang Keluar <small class="text-info">(Pengiriman ke Pembeli)</small></h4>
                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
@@ -505,10 +505,10 @@
         }
 
         function storageIn() {
-            $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Masuk</a>`);
+            $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Masuk</a>`);
         }
         function storageOut() {
-            $('#btn-action').html(`<a href="{{route('storage.out.create')}}" class="btn btn-primary btn-sm">Buat Data Storage Keluar</a>`);
+            $('#btn-action').html(`<a href="{{route('storage.out.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>`);
         }
         function cleanBtn() {
             $('#btn-action').empty();

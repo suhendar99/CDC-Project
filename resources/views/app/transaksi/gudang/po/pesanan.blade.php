@@ -13,20 +13,20 @@
 @section('content')
 {{-- {{dd($pemasok)}} --}}
 {{-- {{dd('Pemasok = '.$pemasok)}} --}}
-<div class="row valign-center mb-2">
-    <div class="col-md-12 col-sm-12 valign-center py-2">
-        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
-        <div>
-          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
-          <div class="valign-center breadcumb">
-            <a href="#" class="text-14">Dashboard</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">{{$pageTitle}}</a>
-          </div>
+<div class="container">
+    <div class="row valign-center mb-2">
+        <div class="col-md-12 col-sm-12 valign-center py-2">
+            <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+            <div>
+              <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+              <div class="valign-center breadcumb">
+                <a href="#" class="text-14">Dashboard</a>
+                <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+                <a href="#" class="text-14">{{$pageTitle}}</a>
+              </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('po.update',$data->id)}}" name="keranjang" method="post">
@@ -50,39 +50,39 @@
                             <input type="hidden" name="barangKode" value="{{$data->kode_barang}}">
                             <input type="hidden" name="pajak" value="{{$pajak}}">
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
-                            <div class="container-fluid">
+                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Nama Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="nama"><h6>{{$data->nama_barang}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Harga Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->harga_barang,0,',','.')}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Dari Pemasok</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->pemasok->nama}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajak,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiaya,0,',','.')}} </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
@@ -98,7 +98,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
                                             <option value="now">Bayar Sekarang</option>
@@ -110,7 +110,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div id="pilihMetode" class="col-md-4 ">
+                                    <div id="pilihMetode" class="col-md-4 col-6">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
                                             <option value="">-- Pilih Metode --</option>
@@ -124,7 +124,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-7 col-6">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
                                             <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pengurusGudang->telepon }}" >
@@ -135,7 +135,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-5 col-12">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
                                             <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pengurusGudang->alamat }}">{{ Auth::user()->pengurusGudang->alamat }}</textarea>

@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
-use App\models\Bulky;
-use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
 use App\Models\Pembeli;
 use App\Models\PengurusGudang;
+use App\Models\PengurusGudangBulky;
 use App\Notifications\NewUser;
 use App\Providers\RouteServiceProvider;
 use App\User;
@@ -126,7 +125,7 @@ class RegisterController extends Controller
                 'status' => 1
             ]);
         } elseif ($data['role'] == 'bulky') {
-            $bulki = Bulky::create([
+            $bulki = PengurusGudangBulky::create([
                 'nama' => $data['nama'],
             ]);
 
@@ -134,7 +133,7 @@ class RegisterController extends Controller
                 'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'bulky_id' => $bulki->id,
+                'pengurus_gudang_bulky_id' => $bulki->id,
                 'email_verified_at' => $data['email_verified_at'],
                 'status' => 1
             ]);

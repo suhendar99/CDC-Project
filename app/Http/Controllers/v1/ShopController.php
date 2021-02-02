@@ -208,12 +208,6 @@ class ShopController extends Controller
             $kode_faker = $faker->unique()->regexify('[0-9]{9}');
 
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-            $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
-            $faker = \Faker\Factory::create('id_ID');
-
-            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
-
-            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
             $kode = 'PEM/RTL/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
             $store = StockBarang::find($id);
@@ -332,7 +326,7 @@ class ShopController extends Controller
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
             $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
-            $store = StockBarang::find($id);
+            $store = BarangWarung::find($id);
 
             $harga = $request->harga * $request->jumlah;
 
@@ -342,9 +336,10 @@ class ShopController extends Controller
                 'nama_pemesan' => $request->nama_pemesan,
                 'tanggal_pemesanan' => now('Asia/Jakarta')
             ]));
+
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
-            PemesananPembeliItem::create([
+            $barangPesanan = PemesananPembeliItem::create([
                 'kode' => $kodes,
                 'barang_kode' => $request->barangKode,
                 'pemesanan_pembeli_id' => $pemesanan->id,
@@ -354,6 +349,10 @@ class ShopController extends Controller
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
                 'harga' => $harga
+            ]);
+            $stok = $store->jumlah - $barangPesanan->jumlah_barang;
+            $store->update([
+                'jumlah' => $stok
             ]);
 
             if ($request->pembayaran == 'later') {

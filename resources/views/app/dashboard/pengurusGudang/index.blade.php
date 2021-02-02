@@ -1,13 +1,14 @@
 @php
   $icon = 'dashboard';
-  $pageTitle = 'Dashboard Pemilik Gudang';
+  $pageTitle = 'Dashboard Pemilik Gudang Retail';
   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
   $storage = \App\Models\Storage::all();
   $storageIn = \App\Models\StorageIn::all();
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
-  $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->get();
+  $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
+  $pemesanan = App\Models\Pemesanan::orderBy('tanggal_pemesanan','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -20,7 +21,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Gudang</a>
+            <a href="#" class="text-14">Gudang Retail</a>
           </div>
         </div>
     </div>
@@ -40,7 +41,7 @@
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
                         <span class="text-my-primary">{{$storage->count()}} Jenis</span><br>
-                        <span class="text-my-subtitle">Barang</span>
+                        <span class="text-my-subtitle">Barang Retail</span>
                     </div>
                   </div>
                 </div>
@@ -103,6 +104,49 @@
     </div>
 </div>
 <div class="row my-4">
+    <div class="col-md-4 col-sm-12">
+        <div class="card shadow" style="height: 400px">
+            <div class="line-strip bg-my-primary"></div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12" style="font-size: .8rem;">
+                  <span style="font-size: 1rem">Log Pemesanan</span><br><hr class="mb-2">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Waktu</th>
+                        <th scope="col">Pembeli</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @forelse ($pemesanan as $key => $value)
+                      <tr>
+                        <th scope="row">{{$key+1}}</th>
+                        <td>{{\Carbon\Carbon::parse($value->tanggal_pemesanan)->translatedFormat('d F Y H:i:s')}}</td>
+                        <td>{{$value->nama_pemesan}}</td>
+                      </tr>
+                      @empty
+                      <tr>
+                        <td colspan="3"><center>Data Kosong !</center></td>
+                      </tr>
+                      @endforelse
+                    </tbody>
+                  </table>
+                    <div class="col-12 d-flex">
+                        <div class="ml-auto p-2">
+                            @if ($pemesanan->count() > 1)
+                            <center>
+                                {{$pemesanan->links()}}
+                            </center>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
   <div class="d-none" id="show">
     <div class="card" style="height: 400px;">
       <div class="line-strip bg-my-warning"></div>
@@ -176,7 +220,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12" id="mapMap">
+  <div class="col-md-8" id="mapMap">
     <div style="height: 400px; width: 100%;" id="mapid"></div>
   </div>
 </div>
@@ -291,20 +335,20 @@
 {{-- Detail Gudang Section --}}
 <script>
     function detailGudang(id) {
-        $('#mapMap').removeClass('col-md-12');
-        $('#mapMap').addClass('col-md-7');
+        $('#mapMap').removeClass('col-md-8');
+        $('#mapMap').addClass('col-md-4');
         $('#show').removeClass('d-none');
-        $('#show').addClass('col-md-5');
+        $('#show').addClass('col-md-4');
 
-        $('#titleGudang').text(`Wait.......`);
-        $('#nig').text(`Wait.......`);
-        $('#status').text(`Wait.......`)
-        $('#statusPenuh').text('Wait.......');
-        $('#namaGudang').text(`Wait.......`);
-        $('#telepon').text(`Wait.......`);
-        $('#hariKerja').text(`Wait.......`);
-        $('#jamKerja').text(`Wait.......`);
-        $('#alamat').text(`Wait.......`);
+        $('#titleGudang').text(`Tunggu.......`);
+        $('#nig').text(`Tunggu.......`);
+        $('#status').text(`Tunggu.......`)
+        $('#statusPenuh').text('Tunggu.......');
+        $('#namaGudang').text(`Tunggu.......`);
+        $('#telepon').text(`Tunggu.......`);
+        $('#hariKerja').text(`Tunggu.......`);
+        $('#jamKerja').text(`Tunggu.......`);
+        $('#alamat').text(`Tunggu.......`);
         $.ajax({
             type: "get",
             url: "/api/v1/getGudang/"+id,

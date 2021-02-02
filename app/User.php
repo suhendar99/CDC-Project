@@ -39,10 +39,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Models\Pelanggan');
     }
-    public function bulky()
-    {
-        return $this->belongsTo('App\Models\Bulky');
-    }
+    // public function bulky()
+    // {
+    //     return $this->belongsTo('App\Models\Bulky');
+    // }
     public function bank()
     {
         return $this->belongsTo('App\Models\Bank');

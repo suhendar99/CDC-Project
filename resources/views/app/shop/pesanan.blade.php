@@ -23,21 +23,21 @@
 @section('content')
 {{-- {{dd($pemasok)}} --}}
 {{-- {{dd('Pemasok = '.$pemasok)}} --}}
-<div class="row valign-center mb-2">
-    <div class="col-md-12 col-sm-12 valign-center py-2">
-        <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
-        <div>
-          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
-          <div class="valign-center breadcumb">
-            <a href="#" class="text-14">Dashboard</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">{{$pageTitle}}</a>
-          </div>
+<div class="container">
+    <div class="row valign-center mb-2">
+        <div class="col-md-12 col-sm-12 valign-center py-2">
+            <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
+            <div>
+              <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
+              <div class="valign-center breadcumb">
+                <a href="#" class="text-14">Dashboard</a>
+                <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+                <a href="#" class="text-14">{{$pageTitle}}</a>
+              </div>
+            </div>
         </div>
     </div>
-</div>
 @if (Auth::user()->pelanggan_id != null)
-<div class="container">
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post">
@@ -58,43 +58,43 @@
                             <input type="hidden" name="barangKode" value="{{$data->barang->kode_barang}}">
                             <input type="hidden" name="pajak" value="{{$pajak}}">
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
-                            <div class="container-fluid">
+                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Nama Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="nama"><h6>{{$data->barang->nama_barang}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Harga Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->harga_barang,0,',','.')}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Dari Gudang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->gudang->nama}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajak,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiaya,0,',','.')}} </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" min="0" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -106,7 +106,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
                                             @if (Auth::user()->keanggotaan == 1)
@@ -122,7 +122,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div id="pilihMetode" class="col-md-4 ">
+                                    <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
                                             <option value="">-- Pilih Metode --</option>
@@ -162,19 +162,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 col mt-2">
                         <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
                     </div>
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 col mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
 @elseif(Auth::user()->pembeli_id != null)
-<div class="container">
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post">
@@ -195,43 +193,43 @@
                             <input type="hidden" name="barangKode" value="{{$data->storageOut->barang->kode_barang}}">
                             <input type="hidden" name="pajak" value="{{$pajakPembeli}}">
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
-                            <div class="container-fluid">
+                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Nama Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="nama"><h6>{{$data->storageOut->barang->nama_barang}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Harga Barang</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="harga"><h6>Rp. {{ number_format($data->harga_barang,0,',','.')}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <h6>Dari</h6>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->pelanggan->nama}}</h6></div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-6">
                                         <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajakPembeli,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
                                         <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiayaPembeli,0,',','.')}} </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" min="0" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -243,7 +241,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <label>Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectPembayaran" class="form-control @error('pembayaran') is-invalid @enderror" name="pembayaran"  >
                                             @if (Auth::user()->keanggotaan == 1)
@@ -259,7 +257,7 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    <div id="pilihMetode" class="col-md-4 ">
+                                    <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
                                             <option value="">-- Pilih Metode --</option>
@@ -486,6 +484,7 @@
     </div>
 </div>
 @endif
+</div>
 @endsection
 @push('script')
 <script type="text/javascript">
