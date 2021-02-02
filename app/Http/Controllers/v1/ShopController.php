@@ -14,6 +14,7 @@ use App\Models\Pemesanan;
 use App\Models\Piutang;
 use App\Models\Storage;
 use App\Models\StockBarang;
+use App\Models\StockBarangBulky;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -65,17 +66,17 @@ class ShopController extends Controller
             if ($request->has('search') && $request->search !== '') {
                 $search = trim($request->search);
                 if($search == ''){
-                    $barang = Barang::with('pemasok', 'kategori')
+                    $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
                     ->orderBy('id','desc')->paginate(20);
                 }else{
-                    $barang = Barang::with('pemasok', 'kategori')
+                    $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
                     ->orderBy('id','desc')
                     ->where('nama_barang','LIKE',"%".$search."%")
                     ->orWhere('harga_barang','LIKE',"%".$search."%")
                     ->paginate(20);
                 }
             } else {
-                $barang = Barang::with('pemasok', 'kategori')
+                $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
                 ->orderBy('id','desc')
                 ->paginate(20);
             }

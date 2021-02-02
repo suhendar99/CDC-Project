@@ -59,9 +59,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo('App\Models\PengurusGudang','pengurus_gudang_id','id');
     }
+    public function pengurusGudangBulky()
+    {
+        return $this->belongsTo('App\Models\PengurusGudangBulky','pengurus_gudang_bulky_id','id');
+    }
     public function gudang()
     {
         return $this->hasMany('App\Models\Gudang','user_id','id');
+    }
+    public function bulky()
+    {
+        return $this->hasMany('App\Models\GudangBulky');
     }
     public function pengurus()
     {
@@ -81,6 +89,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
         return $this->hasMany('App\Models\StorageIn');
+    }
+
+    /**
+     * User has many StorageMasukBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageMasukBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
+        return $this->hasMany('App\Models\StorageMasukBulky');
     }
 
     /**

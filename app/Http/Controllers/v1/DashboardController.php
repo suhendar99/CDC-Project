@@ -107,7 +107,22 @@ class DashboardController extends Controller
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPengurusGudang.'index');
-    	} else {
+    	}elseif ($auth->pengurus_gudang_bulky_id != null) {
+            // if ($auth->pengurusGudang->nik == null) {
+            //     return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
+            // }
+            if ($auth->status == 2) {
+                return view($this->pathFotoKtp.'fotoKtpPengurusGudang');
+            }
+            if ($auth->status == 3) {
+                return view($this->pathFotoKtpSelfie.'fotoKtpSelfiePengurusGudang');
+            }
+            if ($auth->status == 0) {
+                Auth::logout();
+                return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
+            }
+            return view('app.data-master.gudangBulky.index');
+        } else {
     		return view($this->pathAdmin.'index');
     	}
     }

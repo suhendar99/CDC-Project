@@ -146,6 +146,30 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
     });
     Route::get('print/{id}', 'PoController@print')->name('po.print');
+
+    // Gudang Bulky
+    Route::group(['middleware' => ['bulky']], function() {
+        Route::group(['middleware' => 'pemilikBulky'], function() {
+            // Gudang
+            // Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
+            Route::resource('gudang-bulky', 'GudangBulkyController');
+
+            // Route::resource('pengurus-gudang-bulky', 'PengurusGudangController');
+        });
+
+        Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
+                'names' => [
+                    'index' => 'rak.bulky.index',
+                    'create' => 'rak.bulky.create',
+                    'store' => 'rak.bulky.store',
+                    'edit' => 'rak.bulky.edit',
+                    'update' => 'rak.bulky.update',
+                    'destroy' => 'rak.bulky.destroy'
+                ]
+            ]);
+    });
+
+    // Gudang Retail
     Route::group(['middleware' => ['karyawan']], function () {
         // Purchase Order
         Route::get('print/{id}', 'PoController@print')->name('po.print');
@@ -179,7 +203,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::group(['middleware' => 'pemilik'], function() {
             // Gudang
             Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
-            Route::resource('gudang', 'GudangController');
+            Route::resource('gudang-retail', 'GudangController', [
+                'names' => [
+                    'index' => 'gudang.index',
+                    'create' => 'gudang.create',
+                    'store' => 'gudang.store',
+                    'edit' => 'gudang.edit',
+                    'update' => 'gudang.update',
+                    'destroy' => 'gudang.destroy'
+                ]
+            ]);
 
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });

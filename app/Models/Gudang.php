@@ -74,6 +74,7 @@ class Gudang extends Model
         // belongsTo(RelatedModel, foreignKey = akunGudang_id, keyOnRelatedModel = id)
         return $this->belongsToMany('App\Models\PengurusGudang', 'akun_gudangs', 'gudang_id', 'pengurus_id');
     }
+    
     public function user()
     {
         return $this->belongsTo('App\User');

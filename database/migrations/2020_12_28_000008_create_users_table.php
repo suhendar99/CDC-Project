@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->foreignId('bank_id')->nullable()->constrained('banks')->onDelete('cascade');
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->foreignId('pengurus_gudang_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
+            $table->foreignId('pengurus_gudang_bulky_id')->nullable()->constrained('pengurus_gudang_bulkies')->onDelete('cascade');
             $table->timestamp('approved_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
