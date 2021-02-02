@@ -21,7 +21,7 @@
                     </li>
                     @if (isset($bank))
                         <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutangIn*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
+                            <a href="{{route('piutangIn.index')}}" class="valign-center {{ Request::is('v1/piutangIn*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
                         </li>
                         <li class="{{ Request::is('v1/bungaBank*') ? 'active' : false }}">
                             <a href="{{route('bungaBank.index')}}" class="valign-center {{ Request::is('v1/bungaBank*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Bunga  Bank</a>

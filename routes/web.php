@@ -74,7 +74,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Bank
         Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
         Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
-        // Update Password
+
+    // Pembeli
+    Route::get('pengaturan-akun-pembeli','PengaturanAkunController@showFormUpdateAkunPembeli')->name('setPembeli.show');
+    Route::post('pengaturan-akun-pembeli','PengaturanAkunController@updateAkunPembeli')->name('setPembeli.action');
+    // Update Password
     Route::get('pengaturan-password-akun','PengaturanAkunController@updatePassword')->name('setPass.show');
     Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
     // End Pengaturan Akun User

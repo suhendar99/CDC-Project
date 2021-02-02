@@ -25,9 +25,9 @@
           </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 valign-center py-2">
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
         @include('layouts.dashboard.search')
-    </div>
+    </div> --}}
 </div>
 <div class="row my-2">
     <div class="col-md-3 col-sm-6">
