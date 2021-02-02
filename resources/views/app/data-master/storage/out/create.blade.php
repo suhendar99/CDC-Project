@@ -71,8 +71,8 @@
                                 <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label>DIbayar oleh <small class="text-success">*Harus diisi</small></label>
-                                            <input type="text" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Masukan pembayar...">
+                                            <label>Dibayar oleh <small class="text-success">*Harus diisi</small></label>
+                                            <input type="text" id="dibayar_oleh" class="form-control @error('terima_dari') is-invalid @enderror" name="terima_dari" value="{{ old('terima_dari') }}" placeholder="Masukan pembayar...">
                                             @error('terima_dari')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -81,7 +81,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>Jumlah Uang <small class="text-success">*Harus diisi</small></label>
-                                            <input type="number" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Masukan jumlah uang yang dibayar..." id="number">
+                                            <input type="number" id="jumlah_uang" class="form-control @error('jumlah_uang_digits') is-invalid @enderror" name="jumlah_uang_digits" value="{{ old('jumlah_uang_digits') }}" placeholder="Masukan jumlah uang yang dibayar...">
                                             @error('jumlah_uang_digits')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -244,12 +244,16 @@ function nextPrev(n) {
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
   if (n == 1 && !validateForm()) return false;
+
+  if (n == -1){
+    $("#nextBtn").attr('onclick','nextPrev(1)');
+  }
   // Hide the current tab:
   x[currentTab].style.display = "none";
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
   // if you have reached the end of the form... :
-  console.log(currentTab);
+  alert(currentTab);
   if (currentTab >= x.length) {
     //...the form gets submitted:
     // $("#nextBtn").attr('onclick','submitForm()');
@@ -291,6 +295,8 @@ function validateForm() {
       // and set the current valid status to false:
       valid = false;
     }
+
+    console.log(y);
   }
   // If the valid status is true, mark the step as finished and valid:
   if (valid) {
@@ -312,13 +318,21 @@ function fixStepIndicator(n) {
     $('#selectSatuan').change(function(event) {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")
-         console.log(kode)
-         for (var i = $('.tab').length - 1; i >= 1; i--) {
+        let idPesanan = $('#selectSatuan').val()
+        for (var i = $('.tab').length - 1; i >= 1; i--) {
 
-             let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
-             $('.tab').get(i).attributes[0].value = keterangan
-         }
-        // $('.tab').get(n).attributes[0].value
+            let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
+            $('.tab').get(i).attributes[0].value = keterangan
+        }
+
+        $.ajax({
+            url: "/api/v1/getPesanan/"+idPesanan,
+        }).done(function(response) {
+            console.log(response);
+            $('#dibayar_oleh').val(response.data.nama_pemesan);
+            $('#jumlah_uang').val(response.harga);
+            $('#word').val(inWords(response.harga));
+        });
     });
     onScan.attachTo(document, {
         suffixKeyCodes: [13],
@@ -403,9 +417,9 @@ function fixStepIndicator(n) {
         return str;
     }
 
-    document.getElementById('number').onkeyup = function () {
-        // document.getElementById('word').innerHTML = inWords(document.getElementById('number').value);
-        $('#word').val(inWords(document.getElementById('number').value))
+    document.getElementById('jumlah_uang').onkeyup = function () {
+        // document.getElementById('word').innerHTML = inWords(document.getElementById('jumlah_uang').value);
+        $('#word').val(inWords(document.getElementById('jumlah_uang').value))
     };
 
     // $('#gudang').change(function(event) {

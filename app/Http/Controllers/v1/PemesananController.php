@@ -22,8 +22,9 @@ use PDF;
 
 class PemesananController extends Controller
 {
-    public function __construct()
+    public function __construct(Pemesanan $pemesanan)
     {
+        $this->model = $pemesanan;
         $this->indexPath = 'app.transaksi.pemesanan-barang.';
     }
     /**
@@ -59,6 +60,17 @@ class PemesananController extends Controller
                 ->make(true);
         }
         return view('app.data-master.pemesanan.index');
+    }
+
+    function getPesanan($id){
+        $data = $this->model::whereId($id)->with('barangPesanan')->first();
+        $barang = $data->barangPesanan;
+        $harga = $barang->sum('harga');
+        return response()->JSON([
+            'data' => $data,
+            'barang' => $barang,
+            'harga' => $harga,
+        ]);
     }
 
     /**
