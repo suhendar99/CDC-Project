@@ -137,6 +137,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pelanggan']], function () {
         // Barang funtuk pembeli
         Route::resource('barangWarung', 'BarangWarungController');
+        //Retur Masuk
+        Route::resource('returMasukPembeli', 'ReturMasukPembeliController');
         // Pemesanan
         Route::get('pemesananMasukPembeli','PemesananController@pemesananMasukPembeli')->name('pemesananMasukPembeli.index');
         Route::resource('pemesananKeluarPembeli', 'PemesananKeluarPembeliController');

@@ -12,6 +12,7 @@ use App\Models\BarangPesanan;
 use App\Models\BarangPemesananBulky;
 use App\Models\BarangWarung;
 use App\Models\Keranjang;
+use App\Models\LogTransaksi;
 use App\Models\Pemesanan;
 use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
