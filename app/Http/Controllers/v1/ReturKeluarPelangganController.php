@@ -3,18 +3,16 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
-use Yajra\DataTables\Facades\DataTables;
-use App\Models\Pemesanan;
-use App\Models\Kwitansi;
 use App\Models\Barang;
+use App\Models\Kwitansi;
 use App\Models\LogTransaksi;
 use App\Models\Retur;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
-class ReturController extends Controller
+class ReturKeluarPelangganController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,25 +28,12 @@ class ReturController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/retur/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/returKeluarPelanggan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
 
-        return view('app.transaksi.retur.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $kwitansi = Kwitansi::with('pemesanan')->get();
-        // $barang = Barang::all();
-
-        return view('app.transaksi.retur.create', compact('kwitansi'));
+        return view('app.transaksi.returKeluarPelanggan.index');
     }
 
     public function barangPesanan($id)
@@ -63,6 +48,18 @@ class ReturController extends Controller
             'data' => $barang
         ], 200);
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $kwitansi = Kwitansi::with('pemesanan')->get();
+        // $barang = Barang::all();
+
+        return view('app.transaksi.retur.create', compact('kwitansi'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -72,7 +69,6 @@ class ReturController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             'barang_id' => 'required|exists:barangs,id',
@@ -103,7 +99,7 @@ class ReturController extends Controller
         ]);
 
 
-        return redirect(route('returIn.index'))->with('success', __( 'Retur Created!' ));
+        return back()->with('success', __( 'Retur Dibuat!' ));
     }
 
     /**
@@ -125,7 +121,6 @@ class ReturController extends Controller
      */
     public function edit($id)
     {
-        // $barang = Barang::all();
         $kwitansi = Kwitansi::all();
         $data = Retur::with('barang')->findOrFail($id);
 
@@ -168,7 +163,7 @@ class ReturController extends Controller
             ]);
         }
 
-        return redirect(route('returIn.index'))->with('success', __( 'Retur Updated!' ));
+        return back()->with('success', __( 'Retur Diedit!' ));
     }
 
     /**
@@ -181,6 +176,6 @@ class ReturController extends Controller
     {
         Retur::findOrFail($id)->delete();
 
-        return redirect(route('returIn.index'))->with('success', __( 'Retur Deleted!' ));
+        return back()->with('success', __( 'Retur Dihapus!' ));
     }
 }

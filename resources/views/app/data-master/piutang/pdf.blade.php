@@ -122,7 +122,7 @@
 			</td>
             @endif
 		</tr> --}}
-	</table>
+    </table>
     <table width="100%" style="margin-bottom: -10px; " id="customers">
         <thead>
             <tr>

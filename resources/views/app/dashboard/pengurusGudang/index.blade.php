@@ -110,7 +110,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-12" style="font-size: .7rem;">
-                  <span style="font-size: 1rem">Log Pemesanan</span><br><hr class="mb-2">
+                  <span style="font-size: 1rem">Log Transaksi </span><br><hr class="mb-2">
                   <table class="table table-striped">
                     <thead>
                       <tr>

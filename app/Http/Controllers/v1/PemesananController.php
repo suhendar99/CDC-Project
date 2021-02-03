@@ -35,7 +35,7 @@ class PemesananController extends Controller
     public function pemesananMasukPembeli()
     {
         $data = PemesananPembeli::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
-        return view('app.transaksi.pemesanan-masuk-pembeli.index',compact('data'));
+        return view('app.transaksi.pemesanan-masuk-warung.index',compact('data'));
     }
     public function index(Request $request)
     {

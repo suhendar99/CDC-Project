@@ -326,34 +326,36 @@
                         <a href="{{route('barangWarung.index')}}" class="valign-center"><i class="material-icons">work</i>Daftar Barang</a>
                     </li>
                     <li class="
-                        {{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}
-                        {{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/pemesananMasukWarung*') ? 'active' : false }}
+                        {{ Request::is('v1/pemesananKeluarWarung*') ? 'active' : false }}
                         {{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/returKeluarPelanggan*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/pemesananMasukPembeli*') ? 'show' : false }}
-                            {{ Request::is('v1/pemesananKeluarPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/pemesananMasukWarung*') ? 'show' : false }}
+                            {{ Request::is('v1/pemesananKeluarWarung*') ? 'show' : false }}
                             {{ Request::is('v1/returMasukPembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/returKeluarPelanggan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
-                            <li class="{{ Request::is('v1/pemesananMasukPembeli*') ? 'active' : false }}">
-                                <a href="{{route('pemesananMasukPembeli.index')}}">Pesanan Pelanggan</a>
+                            <li class="{{ Request::is('v1/pemesananMasukWarung*') ? 'active' : false }}">
+                                <a href="{{route('pemesananMasukWarung.index')}}">Pesanan Pelanggan</a>
                             </li>
-                            <li class="{{ Request::is('v1/pemesananKeluarPembeli*') ? 'active' : false }}">
-                                <a href="{{route('pemesananKeluarPembeli.index')}}">Pembelian Barang</a>
+                            <li class="{{ Request::is('v1/pemesananKeluarWarung*') ? 'active' : false }}">
+                                <a href="{{route('pemesananKeluarWarung.index')}}">Pembelian Barang</a>
                             </li>
                             <li class="{{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}">
                                 <a href="{{route('returMasukPembeli.index')}}">Retur Masuk</a>
                             </li>
-                            <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
-                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                            <li class="{{ Request::is('v1/returKeluarPelanggan*') ? 'active' : false }}">
+                                <a href="{{route('returKeluarPelanggan.index')}}">Retur Keluar</a>
                             </li>
                         </ul>
                     </li>
                     <li class="
-                        {{ Request::is('v1/dashboard*') ? 'active' : false }}
+                        {{ Request::is('v1/piutangPelanggan*') ? 'active' : false }}
                     ">
-                        <a href="{{route('dashboard')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
+                        <a href="{{route('piutangPelanggan.index')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
