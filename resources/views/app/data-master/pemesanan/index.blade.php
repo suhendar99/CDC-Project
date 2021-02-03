@@ -46,12 +46,13 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Jumlah Barang Dibeli</th>
-                                <th>Harga</th>
-                                <th>Tanggal Pemesanan</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Timestamp</th>
+                                <th>No Pemesanan (Invoice)</th>
+                                <th>Nama Pemesan</th>
+                                <th>Jumlah Barang</th>
+                                <th>Status Pembayaran</th>
+                                <th>Status Pemesanan</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -64,6 +65,74 @@
     @csrf
     @method('DELETE')
 </form>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detail Data Pemesanan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">Tanggal Pemesanan</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Nomor Pemesanan</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Nama Pemesan</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Telepon Pemesan</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Alamat Pemesan</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Metode Pembayaran</div>
+                        <div class="col-md-8">: HIii</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -75,39 +144,14 @@
             ajax : "{{ route('pemesanan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'barang.kode_barang', name: 'kode_barang'},
-                {data : 'barang.nama_barang', name: 'barang'},
-                {data : function(data, a, b, c) {
-                    return data.jumlah_barang+' '+data.satuan;
-                }, name: 'jumlah'},
-                {data : 'harga', render:function(data,a,b,c){
-                        return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                    }
-                },
-                {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'}
-                // {
-                //   data : 'pengurus.gudang', render:function(data,a,b,c){
-                //         return data[0].nama;
-                //   }
-                // },
-                // {data : 'action', name: 'action'}
+                {data : 'pesanan.tanggal_pemesanan', name: 'tanggal_pemesanan'},
+                {data : 'pesanan.nomor_pemesanan', name: 'nomor_pemesanan'},
+                {data : 'pesanan.nama_pemesan', name: 'nama_pemesan'},
+                {data : 'jumlah_barang', name: 'jumlah_barang'},
+                {data : 'status_pembayaran', name: 'status_pembayaran'},
+                {data : 'status_pemesanan', name: 'status_pemesanan'},
+                {data : 'action', name: 'action'}
             ],
-            order: [[2, 'asc']],
-            rowGroup: {
-                dataSrc: 'pesanan.kode',
-                startRender: function(rows, group){
-                    console.log(rows.data()[0].pesanan);
-                    if (rows.data()[0].pesanan.storage_out.length < 1) {
-                        return `<div class="float-left">Nomor Pemesanan: ${rows.data()[0].pesanan.nomor_pemesanan} <br> Nama Pemesan: ${rows.data()[0].pesanan.nama_pemesan}</div><div class="float-right"><a href="/v1/storage/out/create?pemesanan=${rows.data()[0].pemesanan_id}" class="btn btn-info btn-sm">Proses Pesanan</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
-                    } else {
-                        return `<div class="float-left">Nomor Pemesanan: ${rows.data()[0].pesanan.nomor_pemesanan} <br> Nama Pemesan: ${rows.data()[0].pesanan.nama_pemesan}</div><div class="float-right"><span class="badge badge-success py-2 px-1" style="font-size: .7rem">Pemesanan Selesai Diproses</span>&nbsp;<a href="#" class="btn btn-danger btn-sm" style="" onclick="sweet(${rows.data()[0].pemesanan_id})">Hapus</a></div>`;
-                    }
-                },
-                endRender: function(rows, group){
-                    // console.log(rows.data().length);
-                    return 'Jumlah Barang yang dipesan: '+rows.data().length;
-                },
-            }
         });
 
         function detail(id){

@@ -101,7 +101,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                             <div class="input-group-append">

@@ -44,7 +44,7 @@ class StockBarangController extends Controller
     {
         $v = Validator::make($request->all(),[
             'harga_barang' => 'required|integer|min:0',
-            'diskon' => 'required|numeric|min:0',
+            'diskon' => 'nullable|numeric|min:0',
         ]);
 
         if ($v->fails()) {

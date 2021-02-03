@@ -79,7 +79,7 @@ class StorageController extends Controller
                 'data' => $data
             ], 200);
         }
-        
+
     }
 
     /**
@@ -123,7 +123,7 @@ class StorageController extends Controller
     public function edit($id)
     {
         $masuk = Storage::with('storageIn.gudang')->find($id);
-        $rak = Rak::with('tingkat')->where('gudang_id', $masuk->storageIn->gudang_id)->get();
+        $rak = Rak::with('tingkat')->where('gudang_id', $masuk->storageIn->gudang_id)->where('status',0)->get();
 
         if ($rak->count() == 0) {
             return redirect(route('rak.create', $masuk->storageIn->gudang_id))->with('failed', __( 'Gudang '.$masuk->storageIn->gudang->nama.' belum memiliki Rak. Harap buat data Rak!' ));
