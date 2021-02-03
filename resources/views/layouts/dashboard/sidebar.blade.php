@@ -140,6 +140,7 @@
                     </li>
                     @endif
                     @if (isset($pengurusGudang))
+                    @if (Auth::user()->pengurusGudang->status == 1)
                     <li class="
                         {{ Request::is('v1/gudang-retail*') ? 'active' : false }}
                         {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
@@ -157,6 +158,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
                     <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
                         <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>
@@ -187,6 +189,7 @@
                             </li>
                         </ul>
                     </li>
+                    @if (Auth::user()->pengurusGudang->status == 1)
                     <li class="
                         {{ Request::is('v1/piutangIn*') ? 'active' : false }}
                         {{ Request::is('v1/piutangOut*') ? 'active' : false }}
@@ -224,6 +227,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
                     @endif
                     @if (isset($pengurusGudangBulky))
                     <li class="

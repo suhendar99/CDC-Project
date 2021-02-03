@@ -14,6 +14,7 @@ use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\StockBarang;
 use App\Models\RekapitulasiPembelian;
+use Auth;
 
 class StorageInController extends Controller
 {
@@ -25,9 +26,16 @@ class StorageInController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageIn::with('barang', 'gudang')
-            ->orderBy('id', 'desc')
-            ->get();
+            if (Auth::user()->pengurusGudang->status == 1) {
+                $data = StorageIn::with('barang', 'gudang')
+                ->orderBy('id', 'desc')
+                ->get();
+            } else {
+                $data = StorageIn::with('barang', 'gudang')
+                ->where('gudang_id', Auth::user()->pengurusGudang->gudang[0]->id)
+                ->orderBy('id', 'desc')
+                ->get();
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

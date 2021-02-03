@@ -324,9 +324,13 @@ class ShopController extends Controller
 
             $harga = $request->harga * $request->jumlah;
 
+            $penerima_po = $request->penerima_po;
+            $nama_pemesan = Auth::user()->pembeli->nama;
             $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
                 'kode' => $kode_faker,
                 'nomor_pemesanan' => $kode,
+                'penerima_po' => $penerima_po,
+                'nama_pemesan' => $nama_pemesan,
                 'tanggal_pemesanan' => now('Asia/Jakarta')
             ]));
 

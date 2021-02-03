@@ -14,6 +14,7 @@ use App\Models\Storage;
 use App\Models\Barang;
 use App\Models\StockBarang;
 use App\Models\Gudang;
+use Auth;
 
 class StorageController extends Controller
 {
@@ -27,13 +28,25 @@ class StorageController extends Controller
         // $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.akunGudang.user')
         // ->get();
         // dd($data);
+
         if($request->ajax()){
-            $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
-            ->whereHas('gudang.akunGudang', function($query){
-                $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
-            })
-            ->orderBy('id', 'desc')
-            ->get();
+            if (Auth::user()->pengurusGudang->status == 1) {
+                $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+                ->whereHas('gudang.akunGudang', function($query){
+                    $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+                })
+                ->orderBy('id', 'desc')
+                ->get();
+            } else {
+                $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+                ->whereHas('gudang.akunGudang', function($query){
+                    $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+                })
+                ->where('gudang_id',Auth::user()->pengurusGudang->gudang[0]->id)
+                ->orderBy('id', 'desc')
+                ->get();
+
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

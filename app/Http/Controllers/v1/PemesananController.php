@@ -35,7 +35,7 @@ class PemesananController extends Controller
      */
     public function pemesananMasukPembeli()
     {
-        $data = PemesananPembeli::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        $data = PemesananPembeli::with('pemesananPembeliItem','barangKeluar')->where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
         return view('app.transaksi.pemesanan-masuk-warung.index',compact('data'));
     }
     public function index(Request $request)
@@ -144,7 +144,7 @@ class PemesananController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $v = Validator::make($request->all(),[
             'penerima_po' => 'required|string|max:50',
             'nama_pemesan' => 'nullable|string|max:50',
@@ -162,7 +162,7 @@ class PemesananController extends Controller
             'pajak.*' => 'nullable|numeric',
         ]);
         if ($v->fails()) {
-            dd($v->errors()->all());
+            // dd($v->errors()->all());
             // return back()->withErrors($v)->withInput();
             return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
