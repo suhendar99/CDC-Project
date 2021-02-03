@@ -48,7 +48,6 @@
                     <div class="col-md-12">
                         <div class="card">
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->gudang->pemilik}}">
-                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pelanggan->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
                             <input type="hidden" name="harga" id="harga" value="{{$totalBiaya}}">
@@ -135,7 +134,18 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nama Pembeli <small class="text-success">*Harus diisi</small></label>
+                                            <input id="nama_pemesan" type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ Auth::user()->pelanggan->nama }}" >
+                                            @error('nama_pemesan')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
                                             <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pelanggan->telepon }}" >
@@ -146,10 +156,10 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
-                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ old('alamat_pemesan') }}"></textarea>
+                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pelanggan->alamat }}">{{ Auth::user()->pelanggan->alamat }}</textarea>
                                             @error('alamat_pemesan')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
