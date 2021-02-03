@@ -117,7 +117,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="colspan">
+                    <tr>
                         <th scope="row" id="no"></th>
                         <td id="kode"></td>
                         <td id="namaBarang"></td>
@@ -164,7 +164,7 @@
             $('#alamat').text('LOADING...')
             $('#metode').text('LOADING...')
 
-            $('#colspan').html(`<tr><td colspan="5" class="text-center">LOADING...</td></tr>`);
+            $('#no').html(`<center><tr><td colspan="5" class="text-center">LOADING...</td></tr></center>`);
 
             $.ajax({
                 url: "/api/v1/getDataPemesanan/"+id,
@@ -187,7 +187,11 @@
                         }
                     });
                     $.each(data, function (key, value) {
-
+                        $('#no').text(key+1)
+                        $('#kode').text(value.barang_kode)
+                        $('#namaBarang').text(value.nama_barang)
+                        $('#jumlah').text(value.jumlah_barang)
+                        $('#biayaAdmin').text(value.biaya_admin)
                     });
 
                 },
