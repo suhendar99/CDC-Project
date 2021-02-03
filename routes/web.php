@@ -163,6 +163,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang Masuk
         Route::resource('barangMasukPelanggan', 'BarangMasukPelangganController');
         Route::resource('barangKeluarPelanggan', 'BarangKeluarPelangganController');
+        // Rekapitulasi Penjualan
+        Route::resource('rekapitulasiPenjualanPelanggan', 'RekapitulasiPenjualanPelangganController');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');

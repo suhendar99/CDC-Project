@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Data Pemesanan Keluar';
+    $pageTitle = 'Data Pemesanan Masuk';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -53,11 +53,20 @@
                                 <div class="col-md-12 border-right">
                                     Nomor Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
                                 </div>
+                                @if ($d->metode_pembayaran == null)
+                                    <div class="col-md-12 border-right">
+                                        Status Pemesanan : <br><span class="text-14 bold">Berhutang</span>
+                                    </div>
+                                @else
+                                    <div class="col-md-12 border-right">
+                                        Status Pemesanan : <br><span class="text-14 bold">{{$d->metode_pembayaran}}</span>
+                                    </div>
+                                @endif
                                 <div class="col-md-12">
                                     <hr class=" my-1">
                                     <span class=" text-18">Data Pemesanan Barang</span><br>
                                     @foreach($d->pemesananPembeliItem as $i)
-                                    <span>{{$i->nama_barang}} ({{$i->jumlah_barang.' '.$i->satuan}})</span>,
+                                    <span>{{$i->nama_barang}}, Rp {{ number_format($i->harga,0,',','.')}} ({{$i->jumlah_barang.' '.$i->satuan}})</span>,
                                     @endforeach
                                 </div>
                             </div>

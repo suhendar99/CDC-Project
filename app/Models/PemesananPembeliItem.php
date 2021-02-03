@@ -11,7 +11,7 @@ class PemesananPembeliItem extends Model
 
     public function barang()
     {
-        return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode');
+        return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
     public function pemesananPembeli()
     {

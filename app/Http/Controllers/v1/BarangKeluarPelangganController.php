@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BarangKeluarPelanggan;
 use App\Models\BarangWarung;
 use App\Models\PemesananPembeli;
+use App\Models\RekapitulasiPenjualanPelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -72,7 +73,7 @@ class BarangKeluarPelangganController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            BarangKeluarPelanggan::create([
+            $out = BarangKeluarPelanggan::create([
                 'pemesanan_id' => $request->pemesanan_id,
                 'barang_warung_kode' => $request->barang_warung_kode,
                 'user_id' => Auth::user()->id,
@@ -80,6 +81,17 @@ class BarangKeluarPelangganController extends Controller
                 'jumlah' => $request->jumlah,
                 'satuan' => $request->satuan,
                 'waktu' => now()
+            ]);
+            RekapitulasiPenjualanPelanggan::create([
+                'barang_keluar_id' => $out->id,
+                'tanggal_penjualan' => $out->waktu,
+                'no_penjualan' => $out->kode,
+                'nama_pembeli' => $out->pemesanan->nama_pemesan,
+                'barang' => $out->pemesanan->pemesananPembeliItem[0]->barang->nama_barang,
+                'jumlah' => $out->jumlah,
+                'satuan' => $out->satuan,
+                'harga' => $out->pemesanan->pemesananPembeliItem[0]->barang->harga_barang,
+                'total' => $out->pemesanan->pemesananPembeliItem[0]->harga
             ]);
         }
         return back()->with('success','Data Berhasil Dibuat !');
