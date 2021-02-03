@@ -26,6 +26,6 @@ class PemesananPembeli extends Model
     }
     public function barangKeluar()
     {
-        return $this->hasMany('App\Models\BarangKeluarPelanggan', 'pemesanan_id', 'id');
+        return $this->hasOne('App\Models\BarangKeluarPelanggan', 'pemesanan_id', 'id');
     }
 }

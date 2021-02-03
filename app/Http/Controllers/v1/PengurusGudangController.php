@@ -71,6 +71,7 @@ class PengurusGudangController extends Controller
         $v = Validator::make($request->all(),[
             'name' => 'required|string|max:50',
             'username' => 'required|string|max:50',
+            'telepon' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
             'gudang_id' => 'required|exists:gudangs,id'
         ]);
@@ -86,7 +87,8 @@ class PengurusGudangController extends Controller
         Mail::to($request->email)->send(new SendPasswordMail($password));
 
         $pengurus = PengurusGudang::create([
-            'nama' => $request->name
+            'nama' => $request->name,
+            'telepon' => $request->telepon,
         ]);
 
         User::create($request->only('name', 'username', 'email')+[
@@ -96,10 +98,12 @@ class PengurusGudangController extends Controller
         ]);
 
         DB::table('akun_gudangs')->insert([
-                'gudang_id' => $request->gudang_id,
-                'pengurus_id' => $pengurus->id,
-                'created_at' => now('Asia/Jakarta')
-            ]);
+            'gudang_id' => $request->gudang_id,
+            'pengurus_id' => $pengurus->id,
+            'created_at' => now('Asia/Jakarta')
+        ]);
+
+
 
         return redirect(route('pengurus-gudang.index'))->with('success', __( 'Pengurus Account Created' ));
     }
@@ -150,6 +154,7 @@ class PengurusGudangController extends Controller
         $v = Validator::make($request->all(),[
             'name' => 'required|string|max:50',
             'username' => 'required|string|max:50',
+            'telepon' => 'required|numeric',
             'email' => 'required|email|unique:users,email,'.$id,
             'gudang_id' => 'required|exists:gudangs,id'
         ]);
@@ -160,12 +165,13 @@ class PengurusGudangController extends Controller
         $user = User::with('pengurus')->findOrFail($id);
 
         PengurusGudang::find($user->pengurus->id)->update([
-            'nama' => $request->name
+            'nama' => $request->name,
+            'telepon' => $request->telepon,
         ]);
         $user->update($request->only('username', 'email'));
 
         DB::table('akun_gudangs')->where('pengurus_id', $user->pengurus_gudang_id)->update([
-            'gudang_id' => $request->gudang_id
+            'gudang_id' => $request->gudang_id,
         ]);
 
         return redirect(route('pengurus-gudang.index'))->with('success', __( 'Pengurus Account Updated' ));
