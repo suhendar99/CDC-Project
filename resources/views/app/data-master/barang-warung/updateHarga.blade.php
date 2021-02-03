@@ -133,15 +133,14 @@
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;
-
-    function inputed(event) {
+    $('#keuntungan').keyup(function(event) {
         /* Act on the event */
         hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
-        untung = hargaSatuan * ($(event).val() / 100);
+        untung = hargaSatuan * ($(this).val() / 100);
         akhir = hargaSatuan + untung;
 
-        $('#sugest').text('Rp. '+(akhir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
-        $('#harga_barang').val(akhir);
-    };
+        $('#sugest').text('Rp. '+(akhir.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+        $('#harga_barang').val(akhir.toFixed(0));
+    });
 </script>
 @endpush
