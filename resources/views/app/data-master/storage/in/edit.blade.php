@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Storage Masuk';
+        $pageTitle = 'Buat Data Penyimpanan Masuk';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Penyimpanan Masuk</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Buat Data</a>
           </div>
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="" class="form-control">
                                             <option value="0">--Pilih Barang--</option>
                                             @foreach (\App\Models\Barang::get() as $barang)
@@ -105,7 +105,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Jumlah Barang Dari Kwitansi <small style="font-size: 10px;" class="text-success">*Harus diisi</small></label>
                                         <input type="number" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ $data->jumlah }}" placeholder="Enter jumlah barang">
                                         @error('jumlah')
                                             <span class="invalid-feedback" role="alert">
@@ -133,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Gudang <small class="text-success">*Harus diisi</small></label>
+                                    <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
                                     <select name="gudang_id" id="" class="form-control">
                                         <option value="0">--Pilih Gudang--</option>
                                         @foreach ($gudang as $list)
