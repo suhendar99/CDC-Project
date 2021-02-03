@@ -102,16 +102,12 @@
 <body>
     @if(isset($shop))
     @include('layouts.shop.navbar')
-    <div class="container-fluid">
+    <div class="container-fluid" id="app">
         <div class="wrapper">
             @if(!isset($detail))
 
             @include('layouts.shop.category')
             <div id="content">
-
-            @else
-            <div id="detail">
-            @endif
                 <div class="row">
                     <div class="col-md-12">
                         @yield('content')
@@ -128,6 +124,25 @@
                     </div>
                 </div>
             </div>
+            @else
+            <div id="detail">
+                <div class="row">
+                    <div class="col-md-12">
+                        @yield('content')
+                        <div class="row">
+                            <div class="col-12 justify-content-center">
+                                <div class="footer-copyright text-center pt-4 text-dark">
+                                    <div class="copyright">
+                                        <span>© Copyright </span>
+                                        <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}} {{$tahun}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             @if(isset($cart))
                 @include('layouts.shop.cart')
             @endif
