@@ -46,17 +46,28 @@ class PemesananController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
-                // ->addColumn('nama', function($data){
-                //     $nama = [];
-                //     foreach ($data->barangPesanan as $key => $value) {
-                //         $nama = $value->barang->nama_barang;
-                //         // dd($value->barang->nama_barang);
-                //     }
-                //     return $nama;
-                // })
-                ->rawColumns(['action'])
+                ->addColumn('status_pemesanan', function($data){
+                    if ($data->pesanan->status == 0) {
+                        return '<a href="#" class="btn btn-primary btn-sm">Validasi / Proses</a></div>';
+                    } elseif ($data->pesanan->status == 1) {
+                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a></div>';
+                    } elseif ($data->pesanan->status == 2) {
+                        return 'Menunggu Pesanan Sampai .....';
+                    }
+                })
+                ->addColumn('jumlah_barang', function($data){
+                    return $data->jumlah_barang.' '.$data->satuan;
+                })
+                ->addColumn('status_pembayaran', function($data){
+                    if ($data->pesanan->metode_pembayaran == null) {
+                        return "Hutang";
+                    } else{
+                        return $data->pesanan->metode_pembayaran;
+                    }
+                })
+                ->rawColumns(['action','jumlah_barang','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }
         return view('app.data-master.pemesanan.index');
@@ -287,6 +298,13 @@ class PemesananController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function getPemesanan($id)
+    {
+        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->where('id',$id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
     public function show($id)
     {
         $data = Pelanggan::with('user')->where('id',$id)->get();

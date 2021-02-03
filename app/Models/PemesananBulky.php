@@ -44,7 +44,7 @@ class PemesananBulky extends Model
     public function barangPesananBulky()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
-    	return $this->hasMany('App\Models\BarangPemesananBulky', 'pemesanan_bulky_id');
+    	return $this->hasOne('App\Models\BarangPemesananBulky', 'pemesanan_bulky_id');
     }
 
     /**

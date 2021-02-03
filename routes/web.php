@@ -239,6 +239,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::get('bulky/kwitansi/print', 'StorageKeluarBulkyController@printKwitansi')->name('bulky.kwitansi.print');
         Route::get('bulky/surat-jalan/print', 'StorageKeluarBulkyController@printSuratJalan')->name('bulky.surat-jalan.print');
+
+        Route::get('bulky/pemesanan', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
     });
 
     // Gudang Retail

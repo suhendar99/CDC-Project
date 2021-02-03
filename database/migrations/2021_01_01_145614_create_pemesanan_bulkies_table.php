@@ -26,6 +26,7 @@ class CreatePemesananBulkiesTable extends Migration
             $table->dateTime('tanggal_pemesanan', 0);
             $table->string('metode_pembayaran', 50)->nullable();
             $table->integer('status')->default(0);
+            $table->string('foto_bukti')->nullable();
             $table->timestamps();
         });
     }
