@@ -81,27 +81,27 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-4">Tanggal Pemesanan</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="tanggalPemesanan">:</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Nomor Pemesanan</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="noPemesanan">:</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Nama Pemesan</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="nama">:</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Telepon Pemesan</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="telepon">:</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Alamat Pemesan</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="alamat">:</div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">Metode Pembayaran</div>
-                        <div class="col-md-8">: HIii</div>
+                        <div class="col-md-8" id="metode">:</div>
                     </div>
                 </div>
             </div>
@@ -109,18 +109,20 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Kode Barang</th>
+                        <th scope="col">Nama Barang</th>
+                        <th scope="col">Jumlah Barang</th>
+                        <th scope="col">Biaya Admin</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                    <tr id="colspan">
+                        <th scope="row" id="no"></th>
+                        <td id="kode"></td>
+                        <td id="namaBarang"></td>
+                        <td id="jumlah"></td>
+                        <td id="biayaAdmin"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -155,37 +157,39 @@
         });
 
         function detail(id){
-            $('.namaBank').text('LOADING...')
-            $('.namaAkun').text('LOADING...')
-            $('.username').text('LOADING...')
-            $('.email').text('LOADING...')
-            $('.tahun').text('LOADING...')
-            $('.telepon').text('LOADING...')
-            $('.alamat').text('LOADING...')
+            $('#tanggalPemesanan').text('LOADING...')
+            $('#noPemesanan').text('LOADING...')
+            $('#nama').text('LOADING...')
+            $('#telepon').text('LOADING...')
+            $('#alamat').text('LOADING...')
+            $('#metode').text('LOADING...')
+
+            $('#colspan').html(`<tr><td colspan="5" class="text-center">LOADING...</td></tr>`);
 
             $.ajax({
-                url: "/api/v1/detail/bank/"+id,
+                url: "/api/v1/getDataPemesanan/"+id,
                 method: "GET",
                 contentType: false,
                 cache: false,
                 processData: false,
                 success: (response)=>{
-                    // console.log(response.data)
-                    let bank = response.data;
+                    let data = response.data;
+                    $.each(data, function (a, b) {
+                        $('#tanggalPemesanan').text(`: `+b.pesanan.tanggal_pemesanan)
+                        $('#noPemesanan').text(`: `+b.pesanan.nomor_pemesanan)
+                        $('#nama').text(`: `+b.pesanan.nama_pemesan)
+                        $('#telepon').text(`: `+b.pesanan.telepon)
+                        $('#alamat').text(`: `+b.pesanan.alamat_pemesan)
+                        if (b.pesanan.metode_pembayaran == null) {
+                            $('#metode').text(`: Berhutang`)
+                        } else {
+                            $('#metode').text(`: `+b.pesanan.metode_pembayaran)
+                        }
+                    });
+                    $.each(data, function (key, value) {
 
-                    $('.namaBank').text(bank.nama)
-                    $('.namaAkun').text(bank.user[0].name)
-                    $('.username').text(bank.user[0].username)
-                    $('.email').text(bank.user[0].email)
-                    $('.tahun').text(bank.tahun_berdiri)
-                    $('.telepon').text(bank.telepon)
-                    $('.alamat').text(bank.alamat)
+                    });
 
-                    if (bank.foto == null) {
-                        $("#foto").text('- Tidak Ada Foto Bank -');
-                    }else{
-                        $("#foto").html(`<img class="foto" style="width:100%; height:300px;" src="{{asset('${bank.foto}')}}">`);
-                    }
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;
