@@ -21,6 +21,7 @@ use App\Models\RekapitulasiPenjualan;
 use App\Models\SuratJalan;
 use Carbon\Carbon;
 use PDF;
+use Auth;
 
 class StorageOutController extends Controller
 {
@@ -32,9 +33,16 @@ class StorageOutController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageOut::with('barang', 'gudang', 'pemesanan')
-            ->orderBy('id', 'desc')
-            ->get();
+            if (Auth::user()->pengurusGudang->status == 1) {
+                $data = StorageOut::with('barang', 'gudang', 'pemesanan')
+                ->orderBy('id', 'desc')
+                ->get();
+            } else {
+                $data = StorageOut::with('barang', 'gudang', 'pemesanan')
+                ->where('gudang_id', Auth::user()->pengurusGudang->gudang[0]->id)
+                ->orderBy('id', 'desc')
+                ->get();
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

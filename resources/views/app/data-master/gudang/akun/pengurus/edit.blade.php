@@ -51,7 +51,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Nama Akun <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->pengurus->nama }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Masukan Nama Akun Pengurus">
                                         @error('name')
@@ -60,10 +60,19 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Username <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ $data->username }}" placeholder="Masukan Username Akun">
                                         @error('username')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $data->telepon }}" placeholder="Masukan Nomor Telepon">
+                                        @error('telepon')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
