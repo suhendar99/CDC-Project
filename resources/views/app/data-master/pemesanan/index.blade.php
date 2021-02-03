@@ -135,6 +135,27 @@
       </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalBukti" tabindex="-1" aria-labelledby="modalBukti" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalBukti">Bukti Pembayaran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <img src="" class="w-100" id="foto_bukti">
+        </div>
+        <div class="modal-footer">
+
+          Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+        </div>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -232,6 +253,27 @@
                     // )
                 }
             })
+        }
+
+        function bukti(id){
+
+            $.ajax({
+                url: "/api/v1/getDataPemesanan/"+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    // console.log(response.data[0]);
+                    $('#foto_bukti').attr('src',`${response.data[0].pesanan.foto_bukti}`);
+                    $('#button_accept').attr('href','/v1/validasi/bukti/warung/'+response.data[0].pesanan.id);
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
         }
     </script>
 @endpush

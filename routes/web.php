@@ -141,6 +141,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pelanggan']], function () {
         // Untuk Konfirmasi Penerimaan Barang
         Route::get('transaksi/warung/riwayat/konfirmasi/{id}','PemesananKeluarPembeliController@konfirmasi')->name('konfirmasi.terima.warung');
+        // Untuk Validasi Butki Pembayaran
+        Route::get('validasi/bukti/warung/{id}','PemesananKeluarPembeliController@validasi')->name('validasi.bukti.warung');
         // Barang funtuk pembeli
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
