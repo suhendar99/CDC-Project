@@ -20,7 +20,7 @@ class CreateStoragesTable extends Migration
             $table->bigInteger('jumlah');
             $table->string('satuan', 50);
             $table->dateTime('waktu');
-            $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('cascade');
+            $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('set null');
             $table->timestamps();
         });
     }

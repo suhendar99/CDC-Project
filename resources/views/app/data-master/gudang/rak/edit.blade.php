@@ -89,14 +89,25 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Jumlah Tingkatan Rak <small class="text-success">*Harus diisi</small></label>
-                                    <input type="number" class="form-control @error('tingkat') is-invalid @enderror" name="tingkat" value="{{ $data->tingkat_count }}" placeholder="Masukan Jumlah Tingkatan Rak">
-                                    @error('tingkat')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Maksimal Kapasitas Berat ( Kg ) <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ $data->kapasitas_berat }}" placeholder="Masukan Berat...">
+                                        @error('kapasitas_berat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Jumlah Tingkatan Rak <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" class="form-control @error('tingkat') is-invalid @enderror" name="tingkat" value="{{ $data->tingkat_count }}" placeholder="Masukan Jumlah Tingkat Rak...">
+                                        @error('tingkat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">

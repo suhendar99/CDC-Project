@@ -14,7 +14,7 @@ class PengurusGudangBulky extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function gudang()
+    public function bulky()
     {
         // belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
         return $this->belongsToMany('App\Models\GudangBulky', 'akun_gudang_bulkys', 'pengurus_bulky_id', 'bulky_id');
@@ -22,6 +22,6 @@ class PengurusGudangBulky extends Model
 
     public function user()
     {
-        return $this->hasMany('App\User','pengurus_gudang_bulky_id','id');
+        return $this->hasOne('App\User','pengurus_gudang_bulky_id','id');
     }
 }

@@ -27,7 +27,7 @@
                     .'') 
                 }}
             " class="rounded-circle avatar">
-            {{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->pengurus_gudang_id) ? Auth::user()->pengurusGudang->nama :(isset(Auth::user()->pembeli_id) ? Auth::user()->pembeli->nama : (isset(Auth::user()->bulky_id) ? Auth::user()->bulky->nama :(isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : Auth::user()->name)))) }}
+            {{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->pengurus_gudang_id) ? Auth::user()->pengurusGudang->nama :(isset(Auth::user()->pembeli_id) ? Auth::user()->pembeli->nama : (isset(Auth::user()->bulky_id) ? Auth::user()->bulky->nama :(isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : (isset(Auth::user()->pengurus_gudang_bulky_id) ? Auth::user()->pengurusGudangBulky->nama : Auth::user()->name))))) }}
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
