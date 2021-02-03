@@ -39,21 +39,21 @@ class PemesananController extends Controller
     }
     public function index(Request $request)
     {
+        $data = BarangPesanan::with('pesanan.storageOut', 'barang')
+        ->orderBy('id', 'desc')
+        ->get();
         if($request->ajax()){
-            $data = BarangPesanan::with('pesanan.storageOut', 'barang')
-            ->orderBy('id', 'desc')
-            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('status_pemesanan', function($data){
-                    if ($data->pesanan->status == 0) {
-                        return '<a href="#" class="btn btn-primary btn-sm">Validasi / Proses</a></div>';
-                    } elseif ($data->pesanan->status == 1) {
-                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a></div>';
+                    if ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
+                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
                     } elseif ($data->pesanan->status == 2) {
+                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a>';
+                    } elseif ($data->pesanan->status == 3) {
                         return 'Menunggu Pesanan Sampai .....';
                     }
                 })
@@ -283,10 +283,10 @@ class PemesananController extends Controller
         $data = Pemesanan::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
-        $foto_bukti->move(public_path("upload/foto/bukti"), $nama_bukti);
+        $foto_bukti->move(public_path("/upload/foto/bukti"), $nama_bukti);
 
         $data->update([
-            'foto_bukti' => 'upload/foto/bukti/'.$nama_bukti
+            'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
