@@ -46,12 +46,14 @@
                             <form action="{{route('barangKeluarPelanggan.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
                                         <select name="pemesanan_id" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Pemesanan--</option>
                                             @foreach ($pemesanan as $item)
                                                 <option value="{{$item->id}}" {{ old('pemesanan_id') == $item->id ? 'selected' : ''}} data-satuan="{{ $item->pemesananPembeliItem[0]->satuan }}">{{$item->nomor_pemesanan}}|{{$item->pembeli->nama}}</option>
+                                                <input type="hidden" name="jumlah" value="{{$item->pemesananPembeliItem[0]->jumlah_barang}}">
+                                                <input type="hidden" name="satuan" value="{{$item->pemesananPembeliItem[0]->satuan}}">
                                             @endforeach
                                         </select>
                                         @error('pemesanan_id')
@@ -60,32 +62,18 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>Barang Warung <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_warung_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
                                             @foreach ($barang as $item)
-                                                <option value="{{$item->kode}}" {{ old('barang_warung_kode') == $item->kode ? 'selected' : ''}}>{{$item->storageOut->barang->nama}}</option>
+                                                <option value="{{$item->kode}}" {{ old('barang_warung_kode') == $item->kode ? 'selected' : ''}}>{{$item->kode}} | {{$item->storageOut->barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_warung_kode')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <div class="input-group">
-                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="satuanAppend"></span>
-                                            </div>
-                                        </div>
-                                        @error('jumlah')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
                                         @enderror
                                     </div>
                                     {{-- <div class="form-group col-md-3">

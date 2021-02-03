@@ -7,6 +7,8 @@ use App\Models\BarangKeluarPelanggan;
 use App\Models\BarangWarung;
 use App\Models\PemesananPembeli;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class BarangKeluarPelangganController extends Controller
@@ -63,7 +65,24 @@ class BarangKeluarPelangganController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'pemesanan_id' =>'required|exists:pemesanan_pembelis,id',
+            'barang_warung_kode' =>'required|exists:barang_warungs,kode'
+        ]);
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            BarangKeluarPelanggan::create([
+                'pemesanan_id' => $request->pemesanan_id,
+                'barang_warung_kode' => $request->barang_warung_kode,
+                'user_id' => Auth::user()->id,
+                'kode' => rand(1000000,9999999),
+                'jumlah' => $request->jumlah,
+                'satuan' => $request->satuan,
+                'waktu' => now()
+            ]);
+        }
+        return back()->with('success','Data Berhasil Dibuat !');
     }
 
     /**
@@ -108,6 +127,8 @@ class BarangKeluarPelangganController extends Controller
      */
     public function destroy($id)
     {
-        //
+        BarangKeluarPelanggan::findOrFail($id)->delete();
+
+        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil Di Hapus !' ));
     }
 }
