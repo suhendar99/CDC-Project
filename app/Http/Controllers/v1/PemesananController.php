@@ -283,6 +283,13 @@ class PemesananController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function getPemesanan($id)
+    {
+        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->where('id',$id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
     public function show($id)
     {
         $data = Pelanggan::with('user')->where('id',$id)->get();
