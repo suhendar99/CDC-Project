@@ -90,4 +90,26 @@ class GudangBulky extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
     	return $this->hasMany('App\Models\PemesananBulky', 'bulky_id');
     }
+
+    /**
+     * GudangBulky has many StorageKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
+        return $this->hasMany('App\Models\StorageKeluarBulky', 'bulky_id');
+    }
+
+    /**
+     * GudangBulky has many KwitansiBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kwitansiBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
+        return $this->hasMany('App\Models\KwitansiBulky', 'bulky_id');
+    }
 }

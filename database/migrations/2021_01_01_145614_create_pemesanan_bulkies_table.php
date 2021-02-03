@@ -25,7 +25,7 @@ class CreatePemesananBulkiesTable extends Migration
             $table->text('alamat_pemesan');
             $table->dateTime('tanggal_pemesanan', 0);
             $table->string('metode_pembayaran', 50)->nullable();
-            $table->boolean('status')->default(0);
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

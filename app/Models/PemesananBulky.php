@@ -57,4 +57,37 @@ class PemesananBulky extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
     	return $this->hasMany('App\Models\StorageIn', 'pemesanan_id');
     }
+
+    /**
+     * PemesananBulky has many StorageKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
+        return $this->hasMany('App\Models\StorageKeluarBulky', 'pemesanan_bulky_id');
+    }
+
+    /**
+     * PemesananBulky has many KwitansiBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function kwitansiBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
+        return $this->hasMany('App\Models\KwitansiBulky', 'pemesanan_bulky_id');
+    }
+
+    /**
+     * PemesananBulky has many SuratJalanBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function suratJalanBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
+        return $this->hasMany('App\Models\SuratJalanBulky', 'pemesanan_bulky_id');
+    }
 }
