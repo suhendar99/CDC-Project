@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StorageMasukBulky extends Model
+class StorageKeluarBulky extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'storage_masuk_bulkies';
+    protected $table = 'storage_keluar_bulkies';
     protected $guarded = [];
 
     /**
@@ -48,18 +48,24 @@ class StorageMasukBulky extends Model
     }
 
     /**
-     * StorageIn has many Storage.
+     * StorageOut belongs to Pemesanan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pemesananBulky()
+    {
+        // belongsTo(RelatedModel, foreignKey = pemesanan_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\PemesananBulky', 'pemesanan_bulky_id');
+    }
+
+    /**
+     * StorageKeluarBulky has many RekapitulasiPenjualanBulky.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function storageBulky()
+    public function rekapitulasiPenjualanBulky()
     {
-    	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
-    	return $this->hasOne('App\Models\StorageBulky', 'storage_masuk_bulky_kode', 'kode');
-    }
-
-    public function rekapitulasi()
-    {
-    	return $this->hasMany('App\Models\RekapitulasiPembelianBulky', 'storage_masuk_bulky_id');
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = storageKeluarBulky_id, localKey = id)
+        return $this->hasMany('App\Models\RekapitulasiPenjualanBulky', 'storage_keluar_bulky_id');
     }
 }

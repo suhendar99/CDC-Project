@@ -61,7 +61,7 @@
                                 <div class="col-md-8">
                                     <h5>{{ $gudang->nama }}</h5>
                                     <span style="font-size: .7rem;">{{ $gudang->nomor_gudang }}</span>
-                                    {{-- @php
+                                    @php
                                         $status = 0;
                                         foreach ($gudang->rak as $value) {
                                             if ($value->status == 1) {
@@ -75,7 +75,7 @@
                                             echo "";
                                         }
                                         
-                                    @endphp --}}
+                                    @endphp
                                 </div>
                                 <div class="col-md-4">
                                     <div class="row">
@@ -262,7 +262,7 @@
                     $(this).text('Loading');
                     
                     $.ajax({
-                        url: "/api/v1/gudang/"+id+"/status",
+                        url: "/api/v1/bulky/"+id+"/status",
                         method: "GET",
                         contentType: false,
                         cache: false,

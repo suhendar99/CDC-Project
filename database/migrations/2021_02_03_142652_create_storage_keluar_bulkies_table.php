@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStorageMasukBulkiesTable extends Migration
+class CreateStorageKeluarBulkiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,18 @@ class CreateStorageMasukBulkiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('storage_masuk_bulkies', function (Blueprint $table) {
+        Schema::create('storage_keluar_bulkies', function (Blueprint $table) {
             $table->id();
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->foreignId('pemesanan_bulky_id')->constrained('pemesanan_bulkies')->onDelete('cascade');
             // $table->foreignId('barang_kode')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('bulky_id')->constrained('gudang_bulkies')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();
-            $table->bigInteger('harga_beli');
             $table->bigInteger('jumlah');
-            $table->string('satuan');
+            $table->string('satuan', 20);
             $table->dateTime('waktu');
-            $table->string('nomor_kwitansi');
-            $table->string('foto_kwitansi');
-            $table->string('nomor_surat_jalan');
-            $table->string('foto_surat_jalan');
             $table->timestamps();
         });
     }
@@ -40,6 +36,6 @@ class CreateStorageMasukBulkiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storage_masuk_bulkies');
+        Schema::dropIfExists('storage_keluar_bulkies');
     }
 }

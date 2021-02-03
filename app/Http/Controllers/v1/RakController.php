@@ -166,7 +166,8 @@ class RakController extends Controller
             'panjang' => 'required|numeric|min:0',
             'lebar' => 'required|numeric|min:0',
             'tinggi' => 'required|numeric|min:0',
-            'tingkat' => 'required|numeric|min:0'
+            'tingkat' => 'required|numeric|min:0',
+            'kapasitas_berat' => 'required|numeric|min:0'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -176,19 +177,21 @@ class RakController extends Controller
 
         // $faker = \Faker\Factory::create('id_ID');
 
-        $rak = Rak::findOrFail($id)->update($request->only('nama', 'lebar', 'panjang', 'tinggi'));
+        $rak = Rak::withCount('tingkat')->findOrFail($id);
 
-        $rakTingkat = TingkatanRak::where('rak_id', $id)->get();
+        $rak->update($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat'));
 
-        foreach ($rakTingkat as $value) {
-            $value->delete();
-        }
-
-        for ($i=1; $i <= (integer)$request->tingkat; $i++) { 
-            TingkatanRak::create([
-                'nama' => 'tingkat '.$i,
-                'rak_id' => $id
-            ]);
+        if ($request->tingkat > $rak->tingkat_count) {
+            for ($i=((integer)$rak->tingkat_count + 1); $i <= (integer)$request->tingkat; $i++) { 
+                TingkatanRak::create([
+                    'nama' => 'tingkat '.$i,
+                    'rak_id' => $id
+                ]);
+            }
+        } elseif ($request->tingkat < $rak->tingkat_count) {
+            for ($i=((integer)$rak->tingkat_count - 1); $i >= (integer)$request->tingkat; $i--) { 
+                TingkatanRak::orderBy('id', 'desc')->first()->delete();
+            }
         }
 
         return redirect(route('rak.index', ['gudang' => $gudang]))->with('success', __( 'Rak Updated!' ));

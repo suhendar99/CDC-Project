@@ -185,7 +185,56 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                     'update' => 'rak.bulky.update',
                     'destroy' => 'rak.bulky.destroy'
                 ]
-            ]);
+        ]);
+
+        Route::resource('bulky/storage/masuk', 'StorageMasukBulkyController', [
+            'names' => [
+                'index' => 'bulky.storage.masuk.index',
+                'create' => 'bulky.storage.masuk.create',
+                'store' => 'bulky.storage.masuk.store',
+                'edit' => 'bulky.storage.masuk.edit',
+                'update' => 'bulky.storage.masuk.update',
+                'destroy' => 'bulky.storage.masuk.destroy'
+            ]
+        ]);
+
+        Route::resource('bulky/storage/keluar', 'StorageKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.storage.keluar.index',
+                'create' => 'bulky.storage.keluar.create',
+                'store' => 'bulky.storage.keluar.store',
+                'edit' => 'bulky.storage.keluar.edit',
+                'update' => 'bulky.storage.keluar.update',
+                'destroy' => 'bulky.storage.keluar.destroy'
+            ]
+        ]);
+
+        Route::get('bulky/storage/penyimpanan/{id}', 'StorageBulkyController@edit')->name('bulky.storage.rak');
+        Route::post('bulky/storage/penyimpanan/{id}/simpan', 'StorageBulkyController@update')->name('bulky.storage.rak.simpan');
+
+        Route::resource('bulky/storage', 'StorageBulkyController', [
+            'names' => [
+                'index' => 'bulky.storage.index',
+                'create' => 'bulky.storage.create',
+                'store' => 'bulky.storage.store',
+                'edit' => 'bulky.storage.edit',
+                'update' => 'bulky.storage.update',
+                'destroy' => 'bulky.storage.destroy'
+            ]
+        ]);
+
+        // Ubah Harga Barang
+        Route::get('bulky/barang/stock/{id}', 'StockBarangBulkyController@editHarga')->name('bulky.harga.edit');
+        Route::put('bulky/barang/stock/{id}/simpan', 'StockBarangBulkyController@simpanHarga')->name('bulky.harga.simpan');
+
+        // Kwitansi
+        Route::get('bulky/kwitansi', 'KwitansiBulkiController@index')->name('bulky.kwitansi.index');
+
+        // Surat Jalan
+        Route::get('bulky/surat-jalan', 'SuratJalanBulkyController@index')->name('bulky.surat-jalan.index');
+
+        Route::get('bulky/kwitansi/print', 'StorageKeluarBulkyController@printKwitansi')->name('bulky.kwitansi.print');
+        Route::get('bulky/surat-jalan/print', 'StorageKeluarBulkyController@printSuratJalan')->name('bulky.surat-jalan.print');
     });
 
     // Gudang Retail

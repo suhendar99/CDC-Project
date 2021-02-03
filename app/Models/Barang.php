@@ -51,6 +51,17 @@ class Barang extends Model
     }
 
     /**
+     * Barang has many StorageKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\StorageKeluarBulky', 'barang_kode', 'kode_barang');
+    }
+
+    /**
      * Barang has many Stock.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
