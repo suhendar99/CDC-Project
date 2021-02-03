@@ -108,8 +108,21 @@ class StorageOutController extends Controller
     public function create(Request $request)
     {
         $gudang = Gudang::all();
-        $pemesanan = Pemesanan::doesntHave('storageOut')->get();
+        if($request->query('id') != 0){
+            $pemesanan = Pemesanan::findOrFail($request->query('id'));
+            $setted = true;
+            $same = StorageOut::where('pemesanan_id',$pemesanan->id)->get();
+            if($same->count() > 0){
+                return back()->with('failed','Barang Sudah Dikirm! Mohon Cek Di Data Barang Keluar');
+            }
+        }else{
+            $pemesanan = Pemesanan::where('status','2')->doesntHave('storageOut')->get();
+            $setted = false;
+        }
 
+        if($pemesanan->count() < 1){
+            return redirect('v1/storage')->with('failed','Belum Ada Pesanan Baru Dari Warung!');
+        }
         $poci = $request->query('pemesanan', null);
 
         $surat = SuratJalan::all();
@@ -118,7 +131,7 @@ class StorageOutController extends Controller
         $date = date("ymdHis");
         $kode_surat = sprintf("%04s",abs($number+1));
 
-        return view('app.data-master.storage.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci'));
+        return view('app.data-master.storage.out.create', compact('setted','gudang', 'pemesanan', 'kode_surat', 'poci'));
     }
 
     /**
@@ -220,6 +233,7 @@ class StorageOutController extends Controller
                 'satuan' => $pesan->satuan,
                 'waktu' => Carbon::now()
             ]);
+
             $log = LogTransaksi::create([
                 'tanggal' => now(),
                 'jam' => now(),
@@ -329,7 +343,9 @@ class StorageOutController extends Controller
             'harga' => $total,
             'total' => $harga_total
         ]);
-        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+
+        $pesanan->update(['status'=>'4']);
+        return redirect('v1/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
     }
 
     /**

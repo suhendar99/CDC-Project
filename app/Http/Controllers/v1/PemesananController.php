@@ -49,12 +49,18 @@ class PemesananController extends Controller
                     return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('status_pemesanan', function($data){
-                    if ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
-                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } elseif ($data->pesanan->status == 2) {
-                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a>';
-                    } elseif ($data->pesanan->status == 3) {
+                    if($data->pesanan->status == 0){
+                        return '<a class="btn btn-danger btn-sm">Pesanan Ditolak</a>';
+                    }elseif ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
+                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } elseif ($data->pesanan->status == 1){
+                        return '<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
+                    }elseif ($data->pesanan->status == 2) {
+                        return '<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-success btn-sm">Kirim</a>';
+                    } elseif ($data->pesanan->status == 4) {
                         return 'Menunggu Pesanan Sampai .....';
+                    } elseif ($data->pesanan->status == 5) {
+                        return 'Sudah Diterima';
                     }
                 })
                 ->addColumn('jumlah_barang', function($data){
@@ -71,6 +77,19 @@ class PemesananController extends Controller
                 ->make(true);
         }
         return view('app.data-master.pemesanan.index');
+    }
+
+    public function tolak($id)
+    {
+        $data = $this->model::findOrFail($id);
+        $data->update(['status'=>'0']);
+
+        return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+
+    public function kirim($id)
+    {
+        return redirect('/v1/storage/out/create',['data'=>'data']);
     }
 
     function getPesanan($id){
@@ -374,7 +393,9 @@ class PemesananController extends Controller
      */
     public function destroy($id)
     {
-        BarangPesanan::findOrFail($id)->delete();
+        $data = BarangPesanan::findOrFail($id);
+        $pesanan = Pemesanan::findOrFail($data->pesanan->id);
+        $pesanan->delete();
 
         return back()->with('success', __( 'Pemesanan masuk telah dihapus' ));
     }

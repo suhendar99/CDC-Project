@@ -20,7 +20,7 @@ class BarangWarungController extends Controller
     {
 
 
-        $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(5);
+        $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(9);
         return view('app.data-master.barang-warung.index',compact('barangWarung'));
     }
 
@@ -64,9 +64,9 @@ class BarangWarungController extends Controller
      */
     public function edit($id)
     {
-        $data = BarangWarung::with('stok')->findOrFail($id);
+        $data = BarangWarung::with('storageout')->findOrFail($id);
         dd($data);
-        
+
         $base_harga = StorageIn::with('barang')
         ->where([
             ['gudang_id', $data->gudang_id],

@@ -48,8 +48,8 @@
         <div class="col-md-12">
             <div class="row">
                 @forelse($barangWarung as $d)
-                <div class="col-md-4">
-                    <div class="card">
+                <div class="col-md-4 ">
+                    <div class="card mb-4">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
