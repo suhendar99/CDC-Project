@@ -21,7 +21,7 @@
                     </li>
                     @if (isset($bank))
                         <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                            <a href="{{route('piutang.index')}}" class="valign-center {{ Request::is('v1/piutangIn*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
+                            <a href="{{route('piutangIn.index')}}" class="valign-center {{ Request::is('v1/piutangIn*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Data Piutang</a>
                         </li>
                         <li class="{{ Request::is('v1/bungaBank*') ? 'active' : false }}">
                             <a href="{{route('bungaBank.index')}}" class="valign-center {{ Request::is('v1/bungaBank*') ? 'active' : false }}"><i class="material-icons">attach_money</i>Bunga  Bank</a>
@@ -147,20 +147,20 @@
                     ">
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/gudang-retail*') ? 'show' : false }}
+                            {{ Request::is('v1/gudang*') ? 'show' : false }}
                             {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
                             {{ Request::is('v1/storage*') ? 'show' : false }}
                         " id="gudangSubmenu">
-                            <li class="{{ Request::is('v1/gudang-retail*') ? 'active' : false }}">
+                            <li class="{{ Request::is('v1/gudang*') ? 'active' : false }}">
                                 <a href="{{route('gudang.index')}}">Identitas Gudang</a>
                             </li>
                             <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
                                 <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
                             </li>
-                            <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
-                                <a href="{{route('storage.index')}}">Pengelolaan Barang</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
+                        <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
@@ -242,10 +242,10 @@
                             <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
                                 <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
                             </li>
-                            <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
-                                <a href="{{route('storage.index')}}">Pengelolaan Barang</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
+                        <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
@@ -311,19 +311,19 @@
                     @endif
                     {{-- @endif --}}
                      @if (Auth::user()->pelanggan_id != null)
-                    <li class="
+                    {{-- <li class="
                         {{ Request::is('v1/barangWarung*') ? 'active' : false }}
                     ">
                         <a href="#barangWarung" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i> Manajemen Warung</a>
                         <ul id="barangWarung" class="collapse list-unstyled
                             {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                         ">
-                            <li class="
-                            {{ Request::is('v1/barangWarung*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('barangWarung.index')}}">Daftar Barang</a>
-                            </li>
                         </ul>
+                    </li> --}}
+                    <li class="
+                    {{ Request::is('v1/barangWarung*') ? 'active' : false }}
+                    ">
+                        <a href="{{route('barangWarung.index')}}" class="valign-center"><i class="material-icons">work</i>Daftar Barang</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/pemesananMasukWarung*') ? 'active' : false }}

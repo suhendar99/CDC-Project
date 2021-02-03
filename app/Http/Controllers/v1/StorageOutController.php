@@ -145,7 +145,7 @@ class StorageOutController extends Controller
         ]);
 
         if ($v->fails()) {
-            dd($v);
+            // dd($v);
             return back()->withErrors($v)->withInput();
         }
 
