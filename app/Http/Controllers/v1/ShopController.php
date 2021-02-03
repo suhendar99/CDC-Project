@@ -235,15 +235,15 @@ class ShopController extends Controller
                 'harga' => $request->harga
             ]);
 
-            if ($request->pembayaran == 'later') {
-                $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
-                // dd($hutang);
-                Piutang::create([
-                    'barang_id' => $pemesanan->id,
-                    'tanggal'=> Carbon::now(),
-                    'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
-                ]);
+            // if ($request->pembayaran == 'later') {
+            //     $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
+            //     // dd($hutang);
+            //     Piutang::create([
+            //         'barang_id' => $pemesanan->id,
+            //         'tanggal'=> Carbon::now(),
+            //         'nama_pembeli' => Auth::user()->pelanggan->nama,
+            //         'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+            //     ]);
 
                 if ($request->pembayaran == 'later') {
                     // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
@@ -255,7 +255,7 @@ class ShopController extends Controller
                         'hutang' => $request->harga,
                     ]);
                 }
-            }
+            // }
         } elseif (Auth::user()->pembeli_id != null) {
             $v = Validator::make($request->all(),[
                 'alamat_pemesan' => 'required',
