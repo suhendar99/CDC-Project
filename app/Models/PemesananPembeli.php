@@ -24,4 +24,8 @@ class PemesananPembeli extends Model
     {
         return $this->hasMany('App\Models\ReturMasukPelanggan', 'pemesanan_pembeli_id', 'id');
     }
+    public function barangKeluar()
+    {
+        return $this->hasMany('App\Models\BarangKeluarPelanggan', 'pemesanan_id', 'id');
+    }
 }

@@ -244,9 +244,8 @@ class ShopController extends Controller
                     'nama_pembeli' => Auth::user()->pelanggan->nama,
                     'hutang' => $request->harga,
                 ]);
-            } 
+            }
         } elseif (Auth::user()->pembeli_id != null) {
-            dd($pemesanan);
             $v = Validator::make($request->all(),[
                 'alamat_pemesan' => 'required',
                 'pembayaran' => 'required',

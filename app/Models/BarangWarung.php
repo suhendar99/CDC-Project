@@ -25,4 +25,8 @@ class BarangWarung extends Model
     {
         return $this->hasMany('App\Models\ReturMasukPelanggan', 'barang_warung_kode', 'kode');
     }
+    public function barangKeluar()
+    {
+        return $this->hasMany('App\Models\BarangKeluarPelanggan', 'barang_warung_kode', 'kode');
+    }
 }

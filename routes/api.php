@@ -45,6 +45,7 @@ Route::get('/v1/storage/barang/{kode}', 'v1\StorageInController@checkBarang');
 Route::get('/v1/check/barang/{kode}', 'v1\StorageController@check');
 Route::get('/v1/storage/out/gudang/{kode}/barang', 'v1\StorageOutController@findBarang');
 Route::get('/v1/detail/storage/in/{id}', 'v1\StorageInController@detail');
+Route::get('/v1/detail/barang/masuk/pelanggan/{id}', 'v1\BarangMasukPelangganController@detail');
 Route::get('/v1/detail/bulky/storage/in/{id}', 'v1\StorageMasukBulkyController@detail');
 Route::get('/v1/detail/storage/out/{id}', 'v1\StorageOutController@detail');
 Route::get('/v1/detail/bank/{id}', 'v1\BankController@detail');
