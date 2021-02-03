@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <h6 class="text-danger">
-                                        Pesan Dengan Rincian : 
+                                        Pesanan Dengan Rincian : 
                                         @foreach($d->pemesananPembeliItem as $b)
                                         {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
                                         @endforeach
@@ -100,11 +100,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->nama_pemesan}} ({{$d}})</span>
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->penerima_po}} ({{$d->pelanggan->kabupaten->nama}})</span>
                                     {{-- {{dd($d->storageOut)}} --}}
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Ke : <br><span class="text-14 bold">{{$d->penerima_poa}} ({{$d}})</span>
+                                    Ke : <br><span class="text-14 bold">{{$d->nama_pemesan}} ({{$d->pelanggan->kabupaten->nama}})</span>
                                 </div>
                                 <div class="col-md-4">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="col-md-4 d-flex valign-center justify-content-end">
                                     <a href="
-                                        {{($d->status == 4) ? route('konfirmasi.terima.warung',$d->id) : '#'}}
+                                        {{($d->status == 4) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
                                     " class="btn btn-primary btn-sm 
                                         {{($d->status == 4) ? '' : 'disabled'}}
                                     " title="Klik Jika Pesanan Anda Sudah Diterima">

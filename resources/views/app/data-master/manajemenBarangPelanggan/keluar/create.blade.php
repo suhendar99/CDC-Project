@@ -49,12 +49,18 @@
                                     <div class="form-group col-md-6">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
                                         <select name="pemesanan_id" id="barang" class="form-control">
+                                            @if($set == true)
+                                            <option value="{{$pemesanan->id}}" {{ old('pemesanan_id') == $pemesanan->id ? 'selected' : ''}} data-satuan="{{ $pemesanan->pemesananPembeliItem[0]->satuan }}">{{$pemesanan->nomor_pemesanan}}|{{$pemesanan->pembeli->nama}}</option>
+                                                <input type="hidden" name="jumlah" value="{{$pemesanan->pemesananPembeliItem[0]->jumlah_barang}}">
+                                                <input type="hidden" name="satuan" value="{{$pemesanan->pemesananPembeliItem[0]->satuan}}">
+                                            @else
                                             <option value="0" data-satuan="-">--Pilih Pemesanan--</option>
                                             @foreach ($pemesanan as $item)
                                                 <option value="{{$item->id}}" {{ old('pemesanan_id') == $item->id ? 'selected' : ''}} data-satuan="{{ $item->pemesananPembeliItem[0]->satuan }}">{{$item->nomor_pemesanan}}|{{$item->pembeli->nama}}</option>
                                                 <input type="hidden" name="jumlah" value="{{$item->pemesananPembeliItem[0]->jumlah_barang}}">
                                                 <input type="hidden" name="satuan" value="{{$item->pemesananPembeliItem[0]->satuan}}">
                                             @endforeach
+                                            @endif
                                         </select>
                                         @error('pemesanan_id')
                                             <span class="invalid-feedback" role="alert">
