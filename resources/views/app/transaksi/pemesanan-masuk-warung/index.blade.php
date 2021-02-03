@@ -24,19 +24,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="float-right">
-                                {{-- <a href="/shop" class="btn btn-primary btn-sm">Kembali Pesan</a> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
             <div class="row">
                 @forelse($data as $d)
                 <div class="col-md-6 col-6 my-2">
@@ -79,7 +66,7 @@
                 </div>
                 @empty
                 <div class="col-12 my-4 py-4">
-                    <center>-- Anda Belum Pernah Melakukan Pesanan --</center>
+                    <center>-- Belum Ada Pemesanan --</center>
                 </div>
                 @endforelse
             </div>

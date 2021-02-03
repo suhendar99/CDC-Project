@@ -266,6 +266,21 @@ class PemesananController extends Controller
         return view($this->indexPath.'konfirmasi',compact('data','date','user'));
     }
 
+    public function bukti(Request $request, $id)
+    {
+        // dd($request->file('foto_bukti'));
+        $data = Pemesanan::findOrFail($id);
+        $foto_bukti = $request->file('foto_bukti');
+        $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
+        $foto_bukti->move(public_path("upload/foto/bukti"), $nama_bukti);
+
+        $data->update([
+            'foto_bukti' => 'upload/foto/bukti/'.$nama_bukti
+        ]);
+
+        return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
+
     /**
      * Display the specified resource.
      *

@@ -50,7 +50,7 @@ class Pemesanan extends Model
     public function storageOut()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->hasMany('App\Models\StorageOut');
+    	return $this->hasOne('App\Models\StorageOut');
     }
     /**
      * Pemesanan has many Retur.
@@ -67,7 +67,6 @@ class Pemesanan extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
     	return $this->belongsTo('App\Models\Pelanggan');
     }
-
     /**
      * Pemesanan belongs to Gudang.
      *

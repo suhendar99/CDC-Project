@@ -63,14 +63,18 @@
                                             Pesanan Diproses
                                         </span>
                                         @elseif($d->status == 2)
-                                        <span class="badge rounded-pill bg-my-primary p-2">
-                                            Pesanan Sedang Dikemas
+                                        <span class="badge rounded-pill bg-my-warning p-2">
+                                            Pembayaran Diterima
                                         </span>
                                         @elseif($d->status == 3)
                                         <span class="badge rounded-pill bg-my-primary p-2">
-                                            Pesanan Dikirim
+                                            Pesanan Sedang Dikemas
                                         </span>
                                         @elseif($d->status == 4)
+                                        <span class="badge rounded-pill bg-my-primary p-2">
+                                            Pesanan Dikirim
+                                        </span>
+                                        @elseif($d->status == 5)
                                         <span class="badge rounded-pill bg-my-success">
                                             Pesanan Diterima
                                         </span>
@@ -105,8 +109,8 @@
                                 </div>
                                 <div class="col-md-4 d-flex valign-center justify-content-end">
                                     <a href="
-                                        {{($d->status == 3) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
-                                    " class="btn btn-primary btn-sm {{($d->status == 3) ? '' : 'disabled'}}" title="Klik Jika Pesanan Anda Sudah Diterima">
+                                        {{($d->status == 4) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
+                                    " class="btn btn-primary btn-sm {{($d->status == 4) ? '' : 'disabled'}}" title="Klik Jika Pesanan Anda Sudah Diterima">
                                         Konfirmasi Penerimaan
                                     </a>
                                 </div>
