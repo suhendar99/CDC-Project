@@ -6,106 +6,104 @@
 @extends('layouts.dashboard.header')
 
 @section('content')
-<div id="detail">
-	<div class="row">
-		<div class="col-md-12">
-            <div class="card card-block d-flex">
-                <div class="card-body ">
-					<div class="row">
-					    <div class="col-md-4 garis">
-					        {{-- @if ($item->barang->foto != null) --}}
-					            {{-- <div class="card shadow card-image">
-					                <img src="#" width="100" height="100" alt="Image-Penerimaan-Barang" class="img-border">
-					            </div> --}}
-					        {{-- @else --}}
-					            <div class="card shadow card-image">
-					                <center><i class="material-icons icon-large">broken_image</i></center>
-					            </div>
-					        {{-- @endif --}}
-					    </div>
-					    <div class="col-md-1" style="margin-right: -53px;"></div>
-					    <div class="col-md-7">
-					        <div class="row">
-					            <div class="col-md-12">
-					                <small class="font-weight-bold">Toko Ahmad</small>
-					            </div>
-					            <div class="col-md-12" style="border-bottom: 1px solid grey; border-left-width: 10px;">
-					                <p class="h1">Beras Merah</p>
-					            </div>
-					            <div class="col-md-12 mt-4" style="border-bottom: 1px solid grey; border-left-width: 10px;">
-					                <div class="row p-2">
-					                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
-					                        <div class="h6">Harga :</div>
-					                    </div>
-					                    <div class="col-md-9 valign-center">
-					                        <p class="font-weight-bold h5" style="color: red;">Rp 20.000</p>
-					                    </div>
-					                </div>
-					            </div>
-					            <div class="col-md-12 mt-4" style="border-bottom: 1px solid grey; border-left-width: 10px;">
-					                <div class="row p-2">
-					                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
-					                        <div class="h6">Info Produk :</div>
-					                    </div>
-					                    <div class="col-md-9 valign-center">
-					                        <div class="row">
-					                            <div class="col-md-4">
-					                                <div class="row">
-					                                    <div class="col-md-12">Stok</div>
-					                                    <div class="col-md-12">200 Pcs</div>
-					                                </div>
-					                            </div>
-					                            <div class="col-md-4">
-					                                <div class="row">
-					                                    <div class="col-md-12">Berat</div>
-					                                    <div class="col-md-12">200 Gr</div>
-					                                </div>
-					                            </div>
-					                            <div class="col-md-4">
-					                                <div class="row">
-					                                    <div class="col-md-12">Kondisi</div>
-					                                    <div class="col-md-12">Baru</div>
-					                                </div>
-					                            </div>
-					                        </div>
-					                    </div>
-					                </div>
-					            </div>
-					            <div class="col-md-12 mt-4">
-					                <div class="row p-2">
-					                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
-					                        <div class="h6">Ongkos Kirim :</div>
-					                    </div>
-					                    <div class="col-md-9 valign-center">
-					                        <div class="row">
-					                            <div class="col-md-6">
-					                                <div class="float-left">
-					                                    <div class="row">
-					                                        <div class="col-md-12">
-					                                            Dari Bandung
-					                                        </div>
-					                                    </div>
-					                                </div>
-					                            </div>
-					                            <div class="col-md-6">
-					                                <div class="float-right">
-					                                    <div class="row">
-					                                        <div class="col-md-12">
-					                                            <small>Mulai dari : Rp 20.000</small>
-					                                        </div>
-					                                    </div>
-					                                </div>
-					                            </div>
-					                        </div>
-					                    </div>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
-					</div>
-                </div>
-            </div>
-		</div>
+<div class="row">
+	<div class="col-md-12">
+          <div class="card card-block d-flex">
+              <div class="card-body ">
+				<div class="row">
+				    <div class="col-md-4 garis">
+				        {{-- @if ($item->barang->foto != null) --}}
+				            {{-- <div class="card shadow card-image">
+				                <img src="#" width="100" height="100" alt="Image-Penerimaan-Barang" class="img-border">
+				            </div> --}}
+				        {{-- @else --}}
+				            <div class="card shadow card-image">
+				                <center><i class="material-icons icon-large">broken_image</i></center>
+				            </div>
+				        {{-- @endif --}}
+				    </div>
+				    <div class="col-md-1" style="margin-right: -53px;"></div>
+				    <div class="col-md-7">
+				        <div class="row">
+				            <div class="col-md-12">
+				                <small class="font-weight-bold">Toko Ahmad</small>
+				            </div>
+				            <div class="col-md-12" style="border-bottom: 1px solid grey; border-left-width: 10px;">
+				                <p class="h1">Beras Merah</p>
+				            </div>
+				            <div class="col-md-12 mt-4" style="border-bottom: 1px solid grey; border-left-width: 10px;">
+				                <div class="row p-2">
+				                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
+				                        <div class="h6">Harga :</div>
+				                    </div>
+				                    <div class="col-md-9 valign-center">
+				                        <p class="font-weight-bold h5" style="color: red;">Rp 20.000</p>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="col-md-12 mt-4" style="border-bottom: 1px solid grey; border-left-width: 10px;">
+				                <div class="row p-2">
+				                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
+				                        <div class="h6">Info Produk :</div>
+				                    </div>
+				                    <div class="col-md-9 valign-center">
+				                        <div class="row">
+				                            <div class="col-md-4">
+				                                <div class="row">
+				                                    <div class="col-md-12">Stok</div>
+				                                    <div class="col-md-12">200 Pcs</div>
+				                                </div>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <div class="row">
+				                                    <div class="col-md-12">Berat</div>
+				                                    <div class="col-md-12">200 Gr</div>
+				                                </div>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <div class="row">
+				                                    <div class="col-md-12">Kondisi</div>
+				                                    <div class="col-md-12">Baru</div>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="col-md-12 mt-4">
+				                <div class="row p-2">
+				                    <div class="col-md-3 valign-center" style="opacity: 0.3;">
+				                        <div class="h6">Ongkos Kirim :</div>
+				                    </div>
+				                    <div class="col-md-9 valign-center">
+				                        <div class="row">
+				                            <div class="col-md-6">
+				                                <div class="float-left">
+				                                    <div class="row">
+				                                        <div class="col-md-12">
+				                                            Dari Bandung
+				                                        </div>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="col-md-6">
+				                                <div class="float-right">
+				                                    <div class="row">
+				                                        <div class="col-md-12">
+				                                            <small>Mulai dari : Rp 20.000</small>
+				                                        </div>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+              </div>
+          </div>
 	</div>
 </div>
 @endsection

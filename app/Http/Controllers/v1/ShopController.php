@@ -232,7 +232,7 @@ class ShopController extends Controller
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
 
             if ($request->pembayaran == 'later') {
@@ -252,7 +252,7 @@ class ShopController extends Controller
                         'barang_id' => $pemesanan->id,
                         'tanggal'=> Carbon::now(),
                         'nama_pembeli' => Auth::user()->pelanggan->nama,
-                        'hutang' => $harga,
+                        'hutang' => $request->harga,
                     ]);
                 }
             }
@@ -331,10 +331,9 @@ class ShopController extends Controller
 
             $harga = $request->harga * $request->jumlah;
 
-            $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+            $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
                 'kode' => $kode_faker,
                 'nomor_pemesanan' => $kode,
-                'nama_pemesan' => $request->nama_pemesan,
                 'tanggal_pemesanan' => now('Asia/Jakarta')
             ]));
 
@@ -349,7 +348,7 @@ class ShopController extends Controller
                 'jumlah_barang' => $request->jumlah,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
             $stok = $store->jumlah - $barangPesanan->jumlah_barang;
             $store->update([
@@ -363,7 +362,7 @@ class ShopController extends Controller
                     'barang_id' => $pemesanan->id,
                     'tanggal'=> Carbon::now(),
                     'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $harga,
+                    'hutang' => $request->harga,
                 ]);
             }
         } else{

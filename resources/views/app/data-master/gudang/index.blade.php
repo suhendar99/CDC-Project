@@ -32,7 +32,7 @@
                                 <form action="{{route('gudang.search')}}" method="post" style="width: 100%;">
                                     @csrf
                                     <div class="input-group">
-                                        <input type="text" name="nama" class=" form-control" placeholder=" Cari gudang ..." aria-label="Cari gudang..." aria-describedby="basic-addon1">
+                                        <input type="text" name="nama" class=" form-control" placeholder=" Cari gudang Retail..." aria-label="Cari gudang..." aria-describedby="basic-addon1">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-outline-secondary">search</button>
                                         </div>
@@ -74,7 +74,7 @@
                                         } else {
                                             echo "";
                                         }
-                                        
+
                                     @endphp
                                 </div>
                                 <div class="col-md-4">
@@ -98,6 +98,7 @@
                             </div>
                         </div>
                         <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Nama Pemilik: {{ $gudang->pemilik }}</li>
                             <li class="list-group-item">Jumlah Rak: {{ $gudang->rak_count }} <a href="{{ route('rak.index', $gudang->id) }}" class="text-primary">Detail</a></li>
                             <li class="list-group-item">Hari Kerja: {{ $gudang->hari }}</li>
                             <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
@@ -260,7 +261,7 @@
                     let id = $(this).data('gudangId');
                     let status = $(this).data('status');
                     $(this).text('Loading');
-                    
+
                     $.ajax({
                         url: "/api/v1/gudang/"+id+"/status",
                         method: "GET",

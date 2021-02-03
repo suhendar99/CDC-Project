@@ -23,9 +23,6 @@ class ReturController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($data = Barang::with('retur')
-        //     ->orderBy('id', 'desc')
-        //     ->get());
         if($request->ajax()){
             $data = Retur::with('barang', 'kwitansi.pemesanan')
             ->orderBy('id', 'desc')

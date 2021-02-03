@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Storage Masuk';
+        $pageTitle = 'Buat Data Penyimpanan Masuk';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,15 +15,12 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Storage Masuk</a>
+            <a href="#" class="text-14">Data Penyimpanan Masuk</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Buat Data</a>
           </div>
         </div>
     </div>
-    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
-        @include('layouts.dashboard.search')
-    </div> --}}
 </div>
 <div class="container">
     <div class="row h-100">
@@ -90,7 +87,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
                                             @foreach (\App\Models\Barang::get() as $barang)
@@ -104,7 +101,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                             <div class="input-group-append">
@@ -118,7 +115,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label>Harga Beli <small class="text-success">*Harus diisi</small></label>
+                                        <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>

@@ -25,9 +25,9 @@
           </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 valign-center py-2">
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
         @include('layouts.dashboard.search')
-    </div>
+    </div> --}}
 </div>
 <div class="row my-2">
     <div class="col-md-3 col-sm-6">
@@ -110,7 +110,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-12" style="font-size: .7rem;">
-                  <span style="font-size: 1rem">Log Pemesanan</span><br><hr class="mb-2">
+                  <span style="font-size: 1rem">Log Transaksi </span><br><hr class="mb-2">
                   <table class="table table-striped">
                     <thead>
                       <tr>
@@ -156,6 +156,7 @@
         <div class="valign-center">
           <i class="material-icons md-36 text-my-warning">house_siding</i>
           <span class="text-18" id="titleGudang"></span>
+          <a id="close" style="cursor: pointer"><i class="fas fa-times"></i></a>
         </div>
         <hr class="p-0">
         <center>
@@ -189,6 +190,13 @@
           <div class="col-md-7">
             <div class="float-left">:</div>
             <div class="float-left ml-2" id="namaGudang"></div>
+          </div>
+          <div class="col-md-5">
+            Nama Pemilik Gudang
+          </div>
+          <div class="col-md-7">
+            <div class="float-left">:</div>
+            <div class="float-left ml-2" id="namaPemilik"></div>
           </div>
           <div class="col-md-5">
             Kontak gudang
@@ -336,6 +344,13 @@
 
 {{-- Detail Gudang Section --}}
 <script>
+    $('#close').click(function (e) {
+        e.preventDefault();
+        $('#mapMap').addClass('col-md-8');
+        $('#mapMap').removeClass('col-md-4');
+        $('#show').addClass('d-none');
+        $('#show').removeClass('col-md-4');
+    });
     function detailGudang(id) {
         $('#mapMap').removeClass('col-md-8');
         $('#mapMap').addClass('col-md-4');
@@ -347,6 +362,7 @@
         $('#status').text(`Tunggu.......`)
         $('#statusPenuh').text('Tunggu.......');
         $('#namaGudang').text(`Tunggu.......`);
+        $('#namaPemilik').text(`Tunggu.......`);
         $('#telepon').text(`Tunggu.......`);
         $('#hariKerja').text(`Tunggu.......`);
         $('#jamKerja').text(`Tunggu.......`);
@@ -375,6 +391,7 @@
                       $('#statusPenuh').text('Masih ada ruang')
                     }
                     $('#namaGudang').text(b.nama);
+                    $('#namaPemilik').text(b.pemilik);
                     $('#telepon').text(b.kontak);
                     $('#hariKerja').text(b.hari);
                     $('#jamKerja').text(b.jam_buka+` - `+b.jam_tutup);

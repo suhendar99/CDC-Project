@@ -140,7 +140,7 @@
                                                 </span>
                                             </div>
                                             <input class="form-control @error('profil_lembaga') is-invalid @enderror" type="text" placeholder="Nama profil lembaga... (Maks. 6 karakter)" name="profil_lembaga"></input>
-                                            <input class="form-control @error('tanggal_surat') is-invalid @enderror" type="date" placeholder="Masukan Tanggal..." name="tanggal_surat"></input>
+                                            <input class="form-control @error('tanggal_surat') is-invalid @enderror" type="text" placeholder="Masukan Tanggal..." name="tanggal_surat" value="{{date('Ymd')}}" readonly></input>
                                         </div>
                                         @error('profil_lembaga')
                                             <span class="invalid-feedback" role="alert">
@@ -253,7 +253,7 @@ function nextPrev(n) {
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
   // if you have reached the end of the form... :
-  alert(currentTab);
+  // alert(currentTab);
   if (currentTab >= x.length) {
     //...the form gets submitted:
     // $("#nextBtn").attr('onclick','submitForm()');
@@ -279,7 +279,7 @@ function validateForm() {
         if (z[j].value === "") {
           // add an "invalid" class to the field:
           // z[j].className += "";
-          alert("Mohon pilih data terlebih dahulu.");
+          // alert("Mohon pilih data terlebih dahulu.");
           // and set the current valid status to false:
           valid = false;
         }

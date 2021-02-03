@@ -74,6 +74,9 @@ class StorageInController extends Controller
         ->where('status', 1)
         ->get();
 
+        if($gudang->count() < 1){
+            return back()->with('failed','Mohon Daftarkan/Aktifkan Gudang Anda Terlebih Dahulu!');
+        }
         return view('app.data-master.storage.in.create', compact('gudang'));
     }
 

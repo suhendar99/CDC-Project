@@ -93,7 +93,7 @@ class DashboardController extends Controller
             //     Auth::logout();
             //     return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             // }
-            return view($this->pathBank.'index');
+            return redirect('shop');
     	}elseif ($auth->pengurus_gudang_id != null) {
             // if ($auth->pengurusGudang->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));

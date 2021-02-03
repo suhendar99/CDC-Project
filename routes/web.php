@@ -74,7 +74,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Bank
         Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
         Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
-        // Update Password
+
+    // Pembeli
+    Route::get('pengaturan-akun-pembeli','PengaturanAkunController@showFormUpdateAkunPembeli')->name('setPembeli.show');
+    Route::post('pengaturan-akun-pembeli','PengaturanAkunController@updateAkunPembeli')->name('setPembeli.action');
+    // Update Password
     Route::get('pengaturan-password-akun','PengaturanAkunController@updatePassword')->name('setPass.show');
     Route::post('pengaturan-passwords-akun','PengaturanAkunController@actionUpdatePassword')->name('setPass.action');
     // End Pengaturan Akun User
@@ -139,9 +143,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
         Route::resource('returMasukPembeli', 'ReturMasukPembeliController');
+        // Retur Keluar
+        Route::resource('returKeluarPelanggan', 'ReturKeluarPelangganController');
+        // Piutang
+        Route::resource('piutangPelanggan', 'PiutangPelangganController');
+        Route::get('pelangganPiutang/excel', 'PiutangPelangganController@exportExcel')->name('pelangganPiutang.excel');
+        Route::get('pelangganPiutang/pdf', 'PiutangPelangganController@exportPdf')->name('pelangganPiutang.pdf');
         // Pemesanan
-        Route::get('pemesananMasukPembeli','PemesananController@pemesananMasukPembeli')->name('pemesananMasukPembeli.index');
-        Route::resource('pemesananKeluarPembeli', 'PemesananKeluarPembeliController');
+        Route::get('pemesananMasukWarung','PemesananController@pemesananMasukPembeli')->name('pemesananMasukWarung.index');
+        Route::resource('pemesananKeluarWarung', 'PemesananKeluarPembeliController');
         Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
@@ -152,6 +162,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('print/{id}', 'PoController@print')->name('po.print');
 
     // Gudang Bulky
+    Route::group(['middleware' => ['pembeli']], function() {
+        Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
+
+        Route::get('transaksi/pembeli/riwayat/konfirmasi/{id}','TransaksiPembeliController@konfirmasi')->name('konfirmasi.terima.pembeli');
+    });
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
             // Gudang
@@ -309,8 +324,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('piutangIn', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
         // PDF & EXCEL Piutang In
-        Route::get('piutangIn/pdf','PiutangController@exportPdf')->name('piutangIn.pdf');
-        Route::get('piutangIn/excel','PiutangController@exportExcel')->name('piutangIn.excel');
+        Route::get('RetailPiutangMasuk/pdf','PiutangController@exportPdf')->name('RetailPiutangMasuk.pdf');
+        Route::get('RetailPiutangMasuk/excel','PiutangController@exportExcel')->name('RetailPiutangMasuk.excel');
         // PDF & EXCEL Piutang Out
         Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
         Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');

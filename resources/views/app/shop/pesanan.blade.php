@@ -1,20 +1,22 @@
  @php
     $icon = 'receipt_long';
     $pageTitle = 'Pemesanan';
-    $nosidebar = true;
+    // $nosidebar = true;
+    $shop = true;
+    $detail = true;
     $biayaAdmin = $biaya->biaya_admin;
     if (Auth::user()->pembeli_id != null) {
-        $hargaBarangPembeli = $data->harga_barang;
-        $pajakPembeli = $biaya->pajak * $hargaBarangPembeli/100;
-        $totalBiayaPembeli = $hargaBarangPembeli - $pajakPembeli + $biayaAdmin;
+        $hargaBarang = $data->harga_barang;
+        // $pajakPembeli = $biaya->pajak * $hargaBarangPembeli/100;
+        $totalBiayaPembeli = $hargaBarang + $biayaAdmin;
     } elseif (Auth::user()->pelanggan_id != null) {
         $hargaBarang = $data->harga_barang;
-        $pajak = $biaya->pajak * $hargaBarang/100;
-        $totalBiaya = $hargaBarang - $pajak + $biayaAdmin;
+        // $pajak = $biaya->pajak * $hargaBarang/100;
+        $totalBiaya = $hargaBarang + $biayaAdmin;
     }else{
         $hargaBarang = $data->harga_barang;
-        $pajak = $biaya->pajak * $hargaBarang/100;
-        $totalBiaya = $hargaBarang - $pajak + $biayaAdmin;
+        // $pajak = $biaya->pajak * $hargaBarang/100;
+        $totalBiaya = $hargaBarang + $biayaAdmin;
     }
 @endphp
 
@@ -37,7 +39,7 @@
             </div>
         </div>
     </div>
-@if (Auth::user()->pelanggan_id != null)
+    @if (Auth::user()->pelanggan_id != null)
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post">
@@ -46,17 +48,20 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Pemesanan Barang</h4>
+                                @if (Auth::user()->keanggotaan == 1)
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pelanggan->nama}} Sebagai Anggota {{Auth::user()->koperasi->nama_koperasi}}</h4>
+                                @else
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pelanggan->nama}}</h4>
+                                @endif
                             </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->gudang->pemilik}}">
-                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pelanggan->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
-                            <input type="hidden" name="harga" id="harga" value="{{$totalBiaya}}">
+                            <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->barang->kode_barang}}">
-                            <input type="hidden" name="pajak" value="{{$pajak}}">
+                            {{-- <input type="hidden" name="pajak" value="{{$pajak}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="card-body">
                                 <div class="row">
@@ -82,11 +87,11 @@
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->gudang->nama}}</h6></div>
                                     </div>
                                     <div class="col-md-4 col-6">
-                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajak,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
+                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiaya,0,',','.')}} </h6></div>
+                                        <div class="float-left ml-2" id="totBiaya">Rp </div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -94,7 +99,7 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" min="0" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -136,10 +141,21 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nama Pembeli <small class="text-success">*Harus diisi</small></label>
+                                            <input id="nama_pemesan" type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ Auth::user()->pelanggan->nama }}" >
+                                            @error('nama_pemesan')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
-                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ old('telepon') }}" >
+                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pelanggan->telepon }}" >
                                             @error('telepon')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -147,10 +163,10 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
-                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ old('alamat_pemesan') }}"></textarea>
+                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pelanggan->alamat }}">{{ Auth::user()->pelanggan->alamat }}</textarea>
                                             @error('alamat_pemesan')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -172,7 +188,7 @@
             </form>
         </div>
     </div>
-@elseif(Auth::user()->pembeli_id != null)
+    @elseif(Auth::user()->pembeli_id != null)
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post">
@@ -180,18 +196,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Pemesanan Barang</h4>
-                            </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->pelanggan->nama}}">
-                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pembeli->nama}}">
                             <input type="hidden" name="pembeli_id" value="{{Auth::user()->pembeli_id}}">
                             <input type="hidden" name="pelanggan_id" value="{{$data->pelanggan->id}}">
                             <input type="hidden" name="harga" id="harga" value="{{$totalBiayaPembeli}}">
                             <input type="hidden" name="nama_barang" value="{{$data->storageOut->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->storageOut->barang->kode_barang}}">
-                            <input type="hidden" name="pajak" value="{{$pajakPembeli}}">
+                            {{-- <input type="hidden" name="pajak" value="{{$pajakPembeli}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="card-body">
                                 <div class="row">
@@ -217,11 +229,11 @@
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->pelanggan->nama}}</h6></div>
                                     </div>
                                     <div class="col-md-4 col-6">
-                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajakPembeli,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
+                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
                                     <div class="col-md-8 col-6">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiayaPembeli,0,',','.')}} </h6></div>
+                                        <div class="float-left ml-2" id="totBiaya"><h6>Rp.  </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -229,7 +241,7 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" min="0" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -271,10 +283,10 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-7">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
-                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ old('telepon') }}" >
+                                            <label>Nama Pemesan <small class="text-success">*Harus diisi</small></label>
+                                            <input id="nama_pemesan" type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ Auth::user()->pembeli->nama }}" >
                                             @error('telepon')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -282,10 +294,21 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
+                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pembeli->telepon }}" >
+                                            @error('telepon')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
-                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ old('alamat_pemesan') }}"></textarea>
+                                            <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pembeli->alamat }}">{{ Auth::user()->pembeli->alamat }}</textarea>
                                             @error('alamat_pemesan')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -307,9 +330,7 @@
             </form>
         </div>
     </div>
-</div>
-@else
-<div class="container">
+    @else
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post" id="form-action">
@@ -317,18 +338,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Pemesanan Barang</h4>
-                            </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->bulky->pemilik}}">
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudang->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_id}}">
                             <input type="hidden" name="bulky_id" value="{{$data->bulky->id}}">
-                            <input type="hidden" name="harga" id="harga" value="{{$totalBiaya}}">
+                            <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->barang->kode_barang}}">
-                            <input type="hidden" name="pajak" value="{{$pajak}}">
+                            {{-- <input type="hidden" name="pajak" value="{{$pajak}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="container-fluid mt-3">
                                 <div class="row">
@@ -354,11 +372,11 @@
                                         <div class="float-left ml-2" id="penjual"><h6>{{$data->bulky->nama}}</h6></div>
                                     </div>
                                     <div class="col-md-4">
-                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan pajak = Rp {{number_format($pajak,0,',','.')}} dan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
+                                        <span>Total Biaya Pemesanan <br /> <small class="text-primary"> * dengan biaya admin = Rp {{number_format($biayaAdmin,0,',','.')}}</small></span>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="float-left">:</div>
-                                        <div class="float-left ml-2" id="penjual"><h6>Rp. {{ number_format($totalBiaya,0,',','.')}} </h6></div>
+                                        <div class="float-left ml-2" id="totBiaya"><hoo6>Rp.  </h6></div>
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -366,7 +384,7 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -411,7 +429,7 @@
                                     <div class="col-md-7">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
-                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ old('telepon') }}" >
+                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pengurus_gudang->telepon }}" >
                                             @error('telepon')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
@@ -449,41 +467,40 @@
             </form>
         </div>
     </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Harap Pilih Gudang Anda</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-              <div class="col-12">
-                  <div class="form-group">
-                      {{-- <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label> --}}
-                    <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" id="select-gudang">
-                        <option value="">-- Pilih Gudang --</option>
-                    </select>
-                    @error('metode_pembayaran')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Harap Pilih Gudang Anda</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                          {{-- <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label> --}}
+                        <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" id="select-gudang">
+                            <option value="">-- Pilih Gudang --</option>
+                        </select>
+                        @error('metode_pembayaran')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                      </div>
                   </div>
               </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-</div>
-@endif
+    @endif
 </div>
 @endsection
 @push('script')
@@ -501,6 +518,16 @@
             $('#pilihMetode').addClass('d-none')
         }
     })
+    // var jumlah = ;
+    var biayaAdmin = '{{$biayaAdmin}}';
+    var hargaTotal = '{{$hargaBarang}}';
+    $('#jumlah').on('keyup', function () {
+        // var biayaAdm = biayaAdmin * hargaTotal /100;
+        var total = parseInt(biayaAdmin)+parseInt(hargaTotal);
+        var tot = $('#jumlah').val() * total;
+        $('#totBiaya').text('Rp. '+(tot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+        $('#harga').val(tot);
+    });
 
     function barang(id){
         $('#select-gudang').html(``);
@@ -512,7 +539,7 @@
             processData: false,
             success: (response)=>{
                 console.log(response.data)
-                
+
                 $('#select-gudang').append(`<option value="">-- Pilih Gudang --</option>`);
 
                 $.each(response.data, function(index, val) {

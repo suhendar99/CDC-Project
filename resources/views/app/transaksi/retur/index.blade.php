@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('returIn.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a>
+                                {{-- <a href="{{route('returIn.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a> --}}
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                 <th>Barang</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -166,7 +166,7 @@
                 },
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
