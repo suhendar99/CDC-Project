@@ -232,7 +232,7 @@ class ShopController extends Controller
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
 
             if ($request->pembayaran == 'later') {
@@ -252,7 +252,7 @@ class ShopController extends Controller
                         'barang_id' => $pemesanan->id,
                         'tanggal'=> Carbon::now(),
                         'nama_pembeli' => Auth::user()->pelanggan->nama,
-                        'hutang' => $harga,
+                        'hutang' => $request->harga,
                     ]);
                 }
             }
@@ -349,7 +349,7 @@ class ShopController extends Controller
                 'jumlah_barang' => $request->jumlah,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
             $stok = $store->jumlah - $barangPesanan->jumlah_barang;
             $store->update([
@@ -363,7 +363,7 @@ class ShopController extends Controller
                     'barang_id' => $pemesanan->id,
                     'tanggal'=> Carbon::now(),
                     'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $harga,
+                    'hutang' => $request->harga,
                 ]);
             }
         } else{

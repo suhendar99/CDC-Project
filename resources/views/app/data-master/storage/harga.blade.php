@@ -51,9 +51,9 @@
                                 <tr>
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
-                                    <th>Harga Beli</th>
+                                    <th>Harga Dasar</th>
                                     <th>Harga Per-{{ $base_harga->satuan }}</th>
-                                    <th>Ambil Untung</th>
+                                    <th>Keuntungan</th>
                                     <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
                                 </tr>
                             </thead>
@@ -65,7 +65,7 @@
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend">
+                                            <input type="number" min="1" max="100" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">%</span>
                                             </div>

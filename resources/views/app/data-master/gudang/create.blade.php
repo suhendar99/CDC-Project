@@ -242,7 +242,7 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Nama Pemilik Gudang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ old('pemilik') }}" placeholder="Masukan Nama Pemilik Gudang">
+                                                <input type="text" min="1" class="form-control @error('pemilik') is-invalid @enderror" name="pemilik" value="{{ Auth::user()->pengurusGudang->nama }}" placeholder="Masukan Nama Pemilik Gudang">
                                                 @error('pemilik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

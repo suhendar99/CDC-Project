@@ -38,28 +38,28 @@ class PiutangPelangganController extends Controller
         }
         return view($this->path.'index');
     }
-    // public function exportPdf()
-    // {
-    //     $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
-    //     if ($data->isEmpty()) {
-    //         return back()->with('failed','Data Kosong !');
-    //     } else {
-    //         $pdf = PDF::loadview('app.data-master.piutang.pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-    //         set_time_limit(300);
-    //         return $pdf->stream('Data-Piutang-'.Carbon::now());
-    //         return view('app.data-master.piutang.pdf',compact('data'));
-    //     }
-    // }
+    public function exportPdf()
+    {
+        $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
+        if ($data->isEmpty()) {
+            return back()->with('failed','Data Kosong !');
+        } else {
+            $pdf = PDF::loadview('app.data-master.piutang.pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+            set_time_limit(300);
+            return $pdf->stream('Data-Piutang-'.Carbon::now());
+            return view('app.data-master.piutang.pdf',compact('data'));
+        }
+    }
 
-    // public function exportExcel()
-    // {
-    //     $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
-    //     if($data->count() < 1){
-    //         return back()->with('failed','Data Kosong!');
-    //     }
-    //     set_time_limit(99999);
-    //     return (new ExportPiutang($data))->download('Data-Piutang-'.Carbon::now().'.xlsx');
-    // }
+    public function exportExcel()
+    {
+        $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportPiutang($data))->download('Data-Piutang-'.Carbon::now().'.xlsx');
+    }
 
     /**
      * Show the form for creating a new resource.
