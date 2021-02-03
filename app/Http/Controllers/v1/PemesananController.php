@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
+use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
 use App\Models\PengurusGudang;
 use App\Models\Piutang;
@@ -71,6 +72,17 @@ class PemesananController extends Controller
                 ->make(true);
         }
         return view('app.data-master.pemesanan.index');
+    }
+
+    public function terima($id)
+    {
+        PemesananBulky::find($id)->update([
+            'status' => 3
+        ]);
+
+        return response()->json([
+            'data' => "Berhasil"
+        ],200);
     }
 
     function getPesanan($id){

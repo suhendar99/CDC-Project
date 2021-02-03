@@ -50,7 +50,7 @@
                                 <th>Nomor Pemesanan</th>
                                 <th>Nama Pemesan</th>
                                 <th>Jumlah Barang</th>
-                                <th>Status Pembayaran</th>
+                                <th>Status Pemesanan</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -97,14 +97,6 @@
                           <td id="tglPemesan"></td>
                         </tr>
                         <tr>
-                          <th scope="row">Metode Pembayaran</th>
-                          <td id="metodeBayar"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Status Pembayaran</th>
-                          <td id="statusBayar"></td>
-                        </tr>
-                        <tr>
                           <th scope="row">Alamat Pemesan</th>
                           <td id="alamatPemesan"></td>
                         </tr>
@@ -125,6 +117,18 @@
                         <tr>
                           <th scope="row">Penerima Pesanan</th>
                           <td id="penerima"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Status Pemesanan</th>
+                          <td id="statusPesan"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Status Pembayaran</th>
+                          <td id="statusBayar"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Metode Pembayaran</th>
+                          <td id="metodeBayar"></td>
                         </tr>
                       </tbody>
                   </table>
@@ -153,6 +157,43 @@
       </div>
     </div>
 </div>
+
+<!-- Modal Bukti Pembayaran -->
+<div class="modal fade" id="modalValidasi" tabindex="-1" aria-labelledby="modalNewValidate" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNewValidate">Detail Pemesanan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data" id="form-bukti">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label>Bukti Pembayaran <small class="text-success">*Harus diisi</small></label>
+                        <input type="file" id="foto_bukti" class="form-control-file @error('foto_bukti') is-invalid @enderror" name="foto_bukti">
+                        @error('foto_bukti')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success btn-sm" >Submit</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+                </form>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -172,9 +213,13 @@
                 }, name: 'jumlagh_barang'},
                 {data : function(data, a, b, c) {
                     if (data.status == 0) {
-                        return "Pesanan Belum dibayar";
-                    } else {
-                        return "Sudah dibayar";
+                        return `<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalValidasi" data-id="" onclick="bukti(${data.id})" style="cursor: pointer;" title="Klik jika pemesan sudah membayar.">Validasi/Pembayaran</a>`;
+                    } else if(data.status == 1) {
+                        return `<a class="btn btn-info btn-sm col-12" data-toggle="modal" data-id="" onclick="proses(${data.id})" style="cursor: pointer;" title="Klik untuk membuat data barang keluar.">Pengemasan</a>`;
+                    }else if(data.status == 2){
+                        return `<button type="button" class="btn btn-info btn-sm col-12" data-id="" title="Pesanan sedang dalam pengiriman">Dikirim</button>`;
+                    }else if(data.status == 3){
+                        return `<button type="button" class="btn btn-success btn-sm col-12" data-id="" title="Pesanan Diterima Pemesan">Pesanan Diterima</button>`;
                     }
                 }, name: 'status_pembayaran'},
                 {data : 'action', name: 'action'}
@@ -207,6 +252,14 @@
             });
         };
 
+        function bukti(id) {
+            $('#form-bukti').attr('action', '/v1/bulky/validate/bukti/'+id);
+        }
+
+        function proses(id) {
+            window.location.replace('/v1/bulky/storage/keluar/create?pemesanan='+id);
+        }
+
         function detail(id){
             $('#noPemesan').text('LOADING...')
             $('#namaPemesan').text('LOADING...')
@@ -218,6 +271,8 @@
             $('#telepon').text('LOADING...')
             $('#bulky').text('LOADING...')
             $('#penerima').text('LOADING...')
+
+            $('#barangData').html(`<td colspan="5">LOADING...</td>`)
 
             $.ajax({
                 url: "/api/v1/bulky/detail/pemesanan/"+id,
@@ -235,10 +290,20 @@
                     $('#tglPemesan').text(pemesanan.tanggal_pemesanan)
                     $('#metodeBayar').text(pemesanan.metode_pembayaran)
                     $('#statusBayar').text((pemesanan.status == 0) ? 'Belum Dibayar' : 'Sudah Dibayar')
+                    if (pemesanan.status == 0) {
+                        $('#statusPesan').text('Menunggu Pembayaran')
+                    } else if(pemesanan.status == 1) {
+                        $('#statusPesan').text('Proses Pengemasan')
+                    } else if(pemesanan.status == 2) {
+                        $('#statusPesan').text('Sedang Dikirim')
+                    }
                     $('#alamatPemesan').text(pemesanan.alamat_pemesan)
                     $('#telepon').text(pemesanan.telepon)
                     $('#bulky').text(pemesanan.bulky.nama)
                     $('#penerima').text(pemesanan.penerima_po)
+
+
+                    $('#barangData').html(``)
 
                     $('#barangData').append(`
                         <td>${pemesanan.barang_pesanan_bulky.barang_kode}</td>
