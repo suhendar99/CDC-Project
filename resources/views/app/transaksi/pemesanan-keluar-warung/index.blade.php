@@ -30,11 +30,27 @@
                     <div class="card">
                         <div class="card-body">
 
-                            @if($d->storageOut == null)
+                            @if($d->status == 0)
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <h6 class="text-danger">
+                                        Pesan Dengan Rincian : 
+                                        @foreach($d->barangPesanan as $b)
+                                        {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
+                                        @endforeach
+                                        , Ditolak Oleh Penjual
+                                    </h6>
+                                </div>
+                            </div>
+                            @elseif($d->storageOut == null)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
-                                        Pesanan dengan Kode : {{$d->kode}}, Belum Diproses Penjual
+                                        Pesanan dengan Rincian : 
+                                        @foreach($d->barangPesanan as $b)
+                                        {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
+                                        @endforeach
+                                        , Belum Diproses Penjual
                                     </span>
                                     @if($d->foto_bukti == null)
                                     <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
@@ -144,8 +160,8 @@
           <div class="row">
             <div class="col-12">
                 <div class="form-group">
-                    <label>Bukti Pembayaran</label>
-                    <input type="file" name="foto_bukti" class="form-control">
+                    <label>Bukti Pembayaran</label><br>
+                    <input type="file" name="foto_bukti" class="">
                 </div>
             </div>
           </div>

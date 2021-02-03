@@ -50,7 +50,7 @@
                                 <th>No Pemesanan (Invoice)</th>
                                 <th>Nama Pemesan</th>
                                 <th>Jumlah Barang</th>
-                                <th>Status Pembayaran</th>
+                                <th>Metode Pembayaran</th>
                                 <th>Status Pemesanan</th>
                                 <th>Action</th>
                             </tr>

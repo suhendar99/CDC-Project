@@ -1,6 +1,7 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
+        // dd($setted);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -55,10 +56,14 @@
                                     <div class="form-group">
                                         <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectSatuan" class="form-control @error('pemesanan_id') is-invalid @enderror" name="pemesanan_id" placeholder="Enter pemesanan_id">
+                                            @if($setted == true)
+                                            <option value="{{$pemesanan->id}}" data-kode="{{$pemesanan->nomor_pemesanan}}" @if($poci != null && $pesan->id == $poci) selected @endif>Pemesan: {{ $pemesanan->nama_pemesan }} | Kode: {{ $pemesanan->nomor_pemesanan }}</option>
+                                            @else
                                             <option value="">--Pilih Pesanan--</option>
                                             @foreach($pemesanan as $pesan)
                                             <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}" @if($poci != null && $pesan->id == $poci) selected @endif>Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
                                             @endforeach
+                                            @endif
                                         </select>
                                         @error('pemesanan_id')
                                             <span class="invalid-feedback" role="alert">
@@ -154,23 +159,6 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                {{-- <div class="tab" data-keterangan="Pilih Gudang Retail">
-                                    <div class="form-group">
-                                        <label>Gudang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="gudang" class="form-control">
-                                            <option value="">--Pilih Gudang--</option>
-                                            @foreach ($gudang as $list)
-                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('gudang_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div> --}}
                                 <div style="overflow:auto;">
                                   <div  style="float:right;">
                                     <button type="button" id="prevBtn" onclick="nextPrev(-1)" class="btn btn-danger btn-sm">Previous</button>
@@ -189,13 +177,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="row">
-                              <div class="col-md-12">
-                                <div class="float-right" id="btn-action">
-                                    <button type="button" class="btn btn-primary" onclick="nextOne()">Next</button>
-                                </div>
-                              </div>
-                        </div> --}}
                     </div>
                 </form>
             </div>
@@ -216,6 +197,7 @@ function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
   x[n].style.display = "block";
+  $('#text-ket').html(``);
   $('#text-ket').html($('.tab').get(n).attributes[0].value)
   // console.log($('#text-ket').get(0).innerHTML = $('.tab').get(n).attributes[0].value)
   // console.log($('.tab').get(n).attributes[0].value);
@@ -315,7 +297,11 @@ function fixStepIndicator(n) {
 }
 </script>
 <script>
-    $('#selectSatuan').change(function(event) {
+
+    @if($setted == true)
+    changed()
+    @endif
+    function changed() {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")
         let idPesanan = $('#selectSatuan').val()
@@ -333,7 +319,8 @@ function fixStepIndicator(n) {
             $('#jumlah_uang').val(response.harga);
             $('#word').val(inWords(response.harga));
         });
-    });
+    }
+    $('#selectSatuan').change(changed());
     onScan.attachTo(document, {
         suffixKeyCodes: [13],
         reactToPaste: true,

@@ -20,7 +20,7 @@ class BarangWarungController extends Controller
     {
 
 
-        $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(5);
+        $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(9);
         return view('app.data-master.barang-warung.index',compact('barangWarung'));
     }
 

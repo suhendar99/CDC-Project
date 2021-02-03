@@ -28,10 +28,17 @@ class PemesananKeluarPembeliController extends Controller
     public function konfirmasi($id)
     {
         $data = $this->model::findOrFail($id);
-        dd($data);
-        $data->update(['status'=>5]);
+        // dd($data);
+        $data->update(['status'=>'5']);
 
         return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+    }
+
+    public function validasi($id)
+    {
+        $data = $this->model::findOrFail($id);
+        $data->update(['status'=>'2']);
+        return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }
 
     /**
