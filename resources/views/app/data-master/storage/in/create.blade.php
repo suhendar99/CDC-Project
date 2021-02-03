@@ -21,9 +21,6 @@
           </div>
         </div>
     </div>
-    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
-        @include('layouts.dashboard.search')
-    </div> --}}
 </div>
 <div class="container">
     <div class="row h-100">

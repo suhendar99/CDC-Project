@@ -162,6 +162,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('print/{id}', 'PoController@print')->name('po.print');
 
     // Gudang Bulky
+    Route::group(['middleware' => ['pembeli']], function() {
+        Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
+
+        Route::get('transaksi/pembeli/riwayat/konfirmasi/{id}','TransaksiPembeliController@konfirmasi')->name('konfirmasi.terima.pembeli');
+    });
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
             // Gudang

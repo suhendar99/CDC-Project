@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'pemilik' => \App\Http\Middleware\Pemilik::class,
         'pemilikBulky' => \App\Http\Middleware\PemilikBulky::class,
         'pelanggan' => \App\Http\Middleware\PelangganMiddleware::class,
+        'pembeli' => \App\Http\Middleware\Pembeli::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'approved' => \App\Http\Middleware\CheckApproved::class,
         'adminCheck' => \App\Http\Middleware\Admin::class,

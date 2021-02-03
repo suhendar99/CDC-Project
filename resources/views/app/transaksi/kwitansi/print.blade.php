@@ -206,10 +206,10 @@
 				@endphp --}}
 				<tr>
 					<td width="60%" class="text-center">
-						<u><span class="text-24 bold">PT JAYA KENCANA</span></u><br>
-						<span class="text-14">Jalan Pangeran Ngehe No 203, Cipagalo,</span><br>
-						<span class="text-14">Kec. Bojongsoang, Kab. Bandung</span><br>
-						<span class="text-14">Jawa Barat</span>
+						<u><span class="text-24 bold">{{$data->pemesanan->gudang->nama}}</span></u><br>
+						<span class="text-14">{{$data->pemesanan->gudang->alamat}}, {{$data->pemesanan->gudang->desa->nama}},</span><br>
+						<span class="text-14">{{$data->pemesanan->gudang->desa->kecamatan->nama}}, {{$data->pemesanan->gudang->desa->kecamatan->kabupaten->nama}}</span><br>
+						<span class="text-14">{{$data->pemesanan->gudang->desa->kecamatan->kabupaten->provinsi->nama}}</span>
 
 					</td>
 					<td width="40%" class="text-center text-24 pb-2">

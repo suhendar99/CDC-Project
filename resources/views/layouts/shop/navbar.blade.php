@@ -2,20 +2,40 @@
 <div id="navbar">
 	<nav class="navbar navbar-light bg-light shadow px-4 w-100 fixed">
 		<button type="button" id="categoryCollapse" class="btn btn-sm btn-transparent mr-auto">
-        <i class="material-icons md-24 text-my-primary">dehaze</i>
-    </button>
+            <i class="material-icons md-24 text-my-primary">dehaze</i>
+        </button>
 		<a class="navbar-brand pl-2" href="/">
-	    <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt="">
-	    <b class="text-24 text-my-primary">Shop</b>
-      </a>
+            <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt="">
+            <b class="text-24 text-my-primary">Shop</b>
+        </a>
         @guest
             <a class="ml-auto pr-2" href="{{route('login')}}">Login</a>
         @else
         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <img src="
+                {{ asset(''.
+                    isset(Auth::user()->pelanggan->foto) ? Auth::user()->pelanggan->foto :  
+                        (isset(Auth::user()->karyawan->foto) ? Auth::user()->karyawan->foto :
+                            (isset(Auth::user()->bank->foto) ? Auth::user()->bank->foto : 
+                                (isset(Auth::user()->pemasok->foto) ? Auth::user()->pemasok->foto : 
+                                    (isset(Auth::user()->pembeli->foto) ? Auth::user()->pembeli->foto : 
+                                        'images/logo-user.png' 
+                                    )
+                                )
+                            )
+                        )
+                    .'') 
+                }}
+            " class="rounded-circle avatar">
             {{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->pengurus_gudang_id) ? Auth::user()->pengurusGudang->nama :(isset(Auth::user()->pembeli_id) ? Auth::user()->pembeli->nama : (isset(Auth::user()->bulky_id) ? Auth::user()->bulky->nama :(isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : Auth::user()->name)))) }}
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            @if(!Request::is('shop'))
+                <a class="dropdown-item" href="{{ route('shop') }}">
+                    Belanja
+                </a>
+            @endif
             @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->bulky_id != null || Auth::user()->pelanggan_id != null)
                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                     {{ __('Dashboard') }}
@@ -28,7 +48,7 @@
                     Perbarui Password
                 </a>
 
-                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                <a class="dropdown-item" href="{{ route('transaksi.pembeli.riwayat') }}">
                     Riwayat Transaksi
                 </a>
             @endif
