@@ -68,7 +68,7 @@ class ShopController extends Controller
                     })
                     ->paginate(20);
 
-                    // dd($barang);
+                    // dd(Auth::user());
                 }
             } elseif (Auth::user()->pembeli_id != null) {
                 if ($request->has('search') && $request->search !== '') {

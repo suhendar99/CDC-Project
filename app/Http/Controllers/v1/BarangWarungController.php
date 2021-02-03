@@ -20,8 +20,8 @@ class BarangWarungController extends Controller
     public function index()
     {
 
-
         $barangWarung = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->paginate(9);
+        // dd($barangWarung);
         return view('app.data-master.barang-warung.index',compact('barangWarung'));
     }
 
@@ -67,13 +67,8 @@ class BarangWarungController extends Controller
     {
         $data = BarangWarung::with('stok')->findOrFail($id);
 
-        $base_harga = BarangMasukPelanggan::with('barang')
-        ->where([
-            ['gudang_id', $data->gudang_id],
-            ['barang_kode', $data->barang_kode]
-        ])->orderBy('id', 'desc')
-        ->first();
-
+        $base_harga = BarangMasukPelanggan::with('storageOut.barang')->first();
+        // dd($base_harga);
         $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
         $diskon = ($data->diskon === null) ? null : $data->diskon ;
         $satuan = $data->satuan;

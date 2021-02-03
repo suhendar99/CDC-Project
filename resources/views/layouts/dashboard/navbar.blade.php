@@ -103,6 +103,7 @@
         </div>
     </div>
 </div>
+<div class="container" style="min-height: 0;">
 @if (session()->has('success'))
 <div class="alert alert-success alert-dismissible fade show valign-center" role="alert">
     <i class="material-icons text-my-success">check_circle</i>
@@ -132,5 +133,6 @@
     alert("{{ session()->get('sukses') }}");
 </script>
 @endif
+</div>
 
 

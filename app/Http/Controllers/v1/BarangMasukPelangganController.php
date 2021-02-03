@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Auth;
 
 class BarangMasukPelangganController extends Controller
 {
@@ -118,13 +119,16 @@ class BarangMasukPelangganController extends Controller
             'waktu' => now('Asia/Jakarta')
         ]);
 
-        BarangWarung::create([
+        $barangWarung = BarangWarung::create([
             'storage_out_kode' => $masuk->storage_out_kode,
+            'pelanggan_id' => Auth::user()->pelanggan_id,
             'kode' => rand(1000000,9999999),
             'jumlah' => $request->jumlah,
             'satuan' => $barang->satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
+
+        // dd($barangWarung);
 
         // $checkStock = StockBarang::where([
         //     ['gudang_id', $request->gudang_id],
@@ -242,7 +246,7 @@ class BarangMasukPelangganController extends Controller
             ]);
         }
 
-        return back()->with('success', __( 'Data Barang Masuk Berhasil diubah!' ));
+        return redirect()->back()->with('success', __( 'Data Barang Masuk Berhasil diubah!' ));
     }
 
     /**

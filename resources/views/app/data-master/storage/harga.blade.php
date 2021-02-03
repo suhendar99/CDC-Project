@@ -65,7 +65,7 @@
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" min="1" max="100" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend">
+                                            <input type="number" min="1" max="100" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend" oninput="inputed(this)">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">%</span>
                                             </div>
@@ -136,14 +136,25 @@
     let untung = 0;
     let akhir = 0;
 
-    $('#keuntungan').keyup(function(event) {
+    // $('#keuntungan').keyup(function(event) {
+    //     /* Act on the event */
+    //     hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+    //     untung = hargaSatuan * ($(this).val() / 100);
+    //     akhir = hargaSatuan + untung;
+
+    //     $('#sugest').text('Rp. '+(akhir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+    //     $('#harga_barang').val(akhir);
+    // });
+
+
+    function inputed(event) {
         /* Act on the event */
         hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
-        untung = hargaSatuan * ($(this).val() / 100);
+        untung = hargaSatuan * ($(event).val() / 100);
         akhir = hargaSatuan + untung;
 
         $('#sugest').text('Rp. '+(akhir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga_barang').val(akhir);
-    });
+    };
 </script>
 @endpush

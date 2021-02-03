@@ -2,7 +2,7 @@
 	$shop = true;
 	$cart = true;
 	$nomore = true;
-	// dd(Auth::user());
+	// dd($barang);
 	// $card = [1,1,1,1,1,1,1];
   // $category = array(
   // 	['icon'=>'grass','nama'=>'Pertanian'],
@@ -63,7 +63,6 @@
         </form>
 	</div>
 </div>
-@guest
 @if (Auth::user()->pelanggan_id != null)
 <div class="row" id="product-list">
 	@forelse($barang as $b)
@@ -232,7 +231,6 @@
 	@endforelse
 </div>
 @endif
-@endguest
 @if(count($barang) >= 1)
 	@if(!isset($nomore))
 	<div class="row my-4">
