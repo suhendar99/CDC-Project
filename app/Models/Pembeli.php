@@ -17,4 +17,20 @@ class Pembeli extends Model
     {
         return $this->hasMany('App\Models\PemesananPembeli', 'pembeli_id', 'id');
     }
+    public function desa()
+    {
+        return $this->belongsTo('App\Models\Desa');
+    }
+    public function kecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan');
+    }
+    public function kabupaten()
+    {
+        return $this->belongsTo('App\Models\Kabupaten');
+    }
+    public function provinsi()
+    {
+        return $this->belongsTo('App\Models\Provinsi');
+    }
 }

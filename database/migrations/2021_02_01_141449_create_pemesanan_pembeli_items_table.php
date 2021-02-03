@@ -19,6 +19,8 @@ class CreatePemesananPembeliItemsTable extends Migration
             $table->string('nama_barang',100);
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->string('barang_warung_kode');
+            $table->foreign('barang_warung_kode')->references('kode')->on('barang_warungs')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan', 20);
             $table->bigInteger('harga');
