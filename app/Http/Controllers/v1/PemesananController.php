@@ -49,11 +49,11 @@ class PemesananController extends Controller
                     return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
                 ->addColumn('status_pemesanan', function($data){
-                    if ($data->pesanan->status == 0) {
-                        return '<a href="#" class="btn btn-primary btn-sm">Validasi / Proses</a></div>';
-                    } elseif ($data->pesanan->status == 1) {
-                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a></div>';
+                    if ($data->pesanan->status == 1 && $data->foto_bukti != null) {
+                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti</a></div>';
                     } elseif ($data->pesanan->status == 2) {
+                        return '<a href="#" class="btn btn-success btn-sm">Kirim</a></div>';
+                    } elseif ($data->pesanan->status == 3) {
                         return 'Menunggu Pesanan Sampai .....';
                     }
                 })
