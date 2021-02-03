@@ -226,13 +226,11 @@
                     <li class="
                         {{ Request::is('v1/gudang-bulky*') ? 'active' : false }}
                         {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
-                        {{ Request::is('v1/bulky/storage*') ? 'active' : false }}
                     ">
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/gudang-bulky*') ? 'show' : false }}
                             {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
-                            {{ Request::is('v1/bulky/storage*') ? 'show' : false }}
                         " id="gudangSubmenu">
                             <li class="{{ Request::is('v1/gudang-bulky*') ? 'active' : false }}">
                                 <a href="{{route('gudang-bulky.index')}}">Identitas Gudang</a>
@@ -240,29 +238,26 @@
                             <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
                                 <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
                             </li>
-                            <li class="{{ Request::is('v1/bulky/storage*') ? 'active' : false }}">
-                                <a href="{{route('bulky.storage.index')}}">Pengelolaan Barang</a>
-                            </li>
                         </ul>
                     </li>
-                    <li class="{{ Request::is('v1/storage*') ? 'active' : false }}">
-                        <a href="{{route('storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
+                    <li class="{{ Request::is('v1/bulky/storage*') ? 'active' : false }}">
+                        <a href="{{route('bulky.storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
                         {{ Request::is('v1/returIn*') ? 'active' : false }}
                         {{ Request::is('v1/returOut*') ? 'active' : false }}
-                        {{ Request::is('v1/pemesanan*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/pemesanan*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/po*') ? 'show' : false }}
                             {{ Request::is('v1/returIn*') ? 'show' : false }}
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
-                            {{ Request::is('v1/pemesanan*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/pemesanan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
-                            <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
-                                <a href="{{route('pemesanan.index')}}">Pesanan Retail</a>
+                            <li class="{{ Request::is('v1/bulky/pemesanan*') ? 'active' : false }}">
+                                <a href="{{route('bulky.pemesanan.index')}}">Pesanan Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
                                 <a href="{{route('po.index')}}">Pembelian Barang</a>

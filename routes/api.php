@@ -68,3 +68,4 @@ Route::get('/v1/getGudang/{id}/user', function($id){
 });
 Route::get('/v1/getPesanan/{id}', 'v1\PemesananController@getPesanan');
 Route::get('/v1/bulky/getPesanan/{id}', 'v1\PemesananBulkyController@getPesanan');
+Route::get('/v1/bulky/detail/pemesanan/{id}', 'v1\PemesananBulkyController@detail');
