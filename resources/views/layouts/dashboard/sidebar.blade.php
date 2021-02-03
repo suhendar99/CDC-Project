@@ -323,9 +323,26 @@
                         </ul>
                     </li> --}}
                     <li class="
-                    {{ Request::is('v1/barangWarung*') ? 'active' : false }}
+                        {{ Request::is('v1/barangWarung*') ? 'active' : false }}
+                        {{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}
+                        {{ Request::is('v1/barangKeluarPelanggan*') ? 'active' : false }}
                     ">
-                        <a href="{{route('barangWarung.index')}}" class="valign-center"><i class="material-icons">work</i>Daftar Barang</a>
+                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i>Manajemen Barang</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/barangWarung*') ? 'show' : false }}
+                            {{ Request::is('v1/barangMasukPelanggan*') ? 'show' : false }}
+                            {{ Request::is('v1/barangKeluarPelanggan*') ? 'show' : false }}
+                        " id="transaksiSubmenu">
+                            <li class="{{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}">
+                                <a href="{{route('barangMasukPelanggan.index')}}">Manajemen Barang Masuk ke Warung</a>
+                            </li>
+                            <li class="{{ Request::is('v1/barangWarung*') ? 'active' : false }}">
+                                <a href="{{route('barangWarung.index')}}">Barang Yang Dimiliki Warung</a>
+                            </li>
+                            <li class="{{ Request::is('v1/barangKeluarPelanggan*') ? 'active' : false }}">
+                                <a href="{{route('barangKeluarPelanggan.index')}}">Manajemen Barang Keluar ke Pembeli</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="
                         {{ Request::is('v1/pemesananMasukWarung*') ? 'active' : false }}

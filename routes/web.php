@@ -161,6 +161,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
 
         Route::post('upload/bukti/warung/{id}','PemesananController@bukti');
+        // Barang Masuk
+        Route::resource('barangMasukPelanggan', 'BarangMasukPelangganController');
+        Route::resource('barangKeluarPelanggan', 'BarangKeluarPelangganController');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
