@@ -47,7 +47,6 @@ class PiutangController extends Controller
     public function exportPdf()
     {
         $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
-        dd("dadad");
         if ($data->isEmpty()) {
             return back()->with('failed','Data Kosong !');
         } else {

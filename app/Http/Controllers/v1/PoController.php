@@ -361,7 +361,7 @@ class PoController extends Controller
             'jumlah_barang' => $request->jumlah,
             'pajak' => $request->pajak,
             'biaya_admin' => $request->biaya_admin,
-            'harga' => $harga
+            'harga' => $request->harga
         ]);
         $log = LogTransaksi::create([
             'tanggal' => now(),
