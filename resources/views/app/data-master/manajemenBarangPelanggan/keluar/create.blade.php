@@ -51,10 +51,24 @@
                                         <select name="pemesanan_id" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Pemesanan--</option>
                                             @foreach ($pemesanan as $item)
-                                                <option value="{{$item->id}}" {{ old('pemesanan_id') == $item->id ? 'selected' : ''}} data-satuan="{{ $item->pemesananPembeliItem->satuan }}">{{$item->nomor_pemesanan}}|{{$item->pembeli->nama}}</option>
+                                                <option value="{{$item->id}}" {{ old('pemesanan_id') == $item->id ? 'selected' : ''}} data-satuan="{{ $item->pemesananPembeliItem[0]->satuan }}">{{$item->nomor_pemesanan}}|{{$item->pembeli->nama}}</option>
                                             @endforeach
                                         </select>
                                         @error('pemesanan_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Barang Warung <small class="text-success">*Harus diisi</small></label>
+                                        <select name="barang_warung_kode" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
+                                            @foreach ($barang as $item)
+                                                <option value="{{$item->kode}}" {{ old('barang_warung_kode') == $item->kode ? 'selected' : ''}}>{{$item->storageOut->barang->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('barang_warung_kode')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -69,20 +83,6 @@
                                             </div>
                                         </div>
                                         @error('jumlah')
-                                              <span class="invalid-feedback" role="alert">
-                                                  <strong>{{ $message }}</strong>
-                                              </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <div class="input-group">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Rp.</span>
-                                            </div>
-                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
-                                        </div>
-                                        @error('harga_beli')
                                               <span class="invalid-feedback" role="alert">
                                                   <strong>{{ $message }}</strong>
                                               </span>

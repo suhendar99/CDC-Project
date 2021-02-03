@@ -51,7 +51,6 @@ class BarangKeluarPelangganController extends Controller
     public function create()
     {
         $pemesanan = PemesananPembeli::with('pemesananPembeliItem')->where('status','4')->get();
-        dd($pemesanan);
         $barang = BarangWarung::all();
         return view('app.data-master.manajemenBarangPelanggan.keluar.create',compact('pemesanan','barang'));
     }
