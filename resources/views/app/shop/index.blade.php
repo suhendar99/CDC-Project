@@ -2,6 +2,7 @@
 	$shop = true;
 	$cart = true;
 	$nomore = true;
+	// dd(Auth::user());
 	// $card = [1,1,1,1,1,1,1];
   // $category = array(
   // 	['icon'=>'grass','nama'=>'Pertanian'],
