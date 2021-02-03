@@ -1,3 +1,4 @@
+
 <div id="navbar">
 	<nav class="navbar navbar-light bg-light shadow px-4 w-100 fixed">
 		<button type="button" id="categoryCollapse" class="btn btn-sm btn-transparent mr-auto">
@@ -18,6 +19,17 @@
             @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->bulky_id != null || Auth::user()->pelanggan_id != null)
                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                     {{ __('Dashboard') }}
+                </a>
+            @elseif(Auth::user()->pembeli_id != null)
+                <a class="dropdown-item" href="{{ route('setPembeli.show') }}">
+                    Profil Pengguna
+                </a>
+                <a class="dropdown-item" href="{{ route('setPass.show') }}">
+                    Perbarui Password
+                </a>
+
+                <a class="dropdown-item" href="{{ route('dashboard') }}">
+                    Riwayat Transaksi
                 </a>
             @endif
             {{-- @if (Auth::user()->pembeli_id != null)

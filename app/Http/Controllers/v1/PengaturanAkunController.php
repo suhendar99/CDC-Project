@@ -63,9 +63,31 @@ class PengaturanAkunController extends Controller
         $provinsi = Provinsi::all();
         return view($this->path.'updateAkunBank', compact('auth','provinsi'));
     }
+    public function showFormUpdateAkunPembeli()
+    {
+        $auth = Auth::user();
+        $provinsi = Provinsi::all();
+        $bank = Bank::all();
+        return view($this->path.'updateAkunPembeli', compact('auth','provinsi','bank'));
+    }
 
     // Action
     public function UpdateAkunAdmin(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users,email,'.$request->id,
+            'username'  => 'required|string|unique:users,username,'.$request->id,
+        ]);
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $set = User::find($request->id);
+            $set->update($request->only('name','username','email'));
+        }
+        return back()->with('success',$this->alert.'Diubah !');
+    }
+    public function UpdateAkunPembeli(Request $request)
     {
         $v = Validator::make($request->all(),[
             'name' => 'required|string|max:50',
