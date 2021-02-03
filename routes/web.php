@@ -139,6 +139,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('bungaBank', 'BungaBankController');
     });
     Route::group(['middleware' => ['pelanggan']], function () {
+        // Untuk Konfirmasi Penerimaan Barang
+        Route::get('transaksi/warung/riwayat/konfirmasi/{id}','PemesananKeluarPembeliController@konfirmasi')->name('konfirmasi.terima.warung');
         // Barang funtuk pembeli
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
@@ -155,6 +157,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
+
+        Route::post('upload/bukti/warung/{id}','PemesananController@bukti');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');

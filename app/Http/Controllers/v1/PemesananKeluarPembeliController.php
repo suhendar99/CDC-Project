@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class PemesananKeluarPembeliController extends Controller
 {
+    public function __construct(Pemesanan $pemesanan)
+    {
+        $this->model = $pemesanan;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +20,18 @@ class PemesananKeluarPembeliController extends Controller
      */
     public function index()
     {
-        $data = Pemesanan::where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
-        // dd($data);
+        $data = $this->model::with('storageOut.user.pengurusGudang.kabupaten','pelanggan.kabupaten','barangPesanan')->where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        // dd($data->toArray());
         return view('app.transaksi.pemesanan-keluar-warung.index',compact('data'));
+    }
+
+    public function konfirmasi($id)
+    {
+        $data = $this->model::findOrFail($id);
+        dd($data);
+        $data->update(['status'=>5]);
+
+        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     /**

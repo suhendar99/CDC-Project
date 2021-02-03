@@ -174,16 +174,16 @@
                             {{ Request::is('v1/pemesanan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
-                                <a href="{{route('pemesanan.index')}}">Pesanan Pelanggan</a>
+                                <a href="{{route('pemesanan.index')}}">Pesanan dari Warung</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
-                                <a href="{{route('po.index')}}">Pembelian Barang</a>
+                                <a href="{{route('po.index')}}">Pembelian ke Bulky</a>
                             </li>
                             <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
-                                <a href="{{route('returIn.index')}}">Retur Masuk</a>
+                                <a href="{{route('returIn.index')}}">Retur dari Warung</a>
                             </li>
                             <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
-                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                                <a href="{{route('returOut.index')}}">Retur ke Bulky</a>
                             </li>
                         </ul>
                     </li>
@@ -197,10 +197,10 @@
                             {{ Request::is('v1/piutangOut*') ? 'show' : false }}
                         " id="piutangSubmenu">
                             <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                                <a href="{{route('piutangIn.index')}}">Piutang Masuk</a>
+                                <a href="{{route('piutangIn.index')}}">Piutang dari Warung</a>
                             </li>
                             <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
-                                <a href="{{route('piutangOut.index')}}">Piutang Keluar</a>
+                                <a href="{{route('piutangOut.index')}}">Piutang ke Bulky</a>
                             </li>
                         </ul>
                     </li>
@@ -218,6 +218,9 @@
                             </li>
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>
@@ -256,17 +259,17 @@
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/pemesanan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
-                            <li class="{{ Request::is('v1/bulky/pemesanan*') ? 'active' : false }}">
-                                <a href="{{route('bulky.pemesanan.index')}}">Pesanan Retail</a>
+                            <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
+                                <a href="{{route('pemesanan.index')}}">Pesanan dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
-                                <a href="{{route('po.index')}}">Pembelian Barang</a>
+                                <a href="{{route('po.index')}}">Pembelian ke Petani</a>
                             </li>
                             <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
-                                <a href="{{route('returIn.index')}}">Retur Masuk</a>
+                                <a href="{{route('returIn.index')}}">Retur dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
-                                <a href="{{route('returOut.index')}}">Retur Keluar</a>
+                                <a href="{{route('returOut.index')}}">Retur ke Petani</a>
                             </li>
                         </ul>
                     </li>
@@ -280,10 +283,10 @@
                             {{ Request::is('v1/piutangOut*') ? 'show' : false }}
                         " id="piutangSubmenu">
                             <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                                <a href="{{route('piutangIn.index')}}">Piutang Masuk</a>
+                                <a href="{{route('piutangIn.index')}}">Piutang dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
-                                <a href="{{route('piutangOut.index')}}">Piutang Keluar</a>
+                                <a href="{{route('piutangOut.index')}}">Piutang ke Petani</a>
                             </li>
                         </ul>
                     </li>
@@ -301,6 +304,9 @@
                             </li>
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>
@@ -335,16 +341,16 @@
                             {{ Request::is('v1/returKeluarPelanggan*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/pemesananMasukWarung*') ? 'active' : false }}">
-                                <a href="{{route('pemesananMasukWarung.index')}}">Pesanan Pelanggan</a>
+                                <a href="{{route('pemesananMasukWarung.index')}}">Pesanan dari Pembeli</a>
                             </li>
                             <li class="{{ Request::is('v1/pemesananKeluarWarung*') ? 'active' : false }}">
-                                <a href="{{route('pemesananKeluarWarung.index')}}">Pembelian Barang</a>
+                                <a href="{{route('pemesananKeluarWarung.index')}}">Pembelian ke Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/returMasukPembeli*') ? 'active' : false }}">
-                                <a href="{{route('returMasukPembeli.index')}}">Retur Masuk</a>
+                                <a href="{{route('returMasukPembeli.index')}}">Retur dari Pembeli</a>
                             </li>
                             <li class="{{ Request::is('v1/returKeluarPelanggan*') ? 'active' : false }}">
-                                <a href="{{route('returKeluarPelanggan.index')}}">Retur Keluar</a>
+                                <a href="{{route('returKeluarPelanggan.index')}}">Retur ke Retail</a>
                             </li>
                         </ul>
                     </li>
@@ -367,6 +373,9 @@
                             </li>
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            </li>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>

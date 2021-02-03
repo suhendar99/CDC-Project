@@ -86,7 +86,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
@@ -114,7 +114,7 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">

@@ -234,7 +234,7 @@
 				</tr>
 				<tr>
 					<td width="30%" class="text-12">
-						Banyaknya Uang
+						Jumlah Terbilang
 					</td>
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom bg-grey">
@@ -270,7 +270,8 @@
 				<tr>
 					<td width="40%" class="text-center" rowspan="2">
 						<div class="jumlah">
-							Jumlah : Rp. {{number_format($data->jumlah_uang_digits,0,',','.')}},-
+							<span class="text-14">Jumlah Terhitung : </span><br>
+							<span class="text-24">Rp. {{number_format($data->jumlah_uang_digits,0,',','.')}},-</span>
 						</div>
 					</td>
 					<td width="20%"></td>

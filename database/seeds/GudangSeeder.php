@@ -26,7 +26,8 @@ class GudangSeeder extends Seeder
             'hari' => 'Senin - Sabtu',
             'alamat' => 'Jl ABC',
             'desa_id' => 3276020006,
-            'user_id' => 3
+            'user_id' => 3,
+            'status' => 1
         ];
 
         DB::table('gudangs')->insert($value);

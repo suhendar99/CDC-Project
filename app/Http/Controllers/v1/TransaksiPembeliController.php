@@ -23,7 +23,7 @@ class TransaksiPembeliController extends Controller
 	public function konfirmasi($id)
 	{
 		$data = $this->model::findOrFail($id);
-		$data->update(['status'=>4]);
+		$data->update(['status'=>5]);
 		// dd($data);
 		return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
 	}
