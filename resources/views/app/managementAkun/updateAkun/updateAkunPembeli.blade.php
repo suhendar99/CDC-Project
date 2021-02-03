@@ -1,6 +1,6 @@
 @php
     $icon = 'dashboard';
-    $pageTitle = 'Edit Akun Pembeli';
+    $pageTitle = 'Edit Akun';
     $nosidebar = true;
     $shop = true;
     $detail = true;
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Nama Lengkap <small class="text-success">*Harus diisi</small></label>
@@ -86,38 +86,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <label>Nomor Rekening <small class="text-success">*Harus diisi</small></label>
-                                                <input type="number" min="0" class="form-control @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ $auth->pembeli->no_rek }}">
-                                                @error('no_rek')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <label>Nama Bank <small class="text-success">*Harus dipilih</small></label>
-                                                <select name="bank_id" id="" class="form-control @error('bank_id') is-invalid @enderror">
-                                                    @foreach ($bank as $item)
-                                                        <option value="{{$item->id}}" {{$auth->pembeli->bank_id == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('no_rek')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
@@ -144,8 +112,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
@@ -159,7 +125,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Jenis Kelamin <small class="text-success">*Harus diisi</small></label>

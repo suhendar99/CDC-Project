@@ -90,6 +90,9 @@
         .list-group-flush > .list-group-item::last-child{
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
+        #detail{
+            width: 100%;
+        }
     </style>
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.5/css/unicons.css">
@@ -102,22 +105,34 @@
     <div class="container-fluid">
         <div class="wrapper">
             @if(!isset($detail))
-                @include('layouts.shop.category')
+
+            @include('layouts.shop.category')
+            <div id="content">
+
+            @else
+            <div id="detail">
             @endif
-            @yield('content')
+                <div class="row">
+                    <div class="col-md-12">
+                        @yield('content')
+                        <div class="row">
+                            <div class="col-12 justify-content-center">
+                                <div class="footer-copyright text-center pt-4 text-dark">
+                                    <div class="copyright">
+                                        <span>© Copyright </span>
+                                        <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}} {{$tahun}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @if(isset($cart))
                 @include('layouts.shop.cart')
             @endif
         </div>
     </div>
-    <!-- Copyright -->
-    <div class="footer-copyright text-center pt-4 text-dark fixed">
-        <div class="copyright">
-            <span>© 2020 Copyright:</span>
-            <a href="{{$set->copyright_link}}" class="text-dark"> {{$set->copyright_text}}</a>
-        </div>
-    </div>
-    <!-- Copyright -->
     @else
     <div id="app">
         <div class="wrapper">
@@ -132,6 +147,10 @@
                     <div class=" row">
                         <div class=" col-12">
                             @yield('content')
+                        </div>
+                    </div>
+                    <div class=" row">
+                        <div class=" col-12">
                             <!-- Copyright -->
                             <div class="footer-copyright text-center pt-4 text-dark fixed">
                                 <div class="copyright">
@@ -144,9 +163,6 @@
                     </div>
                 </div>
             </div>
-            @if(isset($rightbar))
-            @include('layouts.dashboard.rightbar')
-            @endif
         </div>
     </div>
     @endif
