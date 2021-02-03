@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Retur Masuk';
+        $pageTitle = 'Data Retur Keluar Pelanggan';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Masuk</a>
+            <a href="#" class="text-14">Data Retur Keluar Pelanggan</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                {{-- <a href="{{route('returIn.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a> --}}
+                                <a href="{{route('returKeluarPelanggan.create')}}" class="btn btn-primary btn-sm">Buat Retur Keluar</a>
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                 <th>Barang</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -65,80 +65,6 @@
     @csrf
     @method('DELETE')
 </form>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-12 text-center">
-                <span>Foto Bank</span><br>
-                <div id="foto" class="my-4"></div>
-            </div>
-          </div>
-          <div class="row">
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Bank</th>
-                            <td class="namaBank"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Tahun Berdiri</th>
-                          <td class="tahun"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Telepon</th>
-                          <td class="telepon"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Akun</th>
-                            <td class="namaAkun"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Username</th>
-                          <td class="username"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">E-mail</th>
-                          <td class="email"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-12">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                          <th>Alamat</th>
-                          <td class="alamat"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -147,7 +73,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('returIn.index') }}",
+            ajax : "{{ route('returKeluarPelanggan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kwitansi.kode', name: 'kode'},
@@ -166,7 +92,7 @@
                 },
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
-                // {data : 'action', name: 'action'}
+                {data : 'action', name: 'action'}
             ]
         });
 
@@ -211,7 +137,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/retur/'+id
+            formDelete.action = '/v1/returKeluarPelanggan/'+id
 
             const Toast = Swal.mixin({
             toast: true,

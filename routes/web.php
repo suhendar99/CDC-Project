@@ -139,9 +139,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
         Route::resource('returMasukPembeli', 'ReturMasukPembeliController');
+        // Retur Keluar
+        Route::resource('returKeluarPelanggan', 'ReturKeluarPelangganController');
+        // Piutang
+        Route::resource('piutangPelanggan', 'PiutangPelangganController');
+        // Route::get('piutangPelanggan/excel', 'PiutangPelangganController@exportExcel')->name('piutangPelanggan.excel');
+        // Route::get('piutangPelanggan/pdf', 'PiutangPelangganController@exportPdf')->name('piutangPelanggan.pdf');
         // Pemesanan
-        Route::get('pemesananMasukPembeli','PemesananController@pemesananMasukPembeli')->name('pemesananMasukPembeli.index');
-        Route::resource('pemesananKeluarPembeli', 'PemesananKeluarPembeliController');
+        Route::get('pemesananMasukWarung','PemesananController@pemesananMasukPembeli')->name('pemesananMasukWarung.index');
+        Route::resource('pemesananKeluarWarung', 'PemesananKeluarPembeliController');
         Route::resource('pesanan', 'PemesananController')->middleware('auth');
         Route::get('prints/{id}', 'PemesananController@print')->name('print');
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
