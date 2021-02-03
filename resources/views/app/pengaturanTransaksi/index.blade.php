@@ -33,33 +33,31 @@
                 <form action="{{ route('pengaturanTransaksi.store') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{ $data->id }}">
                     @csrf
-                        <div class="col-12">
-                            <div class="form-group">
-                            <label for="first-name-vertical">Jumlah Pajak (%)</label>
-                            <input type="number" min="1" id="first-name-vertical" class="form-control @error('pajak') is-invalid @enderror" name="pajak" placeholder="Nama Tab" value="{{ $data->pajak }}">
-                            @error('pajak')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                            <label for="first-name-vertical">Biaya Admin (Rp)</label>
-                            <input type="number" min="1" id="first-name-vertical" class="form-control @error('biaya_admin') is-invalid @enderror" name="biaya_admin" placeholder="Nama Aplikasi" value="{{ $data->biaya_admin }}">
-                            @error('biaya_admin')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary mr-1 mb-1 btn-sm"><i class="mdi mdi-check"></i> Simpan</button>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label for="first-name-vertical">Jumlah Pajak (%)</label>
+                        <input type="number" min="1" id="first-name-vertical" class="form-control @error('pajak') is-invalid @enderror" name="pajak" placeholder="Nama Tab" value="{{ $data->pajak }}">
+                        @error('pajak')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                         </div>
                     </div>
-                </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label for="first-name-vertical">Biaya Admin (Rp)</label>
+                        <input type="number" min="1" id="first-name-vertical" class="form-control @error('biaya_admin') is-invalid @enderror" name="biaya_admin" placeholder="Nama Aplikasi" value="{{ $data->biaya_admin }}">
+                        @error('biaya_admin')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary mr-1 mb-1 btn-sm"><i class="mdi mdi-check"></i> Simpan</button>
+                    </div>
                 </form>
             </div>
         </div>

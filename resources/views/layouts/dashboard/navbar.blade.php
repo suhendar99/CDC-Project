@@ -51,7 +51,19 @@
         <div class="col-md-6">
             <div class="d-inline-block float-right valign-center">
                 <img src="
-                    {{ asset(''.isset(Auth::user()->pelanggan->foto) ? Auth::user()->pelanggan->foto :  (isset(Auth::user()->karyawan->foto) ? Auth::user()->karyawan->foto :(isset(Auth::user()->bank->foto) ? Auth::user()->bank->foto : (isset(Auth::user()->pemasok->foto) ? Auth::user()->pemasok->foto : 'images/logo-user.png' ))).'') }}
+                    {{ asset(''.
+                        isset(Auth::user()->pelanggan->foto) ? Auth::user()->pelanggan->foto :  
+                            (isset(Auth::user()->karyawan->foto) ? Auth::user()->karyawan->foto :
+                                (isset(Auth::user()->bank->foto) ? Auth::user()->bank->foto : 
+                                    (isset(Auth::user()->pemasok->foto) ? Auth::user()->pemasok->foto : 
+                                        (isset(Auth::user()->pembeli->foto) ? Auth::user()->pembeli->foto : 
+                                            'images/logo-user.png' 
+                                        )
+                                    )
+                                )
+                            )
+                        .'') 
+                    }}
                 " class="rounded-circle avatar">
                 <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     {{ isset(Auth::user()->pelanggan_id) ? Auth::user()->pelanggan->nama :  (isset(Auth::user()->pengurus_gudang_id) ? Auth::user()->pengurusGudang->nama :(isset(Auth::user()->pembeli_id) ? Auth::user()->pembeli->nama : (isset(Auth::user()->bulky_id) ? Auth::user()->bulky->nama :(isset(Auth::user()->pemasok_id) ? Auth::user()->pemasok->nama : Auth::user()->name)))) }}

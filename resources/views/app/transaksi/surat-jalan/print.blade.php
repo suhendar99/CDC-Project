@@ -211,6 +211,11 @@
 				<td></td>
 				<td class="  pt-4 text-14"> {{$data->tempat}}, {!!date("d F Y")!!}</td>
 			</tr>
+			<tr>
+				<td colspan="4" class="text-center">
+					<h4 class="text-24 bold">SURAT JALAN</h4>
+				</td>
+			</tr>
 		</table>
 	</section>
 	<section id="body">
