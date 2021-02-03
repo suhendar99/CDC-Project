@@ -75,9 +75,9 @@ class StorageOutController extends Controller
     {
         set_time_limit(120);
         $date = date('d-m-Y');
-        $data = SuratJalan::whereId($request->query('id'))->with('user','pemesanan.gudang','pemesanan.barangPesanan')->first();
+        $data = SuratJalan::whereId($request->query('id'))->with('user.pengurusGudang.desa','user.pengurusGudang.kecamatan','user.pengurusGudang.kabupaten','user.pengurusGudang.provinsi','pemesanan.gudang','pemesanan.barangPesanan','pemesanan.pelanggan.desa','pemesanan.pelanggan.kecamatan','pemesanan.pelanggan.kabupaten','pemesanan.pelanggan.provinsi')->first();
 
-        // dd($data);
+        // dd($data->pemesanan->pelanggan);
         // PDF::;
         // $customPaper = array(0,0,283.80,567.00);
 

@@ -187,15 +187,19 @@
 					</center>
 				</td>
 				<td width="20%"></td>
-				<td width="30%" class=" text-14">
+				<td width="30%" rowspan="2" class=" text-14">
 					Kepada<br>
-					{{$data->penerima}} <br>
-					{{$data->pemesanan->alamat_pemesan}}
+					<b>{{$data->penerima}} </b><br>
+					{{$data->pemesanan->alamat_pemesan}}, Desa {{$data->pemesanan->pelanggan->desa->nama}}<br>
+					Kec. {{$data->pemesanan->pelanggan->kecamatan->nama}}, {{$data->pemesanan->pelanggan->kabupaten->nama}}<br>
+					{{$data->pemesanan->pelanggan->provinsi->nama}}
 				</td>
 			</tr>
 			<tr class="text-14">
 				<td class=" text-14 pb-1">
-					{{$data->pemesanan->gudang->alamat}}
+					{{$data->pemesanan->gudang->alamat}}, Desa {{$data->user->pengurusGudang->desa->nama}}<br>
+					Kec. {{$data->user->pengurusGudang->kecamatan->nama}}, {{$data->user->pengurusGudang->kabupaten->nama}}<br>
+					{{$data->user->pengurusGudang->provinsi->nama}}
 				</td>
 				<td></td>
 				<td class="">
@@ -213,13 +217,13 @@
 			</tr>
 			<tr>
 				<td colspan="4" class="text-center">
-					<h4 class="text-24 bold">SURAT JALAN</h4>
+					<span class="text-24 bold mt-2">SURAT JALAN</span>
 				</td>
 			</tr>
 		</table>
 	</section>
 	<section id="body">
-		<span class="pl-2">Berikut adalah barang-barang yang dikirim, sebagai berikut :</span>
+		<span class="pl-2">Berikut adalah barang-barang yang dikirim dengan JNE Kurir, sebagai berikut :</span>
 		<table class="table text-center table-po">
 			<tr class="head">
 				<td>No</td>
