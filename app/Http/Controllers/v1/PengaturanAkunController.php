@@ -8,6 +8,7 @@ use App\Models\Karyawan;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
 use App\Models\PengurusGudang;
+use App\Models\Pembeli;
 use App\Models\Provinsi;
 use App\User;
 use Carbon\Carbon;
@@ -63,6 +64,13 @@ class PengaturanAkunController extends Controller
         $provinsi = Provinsi::all();
         return view($this->path.'updateAkunBank', compact('auth','provinsi'));
     }
+    public function showFormUpdateAkunPembeli()
+    {
+        $auth = Auth::user();
+        $provinsi = Provinsi::all();
+        $bank = Bank::all();
+        return view($this->path.'updateAkunPembeli', compact('auth','provinsi','bank'));
+    }
 
     // Action
     public function UpdateAkunAdmin(Request $request)
@@ -79,6 +87,65 @@ class PengaturanAkunController extends Controller
             $set->update($request->only('name','username','email'));
         }
         return back()->with('success',$this->alert.'Diubah !');
+    }
+    
+    public function UpdateAkunPembeli(Request $request)
+    {
+        // dd($request->all());
+        $v = Validator::make($request->all(),[
+            'email' => 'required|email|unique:users,email,'.$request->id,
+            'username'  => 'required|string|unique:users,username,'.$request->id,
+            'nama' => 'required|string|max:100',
+            'alamat' => 'required|string|max:200',
+            'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
+            'nik' => 'required|string|max:17',
+            'tempat_lahir' => 'required|string|max:40',
+            'tgl_lahir' => 'required|string|',
+            'agama' => 'required|string',
+            'pekerjaan' => 'required',
+            'jenis_kelamin' => 'required',
+            'status_perkawinan' => 'required',
+            'kewarganegaraan' => 'required',
+            'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'desa_id' => 'nullable',
+            'kecamatan_id' => 'nullable',
+            'kabupaten_id' => 'nullable',
+            'provinsi_id' => 'nullable',
+            ]);
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            return back()->withErrors($v)->withInput();
+        } else {
+            $data = User::find($request->id);
+            $set = Pembeli::find($data->pembeli_id);
+            if ($request->file('foto')) {
+                File::delete($set->foto);
+                $name = $request->file('foto');
+                $foto = time()."_".$name->getClientOriginalName();
+                $request->foto->move(public_path("upload/foto/pembeli"), $foto);
+                if ($request->desa_id == null) {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pembeli/'.$foto
+                    ]));
+                    $data->update($request->only('username','email'));
+                    dd($data);
+                } else {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id'),[
+                        'foto' => 'upload/foto/pembeli/'.$foto
+                    ]));
+                    $data->update($request->only('username','email'));
+                }
+            } else {
+                if ($request->desa_id == null) {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id')));
+                    $data->update($request->only('username','email'));
+                } else {
+                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
+                    $data->update($request->only('username','email'));
+                }
+            }
+            return back()->with('success',$this->alert.'Diubah !');
+        }
     }
     public function UpdateAkunPelanggan(Request $request)
     {

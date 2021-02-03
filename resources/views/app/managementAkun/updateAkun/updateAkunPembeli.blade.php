@@ -1,7 +1,11 @@
 @php
-        $icon = 'dashboard';
-        $pageTitle = 'Edit Akun Pemilik Warung';
+    $icon = 'dashboard';
+    $pageTitle = 'Edit Akun';
+    $nosidebar = true;
+    $shop = true;
+    $detail = true;
 @endphp
+
 @extends('layouts.dashboard.header')
 
 @section('content')
@@ -16,7 +20,15 @@
     </div>
     <div class="row h-100">
         <div class="col-md-12">
-            @if (session()->has('failed'))
+            {{-- @if (session()->has('success'))
+		    <div class="alert alert-success alert-dismissible fade show" role="alert">
+		    	<i data-feather="check-circle"></i>
+		        {{ session()->get('success') }}
+		        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		            <span aria-hidden="true">&times;</span>
+		        </button>
+		    </div>--}}
+		    @if (session()->has('failed'))
 		    <div class="alert alert-danger alert-dismissible fade show" role="alert">
 		    	<i data-feather="alert-circle"></i>
 		        {{ session()->get('failed') }}
@@ -24,12 +36,12 @@
 		            <span aria-hidden="true">&times;</span>
 		        </button>
 		    </div>
-		    @endif
+		    @endif 
             <div class="card card-block d-flex">
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('setPelanggan.action')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('setPembeli.action')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$auth->id}}">
                                 <div class="row">
@@ -65,7 +77,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Nama Lengkap <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $auth->pelanggan->nama }}">
+                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $auth->pembeli->nama }}">
                                                 @error('nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -78,7 +90,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>NIK <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{$auth->pelanggan->nik}}">
+                                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{$auth->pembeli->nik}}">
                                                 @error('nik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -87,13 +99,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Tempat Lahir <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{$auth->pelanggan->tempat_lahir}}">
+                                                <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{$auth->pembeli->tempat_lahir}}">
                                                 @error('tempat_lahir')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -106,7 +116,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Tanggal Lahir <small class="text-success">*Harus diisi</small></label>
-                                                <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{$auth->pelanggan->tgl_lahir}}">
+                                                <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{$auth->pembeli->tgl_lahir}}">
                                                 @error('tgl_lahir')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -116,18 +126,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <label>Jenis Kelamin <small class="text-success">*Harus diisi</small></label>
-                                        <select name="jenis_kelamin" id="" class="form-control">
-                                            <option value="Pria" {{$auth->pelanggan->jenis_kelamin == 'Pria' ? 'selected' : ''}}>Pria</option>
-                                            <option value="Wanita" {{$auth->pelanggan->jenis_kelamin == 'Wanita' ? 'selected' : ''}}>Wanita</option>
-                                        </select>
-                                        @error('tgl_lahir')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Jenis Kelamin <small class="text-success">*Harus diisi</small></label>
+                                                <select name="jenis_kelamin" id="" class="form-control">
+                                                    <option value="Pria" {{$auth->pembeli->jenis_kelamin == 'Pria' ? 'selected' : ''}}>Pria</option>
+                                                    <option value="Wanita" {{$auth->pembeli->jenis_kelamin == 'Wanita' ? 'selected' : ''}}>Wanita</option>
+                                                </select>
+                                                @error('tgl_lahir')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -138,7 +152,7 @@
                                                 <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                     @foreach($provinsi as $p)
-                                                    <option value="{{$p->id}}"  {{$p->id == $auth->pelanggan->provinsi_id ? 'selected' : ''}}>{{$p->nama}}</option>
+                                                    <option value="{{$p->id}}"  {{$p->id == $auth->pembeli->provinsi_id ? 'selected' : ''}}>{{$p->nama}}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('provinsi_id')
@@ -155,7 +169,7 @@
                                             <div class="col-md-12">
                                                 <label for="kabupaten-select">Kabupaten <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
-                                                    <option value="{{$auth->pelanggan->kabupaten_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pembeli->kabupaten_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('kabupaten_id')
                                                 <div class="invalid-feedback">
@@ -173,7 +187,7 @@
                                             <div class="col-md-12">
                                                 <label for="kecamatan-select">Kecamatan <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
-                                                    <option value="{{$auth->pelanggan->kecamatan_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pembeli->kecamatan_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('kecamatan_id')
                                                 <div class="invalid-feedback">
@@ -189,7 +203,7 @@
                                             <div class="col-md-12">
                                                 <label for="desa-select">Desa <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
-                                                    <option value="{{$auth->pelanggan->desa_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pembeli->desa_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('desa_id')
                                                 <div class="invalid-feedback">
@@ -204,7 +218,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Alamat <small class="text-success">*Harus diisi</small></label>
-                                        <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{$auth->pelanggan->alamat}}</textarea>
+                                        <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{$auth->pembeli->alamat}}</textarea>
                                         @error('pekerjaan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -218,12 +232,12 @@
                                             <div class="col-md-12">
                                                 <label>Agama <small class="text-success">*Harus diisi</small></label>
                                                 <select name="agama" id="" class="form-control">
-                                                    <option value="Islam" {{$auth->pelanggan->agama == 'Islam' ? 'selected' : ''}}>Islam</option>
-                                                    <option value="Protestan" {{$auth->pelanggan->agama == 'Protestan' ? 'selected' : ''}}>Protestan</option>
-                                                    <option value="Katolik" {{$auth->pelanggan->agama == 'Katolik' ? 'selected' : ''}}>Katolik</option>
-                                                    <option value="Hindu" {{$auth->pelanggan->agama == 'Hindu' ? 'selected' : ''}}>Hindu</option>
-                                                    <option value="Buddha" {{$auth->pelanggan->agama == 'Buddha' ? 'selected' : ''}}>Buddha</option>
-                                                    <option value="Khonghucu" {{$auth->pelanggan->agama == 'Khonghucu' ? 'selected' : ''}}>Khonghucu</option>
+                                                    <option value="Islam" {{$auth->pembeli->agama == 'Islam' ? 'selected' : ''}}>Islam</option>
+                                                    <option value="Protestan" {{$auth->pembeli->agama == 'Protestan' ? 'selected' : ''}}>Protestan</option>
+                                                    <option value="Katolik" {{$auth->pembeli->agama == 'Katolik' ? 'selected' : ''}}>Katolik</option>
+                                                    <option value="Hindu" {{$auth->pembeli->agama == 'Hindu' ? 'selected' : ''}}>Hindu</option>
+                                                    <option value="Buddha" {{$auth->pembeli->agama == 'Buddha' ? 'selected' : ''}}>Buddha</option>
+                                                    <option value="Khonghucu" {{$auth->pembeli->agama == 'Khonghucu' ? 'selected' : ''}}>Khonghucu</option>
                                                 </select>
                                                 @error('pekerjaan')
                                                     <span class="invalid-feedback" role="alert">
@@ -238,8 +252,8 @@
                                             <div class="col-md-12">
                                                 <label>Status Perkawinan <small class="text-success">*Harus diisi</small></label>
                                                 <select name="status_perkawinan" id="" class="form-control">
-                                                    <option value="Belum Kawin" {{$auth->pelanggan->status_perkawinan == 'Belum Kawin' ? 'selected' : ''}}>Belum Kawin</option>
-                                                    <option value="Sudah" {{$auth->pelanggan->status_perkawinan == 'Sudah' ? 'selected' : ''}}>Sudah</option>
+                                                    <option value="Belum Kawin" {{$auth->pembeli->status_perkawinan == 'Belum Kawin' ? 'selected' : ''}}>Belum Kawin</option>
+                                                    <option value="Sudah" {{$auth->pembeli->status_perkawinan == 'Sudah' ? 'selected' : ''}}>Sudah</option>
                                                 </select>
                                                 @error('telepon')
                                                     <span class="invalid-feedback" role="alert">
@@ -255,7 +269,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Pekerjaan <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror" name="pekerjaan" value="{{ $auth->pelanggan->pekerjaan }}">
+                                                <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror" name="pekerjaan" value="{{ $auth->pembeli->pekerjaan }}">
                                                 @error('pekerjaan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -268,7 +282,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Telepon <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $auth->pelanggan->telepon }}">
+                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $auth->pembeli->telepon }}">
                                                 @error('telepon')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -283,7 +297,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Kewarganegaraan <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('kewarganegaraan') is-invalid @enderror" name="kewarganegaraan" value="{{ $auth->pelanggan->kewarganegaraan }}">
+                                                <input type="text" class="form-control @error('kewarganegaraan') is-invalid @enderror" name="kewarganegaraan" value="{{ $auth->pembeli->kewarganegaraan }}">
                                                 @error('kewarganegaraan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -296,7 +310,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Foto <small class="text-success">*Harus diisi</small></label>
-                                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $auth->pelanggan->foto }}">
+                                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $auth->pembeli->foto }}">
                                                 @error('foto')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
