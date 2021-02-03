@@ -34,6 +34,7 @@ Route::get('/v1/getPoPemasok/{id}','v1\PoController@show');
 Route::get('/v1/getPemesananPelanggan/{id}','v1\PemesananController@show');
 Route::get('/v1/getFotoKtp/{id}','v1\UserController@show');
 Route::get('/v1/getGudang/{id}','v1\GudangController@show');
+Route::get('/v1/getBulky/{id}','v1\GudangBulkyController@show');
 Route::get('/v1/getGudang/{id}/bulky','v1\GudangBulkyController@show');
 Route::get('/v1/getPemasok/{id}','v1\PemasokController@show');
 Route::get('/v1/getPelanggan/{id}','v1\PelangganController@show');
@@ -69,3 +70,5 @@ Route::get('/v1/getGudang/{id}/user', function($id){
 Route::get('/v1/getPesanan/{id}', 'v1\PemesananController@getPesanan');
 Route::get('/v1/bulky/getPesanan/{id}', 'v1\PemesananBulkyController@getPesanan');
 Route::get('/v1/bulky/detail/pemesanan/{id}', 'v1\PemesananBulkyController@detail');
+Route::get('/v1/retail/pemesanan/{id}/terima', 'v1\PemesananController@terima');
+// Route::get('/v1/bulky/proses/pengemasan/{id}', 'v1\PemesananBulkyController@proses');

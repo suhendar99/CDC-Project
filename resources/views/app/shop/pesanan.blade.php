@@ -429,7 +429,7 @@
                                     <div class="col-md-7">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
-                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pengurus_gudang->telepon }}" >
+                                            <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pengurusGudang->telepon }}" >
                                             @error('telepon')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

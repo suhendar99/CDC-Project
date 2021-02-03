@@ -30,6 +30,7 @@ class DashboardController extends Controller
         $this->pathAdmin = 'app.dashboard.admin.';
         $this->pathBank = 'app.dashboard.bank.';
         $this->pathPengurusGudang = 'app.dashboard.pengurusGudang.';
+        $this->pathPengurusGudangBulky = 'app.dashboard.pengurusBulky.';
 
         $this->pathCompleteAkun = 'app.managementAkun.completeAkun.';
         $this->pathFotoKtp = 'app.managementAkun.completeAkun.fotoKtp.';
@@ -55,7 +56,7 @@ class DashboardController extends Controller
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
             return view($this->pathPemasok.'index');
-    	} elseif ($auth->bulky_id != null) {
+    	} elseif ($auth->pengurus_gudang_bulky_id != null) {
             // if ($auth->karyawan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
             // }
@@ -69,7 +70,7 @@ class DashboardController extends Controller
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathKaryawan.'index');
+            return view($this->pathPengurusGudangBulky.'index');
     	} elseif ($auth->pelanggan_id != null) {
             // if ($auth->pelanggan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));

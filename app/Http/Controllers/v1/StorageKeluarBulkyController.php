@@ -76,7 +76,7 @@ class StorageKeluarBulkyController extends Controller
     {
         set_time_limit(120);
         $date = date('d-m-Y');
-        $data = SuratJalan::whereId($request->query('id'))->with('user','pemesanan.gudang','pemesanan.barangPesanan')->first();
+        $data = SuratJalanBulky::whereId($request->query('id'))->with('user','pemesananBulky.bulky','pemesananBulky.barangPesananBulky')->first();
 
         // dd($data);
         // PDF::;
@@ -84,7 +84,7 @@ class StorageKeluarBulkyController extends Controller
 
         $counter = $data->count();
         $kode = sprintf("%'.04d", (String)$counter);
-        $pdf = PDF::loadview('app.transaksi.surat-jalan.print', compact('data','date','kode'));
+        $pdf = PDF::loadview('app.transaksi.surat-jalan.print_bulky', compact('data','date','kode'));
         return $pdf->stream();
 
         // return view('app.transaksi.surat-jalan.print');
@@ -109,7 +109,9 @@ class StorageKeluarBulkyController extends Controller
     public function create(Request $request)
     {
         $gudang = GudangBulky::all();
-        $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')->get();
+        $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')
+        ->where('status', 1)
+        ->get();
 
         $poci = $request->query('pemesanan', null);
 
@@ -151,100 +153,103 @@ class StorageKeluarBulkyController extends Controller
         }
 
         $pesanan = PemesananBulky::with('barangPesananBulky', 'bulky')->findOrFail($request->pemesanan_bulky_id);
+
         $gudang = $pesanan->bulky;
-        foreach ($pesanan->barangPesananBulky as $key => $value) {
-            $pesan = $value;
-        }
 
-        foreach ($pesanan->barangPesananBulky as $barang) {
-            $kode_barang = $barang->barang_kode;
+        $pesanan->update([
+            'status' => 2
+        ]);
 
-            $stok = StorageBulky::whereHas('storageMasukBulky', function($query)use($kode_barang, $gudang){
-                $query->where([
-                    ['bulky_id', $gudang->id],
-                    ['barang_kode', $kode_barang]
-                ]);
-            })
-            ->orderBy('waktu', 'asc')
-            ->get();
+        $barang = $pesanan->barangPesananBulky;
 
-            $jumlahBarang = count($stok) - 1;
-            $now = 0;
+        $kode_barang = $barang->barang_kode;
 
-            $jumlah = $barang->jumlah_barang;
-
-            $hasil = 0;
-
-            for ($i=0; $i < count($stok); $i++) {
-                # code...
-                $jumlahStok = $stok[$i]->jumlah;
-
-                if ($jumlahStok != 0) {
-                    $jumlahStok = $jumlahStok - $jumlah;
-                    if ($jumlahStok >= 0) {
-                        $stok[$i]->update([
-                            'jumlah' => $jumlahStok
-                        ]);
-
-                        break;
-                    }elseif($jumlahStok < 0){
-                        $stok[$i]->update([
-                            'jumlah' => 0
-                        ]);
-
-                        $jumlah = abs($jumlahStok);
-                    }
-                    // dd($jumlah);
-                }
-            }
-
-
-            $faker = \Faker\Factory::create('id_ID');
-
-            $kode_out = $faker->unique()->ean13;
-
-            $out = StorageKeluarBulky::create($request->only('pemesanan_bulky_id')+[
-                'bulky_id' => $gudang->id,
-                'barang_kode' => $kode_barang,
-                'jumlah' => $barang->jumlah_barang,
-                'satuan' => $barang->satuan,
-                'kode' => $kode_out,
-                'user_id' => auth()->user()->id,
-                'waktu' => now('Asia/Jakarta')
-            ]);
-
-            // BarangWarung::create([
-            //     'kode' => rand(1000000,9999999),
-            //     'storage_out_kode' => $out->kode,
-            //     'pelanggan_id' => $pesanan->pelanggan_id,
-            //     'jumlah' => $pesan->jumlah_barang,
-            //     'satuan' => $pesan->satuan,
-            //     'waktu' => Carbon::now()
-            // ]);
-            $log = LogTransaksi::create([
-                'tanggal' => now('Asia/Jakarta'),
-                'jam' => now('Asia/Jakarta'),
-                'Aktifitas_transaksi' => 'Pengiriman Barang'
-            ]);
-
-        }
-
-        foreach ($pesanan->barangPesananBulky as $kodex){
-            $jumlahAkhir = StorageBulky::whereHas('storageMasukBulky', function($query)use($kodex, $gudang){
-                $query->where([
-                        ['bulky_id', $gudang->id],
-                        ['barang_kode', $kodex->barang_kode]
-                    ]);
-            })->sum('jumlah');
-
-            StockBarangBulky::where([
+        $stok = StorageBulky::whereHas('storageMasukBulky', function($query)use($kode_barang, $gudang){
+            $query->where([
                 ['bulky_id', $gudang->id],
-                ['barang_kode', $kodex->barang_kode]
-            ])
-            ->update([
-                'jumlah' => $jumlahAkhir
+                ['barang_kode', $kode_barang]
             ]);
+        })
+        ->orderBy('waktu', 'asc')
+        ->get();
+
+        $jumlahBarang = count($stok) - 1;
+        $now = 0;
+
+        $jumlah = $barang->jumlah_barang;
+
+        $hasil = 0;
+
+        for ($i=0; $i < count($stok); $i++) {
+            # code...
+            $jumlahStok = $stok[$i]->jumlah;
+
+            if ($jumlahStok != 0) {
+                $jumlahStok = $jumlahStok - $jumlah;
+                if ($jumlahStok >= 0) {
+                    $stok[$i]->update([
+                        'jumlah' => $jumlahStok
+                    ]);
+
+                    break;
+                }elseif($jumlahStok < 0){
+                    $stok[$i]->update([
+                        'jumlah' => 0
+                    ]);
+
+                    $jumlah = abs($jumlahStok);
+                }
+                // dd($jumlah);
+            }
         }
+
+
+        $faker = \Faker\Factory::create('id_ID');
+
+        $kode_out = $faker->unique()->ean13;
+
+        $out = StorageKeluarBulky::create($request->only('pemesanan_bulky_id')+[
+            'bulky_id' => $gudang->id,
+            'barang_kode' => $kode_barang,
+            'jumlah' => $barang->jumlah_barang,
+            'satuan' => $barang->satuan,
+            'kode' => $kode_out,
+            'user_id' => auth()->user()->id,
+            'waktu' => now('Asia/Jakarta')
+        ]);
+
+
+
+        // BarangWarung::create([
+        //     'kode' => rand(1000000,9999999),
+        //     'storage_out_kode' => $out->kode,
+        //     'pelanggan_id' => $pesanan->pelanggan_id,
+        //     'jumlah' => $pesan->jumlah_barang,
+        //     'satuan' => $pesan->satuan,
+        //     'waktu' => Carbon::now()
+        // ]);
+        $log = LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'Aktifitas_transaksi' => 'Pengiriman Barang'
+        ]);
+
+        $kodex = $pesanan->barangPesananBulky;
+
+        $jumlahAkhir = StorageBulky::whereHas('storageMasukBulky', function($query)use($kodex, $gudang){
+            $query->where([
+                    ['bulky_id', $gudang->id],
+                    ['barang_kode', $kodex->barang_kode]
+                ]);
+        })->sum('jumlah');
+
+        StockBarangBulky::where([
+            ['bulky_id', $gudang->id],
+            ['barang_kode', $kodex->barang_kode]
+        ])
+        ->update([
+            'jumlah' => $jumlahAkhir
+        ]);
 
 
         $kode_kwi = $faker->unique()->ean13;
@@ -306,18 +311,11 @@ class StorageKeluarBulkyController extends Controller
             'tanggal' => now('Asia/Jakarta')
         ]);
 
-        $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->get();
+        $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->first();
         $jumlah = 0;
         $total = 0;
         $satuan = [];
         $bar = "";
-        foreach ($bp as $key => $value) {
-            $jumlah += $value->jumlah_barang;
-            $total += $value->harga;
-            $harga_total = $jumlah * $total;
-            $satuan = $value->satuan;
-            $bar .= $value->nama_barang." | ";
-        }
 
         RekapitulasiPenjualanBulky::create([
             'storage_keluar_bulky_id' => $out->id,
@@ -326,11 +324,11 @@ class StorageKeluarBulkyController extends Controller
             'no_kwitansi' => $kwitansi->kode,
             'no_surat_jalan' => $surat->kode,
             'nama_pembeli' => $out->pemesananBulky->nama_pemesan,
-            'barang' => $bar,
-            'jumlah' => $jumlah,
-            'satuan' => $satuan,
-            'harga' => $total,
-            'total' => $harga_total
+            'barang' => $out->pemesananBulky->barangPesananBulky->nama_barang,
+            'jumlah' => $out->jumlah,
+            'satuan' => $out->satuan,
+            'harga' => ($out->pemesananBulky->barangPesananBulky->harga / $out->pemesananBulky->barangPesananBulky->jumlah_barang),
+            'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
 
         return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));

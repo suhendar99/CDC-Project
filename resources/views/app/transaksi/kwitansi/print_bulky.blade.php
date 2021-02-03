@@ -238,7 +238,7 @@
 					</td>
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom bg-grey">
-						<p class="kwit text-12">{{$data->jumlah_uang_word}}</p>
+						<p class="kwit text-12">{{$data->jumlah_uang_word}} Rupiah</p>
 					</td>
 				</tr>
 				<tr>
@@ -248,9 +248,7 @@
 					<td width="5%">:</td>
 					<td width="65%" class="border-bottom">
 						<p class="kwit text-12">
-							@foreach($data->pemesananBulky->barangPesananBulky as $barang)
-								{{$barang->nama_barang}}@if($loop->iteration == $loop->count).@else, @endif
-							@endforeach
+								{{$data->pemesananBulky->barangPesananBulky->nama_barang}}
 						</p>
 					</td>
 				</tr>
