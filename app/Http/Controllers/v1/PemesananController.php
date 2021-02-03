@@ -374,7 +374,7 @@ class PemesananController extends Controller
      */
     public function destroy($id)
     {
-        Pemesanan::findOrFail($id)->delete();
+        BarangPesanan::findOrFail($id)->delete();
 
         return back()->with('success', __( 'Pemesanan masuk telah dihapus' ));
     }
