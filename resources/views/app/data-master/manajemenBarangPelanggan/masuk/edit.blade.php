@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Ubah Data Penyimpanan Masuk';
+        $pageTitle = 'Edit Data Penyimpanan Masuk';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -17,7 +17,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Penyimpanan Masuk</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Buat Data</a>
+            <a href="#" class="text-14">Edit Data</a>
           </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('barangMasukPelanggan.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('bulky.storage.masuk.update', $data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('barangMasukPelanggan.update', $data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-row">
@@ -71,8 +71,8 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Foto Kwitansi <small class="text-success">*Tidak Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" placeholder="Masukan Foto Kwitansi">
+                                        <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ $data->foto_kwitansi }}" placeholder="Masukan Foto Kwitansi">
                                         @error('foto_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -80,8 +80,8 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Foto Surat Jalan <small class="text-success">*Tidak Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" placeholder="Masukan Foto Surat Jalan">
+                                        <label>Foto Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" value="{{ $data->foto_surat_jalan }}" placeholder="Masukan Foto Surat Jalan">
                                         @error('foto_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -90,26 +90,27 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="barang" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
-                                            @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ $data->barang_kode == $barang->kode_barang ? 'selected' : ''}}>{{$barang->nama_barang}}</option>
+                                    <div class="form-group col-md-4">
+                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="storage_out_kode" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
+                                            @foreach ($barang as $barangs)
+                                                <option value="{{$barangs->kode}}" {{ $data->storage_out_kode == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->barang->satuan }}">{{$barangs->barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
-                                        @error('barang_kode')
+                                        @error('storage_out_kode')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Jumlah Barang (Lihat kwitansi) <small class="text-success">*Harus diisi</small></label>
+                                    <input type="hidden" name="satuan" value="{{$data->satuan}}">
+                                    <div class="form-group col-md-4">
+                                        <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ $data->jumlah }}" aria-describedby="satuanAppend">
                                             <div class="input-group-append">
-                                                <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
+                                                <span class="input-group-text" id="satuanAppend"></span>
                                             </div>
                                         </div>
                                         @error('jumlah')
@@ -118,8 +119,8 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Harga Beli (Lihat Kwitansi) <small class="text-success">*Harus diisi</small></label>
+                                    <div class="form-group col-md-4">
+                                        <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
@@ -132,20 +133,16 @@
                                               </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Gudang <small class="text-success">*Harus diisi</small></label>
-                                    <select name="bulky_id" id="" class="form-control">
-                                        <option value="0">--Pilih Gudang--</option>
-                                        @foreach ($gudang as $list)
-                                            <option value="{{$list->id}}" {{ $data->bulky_id == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('harga_barang')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+                                    {{-- <div class="form-group col-md-3">
+                                        <label>Harga Jual Barang Per <span id="here">-</span> <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan Harga Jual Barang" aria-describedby="ada_harga" id="harga_barang">
+                                        <small id="ada_harga" class="form-text text-primary"></small>
+                                        @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div> --}}
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">
@@ -167,19 +164,6 @@
 <script src="{{ asset('js/onscan.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#barang').change(function(event) {
-            /* Act on the event */
-            let satuan = $('#barang option:selected').data("satuan")
-            console.log(satuan)
-            $('#satuanAppend').text(satuan)
-            $('#here').text(satuan)
-
-             // for (var i = $('.tab').length - 1; i >= 1; i--) {
-
-             //     let keterangan = $('#satuanAppend').get(i).attributes[0].value+' '+kode;
-             // }
-            // $('.tab').get(n).attributes[0].value
-        });
 
         onScan.attachTo(document, {
             suffixKeyCodes: [13],

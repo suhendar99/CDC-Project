@@ -320,6 +320,27 @@ function fixStepIndicator(n) {
 }
 </script>
 <script>
+    $(document).ready(function() {
+        if ($('#selectSatuan').val() != 0 && $('#selectSatuan').val() != 'undefined') {
+            let kode = $('#selectSatuan option:selected').data("kode")
+            let idPesanan = $('#selectSatuan').val()
+            for (var i = $('.tab').length - 1; i >= 1; i--) {
+
+                let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
+                $('.tab').get(i).attributes[0].value = keterangan
+            }
+
+            $.ajax({
+                url: "/api/v1/bulky/getPesanan/"+idPesanan,
+            }).done(function(response) {
+                console.log(response);
+                $('#dibayar_oleh').val(response.data.nama_pemesan);
+                $('#jumlah_uang').val(response.harga);
+                $('#word').val(inWords(response.harga));
+            });
+        }
+    });
+
     $('#selectSatuan').change(function(event) {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")

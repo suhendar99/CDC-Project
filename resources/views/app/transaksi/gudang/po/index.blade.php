@@ -45,8 +45,8 @@
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between valign-center my-2">
                                     {{-- <a href="{{route('po.preview',$d->id)}}" class="btn btn-sm bg-my-primary">Lihat Detail</a> --}}
-                                    <div>
-                                        @if($d->status == 0)
+                                    <div class="float-left" id="pill-status">
+                                        {{-- @if($d->status == 0)
                                         <span class="badge rounded-pill bg-my-primary p-2">Pesanan Sedang Diproses</span>
                                         @elseif($d->status == 1)
                                         <span class="badge rounded-pill bg-my-warning p-2">Pinjaman Anda Sudah Disetujui</span>
@@ -54,6 +54,20 @@
                                         <span class="badge rounded-pill bg-my-success p-2">Pesanan Sudah Diterima Pemasok</span>
                                         @elseif($d->status == 3)
                                         <span class="badge rounded-pill bg-my-danger p-2">Pesanan Ditolak</span>
+                                        @endif --}}
+                                        @if($d->status == 0)
+                                        <span class="badge rounded-pill bg-my-primary p-2">Pesanan Belum Dibayar</span>
+                                        @elseif($d->status == 1)
+                                        <span class="badge rounded-pill bg-my-primary p-2">Pesanan Sedang Diproses</span>
+                                        @elseif($d->status == 2)
+                                        <span class="badge rounded-pill bg-my-primary p-2">Pesanan Sedang Dikirim</span>
+                                        @elseif($d->status == 3)
+                                        <span class="badge rounded-pill bg-my-success p-2">Pesanan Diterima</span>
+                                        @endif
+                                    </div>
+                                    <div class="float-right">
+                                        @if($d->status == 2)
+                                            <button type="button" class="btn btn-info btn-sm" title="Klik jika pesanan sudah diterima" onclick="terima({{ $d->id }})" id="btn-terima">Pesanan Diterima</button>
                                         @endif
                                     </div>
                                 </div>
@@ -69,9 +83,7 @@
                                 <div class="col-md-12">
                                     <hr class=" my-1">
                                     <span class=" text-18">Data Pemesanan Barang</span><br>
-                                    @foreach($d->barangPesananBulky as $i)
-                                    <span>{{$i->nama_barang}} ({{$i->jumlah.' '.$i->satuan}})</span>,
-                                    @endforeach
+                                    <span>{{$d->barangPesananBulky->nama_barang}} ({{$d->barangPesananBulky->jumlah.' '.$d->barangPesananBulky->satuan}})</span>
                                 </div>
                             </div>
                         </div>
@@ -96,5 +108,24 @@
 @endsection
 @push('script')
 <script type="text/javascript">
+    function terima(id) {
+        $.ajax({
+            url: "/api/v1/retail/pemesanan/"+id+"/terima",
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                console.log(response.data)
+
+                $('#btn-terima').remove();
+                $('#pill-status').html(`<span class="badge rounded-pill bg-my-success p-2">Pesanan Diterima</span>`);
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
+            }
+        });
+    }
 </script>
 @endpush

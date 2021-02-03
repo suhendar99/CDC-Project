@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Penyimpanan Masuk';
+        $pageTitle = 'Buat Data Penyimpanan Keluar';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,15 +15,12 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Penyimpanan Masuk</a>
+            <a href="#" class="text-14">Data Penyimpanan Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Buat Data</a>
           </div>
         </div>
     </div>
-    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
-        @include('layouts.dashboard.search')
-    </div> --}}
 </div>
 <div class="container">
     <div class="row h-100">
@@ -38,7 +35,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bulky.storage.store')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('barangKeluarPelanggan.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -46,65 +43,25 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('bulky.storage.masuk.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('barangKeluarPelanggan.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
-                                        @error('nomor_kwitansi')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
-                                        @error('nomor_surat_jalan')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
-                                        @error('foto_kwitansi')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Foto Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" value="{{ old('foto_surat_jalan') }}" placeholder="Masukan Foto Surat Jalan">
-                                        @error('foto_surat_jalan')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="barang" class="form-control">
-                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
+                                    <div class="form-group col-md-4">
+                                        <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
+                                        <select name="pemesanan_id" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-">--Pilih Pemesanan--</option>
+                                            @foreach ($pemesanan as $item)
+                                                <option value="{{$item->id}}" {{ old('pemesanan_id') == $item->id ? 'selected' : ''}} data-satuan="{{ $item->pemesananPembeliItem->satuan }}">{{$item->nomor_pemesanan}}|{{$item->pembeli->nama}}</option>
                                             @endforeach
                                         </select>
-                                        @error('barang_kode')
+                                        @error('pemesanan_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Jumlah Barang (Lihat kwitansi) <small class="text-success">*Harus diisi</small></label>
+                                    <div class="form-group col-md-4">
+                                        <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                             <div class="input-group-append">
@@ -117,8 +74,8 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Harga Beli (Lihat Kwitansi) <small class="text-success">*Harus diisi</small></label>
+                                    <div class="form-group col-md-4">
+                                        <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
@@ -141,20 +98,6 @@
                                             </span>
                                         @enderror
                                     </div> --}}
-                                </div>
-                                <div class="form-group">
-                                    <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
-                                    <select name="bulky_id" id="" class="form-control">
-                                        <option value="0">--Pilih Gudang Retail--</option>
-                                        @foreach ($gudang as $list)
-                                            <option value="{{$list->id}}" {{ old('bulky_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('harga_barang')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                                   <div class="row">
                                       <div class="col-md-12">

@@ -8,6 +8,7 @@ use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\File;
 
 class PemesananBulkyController extends Controller
 {
@@ -60,6 +61,28 @@ class PemesananBulkyController extends Controller
             'barang' => $barang,
             'harga' => $harga,
         ]);
+    }
+
+    public function validateBukti(Request $request, $id)
+    {
+        $v = Validator::make($request->all(),[
+            'foto_bukti' => 'required|image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput()->with('failed', __( 'Masukan format file foto yang benar dan harus berukuran tidak lebih dari 2mb.' ));
+        }
+
+        $name = $request->file('foto_bukti');
+        $foto = time()."_".$name->getClientOriginalName();
+        $name->move(public_path("upload/foto/bukti-pembayaran"), $foto);
+
+        PemesananBulky::findOrFail($id)->update([
+            'foto_bukti' => 'upload/foto/bukti-pembayaran/'.$foto,
+            'status' => 1
+        ]);
+
+        return back()->with('success', __( 'Bukti telah dimasukan.' ));
     }
 
     /**

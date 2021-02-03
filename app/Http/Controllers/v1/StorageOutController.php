@@ -225,15 +225,14 @@ class StorageOutController extends Controller
                 'waktu' => now('Asia/Jakarta')
             ]);
 
-            BarangWarung::create([
-                'kode' => rand(1000000,9999999),
-                'storage_out_kode' => $out->kode,
-                'pelanggan_id' => $pesanan->pelanggan_id,
-                'jumlah' => $pesan->jumlah_barang,
-                'satuan' => $pesan->satuan,
-                'waktu' => Carbon::now()
-            ]);
-
+            // BarangWarung::create([
+            //     'kode' => rand(1000000,9999999),
+            //     'storage_out_kode' => $out->kode,
+            //     'pelanggan_id' => $pesanan->pelanggan_id,
+            //     'jumlah' => $pesan->jumlah_barang,
+            //     'satuan' => $pesan->satuan,
+            //     'waktu' => Carbon::now()
+            // ]);
             $log = LogTransaksi::create([
                 'tanggal' => now(),
                 'jam' => now(),

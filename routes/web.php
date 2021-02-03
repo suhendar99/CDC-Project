@@ -160,6 +160,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('previews/{id}', 'PemesananController@preview')->name('preview');
 
         Route::post('upload/bukti/warung/{id}','PemesananController@bukti');
+        // Barang Masuk
+        Route::resource('barangMasukPelanggan', 'BarangMasukPelangganController');
+        Route::resource('barangKeluarPelanggan', 'BarangKeluarPelangganController');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
@@ -242,6 +245,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('bulky/surat-jalan/print', 'StorageKeluarBulkyController@printSuratJalan')->name('bulky.surat-jalan.print');
 
         Route::get('bulky/pemesanan', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
+
+        Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
     });
 
     // Gudang Retail

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
+use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
 use App\Models\PengurusGudang;
 use App\Models\Piutang;

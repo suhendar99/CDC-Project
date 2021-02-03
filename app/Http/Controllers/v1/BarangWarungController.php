@@ -64,8 +64,7 @@ class BarangWarungController extends Controller
      */
     public function edit($id)
     {
-        $data = BarangWarung::with('storageout')->findOrFail($id);
-        dd($data);
+        $data = BarangWarung::with('stok')->findOrFail($id);
 
         $base_harga = StorageIn::with('barang')
         ->where([
