@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\BarangWarung;
+use App\Models\BarangMasukPelanggan;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +67,7 @@ class BarangWarungController extends Controller
     {
         $data = BarangWarung::with('stok')->findOrFail($id);
 
-        $base_harga = StorageIn::with('barang')
+        $base_harga = BarangMasukPelanggan::with('barang')
         ->where([
             ['gudang_id', $data->gudang_id],
             ['barang_kode', $data->barang_kode]
