@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Pemesanan;
 use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
+use App\Models\PemesananPembeliItem;
 use App\Models\PengurusGudang;
 use App\Models\Piutang;
 use App\Models\Storage;
@@ -33,9 +34,45 @@ class PemesananController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function pemesananMasukPembeli()
+    public function pemesananMasukPembeli(Request $request)
     {
-        $data = PemesananPembeli::with('pemesananPembeliItem','barangKeluar')->where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
+        $data = PemesananPembeliItem::with('pemesananPembeli.pembeli')
+        ->orderBy('id','desc')
+        ->get();
+        if($request->ajax()){
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                })
+                ->addColumn('status_pemesanan', function($data){
+                    if($data->pemesananPembeli->status == 0){
+                        return '<a class="btn btn-danger btn-sm">Pesanan Ditolak</a>';
+                    }elseif ($data->pemesananPembeli->status == 1 && $data->pemesananPembeli->foto_bukti != null) {
+                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananPembeli->id.')" data-id="'.$data->pemesananPembeli->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } elseif ($data->pemesananPembeli->status == 1){
+                        return '<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
+                    }elseif ($data->pemesananPembeli->status == 2) {
+                        return '<a href="/v1/barangKeluarPelanggan/create?id='.$data->pemesananPembeli->id.'" class="btn btn-success btn-sm">Kirim</a>';
+                    } elseif ($data->pemesananPembeli->status == 4) {
+                        return 'Menunggu Pesanan Sampai .....';
+                    } elseif ($data->pemesananPembeli->status == 5) {
+                        return 'Sudah Diterima';
+                    }
+                })
+                ->addColumn('jumlah_barang', function($data){
+                    return $data->jumlah_barang.' '.$data->satuan;
+                })
+                ->addColumn('status_pembayaran', function($data){
+                    if ($data->pemesananPembeli->metode_pembayaran == null) {
+                        return "Hutang";
+                    } else{
+                        return $data->pemesananPembeli->metode_pembayaran;
+                    }
+                })
+                ->rawColumns(['action','jumlah_barang','status_pembayaran','status_pemesanan'])
+                ->make(true);
+        }
         return view('app.transaksi.pemesanan-masuk-warung.index',compact('data'));
     }
     public function index(Request $request)
@@ -325,6 +362,15 @@ class PemesananController extends Controller
             'data' => $data
         ]);
     }
+
+    public function getPemesananPembeli($id)
+    {
+        $data = PemesananPembeliItem::with('pemesananPembeli.barangKeluar')->where('id',$id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
     public function show($id)
     {
         $data = Pelanggan::with('user')->where('id',$id)->get();
@@ -396,6 +442,21 @@ class PemesananController extends Controller
     {
         $data = BarangPesanan::findOrFail($id);
         $pesanan = Pemesanan::findOrFail($data->pesanan->id);
+        $pesanan->delete();
+
+        return back()->with('success', __( 'Pemesanan masuk telah dihapus' ));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyPembeli($id)
+    {
+        $data = PemesananPembeliItem::findOrFail($id);
+        $pesanan = PemesananPembeli::findOrFail($data->pemesananPembeli->id);
         $pesanan->delete();
 
         return back()->with('success', __( 'Pemesanan masuk telah dihapus' ));

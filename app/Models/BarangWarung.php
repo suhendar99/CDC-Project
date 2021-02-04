@@ -29,4 +29,8 @@ class BarangWarung extends Model
     {
         return $this->hasMany('App\Models\BarangKeluarPelanggan', 'barang_warung_kode', 'kode');
     }
+    public function pemesananPembeliItem()
+    {
+        return $this->hasMany('App\Models\PemesananPembeliItem','barang_warung_kode','kode');
+    }
 }

@@ -142,6 +142,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Untuk Konfirmasi Penerimaan Barang
         Route::get('transaksi/warung/riwayat/konfirmasi/{id}','PemesananKeluarPembeliController@konfirmasi')->name('konfirmasi.terima.warung');
 
+
+        // Menolak Pesanan Dari Warung
+        Route::get('tolak/pesanan/pembeli/{id}','TransaksiPembeliController@tolak');
+
+        // Untuk Memvalidasi Bukti Pemayaran
+        Route::get('validasi/bukti/pembeli/{id}','TransaksiPembeliController@validasi')->name('validasi.bukti.pembeli');
+
+        Route::delete('pemesananPembeli/{id}', 'PemesananController@destroyPembeli')->name('pemesananPembeli.destroy');
+
+
         // Barang funtuk pembeli
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
@@ -179,6 +189,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Untuk Upload Bukti Pembayaran
         Route::post('upload/bukti/pembeli/{id}','TransaksiPembeliController@bukti');
+
+        
     });
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
@@ -320,6 +332,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::get('pemesanan', 'PemesananController@index')->name('pemesanan.index');
         Route::delete('pemesanan/{id}', 'PemesananController@destroy')->name('pemesanan.destroy');
+        
 
         Route::get('kwitansi/print', 'StorageOutController@printKwitansi')->name('kwitansi.print');
         Route::get('surat-jalan/print', 'StorageOutController@printSuratJalan')->name('surat-jalan.print');

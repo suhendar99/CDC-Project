@@ -42,6 +42,7 @@ Route::get('/v1/getKabupaten/{id}','v1\DashboardController@getKabupaten');
 Route::get('/v1/getKecamatan/{id}','v1\DashboardController@getKecamatan');
 Route::get('/v1/getDesa/{id}','v1\DashboardController@getDesa');
 Route::get('/v1/getDataPemesanan/{id}','v1\PemesananController@getPemesanan');
+Route::get('/v1/getDataPemesananPembeli/{id}','v1\PemesananController@getPemesananPembeli');
 Route::get('/v1/storage/barang/{kode}', 'v1\StorageInController@checkBarang');
 Route::get('/v1/check/barang/{kode}', 'v1\StorageController@check');
 Route::get('/v1/storage/out/gudang/{kode}/barang', 'v1\StorageOutController@findBarang');

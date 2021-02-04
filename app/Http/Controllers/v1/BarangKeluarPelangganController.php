@@ -51,11 +51,21 @@ class BarangKeluarPelangganController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $pemesanan = PemesananPembeli::with('pemesananPembeliItem')->where('status','4')->get();
+        if($request->query('id') != null){
+            $pemesanan = PemesananPembeli::with('pemesananPembeliItem','barangKeluar')->findOrFail($request->query('id'));
+            $set = true;
+            if ($pemesanan->barangKeluar != null) {
+                return back()->with('failed','Pesanan SedangDalam Proses Pengiriman');
+            }
+        } else {
+            $pemesanan = PemesananPembeli::with('pemesananPembeliItem','barangKeluar')->where('status','2')->doesntHave('barangKeluar')->get();
+            $set = false;
+        }
+
         $barang = BarangWarung::all();
-        return view('app.data-master.manajemenBarangPelanggan.keluar.create',compact('pemesanan','barang'));
+        return view('app.data-master.manajemenBarangPelanggan.keluar.create',compact('pemesanan','barang','set'));
     }
 
     /**
@@ -94,6 +104,9 @@ class BarangKeluarPelangganController extends Controller
                 'total' => $out->pemesanan->pemesananPembeliItem[0]->harga
             ]);
         }
+
+        $data = PemesananPembeli::findOrFail($request->pemesanan_id);
+        $data->update(['status'=>'4']);
         return back()->with('success','Data Berhasil Dibuat !');
     }
 

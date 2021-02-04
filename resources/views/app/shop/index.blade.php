@@ -85,7 +85,7 @@
 						<div class="col-12">
 							<span class="product-name">{{$b->barang->nama_barang}} (
                                 @if ($b->jumlah == 0)
-                                    Kosong
+                                    Habis
                                 @else
                                     {{$b->jumlah}} {{$b->satuan}}
                                 @endif
@@ -101,8 +101,10 @@
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu" aria-labelledby="dropmenu">
+									@if ($b->jumlah != 0)
                                     <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
                                     {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
+                        			@endif
                                     <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->gudang->user->pengurusGudang->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
                                 </div>
                             </div>
@@ -145,7 +147,7 @@
 						<div class="col-12">
 							<span class="product-name">{{$b->storageOut->barang->nama_barang}} (
                                 @if ($b->jumlah == 0)
-                                    Kosong
+                                    Habis
                                 @else
                                     {{$b->jumlah}} {{$b->satuan}}
                                 @endif
@@ -161,8 +163,10 @@
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu" aria-labelledby="dropmenu">
+                        			@if ($b->jumlah != 0)
                                     <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
                                     {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
+                        			@endif	
                                     <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
                                 </div>
                             </div>

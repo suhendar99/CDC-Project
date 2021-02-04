@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemesananPembeli;
+use App\Models\BarangWarung;
 
 class TransaksiPembeliController extends Controller
 {
@@ -16,24 +17,39 @@ class TransaksiPembeliController extends Controller
 
 	public function index()
 	{
-		$data = $this->model::with('pemesananPembeliItem','pembeli','pelanggan.kabupaten')->paginate(6);
+		$data = $this->model::with('pemesananPembeliItem','pembeli.kabupaten','pelanggan.kabupaten')->paginate(6);
 		return view($this->path.'index',compact('data'));
 	}
 
 	public function konfirmasi($id)
 	{
 		$data = $this->model::findOrFail($id);
-		$data->update(['status'=>5]);
+		$data->update(['status'=>'5']);
 		// dd($data);
 		return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
 	}
 
+    public function validasi($id)
+    {
+        $data = $this->model::findOrFail($id);
+        $data->update(['status'=>'2']);
+        // dd($data);
+        return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
+    }
+
 
     public function tolak($id)
     {
-        $data = $this->model::findOrFail($id);
+        $data = $this->model::with('pemesananPembeliItem','barangKeluar')->findOrFail($id);
         $data->update(['status'=>'0']);
+        // dd($data);
 
+        $kode = $data->pemesananPembeliItem[0]->barang;
+        $jumlah = $data->pemesananPembeliItem[0]->jumlah_barang;
+        // $d = BarangWarung::where('kode',$kode)->first();
+
+
+        dd($jumlah, $kode);
         return back()->with('success','Pesanan Berhasil Ditolak!');
     }
 
