@@ -381,22 +381,22 @@
                         <a href="{{route('piutangPelanggan.index')}}" class="valign-center"><i class="material-icons">money_off</i>Piutang</a>
                     </li>
                     <li class="
-                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPembelianPelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}
                     ">
                         <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPembelianPelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
                             <li class="{{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPenjualanPelanggan.index')}}">Penjualan</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            <li class="{{ Request::is('v1/rekapitulasiPembelianPelanggan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPembelianPelanggan.index')}}">Pembelian</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
+                            <li class="{{ Request::is('v1/laba*') ? 'active' : false }}">
+                                <a href="">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>

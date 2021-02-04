@@ -17,4 +17,8 @@ class BarangMasukPelanggan extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
+    public function rekapitulasi()
+    {
+        return $this->hasMany('App\Models\rekapitulasiPembelianPelanggan', 'barang_masuk_id', 'id');
+    }
 }

@@ -137,7 +137,7 @@
                                         </div>
                                     </div> --}}
                                     <div class="form-group">
-                                        <label>No Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <label>No Surat Jalan <small class="text-success">*Harus diisi (Untuk Profil Lembaga Minimal Karakter Huruf :3 dan Maksimal Karakter Huruf : 6)</small></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">

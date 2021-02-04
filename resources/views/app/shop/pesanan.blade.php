@@ -242,6 +242,7 @@
                             <input type="hidden" name="nama_barang" value="{{$data->storageOut->barang->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->storageOut->barang->kode_barang}}">
+                            <input type="hidden" name="barang_warung_kode" value="{{$data->kode}}">
                             {{-- <input type="hidden" name="pajak" value="{{$pajakPembeli}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="card-body">
@@ -253,7 +254,7 @@
                                             </div>
                                             <div class="col-md-7 col-6">
                                                 <div class="float-left">:</div>
-                                                <div class="float-left ml-2" id="nama"><h6>{{$data->storageOut->nama_barang}}</h6></div>
+                                                <div class="float-left ml-2" id="nama"><h6>{{$data->storageOut->barang->nama_barang}}</h6></div>
                                             </div>
                                             <div class="col-md-5 col-6">
                                                 <h6>Harga Barang</h6>
