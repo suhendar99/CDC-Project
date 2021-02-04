@@ -24,7 +24,7 @@ class LabaRugiBulkyController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/gudang-bulky/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/bulky/laba-rugi/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
@@ -50,7 +50,25 @@ class LabaRugiBulkyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'bulan' => 'required|integer|min:1|max:12',
+            'laba_kotor' => 'required|integer|min:1',
+            'penjualan' => 'required|integer|min:1',
+            'pembelian' => 'required|integer|min:1',
+            'biaya_operasional' => 'required|integer|min:1'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+
+        $laba_bersih = $request->penjualan - ($request->pembelian + $request->biaya_operasional);
+
+        LabaRugiBulky::create($request->only('bulan', 'laba_kotor', 'penjualan', 'pembelian', 'biaya_operasional')+[
+            'laba_bersih' => $laba_bersih
+        ]);
+
+        return redirect(route('bulky.laba-rugi.index'))->with('success', __( 'Data Berhasil Dibuat' ));
     }
 
     /**
@@ -72,7 +90,9 @@ class LabaRugiBulkyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = LabaRugiBulky::findOrFail($id);
+
+        return view('app.transaksi.rekapitulasi.laba-rugi-bulky.edit', compact('data'));
     }
 
     /**
@@ -84,7 +104,25 @@ class LabaRugiBulkyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'bulan' => 'required|integer|min:1|max:12',
+            'laba_kotor' => 'required|integer|min:1',
+            'penjualan' => 'required|integer|min:1',
+            'pembelian' => 'required|integer|min:1',
+            'biaya_operasional' => 'required|integer|min:1'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+
+        $laba_bersih = $request->penjualan - ($request->pembelian + $request->biaya_operasional);
+
+        LabaRugiBulky::findOrFail($id)->update($request->only('bulan', 'laba_kotor', 'penjualan', 'pembelian', 'biaya_operasional')+[
+            'laba_bersih' => $laba_bersih
+        ]);
+
+        return redirect(route('bulky.laba-rugi.index'))->with('success', __( 'Data Berhasil Diedit' ));
     }
 
     /**
@@ -95,6 +133,8 @@ class LabaRugiBulkyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        LabaRugiBulky::findOrFail($id)->delete();
+
+        return redirect(route('bulky.laba-rugi.index'))->with('success', __( 'Data Berhasil Dihapus' ));
     }
 }

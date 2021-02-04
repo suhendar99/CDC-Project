@@ -68,7 +68,7 @@
 </form>
 @push('script')
     <script>
-        var table = $('#data_table').DataTable({
+        let table = $('#data_table').DataTable({
             processing : true,
             serverSide : true,
             responsive: true,
@@ -131,18 +131,13 @@
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
-                {
-                    data : 'kapasitas_berat', render:function(data,a,b,c){
-                        return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                    }
-                },
-                {data : 'action', name: 'action'},
+                {data : 'action', name: 'action'}
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/rak/'+id
+            formDelete.action = '/v1/bulky/laba-rugi/'+id
 
             const Toast = Swal.mixin({
             toast: true,

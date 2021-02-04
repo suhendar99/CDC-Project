@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Laba Rugi Bulky';
+        $pageTitle = 'Edit Data Laba Rugi Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -17,7 +17,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Laba Rugi Bulky</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Buat Data</a>
+            <a href="#" class="text-14">Edit Data</a>
           </div>
         </div>
     </div>
@@ -46,24 +46,25 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
-                            <form action="{{route('bulky.laba-rugi.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('bulky.laba-rugi.update', $data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="bulan" id="barang" class="form-control">
-                                            <option value="1">Januari</option>
-                                            <option value="2">Februari</option>
-                                            <option value="3">Maret</option>
-                                            <option value="4">April</option>
-                                            <option value="5">Mei</option>
-                                            <option value="6">Juni</option>
-                                            <option value="7">Juli</option>
-                                            <option value="8">Agustus</option>
-                                            <option value="9">September</option>
-                                            <option value="10">Oktober</option>
-                                            <option value="11">November</option>
-                                            <option value="12">Desember</option>
+                                            <option value="1" @if($data->bulan == 1) selected @endif>Januari</option>
+                                            <option value="2" @if($data->bulan == 2) selected @endif>Februari</option>
+                                            <option value="3" @if($data->bulan == 3) selected @endif>Maret</option>
+                                            <option value="4" @if($data->bulan == 4) selected @endif>April</option>
+                                            <option value="5" @if($data->bulan == 5) selected @endif>Mei</option>
+                                            <option value="6" @if($data->bulan == 6) selected @endif>Juni</option>
+                                            <option value="7" @if($data->bulan == 7) selected @endif>Juli</option>
+                                            <option value="8" @if($data->bulan == 8) selected @endif>Agustus</option>
+                                            <option value="9" @if($data->bulan == 9) selected @endif>September</option>
+                                            <option value="10" @if($data->bulan == 10) selected @endif>Oktober</option>
+                                            <option value="11" @if($data->bulan == 11) selected @endif>November</option>
+                                            <option value="12" @if($data->bulan == 12) selected @endif>Desember</option>
                                         </select>
                                         @error('bulan')
                                             <span class="invalid-feedback" role="alert">
@@ -77,7 +78,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('laba_kotor') is-invalid @enderror" name="laba_kotor" value="{{ old('laba_kotor') }}">
+                                            <input type="number" class="form-control @error('laba_kotor') is-invalid @enderror" name="laba_kotor" value="{{ $data->laba_kotor }}">
                                         </div>
                                         @error('laba_kotor')
                                               <span class="invalid-feedback" role="alert">
@@ -93,7 +94,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('penjualan') is-invalid @enderror" name="penjualan" value="{{ old('penjualan') }}">
+                                            <input type="number" class="form-control @error('penjualan') is-invalid @enderror" name="penjualan" value="{{ $data->penjualan }}">
                                         </div>
                                         @error('penjualan')
                                               <span class="invalid-feedback" role="alert">
@@ -107,7 +108,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('pembelian') is-invalid @enderror" name="pembelian" value="{{ old('pembelian') }}">
+                                            <input type="number" class="form-control @error('pembelian') is-invalid @enderror" name="pembelian" value="{{ $data->pembelian }}">
                                         </div>
                                         @error('pembelian')
                                               <span class="invalid-feedback" role="alert">
@@ -122,7 +123,7 @@
                                         <div class="input-group-append">
                                             <span class="input-group-text">Rp.</span>
                                         </div>
-                                        <input type="number" class="form-control @error('biaya_operasional') is-invalid @enderror" name="biaya_operasional" value="{{ old('biaya_operasional') }}">
+                                        <input type="number" class="form-control @error('biaya_operasional') is-invalid @enderror" name="biaya_operasional" value="{{ $data->biaya_operasional }}">
                                     </div>
                                     @error('biaya_operasional')
                                           <span class="invalid-feedback" role="alert">
