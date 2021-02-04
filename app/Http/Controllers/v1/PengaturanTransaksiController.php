@@ -40,7 +40,8 @@ class PengaturanTransaksiController extends Controller
     {
         $v = Validator::make($request->all(),[
             'pajak' => 'required|numeric',
-            'biaya_admin' => 'required|numeric'
+            'biaya_admin' => 'required|numeric',
+            'biaya_merchant' => 'required|numeric'
         ]);
 
         if ($v->fails()) {

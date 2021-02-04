@@ -252,25 +252,25 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/po*') ? 'active' : false }}
-                        {{ Request::is('v1/returIn*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}
                         {{ Request::is('v1/returOut*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/pemesanan*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/po*') ? 'show' : false }}
-                            {{ Request::is('v1/returIn*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/retur/masuk*') ? 'show' : false }}
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
-                            {{ Request::is('v1/bulky/pemesanan*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/pemesanan/masuk*') ? 'show' : false }}
                         " id="transaksiSubmenu">
-                            <li class="{{ Request::is('v1/pemesanan*') ? 'active' : false }}">
-                                <a href="{{route('pemesanan.index')}}">Pesanan dari Retail</a>
+                            <li class="{{ Request::is('v1/bulky/pemesanan/masuk*') ? 'active' : false }}">
+                                <a href="{{route('bulky.pemesanan.index')}}">Pesanan dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
                                 <a href="{{route('po.index')}}">Pembelian ke Petani</a>
                             </li>
-                            <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
-                                <a href="{{route('returIn.index')}}">Retur dari Retail</a>
+                            <li class="{{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}">
+                                <a href="{{route('bulky.retur.masuk.index')}}">Retur dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
                                 <a href="{{route('returOut.index')}}">Retur ke Petani</a>
@@ -300,14 +300,14 @@
                     ">
                         <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'show' : false }}
                             {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
                             <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            <li class="{{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'active' : false }}">
+                                <a href="{{route('bulky.rekap.pembelian.index')}}">Pembelian</a>
                             </li>
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
@@ -331,12 +331,12 @@
                         {{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/barangKeluarPelanggan*') ? 'active' : false }}
                     ">
-                        <a href="#manajemenBarangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i>Manajemen Barang</a>
+                        <a href="#manajemensub" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i>Manajemen Barang</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                             {{ Request::is('v1/barangMasukPelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/barangKeluarPelanggan*') ? 'show' : false }}
-                        " id="manajemenBarangSubmenu">
+                        " id="manajemensub">
                             <li class="{{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}">
                                 <a href="{{route('barangMasukPelanggan.index')}}">Manajemen Barang Masuk ke Warung</a>
                             </li>
@@ -382,15 +382,15 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
-                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                        {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}
                     ">
                         <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
-                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                            {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
-                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            <li class="{{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}">
+                                <a href="{{route('rekapitulasiPenjualanPelanggan.index')}}">Penjualan</a>
                             </li>
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>

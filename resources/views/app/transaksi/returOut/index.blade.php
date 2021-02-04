@@ -1,21 +1,21 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Retur Keluar';
+        $pageTitle = 'Data Pengembalian Barang Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
 @section('content')
 <div class="row valign-center mb-2">
-    <div class="col-md-8 col-sm-12 valign-center py-2">
+    <div class="col-md-12 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
         <div>
           <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Keluar</a>
+            <a href="#" class="text-14">Data Pengembalian Barang Bulky</a>
           </div>
         </div>
     </div>
@@ -47,8 +47,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Pemesanan</th>
-                                <th>Nama Pemesan</th>
+                                <th>Kode Kwitansi</th>
+                                <th>Nomor Pemesanan</th>
                                 <th>Barang</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
@@ -150,10 +150,10 @@
             ajax : "{{ route('returOut.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'po.kode_po', name: 'kode'},
-                {data : 'po.nama_penerima', name: 'nama_penerima'},
-                {data : 'barang', render:function(data,a,b,c){
-                        return '( '+data.kode_barang+' ) '+data.nama_barang;
+                {data : 'kwitansi_bulky.kode', name: 'kode'},
+                {data : 'kwitansi_bulky.pemesanan_bulky.nomor_pemesanan', name: 'nomor_pemesanan'},
+                {data : 'kwitansi_bulky.pemesanan_bulky', render:function(data,a,b,c){
+                        return '( '+data.barang_pesanan_bulky.barang_kode+' ) '+data.barang_pesanan_bulky.nama_barang;
                     }
                 },
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
