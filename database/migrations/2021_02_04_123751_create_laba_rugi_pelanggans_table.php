@@ -15,6 +15,12 @@ class CreateLabaRugiPelanggansTable extends Migration
     {
         Schema::create('laba_rugi_pelanggans', function (Blueprint $table) {
             $table->id();
+            $table->integer('bulan');
+            $table->bigInteger('laba_kotor');
+            $table->bigInteger('penjualan');
+            $table->bigInteger('pembelian');
+            $table->bigInteger('biaya_operasional');
+            $table->bigInteger('laba_bersih');
             $table->timestamps();
         });
     }
