@@ -149,16 +149,20 @@ class StorageMasukBulkyController extends Controller
             ]);
         }
 
+        $total = ($masuk->harga_beli / $masuk->jumlah);
+
         RekapitulasiPembelianBulky::create([
             'storage_masuk_bulky_id' => $masuk->id,
             'tanggal_pembelian' => $masuk->waktu,
             'no_pembelian' => $masuk->kode,
+            'no_kwitansi' => $request->nomor_kwitansi,
+            'no_surat_jalan' => $request->nomor_surat_jalan,
             'nama_penjual' => $masuk->barang->pemasok->nama,
             'barang' => $masuk->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
             'satuan' => $barang->satuan,
-            'harga' => $masuk->barang->harga_barang,
-            'total' => $masuk->barang->harga_total
+            'harga' => $masuk->harga_beli,
+            'total' => round($total, 0, PHP_ROUND_HALF_UP)
         ]);
 
         $log = LogTransaksi::create([
