@@ -350,6 +350,19 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });
 
+
+        // Laba Bulky
+        Route::resource('retail/laba-rugi', 'LabaRugiRetailController', [
+            'names' => [
+                'index' => 'retail.laba-rugi.index',
+                'create' => 'retail.laba-rugi.create',
+                'store' => 'retail.laba-rugi.store',
+                'edit' => 'retail.laba-rugi.edit',
+                'update' => 'retail.laba-rugi.update',
+                'destroy' => 'retail.laba-rugi.destroy'
+            ]
+        ]);
+
         Route::resource('returIn', 'ReturController');
         Route::resource('returOut', 'ReturOutController');
 

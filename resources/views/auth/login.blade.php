@@ -14,14 +14,15 @@
         <div class="col-md-7">
             <div class="col-md-12">
                 <div class="text-center mb-3">
-                    <img src="{{($set->logo_app == null) ? asset('/images/logo-cdc.png') : asset($set->logo_app)}}" alt="" height="80" width="100" style="object-fit: scale-down">
+                    {{-- <img src="{{($set->logo_app == null) ? asset('/images/logo-cdc.png') : asset($set->logo_app)}}" alt="" height="80" width="100" style="object-fit: scale-down"> --}}
+                    <img src="{{asset('images/logo/Logo-CDC.svg')}}" alt="" height="100" width="200" style="object-fit: scale-down">
                 </div>
             </div>
-            <div class="col-md-12 mb-3">
+            {{-- <div class="col-md-12 mb-3">
                 <div class="text-center">
                     <h6><b>( <span class="text-my-primary">Consolidated</span> <span class="text-warning">Distribution Center</span> )</b></h6>
                 </div>
-            </div>
+            </div> --}}
             @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i data-feather="check-circle"></i>
@@ -40,7 +41,7 @@
             </div>
             @endif
             <div class="card shadow">
-                <div class="ml-4 p-2 font"><i class="fas fa-sign-in-alt text-warning"></i> <small>{{ __('Login') }}</small></div>
+                <div class="ml-4 p-2 font"><i class="fas fa-sign-in-alt text-my-primary"></i> <small>{{ __('Login') }}</small></div>
                 <hr class="m-0">
 
                 <div class="card-body">
