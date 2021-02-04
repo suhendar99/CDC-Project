@@ -331,12 +331,12 @@
                         {{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/barangKeluarPelanggan*') ? 'active' : false }}
                     ">
-                        <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i>Manajemen Barang</a>
+                        <a href="#manajemenBarangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">storage</i>Manajemen Barang</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/barangWarung*') ? 'show' : false }}
                             {{ Request::is('v1/barangMasukPelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/barangKeluarPelanggan*') ? 'show' : false }}
-                        " id="transaksiSubmenu">
+                        " id="manajemenBarangSubmenu">
                             <li class="{{ Request::is('v1/barangMasukPelanggan*') ? 'active' : false }}">
                                 <a href="{{route('barangMasukPelanggan.index')}}">Manajemen Barang Masuk ke Warung</a>
                             </li>
