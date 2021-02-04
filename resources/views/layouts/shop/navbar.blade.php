@@ -5,8 +5,15 @@
             <i class="material-icons md-24 text-my-primary">dehaze</i>
         </button>
 		<a class="navbar-brand pl-2" href="/">
-            <img src="{{asset('images/logo-cdc.png')}}" width="50" class="d-inline-block align-top" alt="">
-            <b class="text-24 text-my-primary">Shop</b>
+            @if(Auth::user()->pengurus_gudang_id != null)
+            <img src="{{asset('images/logo/logo-cdcretail.svg')}}" height="40" class="d-inline-block align-top">
+            @elseif(Auth::user()->pengurus_gudang_bulky_id != null)
+            <img src="{{asset('images/logo/logo-cdcbulky.svg')}}" height="40" class="d-inline-block align-top">
+            @elseif(Auth::user()->pelanggan_id != null) 
+            <img src="{{asset('images/logo/Logo-iwarung.svg')}}" height="40" class="d-inline-block align-top">
+            @elseif(Auth::user()->pembeli_id != null) 
+            <img src="{{asset('images/logo/Logo-imarket.svg')}}" height="40" class="d-inline-block align-top">
+            @endif
         </a>
         @guest
             <a class="ml-auto pr-2" href="{{route('login')}}">Login</a>

@@ -363,6 +363,8 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+            
+            return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
         } else{
             $v = Validator::make($request->all(),[
                 'alamat_pemesan' => 'required',
@@ -490,7 +492,7 @@ class ShopController extends Controller
                 }
             }
         }
-        return redirect('/shop')->with('sukses','Pesanan Telah dibuat !');
+        return redirect('v1/pemesananKeluarWarung')->with('sukses','Pesanan Telah dibuat !');
     }
     public function cariKategori($id)
     {

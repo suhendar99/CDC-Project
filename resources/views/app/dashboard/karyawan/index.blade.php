@@ -368,6 +368,7 @@
     chart: {
       type: 'bar',
       height: '200px',
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       toolbar: {
           show: false,
       },
@@ -385,12 +386,17 @@
           }
       }
     },
+    plotOptions: {
+      bar: {
+          distributed: true,
+      }
+    },
     markers: {
       size: 0,
     },
     series: [{
       name: 'Penjualan Bulanan',
-      data: [30,40,35,50]
+      data: [30,40,35,50],
     }],
     xaxis: {
       categories: ['Beras','Jagung','Bawang Merah','Apel']

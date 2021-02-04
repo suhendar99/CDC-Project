@@ -15,7 +15,14 @@
   // 	['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
   // );
 @endphp
-
+@push('style')
+<style type="text/css">
+	.img-banner{
+		height: 350px;
+		object-fit: cover;
+	}
+</style>
+@endpush
 @extends('layouts.dashboard.header')
 
 @section('content')
@@ -25,17 +32,25 @@
 		  <ol class="carousel-indicators">
 		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 		    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 		  </ol>
 		  <div class="carousel-inner">
 		    <div class="carousel-item active">
-		      <img class="d-block w-100" src="https://shop.redq.now.sh/_next/static/images/grocery-banner-img-one-f61643072d29ecf1481c657015b69ea3.jpg" alt="First slide">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/banner2.jpg')}}" alt="Third slide">
 			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 			    <h5>First slide</h5>
 			    <p>First slide subtitle</p>
 			  </div> --}}
 		    </div>
 		    <div class="carousel-item">
-		      <img class="d-block w-100" src="https://shop.redq.now.sh/_next/static/images/grocery-banner-img-two-02f262ef03102cd4eaeea8ef517e4a16.jpg" alt="Second slide">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/banner3.jpg')}}" alt="Second slide">
+			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
+			    <h5>Second slide</h5>
+			    <p>Second slide subtitle</p>
+			  </div> --}}
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/lapi-itb.png')}}" alt="First slide">
 			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 			    <h5>Second slide</h5>
 			    <p>Second slide subtitle</p>
