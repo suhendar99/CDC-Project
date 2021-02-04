@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pengembalian Barang Bulky';
+        $pageTitle = 'Data Pengembalian Barang Dari Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pengembalian Barang Bulky</a>
+            <a href="#" class="text-14">Data Pengembalian Barang Dari Retail</a>
           </div>
         </div>
     </div>
@@ -35,9 +35,6 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="float-right">
-                                <a href="{{route('returOut.create')}}" class="btn btn-primary btn-sm">Buat Retur Keluar</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,7 +49,7 @@
                                 <th>Barang</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -147,7 +144,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('returOut.index') }}",
+            ajax : "{{ route('bulky.retur.masuk.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'kwitansi_bulky.kode', name: 'kode'},
@@ -158,7 +155,7 @@
                 },
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
