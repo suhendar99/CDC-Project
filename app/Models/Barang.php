@@ -29,6 +29,17 @@ class Barang extends Model
     }
 
     /**
+     * Barang has many ReturKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function returKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\ReturKeluarBulky', 'barang_kode', 'kode_barang');
+    }
+
+    /**
      * Barang has many StorageIn.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -119,6 +130,17 @@ class Barang extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
         return $this->hasMany('App\Models\BarangPesanan', 'barang_kode', 'kode_barang');
+    }
+
+    /**
+     * Barang has many BarangPemesananBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function barangPemesananBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+        return $this->hasMany('App\Models\BarangPemesananBulky', 'barang_kode', 'kode_barang');
     }
 
     /**

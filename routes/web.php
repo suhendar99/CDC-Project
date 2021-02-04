@@ -292,6 +292,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         ]);
 
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
+        Route::resource('bulky/retur/keluar', 'ReturKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.retur.keluar.index',
+                'create' => 'bulky.retur.keluar.create',
+                'store' => 'bulky.retur.keluar.store',
+                'edit' => 'bulky.retur.keluar.edit',
+                'update' => 'bulky.retur.keluar.update',
+                'destroy' => 'bulky.retur.keluar.destroy'
+            ]
+        ]);
 
         // Rekapitulasi Pembeli Bulky
         Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');

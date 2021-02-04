@@ -82,7 +82,7 @@
                                     <div class="form-group col-md-6">
                                         <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}">
+                                            <input type="number" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" min="0" id="jumlah">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuan">-</span>
                                             </div>
@@ -149,7 +149,13 @@
 <script>
     $('#barang').change(function(event) {
         /* Act on the event */
-        $('#satuan').text($('#barang option:selected').data('satuan'));
+        if ($('#barang option:selected').data('satuan') == 'Kg') {
+            $('#satuan').text('Ton');
+            $('#jumlah').attr('type', 'numeric');
+        } else {
+            $('#satuan').text($('#barang option:selected').data('satuan'));
+            $('#jumlah').attr('type', 'number');
+        }
     });
 </script>
 @endpush
