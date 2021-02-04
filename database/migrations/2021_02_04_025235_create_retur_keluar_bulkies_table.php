@@ -15,6 +15,13 @@ class CreateReturKeluarBulkiesTable extends Migration
     {
         Schema::create('retur_keluar_bulkies', function (Blueprint $table) {
             $table->id();
+            $table->string('barang_kode');
+            $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->integer('jumlah_barang');
+            $table->string('satuan');
+            $table->string('nomor_kwitansi');
+            $table->date('tanggal_pengembalian');
+            $table->text('keterangan');
             $table->timestamps();
         });
     }

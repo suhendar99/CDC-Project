@@ -267,14 +267,14 @@
                     <li class="
                         {{ Request::is('v1/bulky/pemesanan/keluar*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}
-                        {{ Request::is('v1/returOut*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/retur/keluar*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/pemesanan/masuk*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/bulky/pemesanan/keluar*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/retur/masuk*') ? 'show' : false }}
-                            {{ Request::is('v1/returOut*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/retur/keluar*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/pemesanan/masuk*') ? 'show' : false }}
                         " id="transaksiSubmenu">
                             <li class="{{ Request::is('v1/bulky/pemesanan/masuk*') ? 'active' : false }}">
@@ -286,8 +286,8 @@
                             <li class="{{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}">
                                 <a href="{{route('bulky.retur.masuk.index')}}">Retur dari Retail</a>
                             </li>
-                            <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
-                                <a href="{{route('returOut.index')}}">Retur ke Pemasok</a>
+                            <li class="{{ Request::is('v1/bulky/retur/keluar*') ? 'active' : false }}">
+                                <a href="{{route('bulky.retur.keluar.index')}}">Retur ke Pemasok</a>
                             </li>
                         </ul>
                     </li>
