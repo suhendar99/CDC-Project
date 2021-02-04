@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\Po;
-use App\Models\ReturOut;
+use App\Models\ReturMasukBulky;
+use App\Models\KwitansiBulky;
+use App\Models\PemesananBulky;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -16,7 +18,7 @@ class ReturOutController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = ReturOut::with('barang', 'po')
+            $data = ReturMasukBulky::with('kwitansiBulky.pemesananBulky.barangPesananBulky')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -37,10 +39,21 @@ class ReturOutController extends Controller
      */
     public function create()
     {
-        $barang = Barang::all();
-        $pemesanan = Po::all();
+        $kwitansi = KwitansiBulky::with('pemesananBulky.barangPesananBulky')->whereHas('pemesananBulky',function($query){
+            $query->where('gudang_retail_id', auth()->user()->pengurus_gudang_id);
+        })->doesntHave('returMasukBulky')
+        ->get();
 
-        return view('app.transaksi.returOut.create', compact('barang', 'pemesanan'));
+        return view('app.transaksi.returOut.create', compact('kwitansi'));
+    }
+
+    public function barangKwitansi($id)
+    {
+        $barang = KwitansiBulky::with('pemesananBulky.barang')->find($id);
+        
+        return response()->json([
+            'data' => $barang
+        ],200);
     }
 
     /**
@@ -53,8 +66,8 @@ class ReturOutController extends Controller
     {
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'barang_kode' => 'required|exists:barangs,kode_barang',
-            'po_id' => 'required|exists:pemesanans,id',
+            // 'barang_kode' => 'required|exists:barangs,kode_barang',
+            'kwitansi_bulky_id' => 'required|exists:kwitansi_bulkies,id',
             'tanggal_pengembalian' => 'required|date',
             'keterangan' => 'required|string|max:65534'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
@@ -64,10 +77,10 @@ class ReturOutController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        ReturOut::create($request->only('barang_kode', 'po_id', 'tanggal_pengembalian', 'keterangan'));
+        ReturMasukBulky::create($request->only('kwitansi_bulky_id', 'tanggal_pengembalian', 'keterangan'));
         $log = LogTransaksi::create([
-            'tanggal' => now(),
-            'jam' => now(),
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
             'Aktifitas_transaksi' => 'Retur Barang Keluar'
         ]);
 
@@ -93,11 +106,14 @@ class ReturOutController extends Controller
      */
     public function edit($id)
     {
-        $barang = Barang::all();
-        $pemesanan = Po::all();
-        $data = ReturOut::findOrFail($id);
+        $kwitansi = KwitansiBulky::with('pemesananBulky.barangPesananBulky')->whereHas('pemesananBulky',function($query){
+            $query->where('gudang_retail_id', auth()->user()->pengurus_gudang_id);
+        })->doesntHave('returMasukBulky')
+        ->get();;
+        
+        $data = ReturMasukBulky::findOrFail($id);
 
-        return view('app.transaksi.returOut.edit', compact('barang', 'pemesanan', 'data'));
+        return view('app.transaksi.returOut.edit', compact('kwitansi', 'data'));
     }
 
     /**
@@ -111,8 +127,7 @@ class ReturOutController extends Controller
     {
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            'barang_kode' => 'required|exists:barangs,kode_barang',
-            'po_id' => 'required|exists:pemesanans,id',
+            'kwitansi_bulky_id' => 'required|exists:kwitansi_bulkies,id',
             'tanggal_pengembalian' => 'required|date',
             'keterangan' => 'required|string|max:65534'
             // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
@@ -122,7 +137,7 @@ class ReturOutController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        ReturOut::findOrFail($id)->update($request->only('barang_kode', 'po_id', 'tanggal_pengembalian', 'keterangan'));
+        ReturMasukBulky::findOrFail($id)->update($request->only('kwitansi_bulky_id', 'tanggal_pengembalian', 'keterangan'));
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Updated!' ));
     }
@@ -135,7 +150,7 @@ class ReturOutController extends Controller
      */
     public function destroy($id)
     {
-        ReturOut::findOrFail($id)->delete();
+        ReturMasukBulky::findOrFail($id)->delete();
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Deleted!' ));
     }
