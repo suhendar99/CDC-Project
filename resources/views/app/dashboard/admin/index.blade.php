@@ -23,53 +23,89 @@
     </div> --}}
 </div>
 <div class="row my-2">
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-primary">work</i>
+                    <i class="material-icons md-48 text-my-primary">shopping_bag</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
                         <span class="text-my-primary">20 Jenis</span><br>
-                        <span class="text-my-subtitle">Barang</span>
+                        <span class="text-my-subtitle">Komoditi</span>
                     </div>
                   </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
+        <div class="card my-2 shadow">
+            <div class="line-strip bg-my-primary"></div>
+            <div class="card-body dashboard">
+                <div class="row">
+                  <div class="col-4 valign-center">
+                    <i class="material-icons md-48 text-my-primary">house_siding</i>
+                  </div>
+                  <div class="col-8 valign-center flex-last">
+                    <div class="float-right text-right">
+                        <span class="text-my-primary">20 Unit</span><br>
+                        <span class="text-my-subtitle">Gudang Bulky</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card my-2 shadow">
+            <div class="line-strip bg-my-primary"></div>
+            <div class="card-body dashboard">
+                <div class="row">
+                  <div class="col-4 valign-center">
+                    <i class="material-icons md-48 text-my-primary">house_siding</i>
+                  </div>
+                  <div class="col-8 valign-center flex-last">
+                    <div class="float-right text-right">
+                        <span class="text-my-primary">50 Unit</span><br>
+                        <span class="text-my-subtitle">Gudang Retail</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
         <div class="card my-2 shadow">
             <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-warning">house_siding</i>
+                    <i class="material-icons md-48 text-my-warning">store</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">20 Unit</span><br>
-                        <span class="text-my-subtitle">Gudang</span>
+                        <span class="text-my-warning">200 Akun</span><br>
+                        <span class="text-my-subtitle">Warung</span>
                     </div>
                   </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-2 shadow">
-            <div class="line-strip bg-my-danger"></div>
+            <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-danger">people</i>
+                    <i class="material-icons md-48 text-my-warning">people</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-danger">200 Akun</span><br>
+                        <span class="text-my-warning">1000 Akun</span><br>
                         <span class="text-my-subtitle">Pembeli</span>
                     </div>
                   </div>
@@ -77,18 +113,18 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-2 shadow">
-            <div class="line-strip bg-my-success"></div>
+            <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">extension</i>
+                    <i class="material-icons md-48 text-my-warning">store</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-success">100 Orang</span><br>
-                        <span class="text-my-subtitle">Pemasok</span>
+                        <span class="text-my-warning">50 Unit</span><br>
+                        <span class="text-my-subtitle">Koperasi</span>
                     </div>
                   </div>
                 </div>
@@ -97,10 +133,10 @@
     </div>
 </div>
 <div class="row">
-  <div class="col-md-8 my-2">
+  <div class="col-12 my-2">
     <div style="width: 100%; height: 350px ;" id="mapid"></div>
   </div>
-  <div class="col-md-4 my-2">
+  <div class="col my-2">
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center">
@@ -108,18 +144,41 @@
             <span class="ml-2">Persentase Pengguna</span>
         </div>
         {{-- <hr> --}}
-        <div id="chart"></div>
+        <div id="chartPengguna"></div>
       </div>
     </div>
   </div>
+  <div class="col my-2">
+    <div class="card shadow" style="height: 350px;">
+      <div class="card-body">
+        <div class="valign-center">
+            <i class="material-icons md-36 pointer text-my-warning">people</i>
+            <span class="ml-2">Persentase Anggota Koperasi</span>
+        </div>
+        {{-- <hr> --}}
+        <div id="chartAnggota"></div>
+      </div>
+    </div>
+  </div>
+  {{-- <div class="col my-2">
+    <div class="card shadow" style="height: 350px;">
+      <div class="card-body">
+        <div class="valign-center">
+            <i class="material-icons md-36 pointer text-my-warning">people</i>
+            <span class="ml-2">Persentase Gudang Bulky dengan Retail</span>
+        </div>
+        <div id="chartGudang"></div>
+      </div>
+    </div>
+  </div> --}}
 </div>
 @endsection
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
-  var options = {
-        series: [44, 55, 41],
-        labels: ['Pemasok','Gudang','Pembeli'],
+  var optionsPengguna = {
+        series: [44, 55, 41, 30, 29],
+        labels: ['Pemasok','Gudang Bulky','Gudang Retail','Warung','Pembeli'],
         chart: {
             type: 'donut',
             height: 260
@@ -148,8 +207,76 @@
         }]
     };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
+    var chartPengguna = new ApexCharts(document.querySelector("#chartPengguna"), optionsPengguna);
+    chartPengguna.render();
+
+  var optionsAnggota = {
+        series: [44, 55],
+        labels: ['Anggota Koperasi','Umum'],
+        chart: {
+            type: 'donut',
+            height: 260
+        },
+        plotOptions: {
+            pie: {
+              donut: {
+                size: '50%'
+              }
+            }
+        },
+        legend: {
+          show: true,
+          position: 'bottom',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                  width: 300
+                },
+                legend: {
+                  position: 'bottom'
+                }
+            }
+        }]
+    };
+
+    var chartAnggota = new ApexCharts(document.querySelector("#chartAnggota"), optionsAnggota);
+    chartAnggota.render();
+
+  // var optionsGudang = {
+  //       series: [44, 29],
+  //       labels: ['Gudang Bulky','Gudang Retail'],
+  //       chart: {
+  //           type: 'donut',
+  //           height: 260
+  //       },
+  //       plotOptions: {
+  //           pie: {
+  //             donut: {
+  //               size: '50%'
+  //             }
+  //           }
+  //       },
+  //       legend: {
+  //         show: true,
+  //         position: 'bottom',
+  //       },
+  //       responsive: [{
+  //           breakpoint: 480,
+  //           options: {
+  //               chart: {
+  //                 width: 300
+  //               },
+  //               legend: {
+  //                 position: 'bottom'
+  //               }
+  //           }
+  //       }]
+  //   };
+
+  //   var chartGudang = new ApexCharts(document.querySelector("#chartGudang"), optionsGudang);
+  //   chartGudang.render();
 </script>
 {{--  --}}
 {{-- Map Section --}}
