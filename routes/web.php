@@ -186,7 +186,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::get('print/{id}', 'PoController@print')->name('po.print');
 
-    // Gudang Bulky
     Route::group(['middleware' => ['pembeli']], function() {
         Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
 
@@ -197,13 +196,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
 
     });
+
+    // Gudang Bulky
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
             // Gudang
             // Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
             Route::resource('gudang-bulky', 'GudangBulkyController');
 
-            // Route::resource('pengurus-gudang-bulky', 'PengurusGudangController');
+            Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
+                'names' => [
+                    'index' => 'bulky.pengurus.index',
+                    'create' => 'bulky.pengurus.create',
+                    'store' => 'bulky.pengurus.store',
+                    'edit' => 'bulky.pengurus.edit',
+                    'update' => 'bulky.pengurus.update',
+                    'destroy' => 'bulky.pengurus.destroy'
+                ]
+        ]);
         });
 
         Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
