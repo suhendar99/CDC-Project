@@ -53,7 +53,7 @@
                                         , Belum Diproses Penjual
                                     </span>
                                     @if($d->foto_bukti == null)
-                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
                                     @else
                                     <a class="btn btn-sm btn-primary disabled" href="#">
                                         {{

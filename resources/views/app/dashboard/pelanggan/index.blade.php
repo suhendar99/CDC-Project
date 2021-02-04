@@ -3,6 +3,11 @@
   $pageTitle = 'Dashboard Pelanggan Warung';
   $dashboard = true;
   $gudang = App\Models\Gudang::all();
+  $storage = \App\Models\Storage::all();
+  $storageIn = \App\Models\StorageIn::all();
+  $storageOut = \App\Models\StorageOut::all();
+  $pmsk = \App\Models\Pemasok::all();
+  $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -23,9 +28,54 @@
         @include('layouts.dashboard.search')
     </div> --}}
 </div>
-<div>
-    <div class="col-md-12">
-        <div style="height: 435px; width: 100%;" id="mapid"></div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow" style="height: 400px">
+            <div class="line-strip bg-my-primary"></div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12" style="font-size: .7rem;">
+                  <span style="font-size: 1rem">Log Transaksi </span><br><hr class="mb-2">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Jam</th>
+                        <th scope="col">Aktivitas Transaksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @forelse ($logTransaksi as $key => $value)
+                      <tr>
+                        <th scope="row">{{$key+1}}</th>
+                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
+                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
+                        <td>{{$value->Aktifitas_transaksi}}</td>
+                      </tr>
+                      @empty
+                      <tr>
+                        <td colspan="4"><center>Data Kosong !</center></td>
+                      </tr>
+                      @endforelse
+                    </tbody>
+                  </table>
+                    <div class="col-12 d-flex">
+                        <div class="ml-auto p-2">
+                            {{-- @if ($logTransaksi->count() > 1) --}}
+                            <center>
+                                {{$logTransaksi->links()}}
+                            </center>
+                            {{-- @endif --}}
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div style="height: 400px; width: 100%;" id="mapid"></div>
     </div>
 </div>
 @endsection
@@ -60,7 +110,6 @@
         var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
                 <b>Gudang : ${element.nama}</b><br />
                 Milik : ${element.pemilik}<br />
-                <a href="#" class="btn btn-primary btn-sm btn-block text-white">Pesan</a>
         `))
     })
     let gudangGudang = L.layerGroup(group)

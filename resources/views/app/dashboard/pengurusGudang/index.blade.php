@@ -421,6 +421,7 @@
 <script type="text/javascript">
   var options = {
     chart: {
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       type: 'bar',
       height: '200px',
       toolbar: {
@@ -440,6 +441,11 @@
           }
       }
     },
+    plotOptions: {
+      bar: {
+          distributed: true,
+      }
+    },
     markers: {
       size: 0,
     },
@@ -448,7 +454,10 @@
       data: [30,40,35,50]
     }],
     xaxis: {
-      categories: ['Beras','Jagung','Bawang Merah','Apel']
+      categories: ['Beras','Jagung','Bawang Merah','Apel'],
+      labels: {
+        show: false,
+      }
     },
     yaxis: {
       show: true,
@@ -479,6 +488,7 @@
 
   var options = {
     chart: {
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       type: 'bar',
       height: '200px',
       toolbar: {
@@ -498,6 +508,11 @@
           }
       }
     },
+    plotOptions: {
+      bar: {
+          distributed: true,
+      }
+    },
     markers: {
       size: 0,
     },
@@ -506,7 +521,10 @@
       data: [30,40,35,50]
     }],
     xaxis: {
-      categories: ['Beras','Jagung','Bawang Merah','Apel']
+      categories: ['Beras','Jagung','Bawang Merah','Apel'],
+      labels: {
+        show: false,
+      }
     },
     yaxis: {
       show: true,

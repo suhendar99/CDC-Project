@@ -30,12 +30,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-
+                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm">Next <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>

@@ -147,11 +147,11 @@ class PemesananController extends Controller
                 })
                 ->addColumn('aksi_pemesanan',function($data){
                     if ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
-                        return '&nbsp;<a href="/v1/validasi/bukti/warung/'.$data->pesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a>';
+                        return '&nbsp;<a href="/v1/validasi/bukti/warung/'.$data->pesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pesanan->status == 1){
-                        return '&nbsp;<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
+                        return '&nbsp;<a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pesanan->status == 2) {
-                        return '&nbsp;<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-success btn-sm">Kirim</a>';
+                        return '&nbsp;<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }

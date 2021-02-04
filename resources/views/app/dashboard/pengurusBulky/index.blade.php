@@ -423,6 +423,7 @@
     chart: {
       type: 'bar',
       height: '200px',
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       toolbar: {
           show: false,
       },
@@ -438,6 +439,12 @@
               enabled: true,
               speed: 350
           }
+      }
+    },
+
+    plotOptions: {
+      bar: {
+          distributed: true,
       }
     },
     markers: {
@@ -481,6 +488,7 @@
     chart: {
       type: 'bar',
       height: '200px',
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       toolbar: {
           show: false,
       },
@@ -496,6 +504,12 @@
               enabled: true,
               speed: 350
           }
+      }
+    },
+
+    plotOptions: {
+      bar: {
+          distributed: true,
       }
     },
     markers: {
