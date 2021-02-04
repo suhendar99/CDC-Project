@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <h6 class="text-danger">
-                                        Pesanan Dengan Rincian : 
+                                        Pesanan Dengan Rincian :
                                         @foreach($d->pemesananPembeliItem as $b)
                                         {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
                                         @endforeach
@@ -55,16 +55,24 @@
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
-                                        Pesanan dengan Rincian : 
+                                        Pesanan dengan Rincian :
                                         @foreach($d->pemesananPembeliItem as $b)
                                         {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
                                         @endforeach
                                         , Belum Diproses Penjual
                                     </span>
-                                    @if($d->foto_bukti == null)
-                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                    @if ($d->status == 5)
+                                        @if($d->foto_bukti == null)
+                                        <a class="btn btn-sm btn-primary" href="#"><i class="fas fa-shopping-bag"></i> Ambil Barang</a>
+                                        @else
+                                        <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                        @endif
                                     @else
-                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                        @if($d->foto_bukti == null)
+                                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                        @else
+                                        <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -116,7 +124,7 @@
                                     <hr class=" my-1">
                                 </div>
                                 <div class="col-md-8">
-                                    <h6 class="my-2">Pesanan : 
+                                    <h6 class="my-2">Pesanan :
                                         @foreach($d->pemesananPembeliItem as $key => $i)
                                         {{($key != 0) ? ',' : ''}}
                                         {{$i->nama_barang}} ({{$i->jumlah_barang.' '.$i->satuan}})
@@ -126,7 +134,7 @@
                                 <div class="col-md-4 d-flex valign-center justify-content-end">
                                     <a href="
                                         {{($d->status == 4) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
-                                    " class="btn btn-primary btn-sm 
+                                    " class="btn btn-primary btn-sm
                                         {{($d->status == 4) ? '' : 'disabled'}}
                                     " title="Klik Jika Pesanan Anda Sudah Diterima">
                                         Konfirmasi Penerimaan

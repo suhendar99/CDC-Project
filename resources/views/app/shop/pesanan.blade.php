@@ -21,7 +21,6 @@
     }
     $satuan = $data->satuan;
 @endphp
-
 @extends('layouts.dashboard.header')
 
 @section('content')
@@ -180,7 +179,20 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div id="pilihMetode" class="col-md-4 col-12">
+                                        <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
+                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
+                                            {{-- <option value="">-- Pilih Metode --</option> --}}
+                                            <option value="ambil">Barang Diambil</option>
+                                            <option value="kirim">Barang Dikirim</option>
+                                        </select>
+                                        @error('pengiriman')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nama Pembeli <small class="text-success">*Harus diisi</small></label>
                                             <input id="nama_pemesan" type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ Auth::user()->pelanggan->nama }}" >
@@ -191,7 +203,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
                                             <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pelanggan->telepon }}" >
@@ -360,7 +372,20 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div id="pilihMetode" class="col-md-4 col-12">
+                                        <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
+                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
+                                            {{-- <option value="">-- Pilih Metode --</option> --}}
+                                            <option value="ambil">Barang Diambil</option>
+                                            <option value="kirim">Barang Dikirim</option>
+                                        </select>
+                                        @error('pengiriman')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nama Pemesan <small class="text-success">*Harus diisi</small></label>
                                             <input id="nama_pemesan" type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ Auth::user()->pembeli->nama }}" >
@@ -371,7 +396,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
                                             <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pembeli->telepon }}" >
@@ -416,8 +441,8 @@
                     <div class="col-md-12">
                         <div class="card">
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->bulky->pemilik}}">
-                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudangBulky->nama}}">
-                            <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_bulky_id}}">
+                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudang->nama}}">
+                            <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_id}}">
                             <input type="hidden" name="bulky_id" value="{{$data->bulky->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">
@@ -541,7 +566,20 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="col-md-7">
+                                        <div id="pilihMetode" class="col-md-4 col-12">
+                                            <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
+                                            <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
+                                                {{-- <option value="">-- Pilih Metode --</option> --}}
+                                                <option value="ambil">Barang Diambil</option>
+                                                <option value="kirim">Barang Dikirim</option>
+                                            </select>
+                                            @error('pengiriman')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
                                                 <input id="telepon" type="number" min="1" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ Auth::user()->pengurusGudang->telepon }}" >
@@ -552,7 +590,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Alamat<small class="text-success">*Harus diisi</small></label>
                                                 <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ old('alamat_pemesan') }}"></textarea>
@@ -585,7 +623,7 @@
     </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Harap Pilih Gudang Anda</h5>
@@ -595,8 +633,8 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                  <div class="col-12">
-                      <div class="form-group">
+                  <div class="col-md-12">
+                      {{-- <div class="form-group"> --}}
                           {{-- <label>Pilih Gudang Anda <small class="text-success">*Harus diisi</small></label> --}}
                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" id="select-gudang">
                             <option value="">-- Pilih Gudang --</option>
@@ -606,7 +644,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                      </div>
+                      {{-- </div> --}}
                   </div>
               </div>
             </div>

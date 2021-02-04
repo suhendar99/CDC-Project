@@ -1,8 +1,7 @@
 @php
-        $icon = 'shopping_cart';
-        $pageTitle = 'Tambah Kategori Induk';
+        $icon = 'book';
+        $pageTitle = 'Tambah Laba Rugi';
         $dashboard = true;
-        $admin = true;
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -16,11 +15,11 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Rekapitulasi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pembeli</a>
+            <a href="#" class="text-14">Laba Rugi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Kategori Induk</a>
+            <a href="#" class="text-14">Tambah Laba Rugi</a>
           </div>
         </div>
     </div>
