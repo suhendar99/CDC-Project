@@ -52,7 +52,7 @@
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
                                     <th>Harga Beli</th>
-                                    <th>Harga Per-{{ $base_harga->satuan }}</th>
+                                    <th>Harga Dasar Per-{{ $base_harga->satuan }}</th>
                                     <th>Ambil Untung</th>
                                     <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
                                 </tr>
@@ -65,7 +65,7 @@
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" aria-describedby="satuanAppend" min="0" max="100">
+                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" aria-describedby="satuanAppend" min="1" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">%</span>
                                             </div>
@@ -89,7 +89,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">RP.</span>
                                             </div>
-                                            <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend" min="0">
+                                            <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend" min="1">
                                         </div>
                                         @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
@@ -100,7 +100,7 @@
                                     <div class="form-group col-md-6">
                                         <label>Diskon Barang <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
-                                            <input type="numeric" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon" value="{{ $diskon }}" aria-describedby="diskonR" placeholder="00.00" min="0" max="100">
+                                            <input type="numeric" min="0" max="100" id="diskon" class="form-control @error('diskon') is-invalid @enderror" name="diskon" value="0" aria-describedby="diskonR" placeholder="00.00" min="0" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="diskonR">%</span>
                                             </div>

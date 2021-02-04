@@ -341,6 +341,7 @@ class ShopController extends Controller
                 'barang_kode' => $request->barangKode,
                 'pemesanan_pembeli_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
+                'barang_warung_kode' => $request->barang_warung_kode,
                 'satuan' => $request->satuan,
                 'jumlah_barang' => $request->jumlah,
                 'pajak' => $request->pajak,

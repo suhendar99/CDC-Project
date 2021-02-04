@@ -51,42 +51,28 @@
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
-                                            @foreach ($barang as $b)
-                                                <option value="{{$b->kode_barang}}" {{ old('barang_kode') == $b->kode_barang ? 'selected' : ''}}>{{$b->nama_barang}}</option>
+                                        <label>Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="kwitansi_bulky_id" id="kwitansi" class="form-control">
+                                            <option value="0">--Pilih Pesanan--</option>
+                                            @foreach ($kwitansi as $pesan)
+                                                <option value="{{$pesan->id}}" {{ old('kwitansi_bulky_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->kode}} | {{ $pesan->bulky->nama }} | {{ $pesan->pemesananBulky->barangPesananBulky->nama_barang }}</option>
                                             @endforeach
                                         </select>
-                                        @error('barang_kode')
+                                        @error('kwitansi_bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                        <select name="po_id" id="" class="form-control">
-                                            <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($pemesanan as $pesan)
-                                                <option value="{{$pesan->id}}" {{ old('po_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_penerima}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('po_id')
+                                        <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
+                                        <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ old('tanggal_pengembalian') }}" placeholder="Enter tanggal_pengembalian">
+                                        @error('tanggal_pengembalian')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
-                                    <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ old('tanggal_pengembalian') }}" placeholder="Enter tanggal_pengembalian">
-                                    @error('tanggal_pengembalian')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Keterangan <small class="text-success">*Harus diisi</small></label>
@@ -115,5 +101,30 @@
 @endsection
 @push('script')
 <script>
+    $('#kwitansi').change(function(event) {
+        /* Act on the event */
+        let id = $('#kwitansi').val();
+        $.ajax({
+            url: "/api/v1/retur/kwitansi/"+id+"/barang",
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                let tingkat = response.data.pemesanan_bulky.barang;
+
+                $('#barang').html(`<option value="0">--Pilih Tingkat--</option>`);
+
+                    // Things[i]
+                $('#barang').append($('<option>').text(tingkat.nama_barang).attr('value', tingkat.kode_barang));
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
+                console.log('error')
+                $('#tingkat').html('');
+            }
+        });
+    });
 </script>
 @endpush

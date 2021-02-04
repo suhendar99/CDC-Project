@@ -52,6 +52,7 @@ class RekapitulasiPembelianController extends Controller
             return view($this->path.'pdf',compact('data'));
         }
     }
+    
     public function downloadRekapitulasiPembelianExcel()
     {
         $data = RekapitulasiPembelian::all();

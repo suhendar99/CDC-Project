@@ -85,6 +85,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     // Penerimaan Barang Pada Pelanggan
     Route::resource('penerimaan', 'PenerimaanController');
+
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');
@@ -173,6 +174,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Barang Masuk
         Route::resource('barangMasukPelanggan', 'BarangMasukPelangganController');
         Route::resource('barangKeluarPelanggan', 'BarangKeluarPelangganController');
+        // Rekapitulasi Penjualan
+        Route::resource('rekapitulasiPenjualanPelanggan', 'RekapitulasiPenjualanPelangganController');
+        // Rekapitulasi Pembelian
+        Route::resource('rekapitulasiPembelianPelanggan', 'RekapitulasiPembelianPelangganController');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
@@ -188,7 +193,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Untuk Upload Bukti Pembayaran
         Route::post('upload/bukti/pembeli/{id}','TransaksiPembeliController@bukti');
 
-        
+
     });
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
@@ -259,9 +264,35 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('bulky/kwitansi/print', 'StorageKeluarBulkyController@printKwitansi')->name('bulky.kwitansi.print');
         Route::get('bulky/surat-jalan/print', 'StorageKeluarBulkyController@printSuratJalan')->name('bulky.surat-jalan.print');
 
-        Route::get('bulky/pemesanan', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
+        Route::get('bulky/pemesanan/masuk', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
 
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
+
+        Route::resource('bulky/pemesanan/keluar', 'UserController');
+
+        Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
+
+        // Rekapitulasi Pembeli Bulky
+        Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
+        Route::get('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
+        Route::get('bulky/rekapitulasi/pembelian/EXCEL', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianExcel')->name('bulky.rekap.pembelian.excel');
+        
+        // Rekapitulasi Penjualan Bulky
+        Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
+        Route::get('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
+        Route::get('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
+
+        // Laba Bulky
+        Route::resource('bulky/laba-rugi', 'LabaRugiBulkyController', [
+            'names' => [
+                'index' => 'bulky.laba-rugi.index',
+                'create' => 'bulky.laba-rugi.create',
+                'store' => 'bulky.laba-rugi.store',
+                'edit' => 'bulky.laba-rugi.edit',
+                'update' => 'bulky.laba-rugi.update',
+                'destroy' => 'bulky.laba-rugi.destroy'
+            ]
+        ]);
     });
 
     // Gudang Retail
@@ -330,7 +361,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::get('pemesanan', 'PemesananController@index')->name('pemesanan.index');
         Route::delete('pemesanan/{id}', 'PemesananController@destroy')->name('pemesanan.destroy');
-        
+
 
         Route::get('kwitansi/print', 'StorageOutController@printKwitansi')->name('kwitansi.print');
         Route::get('surat-jalan/print', 'StorageOutController@printSuratJalan')->name('surat-jalan.print');

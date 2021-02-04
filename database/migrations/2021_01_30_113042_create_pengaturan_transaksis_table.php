@@ -17,6 +17,7 @@ class CreatePengaturanTransaksisTable extends Migration
             $table->id();
             $table->integer('pajak');
             $table->integer('biaya_admin');
+            $table->integer('biaya_merchant');
             $table->timestamps();
         });
     }

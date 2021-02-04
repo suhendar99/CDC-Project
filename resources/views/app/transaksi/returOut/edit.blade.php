@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Edit Data Retur Keluar';
+        $pageTitle = 'Edit Data Pengembalian Barang Ke Bulky';
 
 @endphp
 @extends('layouts.dashboard.header')
@@ -14,11 +14,11 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Retur Keluar</a>
+            <a href="#" class="text-14">Data Pengembalian Barang Ke Bulky</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Edit Data Retur Keluar</a>
+            <a href="#" class="text-14">Edit Data Pengembalian Barang</a>
           </div>
         </div>
     </div>
@@ -52,42 +52,29 @@
                                 @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Kode Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="" class="form-control">
-                                            <option value="0">--Pilih Barang--</option>
-                                            @foreach ($barang as $b)
-                                                <option value="{{$b->kode_barang}}" {{ $data->barang_kode == $b->kode_barang ? 'selected' : ''}}>{{$b->nama_barang}}</option>
+                                        <label>Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="kwitansi_bulky_id" id="" class="form-control">
+                                            <option value="0">--Pilih Pesanan--</option>
+                                            <option value="{{$data->kwitansiBulky->id}}" selected>{{$data->kwitansiBulky->kode}} | {{ $data->kwitansiBulky->bulky->nama }} | {{ $data->kwitansiBulky->pemesananBulky->barangPesananBulky->nama_barang }} </option>
+                                            @foreach ($kwitansi as $pesan)
+                                                <option value="{{$pesan->id}}">{{$pesan->kode}} | {{ $pesan->bulky->nama }} | {{ $pesan->pemesananBulky->barangPesananBulky->nama_barang }}</option>
                                             @endforeach
                                         </select>
-                                        @error('barang_kode')
+                                        @error('kwitansi_bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Pemesanan <small class="text-success">*Harus diisi</small></label>
-                                        <select name="po_id" id="" class="form-control">
-                                            <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($pemesanan as $pesan)
-                                                <option value="{{$pesan->id}}" {{ $data->po_id == $pesan->id ? 'selected' : ''}}>{{$pesan->nama_penerima}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('po_id')
+                                        <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
+                                        <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ $data->tanggal_pengembalian }}" placeholder="Enter tanggal_pengembalian">
+                                        @error('tanggal_pengembalian')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
-                                    <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ $data->tanggal_pengembalian }}" placeholder="Enter tanggal_pengembalian">
-                                    @error('tanggal_pengembalian')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Keterangan <small class="text-success">*Harus diisi</small></label>

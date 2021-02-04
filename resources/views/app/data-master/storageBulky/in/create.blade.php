@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bulky.storage.store')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>

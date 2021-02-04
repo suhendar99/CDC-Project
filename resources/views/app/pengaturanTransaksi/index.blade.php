@@ -55,6 +55,17 @@
                         @enderror
                         </div>
                     </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label for="first-name-vertical">Biaya Merchant (Rp)</label>
+                        <input type="number" min="1" id="first-name-vertical" class="form-control @error('biaya_merchant') is-invalid @enderror" name="biaya_merchant" placeholder="Nama Aplikasi" value="{{ $data->biaya_merchant }}">
+                        @error('biaya_merchant')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </div>
+                    </div>
                     <div class="col-12 d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary mr-1 mb-1 btn-sm"><i class="mdi mdi-check"></i> Simpan</button>
                     </div>
