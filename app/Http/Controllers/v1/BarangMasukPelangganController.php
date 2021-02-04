@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\BarangMasukPelanggan;
 use App\Models\BarangWarung;
 use App\Models\LogTransaksi;
+use App\Models\RekapitulasiPembelianPelanggan;
 use App\Models\StorageOut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -126,6 +127,20 @@ class BarangMasukPelangganController extends Controller
             'jumlah' => $request->jumlah,
             'satuan' => $barang->satuan,
             'waktu' => now('Asia/Jakarta')
+        ]);
+
+        RekapitulasiPembelianPelanggan::create([
+            'barang_masuk_id' => $masuk->id,
+            'tanggal_pembelian' => $masuk->waktu,
+            'no_pembelian' => $masuk->kode,
+            'no_kwitansi' => $masuk->nomor_kwitansi,
+            'no_surat_jalan' => $masuk->nomor_surat_jalan,
+            'nama_penjual' => $masuk->storageOut->pemesanan->penerima_po,
+            'barang' => $masuk->storageOut->barang->nama_barang,
+            'jumlah' => $masuk->jumlah,
+            'satuan' => $barang->satuan,
+            'harga' => $masuk->storageOut->barang->harga_barang,
+            'total' => $masuk->storageOut->pemesanan->barangPesanan[0]->harga
         ]);
 
         // dd($barangWarung);
