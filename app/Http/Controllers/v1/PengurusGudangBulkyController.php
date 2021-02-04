@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Models\Bank;
 use App\Mail\SendPasswordMail;
-use App\Models\Gudang;
-use App\Models\PengurusGudang;
+use App\Models\GudangBulky;
+use App\Models\PengurusGudangBulky;
 use App\User;
 
-class PengurusGudangController extends Controller
+class PengurusGudangBulkyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,26 +27,28 @@ class PengurusGudangController extends Controller
     {
         if($request->ajax()){
             $gudang = [];
-            foreach (auth()->user()->pengurusGudang->gudang as $value) {
+            foreach (auth()->user()->pengurusGudangBulky->bulky as $value) {
                 $gudang[] = $value->id;
             }
 
-            $data = User::with('pengurusGudang.gudang')->whereHas('pengurusGudang.gudang', function($query)use($gudang){
-                $query->whereIn('gudang_id', $gudang);
+            $data = User::with('pengurusGudangBulky.bulky')->whereHas('pengurusGudangBulky.bulky', function($query)use($gudang){
+                $query->whereIn('bulky_id', $gudang);
+            })->whereHas('pengurusGudangBulky', function($query){
+                $query->where('status', 0);
             })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<div class="text-center" style="width: 100%"><a href="/v1/pengurus-gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/bulky/pengurus/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
                 ->make(true);
         }
 
         // dd(User::has('pengurusGudang')->get());
 
-        return view('app.data-master.gudang.akun.pengurus.index');
+        return view('app.data-master.gudangBulky.akun.pengurus.index');
     }
 
     /**
@@ -56,8 +58,8 @@ class PengurusGudangController extends Controller
      */
     public function create()
     {
-        $gudang = auth()->user()->pengurusGudang->gudang;
-        return view('app.data-master.gudang.akun.pengurus.create', compact('gudang'));
+        $gudang = auth()->user()->pengurusGudangBulky->bulky;
+        return view('app.data-master.gudangBulky.akun.pengurus.create', compact('gudang'));
     }
 
     /**
@@ -73,7 +75,7 @@ class PengurusGudangController extends Controller
             'username' => 'required|string|max:50',
             'telepon' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
-            'gudang_id' => 'required|exists:gudangs,id'
+            'bulky_id' => 'required|exists:gudang_bulkies,id'
         ]);
 
         if ($v->fails()) {
@@ -86,26 +88,26 @@ class PengurusGudangController extends Controller
 
         Mail::to($request->email)->send(new SendPasswordMail($password));
 
-        $pengurus = PengurusGudang::create([
+        $pengurus = PengurusGudangBulky::create([
             'nama' => $request->name,
             'telepon' => $request->telepon,
         ]);
 
         User::create($request->only('name', 'username', 'email')+[
             'password' => Hash::make($password),
-            'pengurus_gudang_id' => $pengurus->id,
+            'pengurus_gudang_bulky_id' => $pengurus->id,
             'status' => 1
         ]);
 
-        DB::table('akun_gudangs')->insert([
-            'gudang_id' => $request->gudang_id,
-            'pengurus_id' => $pengurus->id,
+        DB::table('akun_gudang_bulkys')->insert([
+            'bulky_id' => $request->bulky_id,
+            'pengurus_bulky_id' => $pengurus->id,
             'created_at' => now('Asia/Jakarta')
         ]);
 
 
 
-        return redirect(route('pengurus-gudang.index'))->with('success', __( 'Pengurus Account Created' ));
+        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Pengurus Account Created' ));
     }
 
     /**
@@ -127,19 +129,22 @@ class PengurusGudangController extends Controller
      */
     public function edit($id)
     {
-        $gudang = auth()->user()->pengurusGudang->gudang;
+        $gudang = auth()->user()->pengurusGudangBulky->bulky;
 
         $arr = [];
 
-        foreach (auth()->user()->pengurusGudang->gudang as $value) {
+        foreach (auth()->user()->pengurusGudangBulky->bulky as $value) {
             $arr[] = $value->id;
         }
 
-        $data = User::with('pengurusGudang.gudang')->whereHas('pengurusGudang.gudang', function($query)use($arr){
-            $query->whereIn('gudang_id', $arr);
+        $data = User::with('pengurusGudangBulky.bulky')->whereHas('pengurusGudangBulky.bulky', function($query)use($arr){
+                $query->whereIn('bulky_id', $arr);
+        })->whereHas('pengurusGudangBulky', function($query){
+            $query->where('status', 0);
         })
         ->findOrFail($id);
-        return view('app.data-master.gudang.akun.pengurus.edit', compact('gudang', 'data'));
+
+        return view('app.data-master.gudangBulky.akun.pengurus.edit', compact('gudang', 'data'));
     }
 
     /**
@@ -156,25 +161,25 @@ class PengurusGudangController extends Controller
             'username' => 'required|string|max:50',
             'telepon' => 'required|numeric',
             'email' => 'required|email|unique:users,email,'.$id,
-            'gudang_id' => 'required|exists:gudangs,id'
+            'bulky_id' => 'required|exists:gudangs,id'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
-        $user = User::with('pengurusGudang')->findOrFail($id);
+        $user = User::with('pengurusGudangBulky')->findOrFail($id);
 
-        PengurusGudang::find($user->pengurusGudang->id)->update([
+        PengurusGudangBulky::find($user->pengurusGudangBulky->id)->update([
             'nama' => $request->name,
             'telepon' => $request->telepon,
         ]);
         $user->update($request->only('username', 'email'));
 
-        DB::table('akun_gudangs')->where('pengurus_id', $user->pengurus_gudang_id)->update([
-            'gudang_id' => $request->gudang_id,
+        DB::table('akun_gudang_bulkys')->where('pengurus_bulky_id', $user->pengurus_gudang_bulky_id)->update([
+            'bulky_id' => $request->bulky_id,
         ]);
 
-        return redirect(route('pengurus-gudang.index'))->with('success', __( 'Pengurus Account Updated' ));
+        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Pengurus Account Updated' ));
     }
 
     /**
@@ -187,16 +192,18 @@ class PengurusGudangController extends Controller
     {
         $arr = [];
 
-        foreach (auth()->user()->pengurusGudang->gudang as $value) {
+        foreach (auth()->user()->pengurusGudangBulky->bulky as $value) {
             $arr[] = $value->id;
         }
 
-        $user = User::with('pengurusGudang.gudang')->whereHas('pengurusGudang.gudang', function($query)use($arr){
-            $query->whereIn('gudang_id', $arr);
+        $user = User::with('pengurusGudangBulky.bulky')->whereHas('pengurusGudangBulky.bulky', function($query)use($arr){
+                $query->whereIn('bulky_id', $arr);
+        })->whereHas('pengurusGudangBulky', function($query){
+            $query->where('status', 0);
         })
         ->findOrFail($id);
 
-        PengurusGudang::where('id', $user->pengurus_gudang_id)->first()->delete();
+        PengurusGudangBulky::where('id', $user->pengurus_gudang_bulky_id)->first()->delete();
 
         $user->delete();
 

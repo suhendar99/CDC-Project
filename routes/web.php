@@ -178,13 +178,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('rekapitulasiPenjualanPelanggan', 'RekapitulasiPenjualanPelangganController');
         // Rekapitulasi Pembelian
         Route::resource('rekapitulasiPembelianPelanggan', 'RekapitulasiPembelianPelangganController');
+        // Laba Rugi
+        Route::resource('labaRugiPelanggan', 'LabaRugiPelangganController');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');
     });
     Route::get('print/{id}', 'PoController@print')->name('po.print');
 
-    // Gudang Bulky
     Route::group(['middleware' => ['pembeli']], function() {
         Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
 
@@ -195,13 +196,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
 
     });
+
+    // Gudang Bulky
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
             // Gudang
             // Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
             Route::resource('gudang-bulky', 'GudangBulkyController');
 
-            // Route::resource('pengurus-gudang-bulky', 'PengurusGudangController');
+            Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
+                'names' => [
+                    'index' => 'bulky.pengurus.index',
+                    'create' => 'bulky.pengurus.create',
+                    'store' => 'bulky.pengurus.store',
+                    'edit' => 'bulky.pengurus.edit',
+                    'update' => 'bulky.pengurus.update',
+                    'destroy' => 'bulky.pengurus.destroy'
+                ]
+        ]);
         });
 
         Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
@@ -268,15 +280,34 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
 
-        Route::resource('bulky/pemesanan/keluar', 'UserController');
+        Route::resource('bulky/pemesanan/keluar', 'PemesananKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.pemesanan.keluar.index',
+                'create' => 'bulky.pemesanan.keluar.create',
+                'store' => 'bulky.pemesanan.keluar.store',
+                'edit' => 'bulky.pemesanan.keluar.edit',
+                'update' => 'bulky.pemesanan.keluar.update',
+                'destroy' => 'bulky.pemesanan.keluar.destroy'
+            ]
+        ]);
 
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
+        Route::resource('bulky/retur/keluar', 'ReturKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.retur.keluar.index',
+                'create' => 'bulky.retur.keluar.create',
+                'store' => 'bulky.retur.keluar.store',
+                'edit' => 'bulky.retur.keluar.edit',
+                'update' => 'bulky.retur.keluar.update',
+                'destroy' => 'bulky.retur.keluar.destroy'
+            ]
+        ]);
 
         // Rekapitulasi Pembeli Bulky
         Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
         Route::get('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
         Route::get('bulky/rekapitulasi/pembelian/EXCEL', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianExcel')->name('bulky.rekap.pembelian.excel');
-        
+
         // Rekapitulasi Penjualan Bulky
         Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
         Route::get('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');

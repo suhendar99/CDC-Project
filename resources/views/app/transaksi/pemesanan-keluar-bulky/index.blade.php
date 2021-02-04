@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Rak Gudang';
+        $pageTitle = 'Data Pembelian ke Pemasok';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -9,15 +9,13 @@
     <div class="col-md-8 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
         <div>
-          <h4 class="mt-1 mb-0">{{$pageTitle}} {{ $gudang->nama }}</h4>
+          <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Gudang</a>
-            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Rak Gudang</a>
+            <a href="#" class="text-14">Data Pembelian ke Pemasok</a>
           </div>
         </div>
     </div>
@@ -38,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('rak.create', ['gudang' => $gudang->id])}}" class="btn btn-primary btn-sm">Tambah Rak Gudang</a>
+                                <a href="{{ route('bulky.pemesanan.keluar.create') }}" class="btn btn-primary btn-sm">Buat Data Pemesanan Keluar</a>
                             </div>
                         </div>
                     </div>
@@ -49,12 +47,13 @@
                         <thead>
                             <tr>
                                 <th>Nomor Pemesanan</th>
+                                <th>Tanggal Pemesanan</th>
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
-                                <th>Lebar</th>
-                                <th>Tinggi</th>
-                                <th>Maks. Kapasitas Berat</th>
-                                <th>Tingkat Rak</th>
+                                <th>Jumlah Barang</th>
+                                <th>Pemasok</th>
+                                <th>Nama Gudang Bulky</th>
+                                <th>Alamat</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -130,32 +129,20 @@
               responsive: true,
               ordering : false,
               pageLength : 10,
-              ajax : "{{ route('rak.index', ['gudang' => $gudang->id]) }}",
+              ajax : "{{ route('bulky.pemesanan.keluar.index') }}",
               columns : [
                   // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                  {data : 'kode', name: 'kode'},
-                  {data : 'nama', name: 'nama'},
+                  {data : 'nomor_pemesanan', name: 'kode'},
+                  {data : 'tanggal_pemesanan', name: 'tgl'},
+                  {data : 'barang_kode', name: 'barang_kode'},
+                  {data : 'barang.nama_barang', name: 'nama_barang'},
                   {
-                      data : 'panjang', render:function(data,a,b,c){
-                          return data + ' m';
-                      }
-                  },
-                  {
-                      data : 'lebar', render:function(data,a,b,c){
-                          return data + ' m';
-                      }
-                  },
-                  {
-                      data : 'tinggi', render:function(data,a,b,c){
-                          return data + ' m';
-                      }
-                  },
-                  {
-                      data : 'kapasitas_berat', render:function(data,a,b,c){
-                          return data + ' Kg';
-                      }
-                  },
-                  {data : 'tingkat_count', name: 'tingkat_count'},
+                      data : function(data,a,b,c){
+                          return data.jumlah + ' ' + data.satuan;
+                      }, name: 'jumlah'},
+                  {data : 'barang.pemasok.nama', name: 'nama_pemasok'},
+                  {data : 'bulky.nama', name: 'nama'},
+                  {data : 'alamat_pemesan', name: 'alamat'},
                   {data : 'action', name: 'action'},
               ]
           });
@@ -229,7 +216,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/gudang/{{ $gudang->id }}/rak/'+id
+            formDelete.action = '/v1/bulky/pemesanan/keluar/'+id
 
             const Toast = Swal.mixin({
             toast: true,
