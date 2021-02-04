@@ -90,7 +90,7 @@
                                         </span>
                                         @elseif($d->status == 4)
                                         <span class="badge rounded-pill bg-my-primary p-2">
-                                            Pesanan Dikirim
+                                            Pesanan Sedang Dikirim
                                         </span>
                                         @elseif($d->status == 5)
                                         <span class="badge rounded-pill bg-my-success">

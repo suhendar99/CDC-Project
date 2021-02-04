@@ -31,13 +31,18 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Timestamp</th>
+                                <th>Waktu</th>
                                 <th>No Pemesanan (Invoice)</th>
                                 <th>Nama Pemesan</th>
+                                <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
+                                <th>Total Pembayaran</th>
                                 <th>Metode Pembayaran</th>
-                                <th>Status Pemesanan</th>
-                                <th>Action</th>
+                                <th>Status Pembayaran</th>
+                                <th>Status Pesanan</th>
+                                <th>Bukti Pembayaran</th>
+                                <th>Aksi Pemesanan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -134,10 +139,10 @@
         <div class="modal-body">
             <img src="" class="w-100" id="foto_bukti">
         </div>
-        <div class="modal-footer">
+        {{-- <div class="modal-footer">
 
           Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
-        </div>
+        </div> --}}
       </div>
     </div>
 </div>
@@ -155,9 +160,14 @@
                 {data : 'pemesanan_pembeli.tanggal_pemesanan', name: 'tanggal_pemesanan'},
                 {data : 'pemesanan_pembeli.nomor_pemesanan', name: 'nomor_pemesanan'},
                 {data : 'pemesanan_pembeli.nama_pemesan', name: 'nama_pemesan'},
+                {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
+                {data : 'total_pembayaran', name: 'total_pembayaran'},
+                {data : 'metode_pembayaran', name: 'metode_pembayaran'},
                 {data : 'status_pembayaran', name: 'status_pembayaran'},
                 {data : 'status_pemesanan', name: 'status_pemesanan'},
+                {data : 'bukti_pembayaran', name: 'bukti_pembayaran'},
+                {data : 'aksi_pemesanan', name: 'aksi_pemesanan'},
                 {data : 'action', name: 'action'}
             ],
         });
@@ -252,7 +262,7 @@
                 success: (response)=>{
                     console.log(response.data[0]);
                     $('#foto_bukti').attr('src',`${response.data[0].pemesanan_pembeli.foto_bukti}`);
-                    $('#button_accept').attr('href','/v1/validasi/bukti/pembeli/'+response.data[0].pemesanan_pembeli.id);
+                    // $('#button_accept').attr('href','/v1/validasi/bukti/pembeli/'+response.data[0].pemesanan_pembeli.id);
 
                 },
                 error: (xhr)=>{

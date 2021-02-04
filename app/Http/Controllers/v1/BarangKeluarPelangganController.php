@@ -81,7 +81,7 @@ class BarangKeluarPelangganController extends Controller
             'barang_warung_kode' =>'required|exists:barang_warungs,kode'
         ]);
         if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
+            // return back()->withErrors($v)->withInput();
         } else {
             $out = BarangKeluarPelanggan::create([
                 'pemesanan_id' => $request->pemesanan_id,
@@ -107,7 +107,7 @@ class BarangKeluarPelangganController extends Controller
 
         $data = PemesananPembeli::findOrFail($request->pemesanan_id);
         $data->update(['status'=>'4']);
-        return back()->with('success','Data Berhasil Dibuat !');
+        return redirect('v1/barangKeluarPelanggan')->with('success','Data Berhasil Dibuat !');
     }
 
     /**

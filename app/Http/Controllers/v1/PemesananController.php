@@ -43,42 +43,78 @@ class PemesananController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    // return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->id.')" ><i class="fa fa-trash"></i> Hapus</a>';
+                })
+                ->addColumn('total_pembayaran', function($data){
+                    return '&nbsp;Rp. '.Number_format($data->harga,0,',','.');
                 })
                 ->addColumn('status_pemesanan', function($data){
+                    if($data->pemesananPembeli->status == 0){
+                        return '&nbsp;<a class="btn btn-danger btn-sm">Pesanan Ditolak</a>';
+                    }elseif ($data->pemesananPembeli->status == 1 && $data->pemesananPembeli->foto_bukti != null) {
+                        return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananPembeli->id.')" data-id="'.$data->pemesananPembeli->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } elseif ($data->pemesananPembeli->status == 1){
+                        return '&nbsp;<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
+                    }elseif ($data->pemesananPembeli->status == 2) {
+                        return '&nbsp;<a href="/v1/barangKeluarPelanggan/create?id='.$data->pemesananPembeli->id.'" class="btn btn-success btn-sm">Kirim</a>';
+                    } elseif ($data->pemesananPembeli->status == 4) {
+                        return '&nbsp;Menunggu Pesanan Sampai .....';
+                    } elseif ($data->pemesananPembeli->status == 5) {
+                        return '&nbsp;Sudah Diterima';
+                    }
                 })
                 ->addColumn('jumlah_barang', function($data){
                     return $data->jumlah_barang.' '.$data->satuan;
                 })
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pemesananPembeli->metode_pembayaran == null && $data->pemesananPembeli->foto_bukti == null) {
-                        return "Hutang";
+                        return "<span class='text-danger'>Hutang</span>";
                     } elseif ($data->pemesananPembeli->metode_pembayaran != null && $data->pemesananPembeli->foto_bukti == null ) {
-                        return "Belum Ada Bukti Pembayaran";
-                    } elseif ($data->pemesananPembeli->foto_bukti != null) {
-                        return "Lunas";
+                        return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
+                    } elseif ($data->pemesananPembeli->foto_bukti != null && $data->pemesananPembeli->status == '2') {
+                        return "<span class='text-success'>Lunas</span>";
+                    } else {
+                        return "Belum Terverifikasi";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){
                     $uc = ucwords($data->pemesananPembeli->metode_pembayaran);
                     return $uc;
                 })
-                ->addColumn('aksi_pemesanan',function($data){
-                    if($data->pemesananPembeli->status == 0){
-                        return '<a class="btn btn-danger btn-sm">Pesanan Ditolak</a>';
-                    }elseif ($data->pemesananPembeli->status == 1 && $data->pemesananPembeli->foto_bukti != null) {
-                        return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananPembeli->id.')" data-id="'.$data->pemesananPembeli->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } elseif ($data->pemesananPembeli->status == 1){
-                        return '<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
-                    }elseif ($data->pemesananPembeli->status == 2) {
-                        return '<a href="/v1/barangKeluarPelanggan/create?id='.$data->pemesananPembeli->id.'" class="btn btn-success btn-sm">Kirim</a>';
-                    } elseif ($data->pemesananPembeli->status == 4) {
-                        return 'Menunggu Pesanan Sampai .....';
-                    } elseif ($data->pemesananPembeli->status == 5) {
-                        return 'Sudah Diterima';
+                ->addColumn('bukti_pembayaran', function($data){
+                    if($data->pemesananPembeli->foto_bukti != null){
+
+                        return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananPembeli->id.')" data-id="'.$data->pemesananPembeli->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } else {
+                        return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
-                ->rawColumns(['action','aksi_pemesanan','jumlah_barang','status_pembayaran','status_pemesanan'])
+                ->addColumn('status_pemesanan',function($data){
+                    if($data->pemesananPembeli->status == 0){
+                        return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
+                    } elseif ($data->pemesananPembeli->status == 1){
+                        return '&nbsp;<span class="text-danger">Pembayaran Belum Terverifikasi</span>';
+                    }elseif ($data->pemesananPembeli->status == 2) {
+                        return '&nbsp;Pembayaran Terverifikasi';
+                    } elseif ($data->pemesananPembeli->status == 4) {
+                        return '&nbsp;Pesanan Sedang Dikirim';
+                    } elseif ($data->pemesananPembeli->status == 5) {
+                        return '&nbsp;Pesanan Sudah Diterima';
+                    }
+                })
+                ->addColumn('aksi_pemesanan',function($data){
+                    if ($data->pemesananPembeli->status == 1 && $data->pemesananPembeli->foto_bukti != null) {
+                        return '&nbsp;<a href="/v1/validasi/bukti/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pemesananPembeli/warung/'.$data->pemesananPembeli->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                    } elseif ($data->pemesananPembeli->status == 1){
+                        return '&nbsp;<a href="/v1/tolak/pemesananPembeli/warung/'.$data->pemesananPembeli->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                    } elseif ($data->pemesananPembeli->status == 2) {
+                        return '&nbsp;<a href="/v1/barangKeluarPelanggan/create?id='.$data->pemesananPembeli->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                    } else {
+                        return '&nbsp;-&nbsp;';
+                    }
+                })
+                ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','jumlah_barang','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }
         return view('app.transaksi.pemesanan-masuk-warung.index',compact('data'));
@@ -98,31 +134,18 @@ class PemesananController extends Controller
                 ->addColumn('total_pembayaran', function($data){
                     return '&nbsp;Rp. '.Number_format($data->harga,0,',','.');
                 })
-                ->addColumn('status_pemesanan', function($data){
-                    if($data->pesanan->status == 0){
-                        return '&nbsp;<a class="btn btn-danger btn-sm">Pesanan Ditolak</a>';
-                    }elseif ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
-                        return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } elseif ($data->pesanan->status == 1){
-                        return '&nbsp;<a class="btn btn-info btn-sm" >Bukti Pembayaran Belum Dikirim</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-danger btn-sm" >Tolak Pesanan</a>';
-                    }elseif ($data->pesanan->status == 2) {
-                        return '&nbsp;<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-success btn-sm">Kirim</a>';
-                    } elseif ($data->pesanan->status == 4) {
-                        return '&nbsp;Menunggu Pesanan Sampai .....';
-                    } elseif ($data->pesanan->status == 5) {
-                        return '&nbsp;Sudah Diterima';
-                    }
-                })
                 ->addColumn('jumlah_barang', function($data){
                     return $data->jumlah_barang.' '.$data->satuan;
                 })
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pesanan->metode_pembayaran == null && $data->pesanan->foto_bukti == null) {
-                        return "Hutang";
+                        return "<span class='text-danger'>Hutang</span>";
                     } elseif ($data->pesanan->metode_pembayaran != null && $data->pesanan->foto_bukti == null ) {
-                        return "Belum Ada Bukti Pembayaran";
-                    } elseif ($data->pesanan->foto_bukti != null) {
-                        return "Lunas";
+                        return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
+                    } elseif ($data->pesanan->foto_bukti != null && $data->pesanan->status == '2') {
+                        return "<span class='text-success'>Lunas</span>";
+                    } else {
+                        return "Belum Terverifikasi";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){
@@ -130,13 +153,18 @@ class PemesananController extends Controller
                     return $uc;
                 })
                 ->addColumn('bukti_pembayaran', function($data){
-                    return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    if($data->pesanan->foto_bukti != null){
+
+                        return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } else {
+                        return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
+                    }
                 })
                 ->addColumn('status_pemesanan',function($data){
                     if($data->pesanan->status == 0){
-                        return '&nbsp;Pesanan Ditolak';
+                        return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
                     } elseif ($data->pesanan->status == 1){
-                        return '&nbsp;Pembayaran Belum Terverifikasi';
+                        return '&nbsp;<span class="text-danger">Pembayaran Belum Terverifikasi</span>';
                     }elseif ($data->pesanan->status == 2) {
                         return '&nbsp;Pembayaran Terverifikasi';
                     } elseif ($data->pesanan->status == 4) {
