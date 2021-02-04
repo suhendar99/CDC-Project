@@ -246,6 +246,14 @@ integrity="sha512-K0Vddb4QdnVOAuPJBHkgrua+/A9Moyv8AQEWi0xndQ+fqbRfAFd47z4A9u1AW/
             satuan = $('#selectSatuan').val()
             $('#satuanAppend').text(satuan)
         })
+
+        $(':input[type="number"]').on('input', function(){
+            let val = $(this).val();
+            if(val < 0){
+                alert('Pastikan Inputan Anda Sesuai');
+                $(this).val(0);
+            }
+        })
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>

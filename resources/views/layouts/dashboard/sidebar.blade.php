@@ -19,6 +19,8 @@
                         <img src="{{asset('images/logo/Logo-iwarung-white.svg')}}" height="60" width="90%" class="scale-down my-3">
                         @elseif(Auth::user()->pembeli_id != null) 
                         <img src="{{asset('images/logo/Logo-imarket-white.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        @else
+                        <img src="{{asset('images/logo/Logo-CDC-White.svg')}}" height="60" width="90%" class="scale-down my-3">
                         @endif
                     </center>
                 </div>
@@ -220,11 +222,13 @@
                     <li class="
                         {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
                         {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                        {{ Request::is('v1/retail/laba-rugi*') ? 'active' : false }}
                     ">
                         <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
                             {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                            {{ Request::is('v1/retail/laba-rugi*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
                             <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
@@ -232,8 +236,8 @@
                             <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
+                            <li class="{{ Request::is('v1/retail/laba-rugi*') ? 'active' : false }}">
+                                <a href="{{route('retail.laba-rugi.index')}}">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>
