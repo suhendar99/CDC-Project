@@ -40,4 +40,15 @@ class KwitansiBulky extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * KwitansiBulky has many ReturBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function returMasukBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = kwitansiBulky_id, localKey = id)
+        return $this->hasMany('App\Models\ReturMasukBulky', 'kwitansi_bulky_id');
+    }
 }

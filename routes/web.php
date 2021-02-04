@@ -85,6 +85,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     // Penerimaan Barang Pada Pelanggan
     Route::resource('penerimaan', 'PenerimaanController');
+
     Route::group(['middleware' => ['admin']], function () {
         // User
         Route::resource('user', 'UserController');
@@ -242,9 +243,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('bulky/kwitansi/print', 'StorageKeluarBulkyController@printKwitansi')->name('bulky.kwitansi.print');
         Route::get('bulky/surat-jalan/print', 'StorageKeluarBulkyController@printSuratJalan')->name('bulky.surat-jalan.print');
 
-        Route::get('bulky/pemesanan', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
+        Route::get('bulky/pemesanan/masuk', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
 
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
+
+        Route::resource('bulky/pemesanan/keluar', 'UserController');
+
+        Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
     });
 
     // Gudang Retail

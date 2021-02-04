@@ -62,7 +62,6 @@
         </form>
 	</div>
 </div>
-@guest
 @if (Auth::user()->pelanggan_id != null)
 <div class="row" id="product-list">
 	@forelse($barang as $b)
@@ -231,7 +230,6 @@
 	@endforelse
 </div>
 @endif
-@endguest
 @if(count($barang) >= 1)
 	@if(!isset($nomore))
 	<div class="row my-4">
