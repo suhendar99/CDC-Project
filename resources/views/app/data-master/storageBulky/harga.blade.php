@@ -65,7 +65,7 @@
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" aria-describedby="satuanAppend" min="0" max="100">
+                                            <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" aria-describedby="satuanAppend" min="1" max="100">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">%</span>
                                             </div>
@@ -89,7 +89,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">RP.</span>
                                             </div>
-                                            <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend" min="0">
+                                            <input type="number" id="harga_barang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ $harga }}" aria-describedby="satuanAppend" min="1">
                                         </div>
                                         @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
