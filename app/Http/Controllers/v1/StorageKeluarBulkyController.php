@@ -317,6 +317,8 @@ class StorageKeluarBulkyController extends Controller
         $satuan = [];
         $bar = "";
 
+        $total = ($out->pemesananBulky->barangPesananBulky->harga / $out->pemesananBulky->barangPesananBulky->jumlah_barang);
+
         RekapitulasiPenjualanBulky::create([
             'storage_keluar_bulky_id' => $out->id,
             'tanggal_penjualan' => $out->waktu,
@@ -327,7 +329,7 @@ class StorageKeluarBulkyController extends Controller
             'barang' => $out->pemesananBulky->barangPesananBulky->nama_barang,
             'jumlah' => $out->jumlah,
             'satuan' => $out->satuan,
-            'harga' => ($out->pemesananBulky->barangPesananBulky->harga / $out->pemesananBulky->barangPesananBulky->jumlah_barang),
+            'harga' => round($total, 0, PHP_ROUND_HALF_UP),
             'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
 

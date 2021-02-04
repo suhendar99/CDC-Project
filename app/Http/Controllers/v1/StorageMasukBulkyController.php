@@ -161,8 +161,8 @@ class StorageMasukBulkyController extends Controller
             'barang' => $masuk->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
             'satuan' => $barang->satuan,
-            'harga' => $masuk->harga_beli,
-            'total' => round($total, 0, PHP_ROUND_HALF_UP)
+            'harga' => round($total, 0, PHP_ROUND_HALF_UP),
+            'total' => $masuk->harga_beli
         ]);
 
         $log = LogTransaksi::create([
