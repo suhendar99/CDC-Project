@@ -1,13 +1,13 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Tambah Data Pengurus';
+        $pageTitle = 'Tambah Data Pengurus Gudang Bulky';
 
 @endphp
 @extends('layouts.dashboard.header')
 
 @section('content')
 <div class="row valign-center mb-2">
-    <div class="col-md-8 col-sm-12 valign-center py-2">
+    <div class="col-md-12 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
         <div>
           <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
@@ -16,9 +16,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pengurus Gudang</a>
+            <a href="#" class="text-14">Data Pengurus Gudang Bulky</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Data Pengurus</a>
+            <a href="#" class="text-14">Tambah Data Pengurus Gudang Bulky</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('pengurus-gudang.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('bulky.pengurus.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -47,13 +47,13 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('pengurus-gudang.update', $data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('bulky.pengurus.update', $data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Nama Akun <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->pengurus->nama }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Masukan Nama Akun Pengurus">
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $data->pengurusGudangBulky->nama }}" id="scanBarang" aria-describedby="barangStatus" placeholder="Masukan Nama Akun Pengurus">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Nomor Telepon <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $data->pengurusGudang->telepon }}" placeholder="Masukan Nomor Telepon">
+                                        <input type="number" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $data->pengurusGudangBulky->telepon }}" placeholder="Masukan Nomor Telepon">
                                         @error('telepon')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -92,13 +92,13 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Gudang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="" class="form-control">
+                                        <select name="bulky_id" id="" class="form-control">
                                             <option value="0">--Pilih Gudang--</option>
                                             @foreach($gudang as $d)
-                                                <option value="{{ $d->id }}" @if($d->id == $data->pengurusGudang->gudang[0]->id) selected @endif>{{ $d->nama }}</option>
+                                                <option value="{{ $d->id }}" @if($d->id == $data->pengurusGudangBulky->bulky[0]->id) selected @endif>{{ $d->nama }}</option>
                                             @endforeach
                                         </select>
-                                        @error('gudang_id')
+                                        @error('bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

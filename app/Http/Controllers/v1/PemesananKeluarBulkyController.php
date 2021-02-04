@@ -66,7 +66,7 @@ class PemesananKeluarBulkyController extends Controller
                 // 'pembayaran' => 'required',
                 'telepon' => 'required',
                 'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|integer|min:1'
+                'jumlah' => 'required|numeric|min:1'
             ]);
         } else {
             $v = Validator::make($request->all(),[
@@ -75,7 +75,7 @@ class PemesananKeluarBulkyController extends Controller
                 // 'pembayaran' => 'required',
                 'telepon' => 'required',
                 'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|integer|min:1'
+                'jumlah' => 'required|numeric|min:1'
             ]);
         }
         
@@ -150,9 +150,17 @@ class PemesananKeluarBulkyController extends Controller
 
         $barang = Barang::where('kode_barang', $request->barang_kode)->first();
 
+        if ($barang->satuan == 'Kg') {
+            $jumlah = $request->jumlah * 1000;
+        } else {
+            $jumlah = $request->jumlah;
+        }
+        
+
         $bulky = (isset($request->bulky_id)) ? $request->bulky_id : auth()->user()->pengurusGudangBulky->akunGudangBulky[0]->bulky_id ;
 
-        $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','telepon','alamat_pemesan','metode_pembayaran', 'barang_kode', 'jumlah'),[
+        $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','telepon','alamat_pemesan','metode_pembayaran', 'barang_kode'),[
+            'jumlah' => $jumlah,
             'penerima_po' => $barang->pemasok->nama,
             'bulky_id' => $request->bulky_id,
             'satuan' => $barang->satuan,

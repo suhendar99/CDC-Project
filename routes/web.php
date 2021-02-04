@@ -186,7 +186,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     });
     Route::get('print/{id}', 'PoController@print')->name('po.print');
 
-    // Gudang Bulky
     Route::group(['middleware' => ['pembeli']], function() {
         Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
 
@@ -197,13 +196,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
 
     });
+
+    // Gudang Bulky
     Route::group(['middleware' => ['bulky']], function() {
         Route::group(['middleware' => 'pemilikBulky'], function() {
             // Gudang
             // Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
             Route::resource('gudang-bulky', 'GudangBulkyController');
 
-            // Route::resource('pengurus-gudang-bulky', 'PengurusGudangController');
+            Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
+                'names' => [
+                    'index' => 'bulky.pengurus.index',
+                    'create' => 'bulky.pengurus.create',
+                    'store' => 'bulky.pengurus.store',
+                    'edit' => 'bulky.pengurus.edit',
+                    'update' => 'bulky.pengurus.update',
+                    'destroy' => 'bulky.pengurus.destroy'
+                ]
+        ]);
         });
 
         Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
@@ -282,6 +292,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         ]);
 
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
+        Route::resource('bulky/retur/keluar', 'ReturKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.retur.keluar.index',
+                'create' => 'bulky.retur.keluar.create',
+                'store' => 'bulky.retur.keluar.store',
+                'edit' => 'bulky.retur.keluar.edit',
+                'update' => 'bulky.retur.keluar.update',
+                'destroy' => 'bulky.retur.keluar.destroy'
+            ]
+        ]);
 
         // Rekapitulasi Pembeli Bulky
         Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
