@@ -11,7 +11,7 @@ class PemesananKeluarBulky extends Model
      *
      * @var string
      */
-    protected $table = 'pemesanan_keluar_bulkies';
+    protected $table = 'pemesanan_keluar_bulky';
     protected $guarded = [];
 
     /**

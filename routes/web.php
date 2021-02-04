@@ -268,7 +268,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
 
-        Route::resource('bulky/pemesanan/keluar', 'UserController');
+        Route::resource('bulky/pemesanan/keluar', 'PemesananKeluarBulkyController', [
+            'names' => [
+                'index' => 'bulky.pemesanan.keluar.index',
+                'create' => 'bulky.pemesanan.keluar.create',
+                'store' => 'bulky.pemesanan.keluar.store',
+                'edit' => 'bulky.pemesanan.keluar.edit',
+                'update' => 'bulky.pemesanan.keluar.update',
+                'destroy' => 'bulky.pemesanan.keluar.destroy'
+            ]
+        ]);
 
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
 

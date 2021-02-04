@@ -251,14 +251,14 @@
                         <a href="{{route('bulky.storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>
                     <li class="
-                        {{ Request::is('v1/po*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/pemesanan/keluar*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}
                         {{ Request::is('v1/returOut*') ? 'active' : false }}
-                        {{ Request::is('v1/bulky/pemesanan*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/pemesanan/masuk*') ? 'active' : false }}
                     ">
                         <a href="#transaksiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">attach_money</i>Transaksi</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/po*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/pemesanan/keluar*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/retur/masuk*') ? 'show' : false }}
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/pemesanan/masuk*') ? 'show' : false }}
@@ -266,18 +266,18 @@
                             <li class="{{ Request::is('v1/bulky/pemesanan/masuk*') ? 'active' : false }}">
                                 <a href="{{route('bulky.pemesanan.index')}}">Pesanan dari Retail</a>
                             </li>
-                            <li class="{{ Request::is('v1/po*') ? 'active' : false }}">
-                                <a href="{{route('po.index')}}">Pembelian ke Petani</a>
+                            <li class="{{ Request::is('v1/bulky/pemesanan/keluar*') ? 'active' : false }}">
+                                <a href="{{route('bulky.pemesanan.keluar.index')}}">Pembelian ke Pemasok</a>
                             </li>
                             <li class="{{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}">
                                 <a href="{{route('bulky.retur.masuk.index')}}">Retur dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/returOut*') ? 'active' : false }}">
-                                <a href="{{route('returOut.index')}}">Retur ke Petani</a>
+                                <a href="{{route('returOut.index')}}">Retur ke Pemasok</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="
+                    {{-- <li class="
                         {{ Request::is('v1/piutangIn*') ? 'active' : false }}
                         {{ Request::is('v1/piutangOut*') ? 'active' : false }}
                     ">
@@ -293,7 +293,7 @@
                                 <a href="{{route('piutangOut.index')}}">Piutang ke Petani</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     <li class="
                         {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'active' : false }}
