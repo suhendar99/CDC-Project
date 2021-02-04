@@ -295,22 +295,24 @@
                         </ul>
                     </li>
                     <li class="
-                        {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
-                        {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/laba-rugi*') ? 'active' : false }}
                     ">
                         <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
-                            {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/laba-rugi*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
-                            <li class="{{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPenjualan.index')}}">Penjualan</a>
+                            <li class="{{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'active' : false }}">
+                                <a href="{{route('bulky.rekap.penjualan.index')}}">Penjualan</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Pembelian</a>
+                            <li class="{{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'active' : false }}">
+                                <a href="{{route('bulky.rekap.pembelian.index')}}">Pembelian</a>
                             </li>
-                            <li class="{{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}">
-                                <a href="{{route('rekapitulasiPembelian.index')}}">Laba Rugi</a>
+                            <li class="{{ Request::is('v1/bulky/laba-rugi*') ? 'active' : false }}">
+                                <a href="{{route('bulky.laba-rugi.index')}}">Laba Rugi</a>
                             </li>
                         </ul>
                     </li>

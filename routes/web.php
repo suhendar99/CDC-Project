@@ -271,6 +271,28 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('bulky/pemesanan/keluar', 'UserController');
 
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
+
+        // Rekapitulasi Pembeli Bulky
+        Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
+        Route::get('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
+        Route::get('bulky/rekapitulasi/pembelian/EXCEL', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianExcel')->name('bulky.rekap.pembelian.excel');
+        
+        // Rekapitulasi Penjualan Bulky
+        Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
+        Route::get('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
+        Route::get('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
+
+        // Laba Bulky
+        Route::resource('bulky/laba-rugi', 'LabaRugiBulkyController', [
+            'names' => [
+                'index' => 'bulky.laba-rugi.index',
+                'create' => 'bulky.laba-rugi.create',
+                'store' => 'bulky.laba-rugi.store',
+                'edit' => 'bulky.laba-rugi.edit',
+                'update' => 'bulky.laba-rugi.update',
+                'destroy' => 'bulky.laba-rugi.destroy'
+            ]
+        ]);
     });
 
     // Gudang Retail
