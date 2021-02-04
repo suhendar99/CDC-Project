@@ -55,7 +55,7 @@
                 @foreach($data as $gudang)
                 <div class="col-4">
                     <div class="card">
-                        <img src="{{ asset($gudang->foto) }}" alt="Card Image" class="card-img-top" style="height: 150px;">
+                        <img src="{{ ($gudang->foto != null) ? asset($gudang->foto) : asset('images/gudang-bulky.jpg')}}" alt="Card Image" class="card-img-top" style="height: 150px;">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-8">
@@ -98,9 +98,9 @@
                             </div>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Jumlah Rak: {{ $gudang->rak_count }} <a href="{{ route('rak.bulky.index', $gudang->id) }}" class="text-primary">Detail</a></li>
-                            <li class="list-group-item">Hari Kerja: {{ $gudang->hari }}</li>
-                            <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
+                            <li class="list-group-item">Jumlah Rak : {{ $gudang->rak_count }} <a href="{{ route('rak.bulky.index', $gudang->id) }}" class="text-primary">Detail</a></li>
+                            <li class="list-group-item">Hari Kerja : {{ $gudang->hari }}</li>
+                            <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">Jam Kerja : {{ $gudang->jam_buka }} - {{ $gudang->jam_tutup }}</li>
                         </ul>
                         <div class="card-body" style="border-bottom: 5px solid #ffa723;">
                             <h6>Alamat</h5>
