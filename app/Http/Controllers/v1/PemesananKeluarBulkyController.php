@@ -77,6 +77,9 @@ class PemesananKeluarBulkyController extends Controller
             return back()->withErrors($v)->withInput();
             // return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
+        if($request->bulky_id == null || $request->barang_kode == null || $request->metode_pembayaran == null){
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+        }
 
         date_default_timezone_set('Asia/Jakarta');
 
@@ -234,9 +237,11 @@ class PemesananKeluarBulkyController extends Controller
 
 
         if ($v->fails()) {
-            dd($v);
             return back()->withErrors($v)->withInput();
             // return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+        }
+        if($request->bulky_id == null || $request->barang_kode == null || $request->metode_pembayaran == null){
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
 
         date_default_timezone_set('Asia/Jakarta');

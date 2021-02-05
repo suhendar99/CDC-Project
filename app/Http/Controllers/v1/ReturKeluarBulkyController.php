@@ -110,7 +110,7 @@ class ReturKeluarBulkyController extends Controller
         ]);
 
 
-        return redirect(route('bulky.retur.keluar.index'))->with('success', __( 'Retur Created!' ));
+        return redirect(route('bulky.retur.keluar.index'))->with('success', __( 'Retur berhasil dibuat!' ));
     }
 
     /**
@@ -157,6 +157,6 @@ class ReturKeluarBulkyController extends Controller
     {
         ReturKeluarBulky::findOrFail($id)->delete();
 
-        return back()->with('success', __( 'Data berhasil dihapus.' ));
+        return back()->with('success', __( 'Retur berhasil dihapus.' ));
     }
 }
