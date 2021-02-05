@@ -18,7 +18,7 @@ class CreateStockBarangsTable extends Migration
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
-            $table->bigInteger('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan', 50);
             $table->bigInteger('harga_barang')->nullable();
             $table->float('diskon', 11, 2)->nullable();

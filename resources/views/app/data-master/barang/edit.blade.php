@@ -113,14 +113,11 @@
                                     <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                         <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
+                                            <option value="ton">ton</option>
+                                            <option value="kwintal">kwintal</option>
                                             <option value="kg">kg</option>
-                                            <option value="ons">ons</option>
                                             <option value="gram">gram</option>
-                                            <option value="ml">ml</option>
-                                            <option value="m3">m<sup>3</sup></option>
-                                            <option value="m2">m<sup>2</sup></option>
-                                            <option value="m">m</option>
-                                            <option value="gram">cm</option>
+                                            <option value="ons">ons</option>
                                         </select>
                                         @error('satuan')
                                             <span class="invalid-feedback" role="alert">

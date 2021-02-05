@@ -64,7 +64,8 @@
                                                 <th>Waktu</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
-                                                <th>Stok Barang</th>
+                                                <th>Jumlah Barang</th>
+                                                <th>Satuan</th>
                                                 <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
                                                 <th>Diskon Barang</th>
@@ -77,11 +78,12 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>DateTime</th>
+                                                <th>Waktu</th>
                                                 <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
+                                                <th>Satuan</th>
                                                 <th>Harga Beli</th>
                                                 <th>Action</th>
                                             </tr>
@@ -110,11 +112,12 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
+                                                                <th>Waktu</th>
                                                                 <th>Kode Penyimpanan / Barcode</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
+                                                                <th>Satuan</th>
                                                                 <th>Pemesanan</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -126,8 +129,7 @@
                                                     <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
-                                                                <th>No</th>
+                                                                <th>Waktu</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>Pemesanan</th>
@@ -142,8 +144,8 @@
                                                     <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
-                                                                <th>No</th>
+                                                                <th>Waktu</th>
+                                                                <th>No Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
                                                                 <th>Tempat</th>
@@ -254,9 +256,10 @@
                   <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>DateTime</th>
+                            <th>Waktu</th>
                             <th>Kode Masuk Barang</th>
                             <th>Jumlah Barang</th>
+                            <th>Satuan</th>
                             <th>Rak</th>
                             <th>Tingkat Rak</th>
                             <th>Aksi</th>
@@ -292,10 +295,12 @@
                     }, name: 'waktu'},
                 {data : 'bulky.nama', name: 'bulky'},
                 {data : 'barang.nama_barang', name: 'nama_barang'},
-                {data : function(data,a,b,c){
-                        return data.jumlah + " " + data.satuan;
-                    }, name: 'jumlah'
-                },
+                {data : 'jumlah', name: 'jumlah'},
+                {data : 'satuan', name: 'satuan'},
+                // {data : function(data,a,b,c){
+                //         return data.jumlah + " " + data.satuan;
+                //     }, name: 'jumlah'
+                // },
                 {data : function (data, type, row, meta) {
                         let van = '';
                         // console.log(data)
@@ -306,7 +311,7 @@
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {
-                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + ((data.satuan == 'Ton') ? 'Kwintal' : data.satuan);
                         } else {
                             return 'Harga belum diatur.';
                         }
@@ -335,7 +340,10 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', name: 'waktu'},
+                {data : 'created_at', render:function(data,a,b,c){
+                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                    }
+                },
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -358,7 +366,10 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', name: 'waktu'},
+                {data : 'created_at', render:function(data,a,b,c){
+                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                    }
+                },
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
@@ -387,12 +398,14 @@
                         return data.nama_barang;
                     }
                 },
-                {
-                    data: function (data, type, row, meta) {
-                        return data.jumlah + " " + data.satuan;
-                    },
-                    name: 'jumlah'
-                },
+                {data : 'jumlah', name: 'jumlah'},
+                {data : 'satuan', name: 'satuan'},
+                // {
+                //     data: function (data, type, row, meta) {
+                //         return data.jumlah + " " + data.satuan;
+                //     },
+                //     name: 'jumlah'
+                // },
                 {data : 'harga_beli', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
@@ -421,12 +434,14 @@
                         return data.nama_barang;
                     }
                 },
-                {
-                    data: function (data, type, row, meta) {
-                        return data.jumlah + " " + data.satuan;
-                    },
-                    name: 'jumlah'
-                },
+                {data : 'jumlah', name: 'jumlah'},
+                {data : 'satuan', name: 'satuan'},
+                // {
+                //     data: function (data, type, row, meta) {
+                //         return data.jumlah + " " + data.satuan;
+                //     },
+                //     name: 'jumlah'
+                // },
                 {data : 'pemesanan_bulky', render:function(data,a,b,c){
                         return data.kode+' | '+data.nama_pemesan;
                     }
@@ -472,7 +487,7 @@
         }
 
         function penyimpanan(id, gudangId, barangKode){
-            $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
+            $('#dataPenyimpanan').html(`<tr><td colspan="7" class="text-center">LOADING</td></tr>`);
 
             $.ajax({
                 url: "/api/v1/detail/bulky/penyimpanan/stock/"+id,
@@ -490,7 +505,8 @@
                         let space = `<tr style="font-size: .8rem;">
                             <td id="kodeBarang">${storageIn[i].waktu}</td>
                             <td id="kodeBarang">${storageIn[i].kode}</td>
-                            <td id="jumlahBarang">${storageIn[i].storage_bulky.jumlah}&nbsp;${storageIn[i].storage_bulky.satuan}</td>
+                            <td id="jumlahBarang">${storageIn[i].storage_bulky.jumlah}</td>
+                            <td id="satuan">${storageIn[i].storage_bulky.satuan}</td>
                             <td id="rak">${(storageIn[i].storage_bulky.tingkat != null) ? (storageIn[i].storage_bulky.tingkat.rak.nama) : ('Belum Diatur')}</td>
                             <td id="tingkatRak">${(storageIn[i].storage_bulky.tingkat != null) ? (storageIn[i].storage_bulky.tingkat.nama) : ('Belum Diatur')}</td>
                             <td id="aksi"><a href="/v1/bulky/storage/penyimpanan/${storageIn[i].storage_bulky.id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>

@@ -121,6 +121,9 @@ class UserController extends Controller
                         }
                     }
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','status','role','foto_ktp','foto_ktp_selfie'])
                 ->make(true);
         }

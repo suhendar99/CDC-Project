@@ -51,10 +51,10 @@
                                 <tr>
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
-                                    <th>Harga Jual</th>
-                                    <th>Harga Dasar Per-{{ $base_harga->satuan }}</th>
+                                    <th>Harga Beli</th>
+                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Kwintal') ? 'Kg' : $base_harga->satuan }}</th>
                                     <th>Keuntungan</th>
-                                    <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
+                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Kwintal') ? 'Kg' : $base_harga->satuan }}</th>
                                 </tr>
                             </thead>
                               <tbody id="dataPenyimpanan">
@@ -62,7 +62,7 @@
                                     <td>{{ $base_harga->barang->nama_barang }}</td>
                                     <td>{{ $base_harga->jumlah }} {{ $base_harga->satuan }}</td>
                                     <td>Rp. {{ number_format($base_harga->harga_beli,0,',','.') }}</td>
-                                    <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
+                                    <td>Rp. {{ number_format(($base_harga->harga_beli / ($base_harga->jumlah * 100)),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
                                             <input type="number" min="1" max="100" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="" aria-describedby="satuanAppend" oninput="inputed(this)">
@@ -132,6 +132,7 @@
 <script>
     let hargaBeli = '{{ $base_harga->harga_beli }}';
     let jumlahBarang = '{{ $base_harga->jumlah }}';
+    let satuan = '{{ $base_harga->satuan }}';
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;
@@ -152,12 +153,18 @@
         $('#btn-save').removeClass('disabled');
         $('#btn-save').attr('type','sumbit');
         /* Act on the event */
-        hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+        if (satuan == 'Kwintal') {
+            hargaSatuan = (parseInt(hargaBeli) / (parseInt(jumlahBarang) * 100));
+        } else {
+            hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+            console.log(satuan)
+        }
         untung = hargaSatuan * ($(event).val() / 100);
+
         akhir = hargaSatuan + untung;
 
-        $('#sugest').text('Rp. '+(akhir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
-        $('#harga_barang').val(akhir);
+        $('#sugest').text('Rp. '+(akhir.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+        $('#harga_barang').val(akhir.toFixed(0));
     };
 </script>
 @endpush

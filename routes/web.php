@@ -14,15 +14,18 @@ Web Routes
 |
 */
 // Call Artisan
-    Route::get('call/config', function () {
+    Route::get('/call/config', function () {
         Artisan::call('config:clear');
-        return redirect('/');
+        Artisan::call('cache:clear');
+        Artisan::call('view:clear');
+        Artisan::call('config:cache');
+        return "Berhasil Cache";
     });
     Route::get('call/cache/clear', function () {
         Artisan::call('cache:clear');
         return redirect('/');
     });
-    // Route::get('call/down', function () {
+    // Route::get('/down', function () {
     //     Artisan::call('down');
     //     return redirect('/');
     // });

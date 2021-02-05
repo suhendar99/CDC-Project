@@ -119,6 +119,9 @@ class PemesananController extends Controller
                         return '&nbsp;-&nbsp;';
                     }
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','jumlah_barang','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }

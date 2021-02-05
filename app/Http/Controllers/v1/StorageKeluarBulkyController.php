@@ -42,6 +42,9 @@ class StorageKeluarBulkyController extends Controller
                     // return '<a href="/v1/storage/out/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/bulky/storage/keluar/'.$data->id.'\')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
         return view('app.data-master.storageBulky.index');
@@ -167,6 +170,8 @@ class StorageKeluarBulkyController extends Controller
 
         $barang = $pesanan->barangPesananBulky;
 
+        $satuan = ($barang->satuan == 'Ton') ? 'Kwintal' : $barang->satuan;
+
         $kode_barang = $barang->barang_kode;
 
         $stok = StorageBulky::whereHas('storageMasukBulky', function($query)use($kode_barang, $gudang){
@@ -186,26 +191,53 @@ class StorageKeluarBulkyController extends Controller
         $hasil = 0;
 
         for ($i=0; $i < count($stok); $i++) {
-            # code...
-            $jumlahStok = $stok[$i]->jumlah;
 
-            if ($jumlahStok != 0) {
-                $jumlahStok = $jumlahStok - $jumlah;
-                if ($jumlahStok >= 0) {
-                    $stok[$i]->update([
-                        'jumlah' => $jumlahStok
-                    ]);
+            if ($stok[$i]->satuan == 'Ton') {
+                $jumlahStok = $stok[$i]->jumlah * 10;
 
-                    break;
-                }elseif($jumlahStok < 0){
-                    $stok[$i]->update([
-                        'jumlah' => 0
-                    ]);
+                if ($jumlahStok != 0) {
+                    $jumlahStok = $jumlahStok - $jumlah;
 
-                    $jumlah = abs($jumlahStok);
+                    if ($jumlahStok >= 0) {
+                        $jumlahStok = $jumlahStok / 10;
+
+                        $stok[$i]->update([
+                            'jumlah' => $jumlahStok
+                        ]);
+
+                        break;
+                    }elseif($jumlahStok < 0){
+                        $stok[$i]->update([
+                            'jumlah' => 0
+                        ]);
+
+                        $jumlah = abs($jumlahStok);
+                    }
+                    // dd($jumlah);
                 }
-                // dd($jumlah);
+            } else {
+                $jumlahStok = $stok[$i]->jumlah;
+
+                if ($jumlahStok != 0) {
+                    $jumlahStok = $jumlahStok - $jumlah;
+                    if ($jumlahStok >= 0) {
+                        $stok[$i]->update([
+                            'jumlah' => $jumlahStok
+                        ]);
+
+                        break;
+                    }elseif($jumlahStok < 0){
+                        $stok[$i]->update([
+                            'jumlah' => 0
+                        ]);
+
+                        $jumlah = abs($jumlahStok);
+                    }
+                    // dd($jumlah);
+                }
             }
+            
+
         }
 
 

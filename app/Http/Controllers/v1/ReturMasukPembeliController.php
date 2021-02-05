@@ -31,6 +31,9 @@ class ReturMasukPembeliController extends Controller
                 ->addColumn('barang', function($data){
                     return $data->kode->storageOut->barang->nama_barang;
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','barang'])
                 ->make(true);
         }

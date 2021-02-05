@@ -52,6 +52,7 @@
                                 <th>Kode Barang</th>
                                 <th>Barang</th>
                                 <th>Jumlah Barang</th>
+                                <th>satuan</th>
                                 <th>Keterangan</th>
                                 <th>Action</th>
                             </tr>
@@ -84,6 +85,7 @@
                 {data : function(data,a,b,c){
                     return data.jumlah_barang+' '+data.satuan;
                 }, name: 'jumlah'},
+                {data : 'satuan', name: 'satuan'},
                 {data : 'keterangan', name: 'keterangan'},
                 {data : 'action', name: 'action'}
             ]

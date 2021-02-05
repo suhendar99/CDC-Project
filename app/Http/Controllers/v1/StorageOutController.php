@@ -49,6 +49,9 @@ class StorageOutController extends Controller
                     // return '<a href="/v1/storage/out/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/out/'.$data->id.'\')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
         return view('app.data-master.storage.index');
@@ -179,6 +182,8 @@ class StorageOutController extends Controller
         foreach ($pesanan->barangPesanan as $barang) {
             $kode_barang = $barang->barang_kode;
 
+            $satuan = ($barang->satuan == 'Kwintal') ? 'Kg' : $barang->satuan;
+
             $stok = Storage::whereHas('storageIn', function($query)use($kode_barang, $gudang){
                 $query->where([
                     ['gudang_id', $gudang->id],
@@ -196,26 +201,50 @@ class StorageOutController extends Controller
             $hasil = 0;
 
             for ($i=0; $i < count($stok); $i++) {
-                # code...
-                $jumlahStok = $stok[$i]->jumlah;
+                if ($stok[$i]->satuan == 'Kwintal') {
+                    $jumlahStok = $stok[$i]->jumlah * 100;
 
-                if ($jumlahStok != 0) {
-                    $jumlahStok = $jumlahStok - $jumlah;
-                    if ($jumlahStok >= 0) {
-                        $stok[$i]->update([
-                            'jumlah' => $jumlahStok
-                        ]);
+                    if ($jumlahStok != 0) {
+                        $jumlahStok = $jumlahStok - $jumlah;
+                        if ($jumlahStok >= 0) {
+                            $jumlahStok = $jumlahStok / 100;
 
-                        break;
-                    }elseif($jumlahStok < 0){
-                        $stok[$i]->update([
-                            'jumlah' => 0
-                        ]);
+                            $stok[$i]->update([
+                                'jumlah' => $jumlahStok
+                            ]);
 
-                        $jumlah = abs($jumlahStok);
+                            break;
+                        }elseif($jumlahStok < 0){
+                            $stok[$i]->update([
+                                'jumlah' => 0
+                            ]);
+
+                            $jumlah = abs($jumlahStok);
+                        }
+                        // dd($jumlah);
                     }
-                    // dd($jumlah);
+                } else {
+                    $jumlahStok = $stok[$i]->jumlah;
+
+                    if ($jumlahStok != 0) {
+                        $jumlahStok = $jumlahStok - $jumlah;
+                        if ($jumlahStok >= 0) {
+                            $stok[$i]->update([
+                                'jumlah' => $jumlahStok
+                            ]);
+
+                            break;
+                        }elseif($jumlahStok < 0){
+                            $stok[$i]->update([
+                                'jumlah' => 0
+                            ]);
+
+                            $jumlah = abs($jumlahStok);
+                        }
+                        // dd($jumlah);
+                    }
                 }
+                
             }
 
 
@@ -227,7 +256,7 @@ class StorageOutController extends Controller
                 'gudang_id' => $gudang->id,
                 'barang_kode' => $kode_barang,
                 'jumlah' => $barang->jumlah_barang,
-                'satuan' => $barang->satuan,
+                'satuan' => $satuan,
                 'kode' => $kode_out,
                 'user_id' => auth()->user()->id,
                 'waktu' => now('Asia/Jakarta')
@@ -242,8 +271,8 @@ class StorageOutController extends Controller
             //     'waktu' => Carbon::now()
             // ]);
             $log = LogTransaksi::create([
-                'tanggal' => now(),
-                'jam' => now(),
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
                 'Aktifitas_transaksi' => 'Pengiriman Barang'
             ]);
 
@@ -335,7 +364,7 @@ class StorageOutController extends Controller
             $total += $value->harga;
             $satuan = $value->satuan;
         }
-        $harga_total = $jumlah * $total;
+        $harga_total = $total / $jumlah;
         // dd($harga_total);
         RekapitulasiPenjualan::create([
             'storage_out_id' => $out->id,
@@ -347,8 +376,8 @@ class StorageOutController extends Controller
             'barang' => $out->pemesanan->barangPesanan[0]->barang->nama_barang,
             'jumlah' => $jumlah,
             'satuan' => $satuan,
-            'harga' => $total,
-            'total' => $harga_total
+            'harga' => $harga_total,
+            'total' => $total
         ]);
 
         $pesanan->update(['status'=>'4']);

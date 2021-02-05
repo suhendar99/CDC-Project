@@ -42,6 +42,9 @@ class StorageInController extends Controller
                     return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/in/'.$data->id.'\')">Hapus</a>';
                     // return '<a href="/v1/storage/in/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/in/'.$data->id.'\')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
         return view('app.data-master.storage.index');
@@ -119,6 +122,10 @@ class StorageInController extends Controller
 
         $barang = Barang::where('kode_barang', $request->barang_kode)->first();
 
+        $satuan = ($barang->satuan == 'Kg') ? 'Kwintal' : $barang->satuan;
+
+        $jumlah = $request->jumlah;
+
         $foto_kwitansi = $request->file('foto_kwitansi');
         $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
         $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
@@ -127,9 +134,10 @@ class StorageInController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'kode' => $kode,
-            'satuan' => $barang->satuan,
+            'jumlah' => $jumlah,
+            'satuan' => $satuan,
             'user_id' => auth()->user()->id,
             'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
@@ -138,8 +146,8 @@ class StorageInController extends Controller
 
         Storage::create([
             'storage_in_kode' => $kode,
-            'jumlah' => $request->jumlah,
-            'satuan' => $barang->satuan,
+            'jumlah' => $jumlah,
+            'satuan' => $satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
 
@@ -149,15 +157,16 @@ class StorageInController extends Controller
         ])->first();
 
         if($checkStock !== null){
-            $updateJumlah = $checkStock->jumlah + $request->jumlah;
+            $updateJumlah = $checkStock->jumlah + $jumlah;
 
             $checkStock->update([
                 'jumlah' => $updateJumlah,
-                'satuan' => $barang->satuan
+                'satuan' => $satuan
             ]);
         }else{
-            StockBarang::create($request->only('gudang_id', 'barang_kode', 'jumlah')+[
-                'satuan' => $barang->satuan
+            StockBarang::create($request->only('gudang_id', 'barang_kode')+[
+                'jumlah' => $jumlah,
+                'satuan' => $satuan
             ]);
         }
 
@@ -168,7 +177,7 @@ class StorageInController extends Controller
             'nama_penjual' => $masuk->barang->pemasok->nama,
             'barang' => $masuk->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
-            'satuan' => $barang->satuan,
+            'satuan' => $satuan,
             'harga' => $masuk->barang->harga_barang,
             'total' => $masuk->barang->harga_total
         ]);
@@ -304,7 +313,7 @@ class StorageInController extends Controller
                     'jumlah' => $hasil
                 ]);
             }
-            
+
         }
 
         File::delete($data->foto_kwitansi);
