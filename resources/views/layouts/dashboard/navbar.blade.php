@@ -70,8 +70,10 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    @if (Auth::user()->pengurus_gudang_bulky_id == null)
-                        <a class="dropdown-item" href="/shop">Belanja</a>
+                    @if(!Request::is('shop') && Auth::user()->pemasok_id == null && Auth::user()->pengurus_gudang_bulky_id == null)
+                        <a class="dropdown-item" href="{{ route('shop') }}">
+                            Belanja
+                        </a>
                     @endif
                     @if(!isset($nosidebar))
                         @if (Auth::user()->pelanggan_id != null)

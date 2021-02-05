@@ -17,7 +17,7 @@ class TransaksiPembeliController extends Controller
 
 	public function index()
 	{
-		$data = $this->model::with('pemesananPembeliItem','pembeli.kabupaten','pelanggan.kabupaten')->paginate(6);
+		$data = $this->model::with('pemesananPembeliItem','pembeli.kabupaten','pelanggan.kabupaten')->orderBy('created_at','desc')->paginate(6);
 		return view($this->path.'index',compact('data'));
 	}
 

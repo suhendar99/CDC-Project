@@ -24,7 +24,7 @@ class LabaRugiRetailController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = $this->model::orderBy('id', 'desc')
+            $data = $this->model::orderBy('bulan', 'asc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -47,7 +47,8 @@ class LabaRugiRetailController extends Controller
      */
     public function create()
     {
-        return view('app.transaksi.rekapitulasi.laba-rugi-retail.create');
+        $data = $this->model::all();
+        return view('app.transaksi.rekapitulasi.laba-rugi-retail.create',compact('data'));
     }
 
     /**
@@ -141,7 +142,8 @@ class LabaRugiRetailController extends Controller
      */
     public function destroy($id)
     {
-
+        $data = $this->model::findOrFail($id);
+        $data->delete();
         return redirect(route('retail.laba-rugi.index'))->with('success', __( 'Data Berhasil Dihapus' ));
     }
 }

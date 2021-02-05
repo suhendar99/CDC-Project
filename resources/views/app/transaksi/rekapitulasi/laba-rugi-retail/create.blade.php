@@ -1,6 +1,28 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Laba Rugi Retail';
+        $bulan = array(
+            ['no'=>'1','val' => 'Januari'],
+            ['no'=>'2','val' => 'Februari'],
+            ['no'=>'3','val' => 'Maret'],
+            ['no'=>'4','val' => 'April'],
+            ['no'=>'5','val' => 'Mei'],
+            ['no'=>'6','val' => 'Juni'],
+            ['no'=>'7','val' => 'Juli'],
+            ['no'=>'8','val' => 'Agustus'],
+            ['no'=>'9','val' => 'September'],
+            ['no'=>'10','val' => 'Oktober'],
+            ['no'=>'11','val' => 'November'],
+            ['no'=>'12','val' => 'Desember'],
+        );
+
+        $dataBulan = [];
+
+        foreach ($data as $key => $value) {
+            $dataBulan[] = $value->bulan;
+        }
+
+        // dd(in_array('1',$dataBulan));
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -50,20 +72,13 @@
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Bulan <small class="text-success">*Harus diisi</small></label>
                                         <select name="bulan" id="barang" class="form-control">
-                                            <option value="1">Januari</option>
-                                            <option value="2">Februari</option>
-                                            <option value="3">Maret</option>
-                                            <option value="4">April</option>
-                                            <option value="5">Mei</option>
-                                            <option value="6">Juni</option>
-                                            <option value="7">Juli</option>
-                                            <option value="8">Agustus</option>
-                                            <option value="9">September</option>
-                                            <option value="10">Oktober</option>
-                                            <option value="11">November</option>
-                                            <option value="12">Desember</option>
+                                            @foreach($bulan as $b)
+                                                @if(!in_array($b['no'],$dataBulan))
+                                                    <option value="{{$b['no']}}" @if(old('bulan') == $b['no']) selected @endif>{{$b['val']}}</option>
+                                                @endif
+                                            @endforeach
                                         </select>
                                         @error('bulan')
                                             <span class="invalid-feedback" role="alert">
