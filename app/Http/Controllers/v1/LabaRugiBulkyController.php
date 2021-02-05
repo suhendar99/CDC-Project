@@ -19,7 +19,7 @@ class LabaRugiBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = LabaRugiBulky::orderBy('id', 'desc')
+            $data = LabaRugiBulky::orderBy('bulan', 'asc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -42,7 +42,8 @@ class LabaRugiBulkyController extends Controller
      */
     public function create()
     {
-        return view('app.transaksi.rekapitulasi.laba-rugi-bulky.create');
+        $data = LabaRugiBulky::all();
+        return view('app.transaksi.rekapitulasi.laba-rugi-bulky.create',compact('data'));
     }
 
     /**

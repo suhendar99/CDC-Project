@@ -144,6 +144,7 @@ class ShopController extends Controller
 
     public function pemesanan(Request $request, $id)
     {
+        // dd($request->all());
         $v = Validator::make($request->all(),[
             'alamat_pemesan' => 'required',
             'pembayaran' => 'required',
@@ -152,6 +153,9 @@ class ShopController extends Controller
             'jumlah' => 'required|numeric|min:1',
             'harga' => 'required'
         ]);
+        if ($request->pembayaran == 'now' && $request->metode_pembayaran == null) {
+            return back()->with('error','Mohon Isi Metode Pembayaran!');
+        }
         if ($v->fails()) {
             // return back()->withErrors($v)->withInput();
             // dd($v->errors()->all());

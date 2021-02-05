@@ -2,6 +2,28 @@
         $icon = 'book';
         $pageTitle = 'Tambah Laba Rugi';
         $dashboard = true;
+        $bulan = array(
+            ['no'=>'1','val' => 'Januari'],
+            ['no'=>'2','val' => 'Februari'],
+            ['no'=>'3','val' => 'Maret'],
+            ['no'=>'4','val' => 'April'],
+            ['no'=>'5','val' => 'Mei'],
+            ['no'=>'6','val' => 'Juni'],
+            ['no'=>'7','val' => 'Juli'],
+            ['no'=>'8','val' => 'Agustus'],
+            ['no'=>'9','val' => 'September'],
+            ['no'=>'10','val' => 'Oktober'],
+            ['no'=>'11','val' => 'November'],
+            ['no'=>'12','val' => 'Desember'],
+        );
+
+                  
+        $dataBulan = [];
+
+        foreach ($data as $key => $value) {
+            $dataBulan[] = $value->bulan;
+        }
+                          
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -56,19 +78,11 @@
                                             <div class="col-md-12">
                                                 <label>Bulan <small class="text-success">*Harus dipilih</small></label>
                                                 <select name="bulan" id="" class="form-control @error('bulan') is-invalid @enderror">
-                                                    <option value="">--Pilih Bulan--</option>
-                                                    <option value="1" @if(old('bulan') == 1) selected @endif>Januari</option>
-                                                    <option value="2" @if(old('bulan') == 2) selected @endif>Februari</option>
-                                                    <option value="3" @if(old('bulan') == 3) selected @endif>Maret</option>
-                                                    <option value="4" @if(old('bulan') == 4) selected @endif>April</option>
-                                                    <option value="5" @if(old('bulan') == 5) selected @endif>Mei</option>
-                                                    <option value="6" @if(old('bulan') == 6) selected @endif>Juni</option>
-                                                    <option value="7" @if(old('bulan') == 7) selected @endif>Juli</option>
-                                                    <option value="8" @if(old('bulan') == 8) selected @endif>Agustus</option>
-                                                    <option value="9" @if(old('bulan') == 9) selected @endif>September</option>
-                                                    <option value="10" @if(old('bulan') == 10) selected @endif>Oktober</option>
-                                                    <option value="11" @if(old('bulan') == 11) selected @endif>November</option>
-                                                    <option value="12" @if(old('bulan') == 12) selected @endif>Desember</option>
+                                                    @foreach($bulan as $b)
+                                                        @if(!in_array($b['no'],$dataBulan))
+                                                            <option value="{{$b['no']}}" @if(old('bulan') == $b['no']) selected @endif>{{$b['val']}}</option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                                 @error('bulan')
                                                     <span class="invalid-feedback" role="alert">
@@ -183,19 +197,19 @@
 {{-- Chart Section --}}
 <script type="text/javascript">
     function inputed(){
-        $('#laba_bersih').val(parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val()) - parseInt($('#penjualan').val()))
+        $('#laba_bersih').val( parseInt($('#penjualan').val()) - (parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val())))
     }
     $('#pembelian').on('keyup',(value) => {
         console.log()
-        $('#laba_bersih').val(parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val()) - parseInt($('#penjualan').val()))
+        $('#laba_bersih').val( parseInt($('#penjualan').val()) - (parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val())))
     })
     $('#biaya_operasional').on('keyup',(value) => {
         console.log()
-        $('#laba_bersih').val(parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val()) - parseInt($('#penjualan').val()))
+        $('#laba_bersih').val( parseInt($('#penjualan').val()) - (parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val())))
     })
     $('#penjualan').on('keyup',(value) => {
         console.log()
-        $('#laba_bersih').val(parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val()) - parseInt($('#penjualan').val()))
+        $('#laba_bersih').val( parseInt($('#penjualan').val()) - (parseInt($('#pembelian').val()) + parseInt($('#biaya_operasional').val())))
     })
 </script>
 {{--  --}}

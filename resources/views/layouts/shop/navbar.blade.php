@@ -38,12 +38,12 @@
         </a>
 
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            @if(!Request::is('shop'))
+            @if(!Request::is('shop') && Auth::user()->pemasok_id == null && Auth::user()->pengurus_gudang_bulky_id == null)
                 <a class="dropdown-item" href="{{ route('shop') }}">
                     Belanja
                 </a>
             @endif
-            @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->pengurus_gudang_bulky_id != null || Auth::user()->pelanggan_id != null)
+            @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->pengurus_gudang_bulky_id != null || Auth::user()->pelanggan_id != null || Auth::user()->pemasok_id != null)
                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                     {{ __('Dashboard') }}
                 </a>

@@ -199,7 +199,6 @@
                                     <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                            <option value="">-- Pilih Metode --</option>
                                             <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                             <option value="wangpas">Wangpas</option>
                                             <option value="bayar di tempat">Bayar di tempat</option>
@@ -214,8 +213,8 @@
                                         <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
                                         <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
                                             {{-- <option value=""> Pilih Metode </option> --}}
-                                            <option value="ambil">Barang Diambil</option>
                                             <option value="kirim">Barang Dikirim</option>
+                                            <option value="ambil">Barang Diambil</option>
                                         </select>
                                         @error('pengiriman')
                                             <span class="invalid-feedback" role="alert">
@@ -392,7 +391,6 @@
                                     <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                         <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                            <option value="">-- Pilih Metode --</option>
                                             <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                             <option value="wangpas">Wangpas</option>
                                             <option value="bayar di tempat">Bayar di tempat</option>
@@ -407,8 +405,8 @@
                                         <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
                                         <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
                                             {{-- <option value="">-- Pilih Metode --</option> --}}
-                                            <option value="ambil">Barang Diambil</option>
                                             <option value="kirim">Barang Dikirim</option>
+                                            <option value="ambil">Barang Diambil</option>
                                         </select>
                                         @error('pengiriman')
                                             <span class="invalid-feedback" role="alert">
@@ -602,8 +600,8 @@
                                             <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
                                                 {{-- <option value="">-- Pilih Metode --</option> --}}
-                                                <option value="ambil">Barang Diambil</option>
                                                 <option value="kirim">Barang Dikirim</option>
+                                                <option value="ambil">Barang Diambil</option>
                                             </select>
                                             @error('pengiriman')
                                                 <span class="invalid-feedback" role="alert">

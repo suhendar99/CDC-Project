@@ -17,8 +17,8 @@ class LabaRugiPelangganController extends Controller
      */
     public function index(Request $request)
     {
+        $data = LabaRugiPelanggan::orderBy('bulan','asc')->get();
         if($request->ajax()){
-            $data = LabaRugiPelanggan::orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -72,7 +72,7 @@ class LabaRugiPelangganController extends Controller
                 ->rawColumns(['action','bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'])
                 ->make(true);
         }
-        return view('app.transaksi.rekapitulasi.laba-rugi-pelanggan.index');
+        return view('app.transaksi.rekapitulasi.laba-rugi-pelanggan.index',compact('data'));
     }
 
     /**
@@ -82,7 +82,8 @@ class LabaRugiPelangganController extends Controller
      */
     public function create()
     {
-        return view('app.transaksi.rekapitulasi.laba-rugi-pelanggan.create');
+        $data = LabaRugiPelanggan::all();
+        return view('app.transaksi.rekapitulasi.laba-rugi-pelanggan.create',compact('data'));
     }
 
     /**

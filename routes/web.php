@@ -48,10 +48,10 @@ Route::group(['namespace' => 'v1'], function () {
 
 Route::get('/verification','Auth\RegisterController@verify');
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => true,'middleware' => 'guest']);
 
 Route::get('/home', function (){
-    if (Auth::user()->name != null) {
+    if (Auth::user()->name != null || Auth::user()->pemasok_id != null || Auth::user()->pengurus_gudang_bulky_id != null) {
         return redirect('/v1/dashboard');
     } else {
         return redirect('shop');

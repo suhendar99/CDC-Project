@@ -138,11 +138,11 @@ class BarangController extends Controller
                 foreach($request->file('foto') as $image)
                 {
                     $name = rand(). '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path("upload/foto/barang"), $name);
+                    $image->move("upload/foto/barang", $name);
 
                     FotoBarang::create([
                         'barang_id' => $barang->id,
-                        'foto' => 'upload/foto/barang/'.$name,
+                        'foto' => '/upload/foto/barang/'.$name,
                     ]);
                 }
             }
@@ -231,11 +231,11 @@ class BarangController extends Controller
             // dd($barang);
             $name = $request->file('foto');
             $foto = time()."_".$name->getClientOriginalName();
-            $request->foto->move(public_path("upload/foto/barang"), $foto);
+            $request->foto->move("upload/foto/barang", $foto);
 
             FotoBarang::create([
                 'barang_id' => $barang->id,
-                'foto' => 'upload/foto/barang/'.$foto,
+                'foto' => '/upload/foto/barang/'.$foto,
             ]);
             return back()->with('success',$this->alert.'ditambahkan !');
         }
@@ -259,11 +259,11 @@ class BarangController extends Controller
             File::delete($data->foto);
             $name = $request->file('foto');
             $foto = time()."_".$name->getClientOriginalName();
-            $request->foto->move(public_path("upload/foto/barang"), $foto);
+            $request->foto->move("upload/foto/barang", $foto);
 
             $data->update([
                 // 'barang_id' => $barang->id,
-                'foto' => 'upload/foto/barang/'.$foto,
+                'foto' => '/upload/foto/barang/'.$foto,
             ]);
             return back()->with('success',$this->alert.'diedit !');
         }

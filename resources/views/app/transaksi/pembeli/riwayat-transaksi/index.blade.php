@@ -53,27 +53,88 @@
                             </div>
                             @elseif($d->barangKeluar == null)
                             <div class="row">
-                                <div class="col-12 d-flex justify-content-between">
-                                    <span>
-                                        Pesanan dengan Rincian :
-                                        @foreach($d->pemesananPembeliItem as $b)
-                                        {{$b->nama_barang}} ({{$b->jumlah_barang}} {{$b->satuan}})
+                                <div class="col-12 d-flex justify-content-between valign-center my-2">
+                                    <div>
+                                        @if($d->status == 0)
+                                        <span class="badge rounded-pill bg-my-danger p-2">
+                                            Pesanan Ditolak
+                                        </span>
+                                        @elseif($d->status == 1)
+                                        <span class="badge rounded-pill bg-my-warning p-2">
+                                            Pesanan Diproses
+                                        </span>
+                                        @elseif($d->status == 2)
+                                        <span class="badge rounded-pill bg-my-warning p-2">
+                                            Pembayaran Diterima
+                                        </span>
+                                        @elseif($d->status == 3)
+                                        <span class="badge rounded-pill bg-my-primary p-2">
+                                            Pesanan Sedang Dikemas
+                                        </span>
+                                        @elseif($d->status == 4)
+                                        <span class="badge rounded-pill bg-my-primary p-2">
+                                            Pesanan Sedang Dikirim
+                                        </span>
+                                        @elseif($d->status == 5)
+                                        <span class="badge rounded-pill bg-my-success">
+                                            Pesanan Diterima
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col border-right">
+                                    Waktu Pemesanan : <br><span class="text-14 bold">{{date_format($d->created_at,'H:i:s d-m-Y')}}</span>
+                                    {{-- {{dd($d->storageOut)}} --}}
+                                </div>
+                                <div class="col border-right">
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->penerima_po}} ({{$d->pelanggan->kabupaten->nama}})</span>
+                                    {{-- {{dd($d->storageOut)}} --}}
+                                </div>
+                                <div class="col border-right">
+                                    Ke : <br><span class="text-14 bold">{{$d->nama_pemesan}} ({{$d->pelanggan->kabupaten->nama}})</span>
+                                </div>
+                                <div class="col">
+                                    Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr class=" my-1">
+                                </div>
+                                <div class="col-md-8">
+                                    <h6 class="my-2">Pesanan :
+                                        @foreach($d->pemesananPembeliItem as $key => $i)
+                                        {{($key != 0) ? ',' : ''}}
+                                        {{$i->nama_barang}} ({{$i->jumlah_barang.' '.$i->satuan}})
                                         @endforeach
-                                        , Belum Diproses Penjual
-                                    </span>
-                                    @if ($d->status == 6)
-                                        @if($d->foto_bukti == null)
-                                        <a class="btn btn-sm btn-primary disabled" href="#"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
-                                        @else
-                                        <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
-                                        @endif
+                                    </h6>
+                                </div>
+                                <div class="col-md-4 d-flex valign-center justify-content-end">
+                                @if($d->status == 4)
+                                    <a href="
+                                        {{($d->status == 4) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
+                                    " class="btn btn-primary btn-sm
+                                        {{($d->status == 4) ? '' : 'disabled'}}
+                                    " title="Klik Jika Pesanan Anda Sudah Diterima">
+                                        Konfirmasi Penerimaan
+                                    </a>
+                                @elseif ($d->status == 6)
+                                    @if($d->foto_bukti == null)
+                                    <a class="btn btn-sm btn-primary disabled" href="#"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
                                     @else
-                                        @if($d->foto_bukti == null)
-                                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
-                                        @else
-                                        <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
-                                        @endif
+                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
                                     @endif
+                                @else
+                                    @if($d->foto_bukti == null)
+                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                    @else
+                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                    @endif
+                                @endif
                                 </div>
                             </div>
                             @else
@@ -107,14 +168,21 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-md-4 border-right">
+                            </div>
+                            <div class="row">
+
+                                <div class="col border-right">
+                                    Waktu Pemesanan : <br><span class="text-14 bold">{{date_format($d->created_at,'H:i:s d-m-Y')}}</span>
+                                    {{-- {{dd($d->storageOut)}} --}}
+                                </div>
+                                <div class="col border-right">
                                     Dikirim Dari : <br><span class="text-14 bold">{{$d->penerima_po}} ({{$d->pelanggan->kabupaten->nama}})</span>
                                     {{-- {{dd($d->storageOut)}} --}}
                                 </div>
-                                <div class="col-md-4 border-right">
+                                <div class="col border-right">
                                     Ke : <br><span class="text-14 bold">{{$d->nama_pemesan}} ({{$d->pelanggan->kabupaten->nama}})</span>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
                                 </div>
                                 <div class="col-md-4">
@@ -135,6 +203,7 @@
                                     </h6>
                                 </div>
                                 <div class="col-md-4 d-flex valign-center justify-content-end">
+                                @if($d->status == 4)
                                     <a href="
                                         {{($d->status == 4) ? route('konfirmasi.terima.pembeli',$d->id) : '#'}}
                                     " class="btn btn-primary btn-sm
@@ -142,6 +211,19 @@
                                     " title="Klik Jika Pesanan Anda Sudah Diterima">
                                         Konfirmasi Penerimaan
                                     </a>
+                                @elseif ($d->status == 6)
+                                    @if($d->foto_bukti == null)
+                                    <a class="btn btn-sm btn-primary disabled" href="#"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
+                                    @else
+                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                    @endif
+                                @else
+                                    @if($d->foto_bukti == null)
+                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                    @else
+                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                    @endif
+                                @endif
                                 </div>
                             </div>
                             @endif
