@@ -259,12 +259,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col mt-2">
+                    <div class="col-md-12 col mt-2">
                         <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
                     </div>
-                    <div class="col-md-6 col mt-2">
+                    {{-- <div class="col-md-6 col mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>
@@ -636,7 +636,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-12 mt-2">
                         @if(Auth::user()->pengurusGudang->status == 1)
                         <input type="hidden" name="gudang_id" id="id-gudang">
                         <button type="button" onclick="barang({{ Auth::user()->id }})" class="btn btn-sm bg-my-primary btn-block" data-toggle="modal" data-target="#exampleModal">Pesan Langsung</button>
@@ -644,9 +644,9 @@
                         <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
                         @endif
                     </div>
-                    <div class="col-md-6 mt-2">
+                    {{-- <div class="col-md-6 mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>

@@ -62,7 +62,7 @@
                                     </span>
                                     @if ($d->status == 6)
                                         @if($d->foto_bukti == null)
-                                        <a class="btn btn-sm btn-primary"><i class="fas fa-shopping-bag"></i> Ambil Barang</a>
+                                        <a class="btn btn-sm btn-primary"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
@@ -136,6 +136,9 @@
                                         Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
                                 @else
+                                <div class="col-md-4">
+                                    No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                </div>
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br>
                                         <span class="text-14 bold">

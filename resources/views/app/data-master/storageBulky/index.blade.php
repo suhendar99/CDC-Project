@@ -339,7 +339,7 @@
             pageLength : 10,
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
-                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'created_at', render:function(data,a,b,c){
                         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
                     }
