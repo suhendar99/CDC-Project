@@ -483,7 +483,7 @@
         }
 
         function penyimpanan(id, gudangId, barangKode){
-            $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
+            $('#dataPenyimpanan').html(`<tr><td colspan="7" class="text-center">LOADING</td></tr>`);
 
             $.ajax({
                 url: "/api/v1/detail/bulky/penyimpanan/stock/"+id,
@@ -501,7 +501,8 @@
                         let space = `<tr style="font-size: .8rem;">
                             <td id="kodeBarang">${storageIn[i].waktu}</td>
                             <td id="kodeBarang">${storageIn[i].kode}</td>
-                            <td id="jumlahBarang">${storageIn[i].storage_bulky.jumlah}&nbsp;${storageIn[i].storage_bulky.satuan}</td>
+                            <td id="jumlahBarang">${storageIn[i].storage_bulky.jumlah}</td>
+                            <td id="satuan">${storageIn[i].storage_bulky.satuan}</td>
                             <td id="rak">${(storageIn[i].storage_bulky.tingkat != null) ? (storageIn[i].storage_bulky.tingkat.rak.nama) : ('Belum Diatur')}</td>
                             <td id="tingkatRak">${(storageIn[i].storage_bulky.tingkat != null) ? (storageIn[i].storage_bulky.tingkat.nama) : ('Belum Diatur')}</td>
                             <td id="aksi"><a href="/v1/bulky/storage/penyimpanan/${storageIn[i].storage_bulky.id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>
