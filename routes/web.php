@@ -206,7 +206,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             // Untuk Validasi Butki Pembayaran
             Route::get('validasi/bukti/retail/{id}','PemesananBulkyController@validasi')->name('validasi.bukti.retail');
             // Menolak Pesanan Dari Warung
-            Route::get('tolak/pesanan/warung/{id}','PemesananBulkyController@tolak');
+            Route::get('tolak/pesanan/retail/{id}','PemesananBulkyController@tolak');
 
             Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
                 'names' => [
