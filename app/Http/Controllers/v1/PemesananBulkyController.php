@@ -19,27 +19,101 @@ class PemesananBulkyController extends Controller
      */
     public function index(Request $request)
     {
+        $data = BarangPemesananBulky::with('barang', 'pemesananBulky.storageKeluarBulky')
+        ->orderBy('id', 'desc')
+        ->get();
+        // dd($data[0]);
         if($request->ajax()){
-            $data = PemesananBulky::with('barangPesananBulky.barang', 'storageKeluarBulky')
-            ->orderBy('id', 'desc')
-            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    // return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->id.')" ><i class="fa fa-trash"></i> Hapus</a>';
                 })
-                // ->addColumn('nama', function($data){
-                //     $nama = [];
-                //     foreach ($data->barangPesanan as $key => $value) {
-                //         $nama = $value->barang->nama_barang;
-                //         // dd($value->barang->nama_barang);
-                //     }
-                //     return $nama;
-                // })
-                ->rawColumns(['action'])
+                ->addColumn('total_pembayaran', function($data){
+                    return '&nbsp;Rp. '.Number_format($data->harga,0,',','.');
+                })
+                ->addColumn('jumlah_barang', function($data){
+                    return $data->jumlah_barang.' '.$data->satuan;
+                })
+                ->addColumn('status_pembayaran', function($data){
+                    if ($data->pemesananBulky->metode_pembayaran == null && $data->pemesananBulky->foto_bukti == null) {
+                        return "<span class='text-danger'>Hutang</span>";
+                    } elseif ($data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->foto_bukti == null ) {
+                        return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
+                    } elseif ($data->pemesananBulky->foto_bukti != null && $data->pemesananBulky->status == '2') {
+                        return "<span class='text-success'>Lunas</span>";
+                    } else {
+                        return "Belum Terverifikasi";
+                    }
+                })
+                ->addColumn('metode_pembayaran', function($data){
+                    $uc = ucwords($data->pemesananBulky->metode_pembayaran);
+                    return $uc;
+                })
+                ->addColumn('bukti_pembayaran', function($data){
+                    if($data->pemesananBulky->foto_bukti != null){
+
+                        return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananBulky->id.')" data-id="'.$data->pemesananBulky->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    } else {
+                        return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
+                    }
+                })
+                ->addColumn('status_pemesanan',function($data){
+                    if($data->pemesananBulky->status == 0){
+                        return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
+                    } elseif ($data->pemesananBulky->status == 1){
+                        return '&nbsp;<span class="text-danger">Pembayaran Belum Terverifikasi</span>';
+                    }elseif ($data->pemesananBulky->status == 2) {
+                        return '&nbsp;Pembayaran Terverifikasi';
+                    } elseif ($data->pemesananBulky->status == 4) {
+                        return '&nbsp;Pesanan Sedang Dikirim';
+                    } elseif ($data->pemesananBulky->status == 5) {
+                        return '&nbsp;Pesanan Sudah Diterima';
+                    }
+                })
+                ->addColumn('aksi_pemesanan',function($data){
+                    if ($data->pemesananBulky->status == 1 && $data->pemesananBulky->foto_bukti != null) {
+                        return '&nbsp;<a href="/v1/validasi/bukti/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                    } elseif ($data->pemesananBulky->status == 1){
+                        return '&nbsp;<a href="/v1/tolak/pesanan/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                    } elseif ($data->pemesananBulky->status == 2) {
+                        return '&nbsp;<a href="/v1/bulky/storage/keluar/create?pemesanan='.$data->pemesananBulky->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                    } else {
+                        return '&nbsp;-&nbsp;';
+                    }
+                })
+                ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','jumlah_barang','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }
+
         return view('app.data-master.pemesananBulky.index');
+    }
+
+
+    public function getPemesananRetail($id)
+    {
+
+        $data = BarangPemesananBulky::with('barang', 'pemesananBulky.storageKeluarBulky')->where('id',$id)->first();
+        // $data = PemesananPembeliItem::with('pemesananPembeli.barangKeluar')->where('id',$id)->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function validasi($id)
+    {
+        $data = PemesananBulky::findOrFail($id);
+        $data->update(['status'=>'2']);
+        return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
+    }
+
+    public function tolak($id)
+    {
+        $data = PemesananBulky::findOrFail($id);
+        $data->update(['status'=>'0']);
+
+        return back()->with('success','Pesanan Berhasil Ditolak!');
     }
 
     public function detail($id)

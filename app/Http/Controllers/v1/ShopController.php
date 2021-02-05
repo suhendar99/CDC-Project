@@ -219,12 +219,22 @@ class ShopController extends Controller
 
             $harga = $store->harga_barang * $request->jumlah;
 
-            $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                'kode' => $kode_faker,
-                'nomor_pemesanan' => $kode,
-                'nama_pemesan' => $request->nama_pemesan,
-                'tanggal_pemesanan' => now('Asia/Jakarta')
-            ]));
+            if ($request->pengiriman == 'ambil') {
+                $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta'),
+                    'status' => '5'
+                ]));
+            } else {
+                $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta')
+                ]));
+            }
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
             BarangPesanan::create([
@@ -326,13 +336,25 @@ class ShopController extends Controller
 
             $penerima_po = $request->penerima_po;
             $nama_pemesan = Auth::user()->pembeli->nama;
-            $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
-                'kode' => $kode_faker,
-                'nomor_pemesanan' => $kode,
-                'penerima_po' => $penerima_po,
-                'nama_pemesan' => $nama_pemesan,
-                'tanggal_pemesanan' => now('Asia/Jakarta')
-            ]));
+            if ($request->pengiriman == 'ambil') {
+                $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'penerima_po' => $penerima_po,
+                    'nama_pemesan' => $nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta'),
+                    'status' => '5'
+                ]));
+            } else {
+                $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'penerima_po' => $penerima_po,
+                    'nama_pemesan' => $nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta')
+                ]));
+            }
+
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
@@ -363,7 +385,7 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
-            
+
             return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
         } else{
             $v = Validator::make($request->all(),[
@@ -449,13 +471,25 @@ class ShopController extends Controller
 
             $harga = $store->harga_barang * $request->jumlah;
 
-            $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                'gudang_retail_id' => $request->gudang_id,
-                'kode' => $kode_faker,
-                'nomor_pemesanan' => $kode,
-                'nama_pemesan' => $request->nama_pemesan,
-                'tanggal_pemesanan' => now('Asia/Jakarta')
-            ]));
+            if ($request->pengiriman == 'ambil') {
+                $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'gudang_retail_id' => $request->gudang_id,
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta'),
+                    'status' => '5'
+                ]));
+            } else {
+                $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'gudang_retail_id' => $request->gudang_id,
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta')
+                ]));
+            }
+
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
             BarangPemesananBulky::create([
@@ -491,8 +525,8 @@ class ShopController extends Controller
                     ]);
                 }
             }
+            return redirect('/shop')->with('sukses','Pesanan Telah dibuat !');
         }
-        return redirect('v1/pemesananKeluarWarung')->with('sukses','Pesanan Telah dibuat !');
     }
     public function cariKategori($id)
     {

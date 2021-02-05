@@ -15,9 +15,9 @@
                         <img src="{{asset('images/logo/logo-cdcretail-white.svg')}}" height="60" width="90%" class="scale-down my-3">
                         @elseif(Auth::user()->pengurus_gudang_bulky_id != null)
                         <img src="{{asset('images/logo/logo-cdcbulky-white.svg')}}" height="60" width="90%" class="scale-down my-3">
-                        @elseif(Auth::user()->pelanggan_id != null) 
+                        @elseif(Auth::user()->pelanggan_id != null)
                         <img src="{{asset('images/logo/Logo-iwarung-white.svg')}}" height="60" width="90%" class="scale-down my-3">
-                        @elseif(Auth::user()->pembeli_id != null) 
+                        @elseif(Auth::user()->pembeli_id != null)
                         <img src="{{asset('images/logo/Logo-imarket-white.svg')}}" height="60" width="90%" class="scale-down my-3">
                         @else
                         <img src="{{asset('images/logo/Logo-CDC-White.svg')}}" height="60" width="90%" class="scale-down my-3">
@@ -246,7 +246,7 @@
                     @if (isset($pengurusGudangBulky))
                     <li class="
                         {{ Request::is('v1/gudang-bulky*') ? 'active' : false }}
-                        {{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}
                     ">
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled

@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemesanan Masuk';
+        $pageTitle = 'Data Pemesanan Dari Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -27,31 +27,22 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="float-left">
-                                <h5></h5>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            {{-- <div class="float-right">
-                                <a href="{{route('pemesanan.create')}}" class="btn btn-primary btn-sm">Tambah Pesanan</a>
-                            </div> --}}
-                        </div>
-                    </div>
-                </div>
-
                 <div class="card-body">
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>DateTime</th>
-                                <th>Nomor Pemesanan</th>
+                                <th>Waktu</th>
+                                <th>No Pemesanan (Invoice)</th>
                                 <th>Nama Pemesan</th>
+                                <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
-                                <th>Status Pemesanan</th>
-                                <th>Action</th>
+                                <th>Total Pembayaran</th>
+                                <th>Metode Pembayaran</th>
+                                <th>Status Pembayaran</th>
+                                <th>Status Pesanan</th>
+                                <th>Bukti Pembayaran</th>
+                                <th>Aksi Pemesanan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -159,7 +150,7 @@
 </div>
 
 <!-- Modal Bukti Pembayaran -->
-<div class="modal fade" id="modalValidasi" tabindex="-1" aria-labelledby="modalNewValidate" aria-hidden="true">
+{{-- <div class="modal fade" id="modalValidasi" tabindex="-1" aria-labelledby="modalNewValidate" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -193,6 +184,27 @@
                 </form>
       </div>
     </div>
+</div> --}}
+<!-- Modal -->
+<div class="modal fade" id="modalBukti" tabindex="-1" aria-labelledby="modalBukti" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalBukti">Bukti Pembayaran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <h5 id="loader" class="text-center"></h5>
+            <img src="" class="w-100" id="foto_bukti">
+        </div>
+        {{-- <div class="modal-footer">
+
+          Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
+        </div> --}}
+      </div>
+    </div>
 </div>
 @push('script')
     <script>
@@ -205,29 +217,41 @@
             ajax : "{{ route('bulky.pemesanan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'tanggal_pemesanan', name: 'tanggal_pemesanan'},
-                {data : 'nomor_pemesanan', name: 'no_pemesanan'},
-                {data : 'nama_pemesan', name: 'nama_pemesan'},
-                {data : function(data, a, b, c) {
-                    return data.barang_pesanan_bulky.jumlah_barang+' '+data.barang_pesanan_bulky.satuan;
-                }, name: 'jumlagh_barang'},
-                {data : function(data, a, b, c) {
-                    if (data.status == 0) {
-                        return `<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalValidasi" data-id="" onclick="bukti(${data.id})" style="cursor: pointer;" title="Klik jika pemesan sudah membayar.">Validasi/Pembayaran</a>`;
-                    } else if(data.status == 1) {
-                        return `<a class="btn btn-info btn-sm col-12" data-toggle="modal" data-id="" onclick="proses(${data.id})" style="cursor: pointer;" title="Klik untuk membuat data barang keluar.">Pengemasan</a>`;
-                    }else if(data.status == 2){
-                        return `<button type="button" class="btn btn-info btn-sm col-12" data-id="" title="Pesanan sedang dalam pengiriman">Dikirim</button>`;
-                    }else if(data.status == 3){
-                        return `<button type="button" class="btn btn-success btn-sm col-12" data-id="" title="Pesanan Diterima Pemesan">Pesanan Diterima</button>`;
-                    }
-                }, name: 'status_pembayaran'},
-                {data : 'action', name: 'action'}
+                // {data : 'tanggal_pemesanan', name: 'tanggal_pemesanan'},
+                // {data : 'nomor_pemesanan', name: 'no_pemesanan'},
+                // {data : 'nama_pemesan', name: 'nama_pemesan'},
+                // {data : function(data, a, b, c) {
+                //     return data.barang_pesanan_bulky.jumlah_barang+' '+data.barang_pesanan_bulky.satuan;
+                // }, name: 'jumlagh_barang'},
+                // {data : function(data, a, b, c) {
+                //     if (data.status == 0) {
+                //         return `<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalValidasi" data-id="" onclick="bukti(${data.id})" style="cursor: pointer;" title="Klik jika pemesan sudah membayar.">Validasi/Pembayaran</a>`;
+                //     } else if(data.status == 1) {
+                //         return `<a class="btn btn-info btn-sm col-12" data-toggle="modal" data-id="" onclick="proses(${data.id})" style="cursor: pointer;" title="Klik untuk membuat data barang keluar.">Pengemasan</a>`;
+                //     }else if(data.status == 2){
+                //         return `<button type="button" class="btn btn-info btn-sm col-12" data-id="" title="Pesanan sedang dalam pengiriman">Dikirim</button>`;
+                //     }else if(data.status == 3){
+                //         return `<button type="button" class="btn btn-success btn-sm col-12" data-id="" title="Pesanan Diterima Pemesan">Pesanan Diterima</button>`;
+                //     }
+                // }, name: 'status_pembayaran'},
+                // {data : 'action', name: 'action'}
                 // {
                 //   data : 'pengurus.gudang', render:function(data,a,b,c){
                 //         return data[0].nama;
                 //   }
                 // },
+                {data : 'pemesanan_bulky.tanggal_pemesanan', name: 'tanggal_pemesanan'},
+                {data : 'pemesanan_bulky.nomor_pemesanan', name: 'nomor_pemesanan'},
+                {data : 'pemesanan_bulky.nama_pemesan', name: 'nama_pemesan'},
+                {data : 'nama_barang', name: 'nama_barang'},
+                {data : 'jumlah_barang', name: 'jumlah_barang'},
+                {data : 'total_pembayaran', name: 'total_pembayaran'},
+                {data : 'metode_pembayaran', name: 'metode_pembayaran'},
+                {data : 'status_pembayaran', name: 'status_pembayaran'},
+                {data : 'status_pemesanan', name: 'status_pemesanan'},
+                {data : 'bukti_pembayaran', name: 'bukti_pembayaran'},
+                {data : 'aksi_pemesanan', name: 'aksi_pemesanan'},
+                {data : 'action', name: 'action'}
             ]
         });
 
@@ -252,8 +276,28 @@
             });
         };
 
-        function bukti(id) {
-            $('#form-bukti').attr('action', '/v1/bulky/validate/bukti/'+id);
+        // function bukti(id) {
+        //     $('#form-bukti').attr('action', '/v1/bulky/validate/bukti/'+id);
+        // }
+        function bukti(id){
+            $('#loader').text('Loading ...');
+            $.ajax({
+                url: "/api/v1/getDataPemesanan/retail/"+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    // console.log(response.data[0]);
+                    $('#loader').text('');
+                    $('#foto_bukti').attr('src',`${response.data.pemesanan_bulky.foto_bukti}`);
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
         }
 
         function proses(id) {

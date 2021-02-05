@@ -161,7 +161,7 @@ class RegisterController extends Controller
                 'password' => Hash::make($data['password']),
                 'pengurus_gudang_id' => $pengurusGudang->id,
                 'email_verified_at' => $data['email_verified_at'],
-                'status' => 2,
+                'status' => 1,
                 // 'jenis' => $data['jenis']
             ]);
             if ($data['jenis'] == null) {

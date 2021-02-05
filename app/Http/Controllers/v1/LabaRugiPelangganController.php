@@ -106,7 +106,7 @@ class LabaRugiPelangganController extends Controller
             }
             $laba = LabaRugiPelanggan::create($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'));
         }
-        return back()->with('success','Data Berhasil Di Tambahkan !');
+        return redirect()->route('labaRugiPelanggan.index')->with('success','Data Berhasil Di Tambahkan !');
     }
 
     /**
@@ -159,7 +159,7 @@ class LabaRugiPelangganController extends Controller
 
             $laba->update($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'));
         }
-        return back()->with('success','Data Berhasil Di Edit !');
+        return redirect()->route('labaRugiPelanggan.index')->with('success','Data Berhasil Di Edit !');
     }
 
     /**

@@ -203,6 +203,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             // Gudang
             // Route::post('gudang/search', 'GudangController@search')->name('gudang.search');
             Route::resource('gudang-bulky', 'GudangBulkyController');
+            // Untuk Validasi Butki Pembayaran
+            Route::get('validasi/bukti/retail/{id}','PemesananBulkyController@validasi')->name('validasi.bukti.retail');
+            // Menolak Pesanan Dari Warung
+            Route::get('tolak/pesanan/retail/{id}','PemesananBulkyController@tolak');
 
             Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
                 'names' => [
@@ -342,12 +346,20 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     // Gudang Retail
     Route::group(['middleware' => ['karyawan']], function () {
+
+        // Untuk Upload Bukti Pembayaran
+        Route::post('upload/bukti/retail/{id}','PemesananController@buktiRetail');
+
+        Route::get('transaksi/retail/konfirmasi/{id}','PemesananController@konfirmasi')->name('konfirmasi.terima.retail');
+
         // Menolak Pesanan Dari Warung
         Route::get('tolak/pesanan/warung/{id}','PemesananController@tolak');
         // Mengalihkan ke halaman storage out dengan membawa variabel
         // Route::get('kirim/pesanan/warung','StorageOutController@create');
         // Untuk Validasi Butki Pembayaran
         Route::get('validasi/bukti/warung/{id}','PemesananKeluarPembeliController@validasi')->name('validasi.bukti.warung');
+
+
 
         // Purchase Order
         Route::get('print/{id}', 'PoController@print')->name('po.print');

@@ -74,6 +74,10 @@ class StorageMasukBulkyController extends Controller
         ->where('status', 1)
         ->get();
 
+        if ($gudang->count() == 0) {
+            return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
+        }
+
         return view('app.data-master.storageBulky.in.create', compact('gudang'));
     }
 

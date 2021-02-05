@@ -24,9 +24,10 @@ use PDF;
 
 class PemesananController extends Controller
 {
-    public function __construct(Pemesanan $pemesanan)
+    public function __construct(Pemesanan $pemesanan, PemesananBulky $pemesananBulky)
     {
         $this->model = $pemesanan;
+        $this->modelBulky = $pemesananBulky;
         $this->indexPath = 'app.transaksi.pemesanan-barang.';
     }
     /**
@@ -190,12 +191,37 @@ class PemesananController extends Controller
         return view('app.data-master.pemesanan.index');
     }
 
+
+
+    public function buktiRetail(Request $request, $id)
+    {
+        // dd($request->file('foto_bukti'));
+        $data = $this->modelBulky::findOrFail($id);
+        $foto_bukti = $request->file('foto_bukti');
+        $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
+        $foto_bukti->move(public_path("/upload/foto/bukti"), $nama_bukti);
+
+        $data->update([
+            'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
+        ]);
+
+        return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
+
     public function tolak($id)
     {
         $data = $this->model::findOrFail($id);
         $data->update(['status'=>'0']);
 
         return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+
+    public function konfirmasi($id)
+    {
+        $data = PemesananBulky::find($id);
+        $data->update(['status'=>'5']);
+        // dd($data);
+        return redirect('v1/po')->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     public function kirim($id)
@@ -443,6 +469,7 @@ class PemesananController extends Controller
             'data' => $data
         ]);
     }
+
 
     public function show($id)
     {

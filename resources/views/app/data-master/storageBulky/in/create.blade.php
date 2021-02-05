@@ -33,12 +33,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-
+                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm"> Next <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
@@ -103,7 +103,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label>Jumlah Barang (Lihat kwitansi) <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend" id="jumlah">
@@ -117,7 +117,7 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label>Harga Beli (Lihat Kwitansi) <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
