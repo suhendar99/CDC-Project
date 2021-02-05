@@ -49,7 +49,7 @@
                                 <tr>
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
-                                    <th>Harga Jual</th>
+                                    <th>Harga Beli</th>
                                     <th>Harga Dasar Per-{{ $base_harga->satuan }}</th>
                                     <th>Keuntungan</th>
                                     <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
