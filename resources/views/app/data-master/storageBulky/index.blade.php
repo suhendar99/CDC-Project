@@ -125,8 +125,8 @@
                                                     <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
                                                                 <th>No</th>
+                                                                <th>DateTime</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>Pemesanan</th>
@@ -142,7 +142,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>DateTime</th>
-                                                                <th>No</th>
+                                                                <th>No Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
                                                                 <th>Tempat</th>
@@ -300,7 +300,7 @@
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {
-                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + ((data.satuan == 'Ton') ? 'Kwintal' : data.satuan);
                         } else {
                             return 'Harga belum diatur.';
                         }
@@ -329,7 +329,10 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', name: 'waktu'},
+                {data : 'created_at', render:function(data,a,b,c){
+                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                    }
+                },
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -352,7 +355,10 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', name: 'waktu'},
+                {data : 'created_at', render:function(data,a,b,c){
+                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                    }
+                },
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},

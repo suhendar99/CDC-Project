@@ -232,8 +232,8 @@
 							<span class="product-name">Dari {{$b->bulky->nama}} <br /> Desa {{$b->bulky->desa->nama}}</span>
 						</div>
 						<div class="col-12">
-							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}}, Per-{{ $b->satuan }}</span>
-						</div>{{-- 
+							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},-   Per-{{ ($b->satuan == 'Ton') ? 'Kwintal' : $b->satuan }}</span>
+						</div>
                         <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
