@@ -53,7 +53,7 @@
                                 <th>Jumlah Barang</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -85,13 +85,13 @@
                 }, name: 'jumlah'},
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
-                // {data : 'action', name: 'action'}
+                {data : 'action', name: 'action'}
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/returOut/'+id
+            formDelete.action = '/v1/bulky/retur/keluar/'+id
 
             const Toast = Swal.mixin({
             toast: true,
