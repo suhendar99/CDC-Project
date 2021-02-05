@@ -34,6 +34,9 @@ class RekapitulasiPembelianPelangganController extends Controller
                 ->addColumn('totals', function($data){
                     return 'Rp. '.number_format($data->total,0,',','.');
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','jumlah','hargas','totals'])
                 ->make(true);
         }

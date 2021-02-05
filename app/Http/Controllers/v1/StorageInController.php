@@ -42,6 +42,9 @@ class StorageInController extends Controller
                     return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/in/'.$data->id.'\')">Hapus</a>';
                     // return '<a href="/v1/storage/in/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet(\'/v1/storage/in/'.$data->id.'\')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
         return view('app.data-master.storage.index');
@@ -304,7 +307,7 @@ class StorageInController extends Controller
                     'jumlah' => $hasil
                 ]);
             }
-            
+
         }
 
         File::delete($data->foto_kwitansi);

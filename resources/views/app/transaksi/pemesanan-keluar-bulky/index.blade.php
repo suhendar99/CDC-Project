@@ -51,6 +51,7 @@
                                 <th>Kode Barang</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
+                                <th>Satuan</th>
                                 <th>Pemasok</th>
                                 <th>Nama Gudang Bulky</th>
                                 <th>Alamat</th>
@@ -136,10 +137,8 @@
                   {data : 'tanggal_pemesanan', name: 'tgl'},
                   {data : 'barang_kode', name: 'barang_kode'},
                   {data : 'barang.nama_barang', name: 'nama_barang'},
-                  {
-                      data : function(data,a,b,c){
-                          return data.jumlah + ' ' + data.satuan;
-                      }, name: 'jumlah'},
+                  {data : 'jumlah', name: 'jumlah'},
+                  {data : 'satuan', name: 'satuan'},
                   {data : 'barang.pemasok.nama', name: 'nama_pemasok'},
                   {data : 'bulky.nama', name: 'nama'},
                   {data : 'alamat_pemesan', name: 'alamat'},
@@ -150,7 +149,7 @@
         function change(id) {
             // console.log($('#status-rak-'+id).get(0))
             $('#status-rak-'+id).text('Loading');
-            
+
             $.ajax({
                 url: "/api/v1/rak/"+id+"/status",
                 method: "GET",
@@ -198,7 +197,7 @@
                          $.each(val.storage, function(i, b) {
                               /* iterate through array or object */
                               $('#inputBarang').append(`<tr>
-                                <td>${val.nama}</td>  
+                                <td>${val.nama}</td>
                                 <td>${b.storage_in.barang.nama_barang}</td>
                                 <td>${b.jumlah + b.satuan}</td>
                                 </tr>`);

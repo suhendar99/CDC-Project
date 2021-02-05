@@ -66,6 +66,9 @@ class LabaRugiPelangganController extends Controller
                         return "Desember";
                     }
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'])
                 ->make(true);
         }

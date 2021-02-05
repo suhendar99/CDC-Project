@@ -47,6 +47,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Waktu</th>
                                 <th>Bulan</th>
                                 <th>Laba Kotor</th>
                                 <th>Penjualan</th>
@@ -77,6 +78,7 @@
             ajax : "{{ route('bulky.laba-rugi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
                 {
                     data : 'bulan', render:function(data,a,b,c){
                         if (data == 1) {

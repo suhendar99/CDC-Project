@@ -36,6 +36,7 @@
                                 <th>Nama Pemesan</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
+                                <th>Satuan</th>
                                 <th>Total Pembayaran</th>
                                 <th>Metode Pembayaran</th>
                                 <th>Status Pembayaran</th>
@@ -135,7 +136,7 @@
                             <th scope="row">Biaya Admin</th>
                         </tr>
                         <tr id="barangData">
-                            
+
                         </tr>
                       </tbody>
                   </table>
@@ -245,6 +246,7 @@
                 {data : 'pemesanan_bulky.nama_pemesan', name: 'nama_pemesan'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
+                {data : 'satuan', name: 'satuan'},
                 {data : 'total_pembayaran', name: 'total_pembayaran'},
                 {data : 'metode_pembayaran', name: 'metode_pembayaran'},
                 {data : 'status_pembayaran', name: 'status_pembayaran'},
@@ -258,7 +260,7 @@
         function change(id) {
             // console.log($('#status-rak-'+id).get(0))
             $('#status-pesan-'+id).text('Loading');
-            
+
             $.ajax({
                 url: "/api/v1/bulky/pemesanan/masuk/"+id+"/status",
                 method: "GET",

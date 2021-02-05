@@ -36,6 +36,9 @@ class RekapitulasiPenjualanController extends Controller
                 ->addColumn('jumlah', function($data){
                     return $data->jumlah.' '.$data->satuan;
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','jumlah'])
                 ->make(true);
         }

@@ -34,6 +34,9 @@ class RekapitulasiPenjualanPelangganController extends Controller
                 ->addColumn('no_penjualan', function($data){
                     return $data->no_penjualan;
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','jumlah','nama_pembeli','no_penjualan'])
                 ->make(true);
         }
