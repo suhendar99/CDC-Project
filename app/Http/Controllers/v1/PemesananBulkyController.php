@@ -149,11 +149,11 @@ class PemesananBulkyController extends Controller
 
         $name = $request->file('foto_bukti');
         $foto = time()."_".$name->getClientOriginalName();
-        $name->move(public_path("upload/foto/bukti-pembayaran"), $foto);
+        $name->move("upload/foto/bukti-pembayaran", $foto);
 
         PemesananBulky::findOrFail($id)->update([
-            'foto_bukti' => 'upload/foto/bukti-pembayaran/'.$foto,
-            'status' => 1
+            'foto_bukti' => '/upload/foto/bukti-pembayaran/'.$foto,
+            'status' => '1'
         ]);
 
         return back()->with('success', __( 'Bukti telah dimasukan.' ));
