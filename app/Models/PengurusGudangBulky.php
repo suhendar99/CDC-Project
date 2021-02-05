@@ -24,4 +24,22 @@ class PengurusGudangBulky extends Model
     {
         return $this->hasOne('App\User','pengurus_gudang_bulky_id','id');
     }
+    
+    public function desa()
+    {
+        return $this->belongsTo('App\Models\Desa');
+    }
+    public function kecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan');
+    }
+    public function kabupaten()
+    {
+        return $this->belongsTo('App\Models\Kabupaten');
+    }
+    public function provinsi()
+    {
+        return $this->belongsTo('App\Models\Provinsi');
+    }
+
 }

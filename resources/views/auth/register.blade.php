@@ -27,7 +27,7 @@
             @endif
             <div class="col-md-12">
                 <div class="text-center mb-1">
-                    <img src="{{asset($set->logo_app)}}" alt="" height="65" width="85">
+                    <img src="{{($set->logo_app == null) ? asset('images/logo/Logo-CDC.svg') : asset($set->logo_app)}}" alt="" height="80" width="100" style="object-fit: scale-down">
                 </div>
             </div>
             <div class="col-md-12 mb-2">

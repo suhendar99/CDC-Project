@@ -196,6 +196,7 @@
           </button>
         </div>
         <div class="modal-body">
+            <h5 id="loader" class="text-center"></h5>
             <img src="" class="w-100" id="foto_bukti">
         </div>
         {{-- <div class="modal-footer">
@@ -279,7 +280,7 @@
         //     $('#form-bukti').attr('action', '/v1/bulky/validate/bukti/'+id);
         // }
         function bukti(id){
-
+            $('#loader').text('Loading ...');
             $.ajax({
                 url: "/api/v1/getDataPemesanan/retail/"+id,
                 method: "GET",
@@ -288,6 +289,7 @@
                 processData: false,
                 success: (response)=>{
                     // console.log(response.data[0]);
+                    $('#loader').text('');
                     $('#foto_bukti').attr('src',`${response.data.pemesanan_bulky.foto_bukti}`);
 
                 },
