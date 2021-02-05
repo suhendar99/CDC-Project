@@ -76,6 +76,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th>DateTime</th>
                                                 <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
@@ -108,6 +109,7 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
+                                                                <th>DateTime</th>
                                                                 <th>Kode Penyimpanan / Barcode</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
@@ -249,6 +251,7 @@
                   <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
+                            <th>DateTime</th>
                             <th>Kode Masuk Barang</th>
                             <th>Jumlah Barang</th>
                             <th>Rak</th>
@@ -363,6 +366,7 @@
             ajax : "{{ route('storage.in.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {
                     data : 'gudang', render:function(data,a,b,c){
@@ -396,6 +400,7 @@
             ajax : "{{ route('storage.out.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {
                     data : 'gudang', render:function(data,a,b,c){
@@ -473,6 +478,7 @@
 
                     for (var i = storageIn.length - 1; i >= 0; i--) {
                         let space = `<tr style="font-size: .8rem;">
+                            <td id="waktu">${storageIn[i].waktu}</td>
                             <td id="kodeBarang">${storageIn[i].kode}</td>
                             <td id="jumlahBarang">${storageIn[i].storage.jumlah}&nbsp;${storageIn[i].storage.satuan}</td>
                             <td id="rak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.rak.nama) : ('Belum Diatur')}</td>
