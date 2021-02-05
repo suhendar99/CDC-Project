@@ -8,7 +8,7 @@
                     <a href="{{route('cari.kategori',$c->id)}}"></a>
                     <center>
                             {{-- <i class="material-icons text-my-warning md-48"></i><br> --}}
-                            <img src="{{$c->icon}}" height="100px" width="100px" onerror="this.src='/images/logo/Logo-CDC.svg'; this.style='object-fit: scale-down;opacity: 0.5;'" style="object-fit: scale-down;">
+                            <img src="{{ ($c->icon != null) ? asset($c->icon) : 'images/logo/Logo-CDC.svg'}}" height="100px" width="100px" onerror="this.src='/images/logo/Logo-CDC.svg'; this.style='object-fit: scale-down;opacity: 0.5;'" style="object-fit: scale-down;">
                             <span>{{$c['nama']}}</span>
                     </center>
                 </div>

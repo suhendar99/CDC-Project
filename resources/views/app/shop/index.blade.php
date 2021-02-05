@@ -102,18 +102,26 @@
 						<div class="col-12">
 							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
 						</div>
-                        <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
+                        {{-- <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu" aria-labelledby="dropmenu">
 									@if ($b->jumlah != 0)
                                     <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
-                                    {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
+                                    <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a>
                         			@endif
                                     <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->gudang->user->pengurusGudang->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
                                 </div>
                             </div>
+                        </div> --}}
+					</div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                        	<a href="{{route('shop.pesanan',$b->id)}}" class="btn btn-sm btn-success btn-block">Pesan</a>
                         </div>
+                        {{-- <div class="col">
+                        	<a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="btn btn-sm btn-success" >Chat</a>
+                        </div> --}}
 					</div>
 					{{-- <button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>
 					<button type="button" class="btn btn-warning btn-sm mx-1">Beli</button> --}}
@@ -124,7 +132,7 @@
 	@empty
 	<div class="col-md-12 d-flex justify-content-center">
 		<center>
-			<span class="oops">Oops!</span>
+			<span class="oops"></span>
 			<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
 		</center>
 	</div>
@@ -164,17 +172,25 @@
 						<div class="col-12">
 							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
 						</div>
-                        <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
+                        {{-- <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                 <div class="dropdown-menu" aria-labelledby="dropmenu">
                         			@if ($b->jumlah != 0)
-                                    <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
+                                    <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a> --}}
                                     {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
-                        			@endif
+                        			{{-- @endif
                                     <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
                                 </div>
                             </div>
+                        </div> --}}
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                        	<a href="{{route('shop.pesanan',$b->id)}}" class="btn btn-sm btn-success">Pesan</a>
+                        </div>
+                        <div class="col">
+                        	<a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="btn btn-sm btn-success" >Chat</a>
                         </div>
 					</div>
 					{{-- <button type="button" class="btn btn-primary btn-sm mx-1">Keranjang</button>
@@ -186,7 +202,7 @@
 	@empty
 	<div class="col-md-12 d-flex justify-content-center">
 		<center>
-			<span class="oops">Oops!</span>
+			<span class="oops"></span>
 			<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
 		</center>
 	</div>
@@ -216,8 +232,8 @@
 							<span class="product-name">Dari {{$b->bulky->nama}} <br /> Desa {{$b->bulky->desa->nama}}</span>
 						</div>
 						<div class="col-12">
-							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- Per-{{ $b->satuan }}</span>
-						</div>
+							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}}, Per-{{ $b->satuan }}</span>
+						</div>{{-- 
                         <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
                             <div class="dropdown">
                                 <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -225,7 +241,15 @@
                                     <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
                                 </div>
                             </div>
+                        </div> --}}
+					</div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                        	<a href="{{route('shop.pesanan',$b->id)}}" class="btn btn-sm btn-success btn-block">Pesan</a>
                         </div>
+                        {{-- <div class="col">
+                        	<a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="btn btn-sm btn-success" >Chat</a>
+                        </div> --}}
 					</div>
 				</div>
 			</div>
@@ -233,7 +257,7 @@
 	@empty
 	<div class="col-md-12 d-flex justify-content-center">
 		<center>
-			<span class="oops">Oops!</span>
+			<span class="oops"></span>
 			<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
 		</center>
 	</div>
