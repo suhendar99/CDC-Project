@@ -184,7 +184,7 @@
              $('#satuanAppend').text('Ton')
              $('#jumlah').attr('type', 'numeric');
          } else {
-             $('#here').text(satuan)
+             $('#satuanAppend').text(satuan)
              $('#jumlah').attr('type', 'number');
          }
 

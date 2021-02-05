@@ -178,8 +178,13 @@
         /* Act on the event */
         let satuan = $('#barang option:selected').data("satuan")
          console.log(satuan)
-         $('#satuanAppend').text(satuan)
-         $('#here').text(satuan)
+         if (satuan == 'Kg') {
+             $('#satuanAppend').text('Kwintal')
+             $('#jumlah').attr('type', 'number');
+         } else {
+             $('#satuanAppend').text(satuan)
+             $('#jumlah').attr('type', 'number');
+         }
 
          // for (var i = $('.tab').length - 1; i >= 1; i--) {
 

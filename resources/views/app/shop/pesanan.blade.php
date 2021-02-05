@@ -168,9 +168,9 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{ ($data->satuan == 'Kwintal') ? ($data->jumlah * 100) : $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
+                                                    <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Kwintal') ? 'Kg' : $data->satuan }}</span>
                                                 </div>
                                             </div>
                                             @error('jumlah')
@@ -708,7 +708,7 @@
     var biayaAdmin = '{{$biayaAdmin}}';
     var biayaMerchant = '{{$biayaMerchant}}';
     var hargaTotal = '{{$hargaBarang}}';
-    var satuan = '{{ ($satuan == 'Ton') ? 'Kwintal' : $satuan }}';
+    var satuan = '{{ ($satuan == 'Ton') ? 'Kwintal' : (($satuan == 'Kwintal') ? 'Kg' : $satuan) }}';
     $('#jumlah').on('keyup', function () {
         // var biayaAdm = biayaAdmin * hargaTotal /100;
         var tot = $('#jumlah').val() * hargaTotal;
