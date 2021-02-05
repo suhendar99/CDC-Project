@@ -30,7 +30,7 @@ class ReturKeluarBulkyController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    // return '<a href="/v1/returOut/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
@@ -150,6 +150,8 @@ class ReturKeluarBulkyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ReturKeluarBulky::findOrFail($id)->delete();
+
+        return back()->with('success', __( 'Data berhasil dihapus.' ));
     }
 }
