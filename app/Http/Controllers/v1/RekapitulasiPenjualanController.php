@@ -25,8 +25,9 @@ class RekapitulasiPenjualanController extends Controller
      */
     public function index(Request $request)
     {
+        $data = RekapitulasiPenjualan::with('storageOut')->orderBy('id','desc')->get();
+        $total = $data->sum('total');
         if($request->ajax()){
-            $data = RekapitulasiPenjualan::with('storageOut')->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -38,7 +39,7 @@ class RekapitulasiPenjualanController extends Controller
                 ->rawColumns(['action','jumlah'])
                 ->make(true);
         }
-        return view($this->path.'index');
+        return view($this->path.'index',compact('total'));
     }
     public function downloadRekapitulasiPenjualanPdf()
     {

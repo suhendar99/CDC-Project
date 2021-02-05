@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5></h5>
+                                <h5>Total Pembelian : Rp. {{Number_format($total,0,',','.')}}</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
