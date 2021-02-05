@@ -251,13 +251,13 @@
                         <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/gudang-bulky*') ? 'show' : false }}
-                            {{ Request::is('v1/pengurus-gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/bulky/pengurus*') ? 'show' : false }}
                         " id="gudangSubmenu">
                             <li class="{{ Request::is('v1/gudang-bulky*') ? 'active' : false }}">
                                 <a href="{{route('gudang-bulky.index')}}">Identitas Gudang</a>
                             </li>
-                            <li class="{{ Request::is('v1/pengurus-gudang*') ? 'active' : false }}">
-                                <a href="{{route('pengurus-gudang.index')}}">Pengurus Gudang</a>
+                            <li class="{{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}">
+                                <a href="{{route('bulky.pengurus.index')}}">Pengurus Gudang</a>
                             </li>
                         </ul>
                     </li>
@@ -471,6 +471,38 @@
                             </ul>
                         </li>
                     @endif
+
+                    @if (isset($pengurusGudangBulky))
+                        <li class="
+                            {{ Request::is('v1/bulky/laporan/pembelian*') ? 'active' : false }}
+                            {{ Request::is('v1/bulky/laporan/penjualan*') ? 'active' : false }}
+                            {{ Request::is('v1/bulky/laporan/barang*') ? 'active' : false }}
+                        ">
+                            <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
+                            <ul class="collapse list-unstyled
+                                {{ Request::is('v1/bulky/laporan/pembelian*') ? 'show' : false }}
+                                {{ Request::is('v1/bulky/laporan/penjualan*') ? 'show' : false }}
+                                {{ Request::is('v1/bulky/laporan/barang*') ? 'show' : false }}
+                            " id="reportSubmenu">
+                                <li class="{{ Request::is('v1/bulky/laporan/penjualan*') ? 'active' : false }}">
+                                    <a href="{{route('bulky.laporan.barang.keluar.index')}}">Penjualan</a>
+                                </li>
+                                <li class="{{ Request::is('v1/bulky/laporan/pembelian*') ? 'active' : false }}">
+                                    <a href="{{route('bulky.laporan.barang.masuk.index')}}">Pembelian</a>
+                                </li>
+                                <li class="{{ Request::is('v1/bulky/laporan/barang*') ? 'active' : false }}">
+                                    <a href="{{route('bulky.laporan.barang.index')}}">Stok Barang</a>
+                                </li>
+                                {{-- <li class="{{ Request::is('v1/laporan-barang-masuk*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.barang.masuk')}}">Neraca untung Rugi</a>
+                                </li> --}}
+                                {{-- <li class="{{ Request::is('v1/laporan-po*') ? 'active' : false }}">
+                                    <a href="{{route('laporan.po')}}">Purcase Order</a>
+                                </li> --}}
+                            </ul>
+                        </li>
+                    @endif
+
                     @if (isset($admin))
                     <li class="
                         {{ Request::is('v1/setApp*') ? 'active' : false }}

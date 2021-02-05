@@ -115,7 +115,10 @@ class StorageMasukBulkyController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+        $jumlah = ($barang->satuan == 'Kg') ? ($request->jumlah * 1000) : $request->jumlah ;
+
+        $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+            'jumlah' => $jumlah,
             'kode' => $kode,
             'satuan' => $barang->satuan,
             'user_id' => auth()->user()->id,

@@ -213,8 +213,22 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                     'update' => 'bulky.pengurus.update',
                     'destroy' => 'bulky.pengurus.destroy'
                 ]
-        ]);
+            ]);
         });
+
+        // Laporan Bulky
+        Route::get('bulky/laporan/penjualan','LaporanGudangBulky@showLaporanBarangKeluar')->name('bulky.laporan.barang.keluar.index');
+        Route::post('bulky/laporan/penjualan/PDF','LaporanGudangBulky@LaporanBarangKeluarPdf')->name('bulky.laporan.barang.keluar.pdf');
+        Route::post('bulky/laporan/penjualan/EXCEL','LaporanGudangBulky@LaporanBarangKeluarExcel')->name('bulky.laporan.barang.keluar.excel');
+
+        Route::get('bulky/laporan/pembelian','LaporanGudangBulky@showLaporanBarangMasuk')->name('bulky.laporan.barang.masuk.index');
+        Route::post('bulky/laporan/pembelian/PDF','LaporanGudangBulky@LaporanBarangMasukPdf')->name('bulky.laporan.barang.masuk.pdf');
+        Route::post('bulky/laporan/pembelian/EXCEL','LaporanGudangBulky@LaporanBarangMasukExcel')->name('bulky.laporan.barang.masuk.excel');
+
+        Route::get('bulky/laporan/barang','LaporanGudangBulky@showLaporanBarang')->name('bulky.laporan.barang.index');
+        Route::post('bulky/laporan/barang/PDF','LaporanGudangBulky@LaporanBarangPdf')->name('bulky.laporan.barang.pdf');
+        Route::post('bulky/laporan/barang/EXCEL','LaporanGudangBulky@LaporanBarangExcel')->name('bulky.laporan.barang.excel');
+        // End Laporan
 
         Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
                 'names' => [
@@ -413,6 +427,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Rak
         Route::resource('gudang/{gudang}/rak', 'RakController');
         Route::get('/v1/rak/{id}/status', 'RakController@changeStatus');
+
         // Laporan
         Route::get('laporan-barang-masuk','laporanPengurusGudangController@showLaporanBarangMasuk')->name('laporan.barang.masuk');
         Route::post('laporan-barang-masuk-pdf','laporanPengurusGudangController@LaporanBarangMasukPdf')->name('laporan.barang.masuk.pdf');
@@ -430,6 +445,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-po-pdf','laporanPengurusGudangController@LaporanPoPdf')->name('laporan.po.pdf');
         Route::post('laporan-po-excel','laporanPengurusGudangController@LaporanPoExcel')->name('laporan.po.excel');
         // End Laporan
+
         // Piutang
         Route::resource('piutangIn', 'PiutangController');
         Route::resource('piutangOut', 'PiutangOutController');
