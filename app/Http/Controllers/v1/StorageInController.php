@@ -289,6 +289,24 @@ class StorageInController extends Controller
     {
         $data = StorageIn::findOrFail($id);
 
+        $checkStock = StockBarang::where([
+            ['gudang_id', $data->gudang_id],
+            ['barang_kode', $data->barang_kode]
+        ])->first();
+
+        if ($checkStock != null) {
+            $hasil = $checkStock->jumlah - $data->jumlah;
+
+            if ($hasil == 0) {
+                $checkStock->delete();
+            } else {
+                $checkStock->update([
+                    'jumlah' => $hasil
+                ]);
+            }
+            
+        }
+
         File::delete($data->foto_kwitansi);
         File::delete($data->foto_surat_jalan);
         $data->delete();
