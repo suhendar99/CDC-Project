@@ -45,7 +45,8 @@ class GudangSeeder extends Seeder
             'hari' => 'Senin - Sabtu',
             'alamat' => 'Jl ABC',
             'desa_id' => 3276020006,
-            'user_id' => 4
+            'user_id' => 4,
+            'status' => 1
         ]);
     }
 }

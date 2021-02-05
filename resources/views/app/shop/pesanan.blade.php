@@ -407,7 +407,7 @@
             </form>
         </div>
     </div>
-    @else
+    @elseif(Auth::user()->pengurus_gudang_id)
     <div class="row">
         <div class="col-md-12">
             <form action="{{route('shop.pesanan.action',$id)}}" name="keranjang" method="post" id="form-action">
@@ -415,9 +415,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+                            {{-- {{dd($data)}} --}}
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->bulky->pemilik}}">
-                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudangBulky->nama}}">
-                            <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_bulky_id}}">
+                            <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudang->nama}}">
+                            <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_id}}">
                             <input type="hidden" name="bulky_id" value="{{$data->bulky->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">

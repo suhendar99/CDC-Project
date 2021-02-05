@@ -455,7 +455,10 @@
       data: [30,40,35,50]
     }],
     xaxis: {
-      categories: ['Beras','Jagung','Bawang Merah','Apel']
+      categories: ['Beras','Jagung','Bawang Merah','Apel'],
+      labels: {
+        show: false,
+      }
     },
     yaxis: {
       show: true,
@@ -520,7 +523,10 @@
       data: [30,40,35,50]
     }],
     xaxis: {
-      categories: ['Beras','Jagung','Bawang Merah','Apel']
+      categories: ['Beras','Jagung','Bawang Merah','Apel'],
+      labels: {
+        show: false,
+      }
     },
     yaxis: {
       show: true,

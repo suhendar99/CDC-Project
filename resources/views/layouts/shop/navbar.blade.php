@@ -43,7 +43,7 @@
                     Belanja
                 </a>
             @endif
-            @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->bulky_id != null || Auth::user()->pelanggan_id != null)
+            @if (Auth::user()->pengurus_gudang_id != null ||Auth::user()->pengurus_gudang_bulky_id != null || Auth::user()->pelanggan_id != null)
                 <a class="dropdown-item" href="{{ route('dashboard') }}">
                     {{ __('Dashboard') }}
                 </a>
@@ -58,6 +58,15 @@
                 <a class="dropdown-item" href="{{ route('transaksi.pembeli.riwayat') }}">
                     Riwayat Transaksi
                 </a>
+            @endif
+            @if (Auth::user()->pelanggan_id != null)
+            <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
+            @elseif(Auth::user()->pemasok_id != null)
+                <a class="dropdown-item" href="{{route('setPemasok.show')}}">Perbaharui Akun</a>
+            @elseif(Auth::user()->karyawan_id != null)
+                <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
+            @elseif(Auth::user()->pengurus_gudang_id != null)
+                <a class="dropdown-item" href="{{route('setPengurusGudang.show')}}">Perbaharui Akun</a>
             @endif
             {{-- @if (Auth::user()->pembeli_id != null)
                 <a class="dropdown-item" href="{{ route('transaksiTerakhirPembeli') }}">
