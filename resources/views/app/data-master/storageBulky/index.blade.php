@@ -76,6 +76,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th>DateTime</th>
                                                 <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
@@ -108,6 +109,7 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
+                                                                <th>DateTime</th>
                                                                 <th>Kode Penyimpanan / Barcode</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
@@ -123,6 +125,7 @@
                                                     <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
+                                                                <th>DateTime</th>
                                                                 <th>No</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
@@ -138,6 +141,7 @@
                                                     <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
+                                                                <th>DateTime</th>
                                                                 <th>No</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
@@ -249,6 +253,7 @@
                   <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
+                            <th>DateTime</th>
                             <th>Kode Masuk Barang</th>
                             <th>Jumlah Barang</th>
                             <th>Rak</th>
@@ -324,6 +329,7 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'waktu'},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -346,6 +352,7 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
@@ -363,6 +370,7 @@
             ajax : "{{ route('bulky.storage.masuk.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {
                     data : 'bulky', render:function(data,a,b,c){
@@ -396,6 +404,7 @@
             ajax : "{{ route('bulky.storage.keluar.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {
                     data : 'bulky', render:function(data,a,b,c){
@@ -473,6 +482,7 @@
 
                     for (var i = storageIn.length - 1; i >= 0; i--) {
                         let space = `<tr style="font-size: .8rem;">
+                            <td id="kodeBarang">${storageIn[i].waktu}</td>
                             <td id="kodeBarang">${storageIn[i].kode}</td>
                             <td id="jumlahBarang">${storageIn[i].storage_bulky.jumlah}&nbsp;${storageIn[i].storage_bulky.satuan}</td>
                             <td id="rak">${(storageIn[i].storage_bulky.tingkat != null) ? (storageIn[i].storage_bulky.tingkat.rak.nama) : ('Belum Diatur')}</td>
