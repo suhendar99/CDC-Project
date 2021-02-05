@@ -105,22 +105,32 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarBulky->user->pengurusGudang->nama}} ({{$d->storageKeluarBulky->user->pengurusGudang->kabupaten->nama}})</span>
-                                    {{-- {{dd($d->storageKeluarBulky)}} --}}
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarBulky[0]->user->pengurusGudangBulky->nama}} ({{$d->storageKeluarBulky[0]->user->pengurusGudangBulky->kabupaten->nama}})</span>
                                 </div>
+                                {{-- {{dd($d->retail->akunGudang[0]->kabupaten->nama)}} --}}
                                 <div class="col-md-4 border-right">
-                                    Ke : <br><span class="text-14 bold">{{$d->pelanggan->nama}} ({{$d->pelanggan->kabupaten->nama}})</span>
+                                    Ke : <br><span class="text-14 bold">{{$d->retail->akunGudang[0]->nama}} ({{$d->retail->akunGudang[0]->kabupaten->nama}})</span>
                                 </div>
                                 <div class="col-md-4">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
                                 </div>
+                                <div class="col-md-4 border-right">
+                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
+                                </div>
                                 @if ($d->metode_pembayaran == null)
-                                    <div class="col-md-12 border-right">
-                                        Status Pemesanan : <br><span class="text-14 bold">Berhutang</span>
+                                    <div class="col-md-4 border-right">
+                                        Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
                                 @else
-                                    <div class="col-md-12 border-right">
-                                        Status Pemesanan : <br><span class="text-14 bold">{{$d->metode_pembayaran}}</span>
+                                    <div class="col-md-4 border-right">
+                                        Status Pembayaran : <br>
+                                        <span class="text-14 bold">
+                                            @if($d->status == 1)
+                                                Belum Diverifikasi Penjual
+                                            @else
+                                                Lunas
+                                            @endif
+                                        </span>
                                     </div>
                                 @endif
                                 <hr>
@@ -131,15 +141,16 @@
                                 </div>
                                 <div class="col-md-8">
                                     <h6 class="my-2">Pesanan :
-                                        @foreach($d->barangPesanan as $key => $i)
-                                        {{($key != 0) ? ',' : ''}}
-                                        {{$i->nama_barang}}, Rp {{ number_format($i->harga,0,',','.')}} ({{$i->jumlah_barang.' '.$i->satuan}})
-                                        @endforeach
+                                        {{-- {{dd($d->barangPesananBulky->nama_barang)}} --}}
+                                        {{-- @foreach($d->barangPesananBulky as $key => $i)
+                                        {{($key != 0) ? ',' : ''}} --}}
+                                        {{$d->barangPesananBulky->nama_barang}}, Rp {{ number_format($d->barangPesananBulky->harga,0,',','.')}} ({{$d->barangPesananBulky->jumlah_barang.' '.$d->barangPesananBulky->satuan}})
+                                        {{-- @endforeach --}}
                                     </h6>
                                 </div>
                                 <div class="col-md-4 d-flex valign-center justify-content-end">
                                     <a href="
-                                        {{($d->status == 4) ? route('konfirmasi.terima.warung',$d->id) : '#'}}
+                                        {{($d->status == 4) ? route('konfirmasi.terima.retail',$d->id) : '#'}}
                                     " class="btn btn-primary btn-sm
                                         {{($d->status == 4) ? '' : 'disabled'}}
                                     " title="Klik Jika Pesanan Anda Sudah Diterima" id="btn-terima">

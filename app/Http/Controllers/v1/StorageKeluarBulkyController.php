@@ -108,13 +108,16 @@ class StorageKeluarBulkyController extends Controller
      */
     public function create(Request $request)
     {
+        // dd($request->query());
         $gudang = GudangBulky::all();
         $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')
-        ->where('status', 1)
+        ->where('status', '2')
         ->get();
 
-        $poci = $request->query('pemesanan', null);
+        // dd($pemesanan);
 
+        $poci = $request->query('pemesanan', null);
+        // dd($poci);
         $surat = SuratJalanBulky::all();
         $number = $surat->count();
         $alpha = "LK";
@@ -157,8 +160,9 @@ class StorageKeluarBulkyController extends Controller
         $gudang = $pesanan->bulky;
 
         $pesanan->update([
-            'status' => 2
+            'status' => '4'
         ]);
+
 
         $barang = $pesanan->barangPesananBulky;
 

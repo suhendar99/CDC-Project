@@ -216,6 +216,14 @@ class PemesananController extends Controller
         return back()->with('success','Pesanan Berhasil Ditolak!');
     }
 
+    public function konfirmasi($id)
+    {
+        $data = PemesananBulky::find($id);
+        $data->update(['status'=>'5']);
+        // dd($data);
+        return redirect('v1/po')->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+    }
+
     public function kirim($id)
     {
         return redirect('/v1/storage/out/create',['data'=>'data']);

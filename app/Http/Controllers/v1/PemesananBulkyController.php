@@ -101,6 +101,21 @@ class PemesananBulkyController extends Controller
         ]);
     }
 
+    public function validasi($id)
+    {
+        $data = PemesananBulky::findOrFail($id);
+        $data->update(['status'=>'2']);
+        return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
+    }
+
+    public function tolak($id)
+    {
+        $data = PemesananBulky::findOrFail($id);
+        $data->update(['status'=>'0']);
+
+        return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+
     public function detail($id)
     {
         $data = PemesananBulky::with('barangPesananBulky.barang', 'storageKeluarBulky', 'bulky', 'retail')
