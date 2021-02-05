@@ -167,6 +167,8 @@ class StorageKeluarBulkyController extends Controller
 
         $barang = $pesanan->barangPesananBulky;
 
+        $satuan = ($barang->satuan == 'Ton') ? 'Kwintal' : $barang->satuan;
+
         $kode_barang = $barang->barang_kode;
 
         $stok = StorageBulky::whereHas('storageMasukBulky', function($query)use($kode_barang, $gudang){
@@ -186,26 +188,53 @@ class StorageKeluarBulkyController extends Controller
         $hasil = 0;
 
         for ($i=0; $i < count($stok); $i++) {
-            # code...
-            $jumlahStok = $stok[$i]->jumlah;
 
-            if ($jumlahStok != 0) {
-                $jumlahStok = $jumlahStok - $jumlah;
-                if ($jumlahStok >= 0) {
-                    $stok[$i]->update([
-                        'jumlah' => $jumlahStok
-                    ]);
+            if ($stok[$i]->satuan == 'Ton') {
+                $jumlahStok = $stok[$i]->jumlah * 10;
 
-                    break;
-                }elseif($jumlahStok < 0){
-                    $stok[$i]->update([
-                        'jumlah' => 0
-                    ]);
+                if ($jumlahStok != 0) {
+                    $jumlahStok = $jumlahStok - $jumlah;
 
-                    $jumlah = abs($jumlahStok);
+                    if ($jumlahStok >= 0) {
+                        $jumlahStok = $jumlahStok / 10;
+
+                        $stok[$i]->update([
+                            'jumlah' => $jumlahStok
+                        ]);
+
+                        break;
+                    }elseif($jumlahStok < 0){
+                        $stok[$i]->update([
+                            'jumlah' => 0
+                        ]);
+
+                        $jumlah = abs($jumlahStok);
+                    }
+                    // dd($jumlah);
                 }
-                // dd($jumlah);
+            } else {
+                $jumlahStok = $stok[$i]->jumlah;
+
+                if ($jumlahStok != 0) {
+                    $jumlahStok = $jumlahStok - $jumlah;
+                    if ($jumlahStok >= 0) {
+                        $stok[$i]->update([
+                            'jumlah' => $jumlahStok
+                        ]);
+
+                        break;
+                    }elseif($jumlahStok < 0){
+                        $stok[$i]->update([
+                            'jumlah' => 0
+                        ]);
+
+                        $jumlah = abs($jumlahStok);
+                    }
+                    // dd($jumlah);
+                }
             }
+            
+
         }
 
 
