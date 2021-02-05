@@ -33,6 +33,6 @@ class Rak extends Model
     public function tingkat()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = rak_id, localKey = id)
-    	return $this->hasMany('App\Models\TIngkatanRak');
+    	return $this->hasMany('App\Models\TingkatanRak');
     }
 }
