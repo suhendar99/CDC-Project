@@ -9,6 +9,7 @@ use App\Models\Pelanggan;
 use App\Models\Pemasok;
 use App\Models\PengurusGudang;
 use App\Models\Pembeli;
+use App\Models\PengurusGudangBulky;
 use App\Models\Provinsi;
 use App\User;
 use Carbon\Carbon;
@@ -56,7 +57,8 @@ class PengaturanAkunController extends Controller
     {
         $auth = Auth::user();
         $provinsi = Provinsi::all();
-        return view($this->path.'updateAkunKaryawan', compact('auth','provinsi'));
+        $bnk = Bank::all();
+        return view($this->path.'updateAkunKaryawan', compact('auth','provinsi','bnk'));
     }
     public function showFormUpdateAkunBank()
     {
@@ -326,10 +328,12 @@ class PengaturanAkunController extends Controller
             'alamat' => 'required|string|max:200',
             'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
             'nik' => 'required|string|max:17',
+            'no_rek' => 'required|numeric',
+            'bank_id' => 'required',
             'tempat_lahir' => 'required|string|max:40',
             'tgl_lahir' => 'required|string|',
             'agama' => 'required|string',
-            'jabatan' => 'required',
+            'pekerjaan' => 'required',
             'jenis_kelamin' => 'required',
             'status_perkawinan' => 'required',
             'kewarganegaraan' => 'required',
@@ -344,29 +348,29 @@ class PengaturanAkunController extends Controller
             return back()->withErrors($v)->withInput();
         } else {
             $data = User::find($request->id);
-            $set = Karyawan::find($data->karyawan_id);
+            $set = PengurusGudangBulky::find($data->pengurus_gudang_bulky_id);
             if ($request->file('foto')) {
                 File::delete($set->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/karyawan"), $foto);
+                $request->foto->move(public_path("upload/foto/pengurus_gudang_bulky"), $foto);
                 if ($request->desa_id == null) {
-                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
-                        'foto' => 'upload/foto/karyawan/'.$foto
+                    $set->update(array_merge($request->only('nama','nik','no_rek','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id','bank_id'),[
+                        'foto' => 'upload/foto/pengurus_gudang_bulky/'.$foto
                     ]));
                     $data->update($request->only('username','email'));
                 } else {
-                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id'),[
-                        'foto' => 'upload/foto/karyawan/'.$foto
+                    $set->update(array_merge($request->only('nama','nik','no_rek','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id','bank_id'),[
+                        'foto' => 'upload/foto/pengurus_gudang_bulky/'.$foto
                     ]));
                     $data->update($request->only('username','email'));
                 }
             } else {
                 if ($request->desa_id == null) {
-                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id')));
+                    $set->update(array_merge($request->only('nama','nik','no_rek','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id','bank_id')));
                     $data->update($request->only('username','email'));
                 } else {
-                    $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id')));
+                    $set->update(array_merge($request->only('nama','nik','no_rek','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','desa_id','kecamatan_id','kabupaten_id','provinsi_id','bank_id')));
                     $data->update($request->only('username','email'));
                 }
             }

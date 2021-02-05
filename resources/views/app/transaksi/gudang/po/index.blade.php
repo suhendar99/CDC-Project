@@ -60,16 +60,30 @@
                                         {{$d->barangPesananBulky->nama_barang}} ({{$d->barangPesananBulky->jumlah_barang}} {{$d->barangPesananBulky->satuan}})
                                         , Belum Diproses Penjual
                                     </span>
-                                    @if($d->foto_bukti == null)
-                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
+                                    @if ($d->status == 5)
+                                        @if($d->foto_bukti == null)
+                                        <a class="btn btn-sm btn-primary"><i class="fas fa-shopping-bag"></i> Ambil Barang</a>
+                                        @else
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' :
+                                                (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
+                                            }}
+                                        </a>
+                                        @endif
                                     @else
-                                    <a class="btn btn-sm btn-primary disabled" href="#">
-                                        {{
-                                            (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' : 
-                                            (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' : 
-                                            (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
-                                        }}
-                                    </a>
+                                        @if($d->foto_bukti == null)
+                                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
+                                        @else
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' :
+                                                (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
+                                            }}
+                                        </a>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

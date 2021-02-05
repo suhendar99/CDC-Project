@@ -1,6 +1,6 @@
 @php
         $icon = 'dashboard';
-        $pageTitle = 'Edit Akun Pengurus Gudang';
+        $pageTitle = 'Edit Akun Pengurus Gudang Retail';
 @endphp
 @extends('layouts.dashboard.header')
 

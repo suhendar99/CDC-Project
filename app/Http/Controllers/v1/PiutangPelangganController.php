@@ -16,7 +16,7 @@ class PiutangPelangganController extends Controller
     {
         $this->Data = new Piutang;
 
-        $this->path = 'app.data-master.piutang-Pelanggan.';
+        $this->path = 'app.data-master.piutang-pelanggan.';
         $this->alert = 'Data Berhasil ';
     }
     /**
