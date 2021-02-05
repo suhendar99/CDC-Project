@@ -155,7 +155,6 @@ class StorageKeluarBulkyController extends Controller
         ]);
 
         if ($v->fails()) {
-            dd($v);
             return back()->withErrors($v)->withInput();
         }
 
@@ -236,7 +235,7 @@ class StorageKeluarBulkyController extends Controller
                     // dd($jumlah);
                 }
             }
-            
+
 
         }
 
@@ -370,7 +369,7 @@ class StorageKeluarBulkyController extends Controller
             'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
 
-        return back()->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
     }
 
     /**

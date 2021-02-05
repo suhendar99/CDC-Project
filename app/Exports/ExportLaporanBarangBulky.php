@@ -32,7 +32,7 @@ class ExportLaporanBarangBulky implements FromView,ShouldAutoSize
         if ($this->bulan != null && $this->month) {
             $data = StorageBulky::with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
         } elseif ($this->awal != null && $this->akhir != null) {
-            $data = Storage::whereBetween('waktu',[$this->awal.' 00:00:00', $this->akhir.' 23:59:59'])->get();
+            $data = StorageBulky::whereBetween('waktu',[$this->awal.' 00:00:00', $this->akhir.' 23:59:59'])->get();
         }
         return view($this->path.'excel', compact('data'));
 

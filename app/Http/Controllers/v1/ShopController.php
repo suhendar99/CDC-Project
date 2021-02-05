@@ -94,17 +94,17 @@ class ShopController extends Controller
                 if ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
+                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')->paginate(20);
                     }else{
-                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
+                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
                         ->where('nama_barang','LIKE',"%".$search."%")
                         ->orWhere('harga_barang','LIKE',"%".$search."%")
                         ->paginate(20);
                     }
                 } else {
-                    $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
+                    $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->paginate(20);
                 }

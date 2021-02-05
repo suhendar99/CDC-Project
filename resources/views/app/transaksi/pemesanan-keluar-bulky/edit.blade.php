@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Buat Data Pemesanan Keluar';
+        $pageTitle = 'Edit Data Pemesanan Keluar';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -17,7 +17,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Pemesanan Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Buat Data</a>
+            <a href="#" class="text-14">Edit Data</a>
           </div>
         </div>
     </div>
