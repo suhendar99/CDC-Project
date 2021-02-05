@@ -223,6 +223,8 @@ class ShopController extends Controller
 
             $harga = $store->harga_barang * $request->jumlah;
 
+            $satuan = ($request->satuan == 'Kwintal') ? 'Kg' : $request->satuan;
+
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
                     'kode' => $kode_faker,
@@ -246,7 +248,7 @@ class ShopController extends Controller
                 'barang_kode' => $request->barangKode,
                 'pemesanan_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
-                'satuan' => $request->satuan,
+                'satuan' => $satuan,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,

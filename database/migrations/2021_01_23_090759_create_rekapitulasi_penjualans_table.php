@@ -22,7 +22,7 @@ class CreateRekapitulasiPenjualansTable extends Migration
             $table->string('no_surat_jalan', 50)->nullable();
             $table->string('nama_pembeli', 50);
             $table->string('barang', 100);
-            $table->integer('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan', 20);
             $table->bigInteger('harga');
             $table->bigInteger('total');
