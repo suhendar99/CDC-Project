@@ -50,7 +50,8 @@ class PoController extends Controller
     public function index()
     {
         $gudang = Gudang::select('id')->where('user_id', auth()->user()->id)->get();
-        $data = PemesananBulky::whereIn('gudang_retail_id',$gudang)->orderBy('id','desc')->paginate(4);
+        $data = PemesananBulky::with('storageKeluarBulky')->whereIn('gudang_retail_id',$gudang)->orderBy('id','desc')->paginate(4);
+        // dd($data[0]->storageKeluarBulky);
         return view($this->indexPath.'index',compact('data'));
     }
     public function preview($id)
