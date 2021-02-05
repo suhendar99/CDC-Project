@@ -22,7 +22,7 @@ class CreateStorageKeluarBulkiesTable extends Migration
             $table->foreignId('bulky_id')->constrained('gudang_bulkies')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();
-            $table->bigInteger('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan', 20);
             $table->dateTime('waktu');
             $table->timestamps();

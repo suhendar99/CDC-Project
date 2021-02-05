@@ -20,7 +20,7 @@ class CreatePemesananKeluarBulkyControllersTable extends Migration
             $table->foreignId('bulky_id')->constrained('gudang_bulkies')->onDelete('cascade');
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
-            $table->bigInteger('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan');
             $table->string('penerima_po', 50);
             $table->string('nama_pemesan', 50);
