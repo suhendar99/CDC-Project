@@ -58,30 +58,19 @@ class PemesananKeluarBulkyController extends Controller
      */
     public function store(Request $request)
     {
-        if (isset($request->bulky_id)) {
-            $v = Validator::make($request->all(),[
-                'alamat_pemesan' => 'required',
-                'barang_kode' => 'required',
-                'bulky_id' => 'required',
-                // 'pembayaran' => 'required',
-                'telepon' => 'required',
-                'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|numeric|min:1'
-            ]);
-        } else {
-            $v = Validator::make($request->all(),[
-                'alamat_pemesan' => 'required',
-                'barang_kode' => 'required',
-                // 'pembayaran' => 'required',
-                'telepon' => 'required',
-                'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|numeric|min:1'
-            ]);
-        }
+        $v = Validator::make($request->all(),[
+            'alamat_pemesan' => 'required',
+            'barang_kode' => 'required',
+            'bulky_id' => 'required',
+            // 'pembayaran' => 'required',
+            'telepon' => 'required',
+            'metode_pembayaran' => 'nullable',
+            'jumlah' => 'required|numeric|min:1'
+        ]);
         
 
         if ($v->fails()) {
-            dd($v);
+            // dd($v);
             return back()->withErrors($v)->withInput();
             // return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
         }
@@ -150,20 +139,17 @@ class PemesananKeluarBulkyController extends Controller
 
         $barang = Barang::where('kode_barang', $request->barang_kode)->first();
 
-        if ($barang->satuan == 'Kg') {
-            $jumlah = $request->jumlah * 1000;
-        } else {
-            $jumlah = $request->jumlah;
-        }
+        $satuan = ($barang->satuan == 'Kg') ? 'Ton' : $barang->satuan;
         
+        $jumlah = $request->jumlah;
 
-        $bulky = (isset($request->bulky_id)) ? $request->bulky_id : auth()->user()->pengurusGudangBulky->akunGudangBulky[0]->bulky_id ;
+        $bulky = $request->bulky_id; 
 
         $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','telepon','alamat_pemesan','metode_pembayaran', 'barang_kode'),[
             'jumlah' => $jumlah,
             'penerima_po' => $barang->pemasok->nama,
             'bulky_id' => $request->bulky_id,
-            'satuan' => $barang->satuan,
+            'satuan' => $satuan,
             'kode' => $kode_faker,
             'nomor_pemesanan' => $kode,
             'nama_pemesan' => auth()->user()->pengurusGudangBulky->nama,

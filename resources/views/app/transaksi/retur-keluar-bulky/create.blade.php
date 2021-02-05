@@ -51,7 +51,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                    <input type="numeric" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Enter nomor_kwitansi">
+                                    <input type="numeric" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                     @error('nomor_kwitansi')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -130,7 +130,7 @@
         if ($('#barang option:selected').data('satuan') == 'Kg') {
             $('#satuanAppend').text('Ton')
             $('#jumlah').attr('type', 'numeric');
-            $('#jumlah').val($('#barang option:selected').data('jumlah') / 1000);
+            $('#jumlah').val($('#barang option:selected').data('jumlah'));
         } else {
             $('#satuanAppend').text($('#barang option:selected').data('satuan'))
             $('#jumlah').attr('type', 'number');

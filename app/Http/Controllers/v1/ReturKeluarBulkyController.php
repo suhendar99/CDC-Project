@@ -88,14 +88,16 @@ class ReturKeluarBulkyController extends Controller
         $barang = Barang::where('kode_barang', $request->barang_kode)->first();
 
         if ($barang->satuan == 'Kg') {
-            $jumlah = $request->jumlah * 1000;
+            $jumlah = $request->jumlah;
+            $satuan = 'Ton';
         } else {
             $jumlah = $request->jumlah;
+            $satuan = $barang->satuan;
         }
 
         $retur = ReturKeluarBulky::create($request->only('nomor_kwitansi', 'tanggal_pengembalian', 'keterangan', 'barang_kode')+[
             'jumlah_barang' => $jumlah,
-            'satuan' => $barang->satuan
+            'satuan' => $satuan
         ]);
 
         $log = LogTransaksi::create([
