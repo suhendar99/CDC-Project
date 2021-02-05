@@ -263,8 +263,8 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
-
-            return redirect('v1/pemesananMasukWarung')->with('success','Pemesanan Ke Retail Berhasil!');
+            return redirect('v1/pemesananKeluarWarung')->with('success','Pemesanan Ke Retail Berhasil!');
+            // dd($pemesanan);
 
         } elseif (Auth::user()->pembeli_id != null) {
             $date = date('ymd');

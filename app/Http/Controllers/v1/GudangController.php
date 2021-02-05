@@ -160,9 +160,9 @@ class GudangController extends Controller
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/gudang"), $foto);
+                $request->foto->move("upload/foto/gudang", $foto);
                 $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
-                    'foto' => 'upload/foto/gudang/'.$foto,
+                    'foto' => '/upload/foto/gudang/'.$foto,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/RTI/".$date.'/'.$kode
                 ]));
@@ -252,9 +252,9 @@ class GudangController extends Controller
                 File::delete($data->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/gudang"), $foto);
+                $request->foto->move("upload/foto/gudang", $foto);
                 $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
-                    'foto' => 'upload/foto/gudang/'.$foto
+                    'foto' => '/upload/foto/gudang/'.$foto
                 ]));
 
             } else {

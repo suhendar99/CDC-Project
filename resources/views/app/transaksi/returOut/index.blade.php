@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal Pengembalian</th>
                                 <th>Kode Kwitansi</th>
                                 <th>Nomor Pemesanan</th>
                                 <th>Barang</th>
-                                <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
                                 <th>Action</th>
                             </tr>
@@ -150,13 +150,13 @@
             ajax : "{{ route('returOut.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'kwitansi_bulky.kode', name: 'kode'},
                 {data : 'kwitansi_bulky.pemesanan_bulky.nomor_pemesanan', name: 'nomor_pemesanan'},
                 {data : 'kwitansi_bulky.pemesanan_bulky', render:function(data,a,b,c){
                         return '( '+data.barang_pesanan_bulky.barang_kode+' ) '+data.barang_pesanan_bulky.nama_barang;
                     }
                 },
-                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
                 {data : 'action', name: 'action'}
             ]

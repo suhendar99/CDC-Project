@@ -436,6 +436,8 @@ class PemesananController extends Controller
         foreach ($email as $key => $value) {
             $user = $value;
         }
+
+        // dd('Jeruk');
         return view($this->indexPath.'konfirmasi',compact('data','date','user'));
     }
 

@@ -61,6 +61,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th>Waktu</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Stok Barang</th>
@@ -284,6 +285,11 @@
             ajax : "{{ route('bulky.storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : function(data){
+                        let current_datetime = new Date(data.created_at);
+                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
+
+                    }, name: 'waktu'},
                 {data : 'bulky.nama', name: 'bulky'},
                 {data : 'barang.nama_barang', name: 'nama_barang'},
                 {data : function(data,a,b,c){

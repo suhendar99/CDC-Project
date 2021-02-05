@@ -46,9 +46,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Waktu Transaksi</th>
                                 <th>No transaksi</th>
                                 <th>Jumlah Hutang</th>
-                                <th>Waktu Transaksi</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Nama Pembeli</th>
                                 {{-- <th>Nama Barang</th> --}}
@@ -77,9 +77,9 @@
             ajax : "{{ route('piutangOut.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'tanggal', name: 'tanggal'},
                 {data : 'po.kode_po', name: 'barang_id'},
                 {data : 'hutang', name: 'hutang'},
-                {data : 'tanggal', name: 'tanggal'},
                 {data : 'jatuh_tempo', name: 'jatuh_tempo'},
                 {data : 'nama_pembeli', name: 'nama_pembeli'},
                 // {data : 'barang.nama', name: 'barang_id'},
