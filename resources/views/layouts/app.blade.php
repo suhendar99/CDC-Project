@@ -36,15 +36,15 @@
         }
         .card {
             border: 0 !important;
-            border-radius: 15px !important;
+            border-radius: 5px !important;
         }
         input {
             border: 1px solid grey !important;
-            border-radius: 7px !important;
+            border-radius: 5px !important;
         }
         select {
             border: 1px solid grey !important;
-            border-radius: 7px !important;
+            border-radius: 5px !important;
         }
         .font {
             font-size:2rem;
