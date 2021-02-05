@@ -274,7 +274,7 @@
                 processData: false,
                 success: (response)=>{
                     // console.log(response.data[0]);
-                    $('#foto_bukti').attr('src',`${response.data[0].pesanan.foto_bukti}`);
+                    $('#foto_bukti').attr('src',`../${response.data[0].pesanan.foto_bukti}`);
                     $('#button_accept').attr('href','/v1/validasi/bukti/warung/'+response.data[0].pesanan.id);
 
                 },

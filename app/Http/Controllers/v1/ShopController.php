@@ -340,7 +340,7 @@ class ShopController extends Controller
 
             return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
 
-        } else{
+        } elseif (Auth::user()->pengurus_gudang_id != null){
 
             $date = date('ymd');
             $latest = PemesananBulky::orderBy('id','desc')->first();
@@ -351,12 +351,6 @@ class ShopController extends Controller
                 $counter = $latest->id+1;
             }
 
-            $faker = \Faker\Factory::create('id_ID');
-
-            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
-
-            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-            $kode = 'PEM/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
             $faker = \Faker\Factory::create('id_ID');
 
             $kode_faker = $faker->unique()->regexify('[0-9]{9}');
@@ -387,6 +381,8 @@ class ShopController extends Controller
                 ]));
             }
 
+            $satuan = ($request->satuan == 'Ton') ? 'Kwintal' : $request->satuan;
+
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
             BarangPemesananBulky::create([
@@ -394,7 +390,7 @@ class ShopController extends Controller
                 'barang_kode' => $request->barangKode,
                 'pemesanan_bulky_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
-                'satuan' => $request->satuan,
+                'satuan' => $satuan,
                 'pajak' => 0,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,

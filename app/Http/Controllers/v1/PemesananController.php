@@ -208,7 +208,7 @@ class PemesananController extends Controller
         $data = $this->modelBulky::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
-        $foto_bukti->move(public_path("/upload/foto/bukti"), $nama_bukti);
+        $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
@@ -448,7 +448,7 @@ class PemesananController extends Controller
         $data = Pemesanan::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
-        $foto_bukti->move(public_path("/upload/foto/bukti"), $nama_bukti);
+        $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti

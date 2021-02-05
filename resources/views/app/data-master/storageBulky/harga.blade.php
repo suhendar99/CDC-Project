@@ -52,9 +52,9 @@
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
                                     <th>Harga Beli</th>
-                                    <th>Harga Dasar Per-{{ $base_harga->satuan }}</th>
+                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Ton') ? 'Kwintal' : $base_harga->satuan }}</th>
                                     <th>Ambil Untung</th>
-                                    <th>Harga Jual Per-{{ $base_harga->satuan }}</th>
+                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Ton') ? 'Kwintal' : $base_harga->satuan }}</th>
                                 </tr>
                             </thead>
                               <tbody id="dataPenyimpanan">
@@ -62,7 +62,7 @@
                                     <td>{{ $base_harga->barang->nama_barang }}</td>
                                     <td>{{ $base_harga->jumlah }} {{ $base_harga->satuan }}</td>
                                     <td>Rp. {{ number_format($base_harga->harga_beli,0,',','.') }}</td>
-                                    <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>
+                                    <td>Rp. {{ number_format(($base_harga->harga_beli / ($base_harga->jumlah * 10)),0,',','.') }}</td>
                                     <td>
                                         <div class="input-group">
                                             <input type="number" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" aria-describedby="satuanAppend" min="1" max="100">
@@ -132,14 +132,21 @@
 <script>
     let hargaBeli = '{{ $base_harga->harga_beli }}';
     let jumlahBarang = '{{ $base_harga->jumlah }}';
+    let satuan = '{{ $base_harga->satuan }}';
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;
 
     $('#keuntungan').keyup(function(event) {
         /* Act on the event */
-        hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+        if (satuan == 'Ton') {
+            hargaSatuan = (parseInt(hargaBeli) / (parseFloat(jumlahBarang) * 10));
+        } else {
+            hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
+            console.log(satuan)
+        }
         untung = hargaSatuan * ($(this).val() / 100);
+
         akhir = hargaSatuan + untung;
 
         $('#sugest').text('Rp. '+(akhir.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
