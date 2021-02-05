@@ -1,6 +1,6 @@
 @php
         $icon = 'book';
-        $pageTitle = 'Laba Rugi Pelanggan';
+        $pageTitle = 'Laba Rugi Warung';
         $dashboard = true;
         // $rightbar = true;
 @endphp

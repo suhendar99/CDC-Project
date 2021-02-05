@@ -26,6 +26,37 @@
 @section('content')
 {{-- {{dd($pemasok)}} --}}
 {{-- {{dd('Pemasok = '.$pemasok)}} --}}
+<div class="container" style="min-height: 0;">
+@if (session()->has('success'))
+<div class="alert alert-success alert-dismissible fade show valign-center" role="alert">
+    <i class="material-icons text-my-success">check_circle</i>
+    {{ session()->get('success') }}
+    <button type="button" class="btn btn-transparent fr-absolute" data-dismiss="alert" aria-label="Close">
+        <i class="material-icons md-14">close</i>
+    </button>
+</div>
+@elseif (session()->has('error'))
+<div class="alert alert-danger alert-dismissible fade show valign-center" role="alert">
+    <i class="material-icons text-my-danger">cancel</i>
+    {{ session()->get('error') }}
+    <button type="button" class="btn btn-transparent fr-absolute" data-dismiss="alert" aria-label="Close">
+        <i class="material-icons md-14">close</i>
+    </button>
+</div>
+@elseif (session()->has('failed'))
+<div class="alert alert-danger alert-dismissible fade show valign-center" role="alert">
+    <i class="material-icons text-my-danger">cancel</i>
+    {{ session()->get('failed') }}
+    <button type="button" class="btn btn-transparent fr-absolute" data-dismiss="alert" aria-label="Close">
+        <i class="material-icons md-14">close</i>
+    </button>
+</div>
+@elseif (session()->has('sukses'))
+<script>
+    alert("{{ session()->get('sukses') }}");
+</script>
+@endif
+</div>
 <div class="container">
     <div class="row valign-center mb-2">
         <div class="col-md-12 col-sm-12 valign-center py-2">
@@ -137,7 +168,7 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -182,7 +213,7 @@
                                     <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
                                         <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
-                                            {{-- <option value="">-- Pilih Metode --</option> --}}
+                                            {{-- <option value=""> Pilih Metode </option> --}}
                                             <option value="ambil">Barang Diambil</option>
                                             <option value="kirim">Barang Dikirim</option>
                                         </select>
@@ -330,7 +361,7 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                 </div>
@@ -525,7 +556,7 @@
                                             <div class="form-group">
                                                 <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                                 <div class="input-group">
-                                                    <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                                    <input type="number" id="jumlah" min="1" max="{{$data->jumlah}}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="satuanAppend">{{ $data->satuan }}</span>
                                                     </div>

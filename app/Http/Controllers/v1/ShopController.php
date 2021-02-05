@@ -144,62 +144,66 @@ class ShopController extends Controller
 
     public function pemesanan(Request $request, $id)
     {
+        $v = Validator::make($request->all(),[
+            'alamat_pemesan' => 'required',
+            'pembayaran' => 'required',
+            'telepon' => 'required',
+            'metode_pembayaran' => 'required_with:pembayaran.now',
+            'jumlah' => 'required|numeric|min:1',
+            'harga' => 'required'
+        ]);
+        if ($v->fails()) {
+            // return back()->withErrors($v)->withInput();
+            // dd($v->errors()->all());
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+        }
+        // dd($request->all());
+        date_default_timezone_set('Asia/Jakarta');
+
+        $tanggal = date("Ymd");
+        $tahun = date("y");
+        $bulan = date("m");
+
+        // Number To Romawi
+        $map = array(
+            'M' => 1000,
+            'CM' => 900,
+            'D' => 500,
+            'CD' => 400,
+            'C' => 100,
+            'XC' => 90,
+            'L' => 50,
+            'XL' => 40,
+            'X' => 10,
+            'IX' => 9,
+            'V' => 5,
+            'IV' => 4,
+            'I' => 1
+        );
+        $tahunRomawi = '';
+        $bulanRomawi = '';
+
+        while ($tahun > 0) {
+            foreach ($map as $romawi => $int) {
+                if ($tahun >= $int) {
+                    $tahun -= $int;
+                    $tahunRomawi .= $romawi;
+                    break;
+                }
+            }
+        }
+
+        while ($bulan > 0) {
+            foreach ($map as $roman => $num) {
+                if ($bulan >= $num) {
+                    $bulan -= $num;
+                    $bulanRomawi .= $roman;
+                    break;
+                }
+            }
+        }
+
         if (Auth::user()->pelanggan_id != null) {
-            $v = Validator::make($request->all(),[
-                'alamat_pemesan' => 'required',
-                'pembayaran' => 'required',
-                'telepon' => 'required',
-                'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|numeric|min:1',
-            ]);
-            if ($v->fails()) {
-                // return back()->withErrors($v)->withInput();
-                return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
-            }
-            date_default_timezone_set('Asia/Jakarta');
-
-            $tanggal = date("Ymd");
-            $tahun = date("y");
-            $bulan = date("m");
-
-            // Number To Romawi
-            $map = array(
-                'M' => 1000,
-                'CM' => 900,
-                'D' => 500,
-                'CD' => 400,
-                'C' => 100,
-                'XC' => 90,
-                'L' => 50,
-                'XL' => 40,
-                'X' => 10,
-                'IX' => 9,
-                'V' => 5,
-                'IV' => 4,
-                'I' => 1
-            );
-            $tahunRomawi = '';
-            $bulanRomawi = '';
-
-            while ($tahun > 0) {
-                foreach ($map as $romawi => $int) {
-                    if ($tahun >= $int) {
-                        $tahun -= $int;
-                        $tahunRomawi .= $romawi;
-                        break;
-                    }
-                }
-            }
-
-            while ($bulan > 0) {
-                foreach ($map as $roman => $num) {
-                    if ($bulan >= $num) {
-                        $bulan -= $num;
-                        $bulanRomawi .= $roman;
-                        break;
-                    }
-                }
-            }
             $date = date('ymd');
             $latest = Pemesanan::orderBy('id','desc')->first();
             if ($latest == null) {
@@ -259,62 +263,10 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+
+            return redirect('v1/pemesananMasukWarung')->with('success','Pemesanan Ke Retail Berhasil!');
+
         } elseif (Auth::user()->pembeli_id != null) {
-            $v = Validator::make($request->all(),[
-                'alamat_pemesan' => 'required',
-                'pembayaran' => 'required',
-                'telepon' => 'required',
-                'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|numeric|min:1',
-            ]);
-            if ($v->fails()) {
-                // return back()->withErrors($v)->withInput();
-                return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
-            }
-            date_default_timezone_set('Asia/Jakarta');
-
-            $tanggal = date("Ymd");
-            $tahun = date("y");
-            $bulan = date("m");
-
-            // Number To Romawi
-            $map = array(
-                'M' => 1000,
-                'CM' => 900,
-                'D' => 500,
-                'CD' => 400,
-                'C' => 100,
-                'XC' => 90,
-                'L' => 50,
-                'XL' => 40,
-                'X' => 10,
-                'IX' => 9,
-                'V' => 5,
-                'IV' => 4,
-                'I' => 1
-            );
-            $tahunRomawi = '';
-            $bulanRomawi = '';
-
-            while ($tahun > 0) {
-                foreach ($map as $romawi => $int) {
-                    if ($tahun >= $int) {
-                        $tahun -= $int;
-                        $tahunRomawi .= $romawi;
-                        break;
-                    }
-                }
-            }
-
-            while ($bulan > 0) {
-                foreach ($map as $roman => $num) {
-                    if ($bulan >= $num) {
-                        $bulan -= $num;
-                        $bulanRomawi .= $roman;
-                        break;
-                    }
-                }
-            }
             $date = date('ymd');
             $latest = PemesananPembeli::orderBy('id','desc')->first();
             if ($latest == null) {
@@ -387,63 +339,8 @@ class ShopController extends Controller
             }
 
             return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
+
         } else{
-            $v = Validator::make($request->all(),[
-                'alamat_pemesan' => 'required',
-                'pembayaran' => 'required',
-                'telepon' => 'required',
-                'metode_pembayaran' => 'nullable',
-                'jumlah' => 'required|numeric|min:1',
-            ]);
-            if ($v->fails()) {
-                // return back()->withErrors($v)->withInput();
-                return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
-            }
-            date_default_timezone_set('Asia/Jakarta');
-
-            $tanggal = date("Ymd");
-            $tahun = date("y");
-            $bulan = date("m");
-
-            // Number To Romawi
-            $map = array(
-                'M' => 1000,
-                'CM' => 900,
-                'D' => 500,
-                'CD' => 400,
-                'C' => 100,
-                'XC' => 90,
-                'L' => 50,
-                'XL' => 40,
-                'X' => 10,
-                'IX' => 9,
-                'V' => 5,
-                'IV' => 4,
-                'I' => 1
-            );
-
-            $tahunRomawi = '';
-            $bulanRomawi = '';
-
-            while ($tahun > 0) {
-                foreach ($map as $romawi => $int) {
-                    if ($tahun >= $int) {
-                        $tahun -= $int;
-                        $tahunRomawi .= $romawi;
-                        break;
-                    }
-                }
-            }
-
-            while ($bulan > 0) {
-                foreach ($map as $roman => $num) {
-                    if ($bulan >= $num) {
-                        $bulan -= $num;
-                        $bulanRomawi .= $roman;
-                        break;
-                    }
-                }
-            }
 
             $date = date('ymd');
             $latest = PemesananBulky::orderBy('id','desc')->first();

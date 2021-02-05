@@ -63,7 +63,7 @@
                                     </span>
                                     @if ($d->status == 5)
                                         @if($d->foto_bukti == null)
-                                        <a class="btn btn-sm btn-primary" href="#"><i class="fas fa-shopping-bag"></i> Ambil Barang</a>
+                                        <a class="btn btn-sm btn-primary disabled" href="#"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
                                         @endif

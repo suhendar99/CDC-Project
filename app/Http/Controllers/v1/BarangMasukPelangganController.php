@@ -93,7 +93,7 @@ class BarangMasukPelangganController extends Controller
         ]);
 
         if ($v->fails()) {
-            dd($v->errors()->all());
+            // dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         }
 
@@ -129,7 +129,7 @@ class BarangMasukPelangganController extends Controller
             'waktu' => now('Asia/Jakarta')
         ]);
 
-        RekapitulasiPembelianPelanggan::create([
+        $rekapitulasi = RekapitulasiPembelianPelanggan::create([
             'barang_masuk_id' => $masuk->id,
             'tanggal_pembelian' => $masuk->waktu,
             'no_pembelian' => $masuk->kode,
@@ -140,10 +140,10 @@ class BarangMasukPelangganController extends Controller
             'jumlah' => $masuk->jumlah,
             'satuan' => $barang->satuan,
             'harga' => $masuk->storageOut->barang->harga_barang,
-            'total' => $masuk->storageOut->pemesanan->barangPesanan[0]->harga
+            'total' => $masuk->jumlah*$masuk->storageOut->barang->harga_barang
         ]);
 
-        // dd($barangWarung);
+        // dd($rekapitulasi);
 
         // $checkStock = StockBarang::where([
         //     ['gudang_id', $request->gudang_id],
