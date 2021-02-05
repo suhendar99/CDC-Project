@@ -143,9 +143,9 @@
                                     </div> --}}
                                 </div>
                                 <div class="form-group">
-                                    <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
+                                    <label>Pilih Gudang Bulky Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
                                     <select name="bulky_id" id="" class="form-control">
-                                        <option value="0">--Pilih Gudang Retail--</option>
+                                        <option value="0">--Pilih Gudang Bulky--</option>
                                         @foreach ($gudang as $list)
                                             <option value="{{$list->id}}" {{ old('bulky_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
                                         @endforeach
