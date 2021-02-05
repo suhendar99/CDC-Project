@@ -48,6 +48,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Waktu Pencatatan</th>
                                 <th>Bulan</th>
                                 <th>Laba Kotor</th>
                                 <th>Penjualan</th>
@@ -80,6 +81,11 @@
             ajax : "{{ route('labaRugiPelanggan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : function(data){
+                        let current_datetime = new Date(data.created_at);
+                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
+
+                    }, name: 'waktu'},
                 {data : 'bulan', name: 'bulan'},
                 {data : 'laba_kotor', name: 'laba_kotor'},
                 {data : 'penjualan', name: 'penjualan'},

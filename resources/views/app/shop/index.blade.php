@@ -1,6 +1,6 @@
 @php
 	$shop = true;
-	$cart = true;
+	// $cart = true;
 	$nomore = true;
 	// dd($barang);
 	// $card = [1,1,1,1,1,1,1];

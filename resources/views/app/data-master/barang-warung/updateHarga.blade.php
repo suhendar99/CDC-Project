@@ -113,7 +113,7 @@
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">
-                                            <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                            <button id="btn-save" type="button" class="btn btn-success btn-sm disabled">Simpan</button>
                                         </div>
                                       </div>
                                   </div>
@@ -128,12 +128,15 @@
 @endsection
 @push('script')
 <script>
+
     let hargaBeli = '{{ $base_harga->harga_beli }}';
     let jumlahBarang = '{{ $base_harga->jumlah }}';
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;
     $('#keuntungan').keyup(function(event) {
+        $('#btn-save').removeClass('disabled');
+        $('#btn-save').attr('type','sumbit');
         /* Act on the event */
         hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
         untung = hargaSatuan * ($(this).val() / 100);
