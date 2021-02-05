@@ -263,9 +263,9 @@
                     <div class="col-md-6 col mt-2">
                         <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
                     </div>
-                    <div class="col-md-6 col mt-2">
+                    {{-- <div class="col-md-6 col mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>
@@ -646,9 +646,9 @@
                         <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
                         @endif
                     </div>
-                    <div class="col-md-6 mt-2">
+                    {{-- <div class="col-md-6 mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
-                    </div>
+                    </div> --}}
                 </div>
             </form>
         </div>
