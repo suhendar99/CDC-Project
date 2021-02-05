@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +13,20 @@ Web Routes
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Call Artisan
+    Route::get('call/config', function () {
+        Artisan::call('config:clear');
+        return redirect('/');
+    });
+    Route::get('call/cache/clear', function () {
+        Artisan::call('cache:clear');
+        return redirect('/');
+    });
+    // Route::get('call/down', function () {
+    //     Artisan::call('down');
+    //     return redirect('/');
+    // });
+// End Call
 
 Route::group(['namespace' => 'v1'], function () {
     Route::get('/shop', 'ShopController@index')->name('shop');
@@ -68,9 +83,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Pengurus Gudang
     Route::get('pengaturan-akun-pengurusGudang','PengaturanAkunController@showFormUpdateAkunPengurusGudang')->name('setPengurusGudang.show');
     Route::post('pengaturan-akun-pengurusGudangs','PengaturanAkunController@updateAkunPengurusGudang')->name('setPengurusGudang.action');
-        // Karyawan
-        Route::get('pengaturan-akun-karyawan','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
-        Route::post('pengaturan-akun-karyawans','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
+        // Pengurus Gudang Bulky
+        Route::get('pengaturan-akun-bulky','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
+        Route::post('pengaturan-akun-bulky','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
         // Bank
         Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
         Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');

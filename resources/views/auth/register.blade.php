@@ -51,7 +51,7 @@
                                     <div class="col-md-12">
                                         <select name="role" id="role" class="form-control @error('role') is-invalid @enderror">
                                             <option value="">--Pilih Role--</option>
-                                            <option value="pemasok">Pemasok</option>
+                                            {{-- <option value="pemasok">Pemasok</option> --}}
                                             <option value="bulky">Bulky</option>
                                             <option value="retail">Retail</option>
                                             <option value="warung">Warung</option>

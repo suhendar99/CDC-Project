@@ -1,6 +1,6 @@
 @php
         $icon = 'dashboard';
-        $pageTitle = 'Edit Akun Karyawan';
+        $pageTitle = 'Edit Akun Pengurus Gudang Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -86,11 +86,11 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Nama Lengkap <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $auth->karyawan->nama }}">
+                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $auth->pengurusGudangBulky->nama }}">
                                                 @error('nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -99,12 +99,29 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>NIK <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{$auth->karyawan->nik}}">
-                                                @error('nik')
+                                                <label>Nomor Rekening <small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="0" class="form-control @error('no_rek') is-invalid @enderror" name="no_rek" value="{{ $auth->pengurusGudangBulky->no_rek }}">
+                                                @error('no_rek')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Nama Bank <small class="text-success">*Harus dipilih</small></label>
+                                                <select name="bank_id" id="" class="form-control @error('bank_id') is-invalid @enderror">
+                                                    @foreach ($bnk as $item)
+                                                        <option value="{{$item->id}}" {{$auth->pengurusGudangBulky->bank_id == $item->id ? 'selected' : ''}}>{{$item->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('no_rek')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -117,9 +134,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Tempat Lahir <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{$auth->karyawan->tempat_lahir}}">
-                                                @error('tempat_lahir')
+                                                <label>NIK <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik" value="{{$auth->pengurusGudangBulky->nik}}">
+                                                @error('nik')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -130,9 +147,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Tanggal Lahir <small class="text-success">*Harus diisi</small></label>
-                                                <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{$auth->karyawan->tgl_lahir}}">
-                                                @error('tgl_lahir')
+                                                <label>Tempat Lahir <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" name="tempat_lahir" value="{{$auth->pengurusGudangBulky->tempat_lahir}}">
+                                                @error('tempat_lahir')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -141,18 +158,35 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Jenis Kelamin <small class="text-success">*Harus diisi</small></label>
-                                        <select name="jenis_kelamin" id="" class="form-control">
-                                            <option value="Pria" {{$auth->karyawan->jenis_kelamin == 'Pria' ? 'selected' : ''}}>Pria</option>
-                                            <option value="Wanita" {{$auth->karyawan->jenis_kelamin == 'Wanita' ? 'selected' : ''}}>Wanita</option>
-                                        </select>
-                                        @error('tgl_lahir')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Tanggal Lahir <small class="text-success">*Harus diisi</small></label>
+                                                <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" name="tgl_lahir" value="{{$auth->pengurusGudangBulky->tgl_lahir}}">
+                                                @error('tgl_lahir')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Jenis Kelamin <small class="text-success">*Harus diisi</small></label>
+                                                <select name="jenis_kelamin" id="" class="form-control">
+                                                    <option value="Pria" {{$auth->pengurusGudangBulky->jenis_kelamin == 'Pria' ? 'selected' : ''}}>Pria</option>
+                                                    <option value="Wanita" {{$auth->pengurusGudangBulky->jenis_kelamin == 'Wanita' ? 'selected' : ''}}>Wanita</option>
+                                                </select>
+                                                @error('tgl_lahir')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -163,7 +197,7 @@
                                                 <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
                                                     <option value="">-- Pilih Disini --</option>
                                                     @foreach($provinsi as $p)
-                                                    <option value="{{$p->id}}"  {{$p->id == $auth->karyawan->provinsi_id ? 'selected' : ''}}>{{$p->nama}}</option>
+                                                    <option value="{{$p->id}}"  {{$p->id == $auth->pengurusGudangBulky->provinsi_id ? 'selected' : ''}}>{{$p->nama}}</option>
                                                     @endforeach
                                                 </select>
                                                 @error('provinsi_id')
@@ -180,7 +214,7 @@
                                             <div class="col-md-12">
                                                 <label for="kabupaten-select">Kabupaten <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
-                                                    <option value="{{$auth->karyawan->kabupaten_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pengurusGudangBulky->kabupaten_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('kabupaten_id')
                                                 <div class="invalid-feedback">
@@ -198,7 +232,7 @@
                                             <div class="col-md-12">
                                                 <label for="kecamatan-select">Kecamatan <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
-                                                    <option value="{{$auth->karyawan->kecamatan_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pengurusGudangBulky->kecamatan_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('kecamatan_id')
                                                 <div class="invalid-feedback">
@@ -214,7 +248,7 @@
                                             <div class="col-md-12">
                                                 <label for="desa-select">Desa <small class="text-success">*Boleh tidak dipilih</small></label>
                                                 <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
-                                                    <option value="{{$auth->karyawan->desa_id}}">-- Pilih Disini --</option>
+                                                    <option value="{{$auth->pengurusGudangBulky->desa_id}}">-- Pilih Disini --</option>
                                                 </select>
                                                 @error('desa_id')
                                                 <div class="invalid-feedback">
@@ -229,7 +263,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Alamat <small class="text-success">*Harus diisi</small></label>
-                                        <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{$auth->karyawan->alamat}}</textarea>
+                                        <textarea name="alamat" id="" cols="10" rows="3" class="form-control @error('alamat') id-invalid @enderror" >{{$auth->pengurusGudangBulky->alamat}}</textarea>
                                         @error('pekerjaan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -243,12 +277,12 @@
                                             <div class="col-md-12">
                                                 <label>Agama <small class="text-success">*Harus diisi</small></label>
                                                 <select name="agama" id="" class="form-control">
-                                                    <option value="Islam" {{$auth->karyawan->agama == 'Islam' ? 'selected' : ''}}>Islam</option>
-                                                    <option value="Protestan" {{$auth->karyawan->agama == 'Protestan' ? 'selected' : ''}}>Protestan</option>
-                                                    <option value="Katolik" {{$auth->karyawan->agama == 'Katolik' ? 'selected' : ''}}>Katolik</option>
-                                                    <option value="Hindu" {{$auth->karyawan->agama == 'Hindu' ? 'selected' : ''}}>Hindu</option>
-                                                    <option value="Buddha" {{$auth->karyawan->agama == 'Buddha' ? 'selected' : ''}}>Buddha</option>
-                                                    <option value="Khonghucu" {{$auth->karyawan->agama == 'Khonghucu' ? 'selected' : ''}}>Khonghucu</option>
+                                                    <option value="Islam" {{$auth->pengurusGudangBulky->agama == 'Islam' ? 'selected' : ''}}>Islam</option>
+                                                    <option value="Protestan" {{$auth->pengurusGudangBulky->agama == 'Protestan' ? 'selected' : ''}}>Protestan</option>
+                                                    <option value="Katolik" {{$auth->pengurusGudangBulky->agama == 'Katolik' ? 'selected' : ''}}>Katolik</option>
+                                                    <option value="Hindu" {{$auth->pengurusGudangBulky->agama == 'Hindu' ? 'selected' : ''}}>Hindu</option>
+                                                    <option value="Buddha" {{$auth->pengurusGudangBulky->agama == 'Buddha' ? 'selected' : ''}}>Buddha</option>
+                                                    <option value="Khonghucu" {{$auth->pengurusGudangBulky->agama == 'Khonghucu' ? 'selected' : ''}}>Khonghucu</option>
                                                 </select>
                                                 @error('pekerjaan')
                                                     <span class="invalid-feedback" role="alert">
@@ -263,8 +297,8 @@
                                             <div class="col-md-12">
                                                 <label>Status Perkawinan <small class="text-success">*Harus diisi</small></label>
                                                 <select name="status_perkawinan" id="" class="form-control">
-                                                    <option value="Belum Kawin" {{$auth->karyawan->status_perkawinan == 'Belum Kawin' ? 'selected' : ''}}>Belum Kawin</option>
-                                                    <option value="Sudah" {{$auth->karyawan->status_perkawinan == 'Sudah' ? 'selected' : ''}}>Sudah</option>
+                                                    <option value="Belum Kawin" {{$auth->pengurusGudangBulky->status_perkawinan == 'Belum Kawin' ? 'selected' : ''}}>Belum Kawin</option>
+                                                    <option value="Sudah" {{$auth->pengurusGudangBulky->status_perkawinan == 'Sudah' ? 'selected' : ''}}>Sudah</option>
                                                 </select>
                                                 @error('telepon')
                                                     <span class="invalid-feedback" role="alert">
@@ -279,9 +313,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Jabatan <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ $auth->karyawan->jabatan }}">
-                                                @error('jabatan')
+                                                <label>Pekerjaan <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror" name="pekerjaan" value="{{ $auth->pengurusGudangBulky->pekerjaan }}">
+                                                @error('pekerjaan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -293,7 +327,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Telepon <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $auth->karyawan->telepon }}">
+                                                <input type="text" class="form-control @error('telepon') is-invalid @enderror" name="telepon" value="{{ $auth->pengurusGudangBulky->telepon }}">
                                                 @error('telepon')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -308,7 +342,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Kewarganegaraan <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('kewarganegaraan') is-invalid @enderror" name="kewarganegaraan" value="{{ $auth->karyawan->kewarganegaraan }}">
+                                                <input type="text" class="form-control @error('kewarganegaraan') is-invalid @enderror" name="kewarganegaraan" value="{{ $auth->pengurusGudangBulky->kewarganegaraan }}">
                                                 @error('kewarganegaraan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -321,7 +355,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Foto <small class="text-success">*Harus diisi</small></label>
-                                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $auth->karyawan->foto }}">
+                                                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto" value="{{ $auth->pengurusGudangBulky->foto }}">
                                                 @error('foto')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

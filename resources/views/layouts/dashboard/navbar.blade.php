@@ -16,10 +16,10 @@
                 <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
                 @elseif(Auth::user()->pemasok_id != null)
                     <a class="dropdown-item" href="{{route('setPemasok.show')}}">Perbaharui Akun</a>
-                @elseif(Auth::user()->karyawan_id != null)
-                    <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
                 @elseif(Auth::user()->pengurus_gudang_id != null)
                     <a class="dropdown-item" href="{{route('setPengurusGudang.show')}}">Perbaharui Akun</a>
+                @elseif(Auth::user()->pengurus_gudang_bulky_id != null)
+                    <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
                 @elseif(Auth::user()->bank_id != null)
                     <a class="dropdown-item" href="{{route('setBank.show')}}">Perbaharui Akun</a>
                 @else
@@ -52,17 +52,17 @@
             <div class="d-inline-block float-right valign-center">
                 <img src="
                     {{ asset(''.
-                        isset(Auth::user()->pelanggan->foto) ? Auth::user()->pelanggan->foto :  
+                        isset(Auth::user()->pelanggan->foto) ? Auth::user()->pelanggan->foto :
                             (isset(Auth::user()->karyawan->foto) ? Auth::user()->karyawan->foto :
-                                (isset(Auth::user()->bank->foto) ? Auth::user()->bank->foto : 
-                                    (isset(Auth::user()->pemasok->foto) ? Auth::user()->pemasok->foto : 
-                                        (isset(Auth::user()->pembeli->foto) ? Auth::user()->pembeli->foto : 
-                                            'images/logo-user.png' 
+                                (isset(Auth::user()->bank->foto) ? Auth::user()->bank->foto :
+                                    (isset(Auth::user()->pemasok->foto) ? Auth::user()->pemasok->foto :
+                                        (isset(Auth::user()->pembeli->foto) ? Auth::user()->pembeli->foto :
+                                            'images/logo-user.png'
                                         )
                                     )
                                 )
                             )
-                        .'') 
+                        .'')
                     }}
                 " class="rounded-circle avatar">
                 <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -78,7 +78,7 @@
                             <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>
                         @elseif(Auth::user()->pemasok_id != null)
                             <a class="dropdown-item" href="{{route('setPemasok.show')}}">Perbaharui Akun</a>
-                        @elseif(Auth::user()->karyawan_id != null)
+                        @elseif(Auth::user()->pengurus_gudang_bulky_id != null)
                             <a class="dropdown-item" href="{{route('setKaryawan.show')}}">Perbaharui Akun</a>
                         @elseif(Auth::user()->pengurus_gudang_id != null)
                             <a class="dropdown-item" href="{{route('setPengurusGudang.show')}}">Perbaharui Akun</a>
