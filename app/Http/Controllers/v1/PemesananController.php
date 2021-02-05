@@ -104,7 +104,7 @@ class PemesananController extends Controller
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pemesananPembeli->status == 5) {
                         return '&nbsp;Pesanan Sudah Diterima';
-                    } elseif ($data->pemesananPembeli->status == 5) {
+                    } elseif ($data->pemesananPembeli->status == 6) {
                         return '&nbsp;Pesanan Diambil';
                     }
                 })
