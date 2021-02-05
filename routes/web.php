@@ -213,8 +213,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                     'update' => 'bulky.pengurus.update',
                     'destroy' => 'bulky.pengurus.destroy'
                 ]
-        ]);
+            ]);
         });
+
+
 
         Route::resource('gudang-bulky/{gudang}/rak', 'RakBulkyController', [
                 'names' => [
@@ -328,6 +330,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
     // Gudang Retail
     Route::group(['middleware' => ['karyawan']], function () {
+
+        // Untuk Upload Bukti Pembayaran
+        Route::post('upload/bukti/retail/{id}','PemesananController@buktiRetail');
+
         // Menolak Pesanan Dari Warung
         Route::get('tolak/pesanan/warung/{id}','PemesananController@tolak');
         // Mengalihkan ke halaman storage out dengan membawa variabel

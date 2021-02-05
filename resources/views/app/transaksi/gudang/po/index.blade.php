@@ -52,7 +52,7 @@
                                     </h6>
                                 </div>
                             </div>
-                            @elseif($d->storageKeluarBulky == null)
+                            @elseif(count($d->storageKeluarBulky) < 1)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
@@ -76,9 +76,9 @@
                             @else
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between valign-center my-2">
-                                    <div>
+                                    <div id="pill-status">
                                         @if($d->status == 0)
-                                        <span class="badge rounded-pill bg-my-danger p-2">
+                                        <span class="badge rounded-pill bg-my-danger p-2" >
                                             Pesanan Ditolak
                                         </span>
                                         @elseif($d->status == 1)
@@ -105,8 +105,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageOut->user->pengurusGudang->nama}} ({{$d->storageOut->user->pengurusGudang->kabupaten->nama}})</span>
-                                    {{-- {{dd($d->storageOut)}} --}}
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarBulky->user->pengurusGudang->nama}} ({{$d->storageKeluarBulky->user->pengurusGudang->kabupaten->nama}})</span>
+                                    {{-- {{dd($d->storageKeluarBulky)}} --}}
                                 </div>
                                 <div class="col-md-4 border-right">
                                     Ke : <br><span class="text-14 bold">{{$d->pelanggan->nama}} ({{$d->pelanggan->kabupaten->nama}})</span>
@@ -142,7 +142,7 @@
                                         {{($d->status == 4) ? route('konfirmasi.terima.warung',$d->id) : '#'}}
                                     " class="btn btn-primary btn-sm
                                         {{($d->status == 4) ? '' : 'disabled'}}
-                                    " title="Klik Jika Pesanan Anda Sudah Diterima">
+                                    " title="Klik Jika Pesanan Anda Sudah Diterima" id="btn-terima">
                                         Konfirmasi Penerimaan
                                     </a>
                                 </div>
@@ -167,9 +167,42 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form action="" id="form" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload Bukti Pembayaran</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Bukti Pembayaran</label><br>
+                    <input type="file" name="foto_bukti" class="">
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+          {{-- <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button> --}}
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
 @endsection
 @push('script')
 <script type="text/javascript">
+    function uploadBukti(id){
+        $('#form').attr('action',`/v1/upload/bukti/retail/${id}`);
+    }
     function terima(id) {
         $.ajax({
             url: "/api/v1/retail/pemesanan/"+id+"/terima",
