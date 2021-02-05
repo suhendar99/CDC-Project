@@ -33,26 +33,42 @@
 		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 		    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 		    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+		    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
 		  </ol>
 		  <div class="carousel-inner">
 		    <div class="carousel-item active">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/banner2.jpg')}}" alt="Third slide">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/tomat.jpg')}}" alt="Third slide">
 			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 			    <h5>First slide</h5>
 			    <p>First slide subtitle</p>
 			  </div> --}}
 		    </div>
 		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/banner3.jpg')}}" alt="Second slide">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/daging.jpg')}}" alt="Second slide">
 			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
 			    <h5>Second slide</h5>
 			    <p>Second slide subtitle</p>
 			  </div> --}}
 		    </div>
 		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/lapi-itb.png')}}" alt="First slide">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/lapi-itb.png')}}" alt="Third slide">
 			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>Second slide</h5>
+			    <h5>Third slide</h5>
+			    <p>Second slide subtitle</p>
+			  </div> --}}
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/sawi.jpg')}}" alt="Fourth slide">
+			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
+			    <h5>Fourth slide</h5>
+			    <p>Second slide subtitle</p>
+			  </div> --}}
+		    </div>
+		    <div class="carousel-item">
+		      <img class="d-block w-100 img-banner" src="{{asset('images/mangga.jpg')}}" alt="Fifth slide">
+			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
+			    <h5>Fifth slide</h5>
 			    <p>Second slide subtitle</p>
 			  </div> --}}
 		    </div>
@@ -181,7 +197,7 @@
                         			@if ($b->jumlah != 0)
                                     <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
                                     {{-- <a class="dropdown-item" href="#" onclick="keranjang({{ $b->id }})">+ Keranjang</a> --}}
-                        			@endif	
+                        			@endif
                                     <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="dropdown-item" >Chat</a>
                                 </div>
                             </div>

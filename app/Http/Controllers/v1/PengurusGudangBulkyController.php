@@ -107,7 +107,7 @@ class PengurusGudangBulkyController extends Controller
 
 
 
-        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Pengurus Account Created' ));
+        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Akun pengurus telah dibuat !' ));
     }
 
     /**
@@ -179,7 +179,7 @@ class PengurusGudangBulkyController extends Controller
             'bulky_id' => $request->bulky_id,
         ]);
 
-        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Pengurus Account Updated' ));
+        return redirect(route('bulky.pengurus.index'))->with('success', __( 'Pengurus akun telah di edit' ));
     }
 
     /**
@@ -207,6 +207,6 @@ class PengurusGudangBulkyController extends Controller
 
         $user->delete();
 
-        return back()->with('success', __( 'Pemilik Account Deleted' ));
+        return back()->with('success', __( 'Akun pengurus dihapus !' ));
     }
 }

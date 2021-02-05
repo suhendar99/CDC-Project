@@ -88,7 +88,7 @@ class PengaturanAkunController extends Controller
         }
         return back()->with('success',$this->alert.'Diubah !');
     }
-    
+
     public function UpdateAkunPembeli(Request $request)
     {
         // dd($request->all());

@@ -21,6 +21,11 @@ use Auth;
 
 class GudangBulkyController extends Controller
 {
+    public function __construct()
+    {
+        $this->path = 'app.data-master.gudangBulky.';
+        $this->alert = 'Data berhasil ';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -97,7 +102,7 @@ class GudangBulkyController extends Controller
             $data->update([
                 'status' => $status
             ]);
-            
+
             return response()->json([
                 'data' => $data
             ],200);
