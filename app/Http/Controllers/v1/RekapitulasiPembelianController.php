@@ -25,8 +25,10 @@ class RekapitulasiPembelianController extends Controller
      */
     public function index(Request $request)
     {
+        $data = RekapitulasiPembelian::with('storageIn')->orderBy('id','desc')->get();
+        $total = $data->sum('total');
+
         if($request->ajax()){
-            $data = RekapitulasiPembelian::with('storageIn')->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -38,7 +40,8 @@ class RekapitulasiPembelianController extends Controller
                 ->rawColumns(['action','jumlah'])
                 ->make(true);
         }
-        return view($this->path.'index');
+
+        return view($this->path.'index', compact('total'));
     }
     public function downloadRekapitulasiPembelianPdf()
     {

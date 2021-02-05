@@ -28,7 +28,7 @@ class PemesananBulkyController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
                     // return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                    return '&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->id.')" ><i class="fa fa-trash"></i> Hapus</a>';
+                    return '&nbsp;<a href="#" class="btn btn-outline-danger btn-sm" onclick="sweet('.$data->pemesananBulky->id.')" ><i class="fa fa-trash"></i> Hapus</a>';
                 })
                 ->addColumn('total_pembayaran', function($data){
                     return '&nbsp;Rp. '.Number_format($data->harga,0,',','.');
@@ -222,6 +222,9 @@ class PemesananBulkyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = PemesananBulky::findOrFail($id);
+        $data->delete();
+
+        return back()->with('success','Hapus Data Pemesanan Berhasil!');
     }
 }
