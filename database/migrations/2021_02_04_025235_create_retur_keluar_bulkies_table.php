@@ -17,7 +17,7 @@ class CreateReturKeluarBulkiesTable extends Migration
             $table->id();
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
-            $table->integer('jumlah_barang');
+            $table->float('jumlah_barang', 11, 2);
             $table->string('satuan');
             $table->string('nomor_kwitansi');
             $table->date('tanggal_pengembalian');

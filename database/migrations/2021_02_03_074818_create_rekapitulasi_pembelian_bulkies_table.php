@@ -22,7 +22,7 @@ class CreateRekapitulasiPembelianBulkiesTable extends Migration
             $table->string('no_surat_jalan', 200)->nullable();
             $table->string('nama_penjual', 50);
             $table->string('barang', 100);
-            $table->integer('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan', 20);
             $table->bigInteger('harga');
             $table->bigInteger('total');

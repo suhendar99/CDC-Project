@@ -17,7 +17,7 @@ class CreateStorageBulkiesTable extends Migration
             $table->id();
             $table->string('storage_masuk_bulky_kode');
             $table->foreign('storage_masuk_bulky_kode')->references('kode')->on('storage_masuk_bulkies')->onDelete('cascade');
-            $table->bigInteger('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan');
             $table->dateTime('waktu');
             $table->foreignId('tingkat_id')->nullable()->constrained('tingkat_rak_bulkies')->onDelete('set null');

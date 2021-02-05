@@ -48,22 +48,20 @@
                         <div class="col-md-12 col-sm-12">
                             <form action="{{route('bulky.pemesanan.keluar.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                @if(Auth::user()->pengurusGudangBulky->status == 1)
-                                    <div class="form-group">
-                                        <label>Pilih Gudang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="bulky_id" id="gudang" class="form-control">
-                                            <option value="">~ Pilih Gudang Bulky ~</option>
-                                            @foreach($bulky as $gud)
-                                            <option value="{{ $gud->id }}">{{ $gud->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('bulky_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                @endif
+                                <div class="form-group">
+                                    <label>Pilih Gudang <small class="text-success">*Harus diisi</small></label>
+                                    <select name="bulky_id" id="gudang" class="form-control">
+                                        <option value="">~ Pilih Gudang Bulky ~</option>
+                                        @foreach($bulky as $gud)
+                                        <option value="{{ $gud->id }}">{{ $gud->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('bulky_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Pilih Barang <small class="text-success">*Harus diisi</small></label>
