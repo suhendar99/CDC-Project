@@ -27,16 +27,16 @@
             @endif
             <div class="col-md-12">
                 <div class="text-center mb-1">
-                    <img src="{{($set->logo_app == null) ? asset('images/logo/Logo-CDC.svg') : asset($set->logo_app)}}" alt="" height="80" width="100" style="object-fit: scale-down">
+                    <img src="{{($set->logo_app == null) ? asset('images/logo/Logo-CDC.svg') : asset($set->logo_app)}}" alt="" height="100" width="200" style="object-fit: scale-down">
                 </div>
             </div>
-            <div class="col-md-12 mb-2">
+            {{-- <div class="col-md-12 mb-2">
                 <div class="text-center">
                     <h6><b>( <span class="text-my-primary">Consolidated</span> <span class="text-warning">Distribution Center</span> )</b></h6>
                 </div>
-            </div>
+            </div> --}}
             <div class="card shadow">
-                <div class="ml-4 p-2 font"><i class="fas fa-user-plus text-warning"></i> <small>{{ __('Register') }}</small></div>
+                <div class="ml-4 p-2 font"><i class="fas fa-user-plus text-my-primary"></i> <small>{{ __('Register') }}</small></div>
                 <hr class="m-0">
 
                 <div class="card-body">

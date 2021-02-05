@@ -14,6 +14,12 @@
   // 	['icon'=>'free_breakfast','nama'=>'Minuman'],
   // 	['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
   // );
+	$banner = array(
+		['path'=>'images/Banner1.png'],
+		['path'=>'images/Banner2.png'],
+		['path'=>'images/Banner3.png'],
+		['path'=>'images/Banner4.png'],
+	);
 @endphp
 @push('style')
 <style type="text/css">
@@ -30,48 +36,16 @@
 	<div class="col-md-12 mb-4">
 		<div id="carouselExampleIndicators" class="carousel slide shadow" data-ride="carousel">
 		  <ol class="carousel-indicators">
-		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-		    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-		    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-		    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-		    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+		  	@foreach($banner as $key => $b)
+		    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="{{($key == 0 ) ? 'active' : false}}"></li>
+		    @endforeach
 		  </ol>
 		  <div class="carousel-inner">
-		    <div class="carousel-item active">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/tomat.jpg')}}" alt="Third slide">
-			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>First slide</h5>
-			    <p>First slide subtitle</p>
-			  </div> --}}
+		  	@foreach($banner as $key => $b)
+		    <div class="carousel-item {{($key == 0 ) ? 'active' : false}}">
+		      <img class="d-block w-100 img-banner" src="{{asset($b['path'])}}" alt="{{$key+1}} slide">
 		    </div>
-		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/daging.jpg')}}" alt="Second slide">
-			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>Second slide</h5>
-			    <p>Second slide subtitle</p>
-			  </div> --}}
-		    </div>
-		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/lapi-itb.png')}}" alt="Third slide">
-			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>Third slide</h5>
-			    <p>Second slide subtitle</p>
-			  </div> --}}
-		    </div>
-		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/sawi.jpg')}}" alt="Fourth slide">
-			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>Fourth slide</h5>
-			    <p>Second slide subtitle</p>
-			  </div> --}}
-		    </div>
-		    <div class="carousel-item">
-		      <img class="d-block w-100 img-banner" src="{{asset('images/mangga.jpg')}}" alt="Fifth slide">
-			  {{-- <div class="carousel-caption d-none d-md-block bg-my-primary">
-			    <h5>Fifth slide</h5>
-			    <p>Second slide subtitle</p>
-			  </div> --}}
-		    </div>
+		    @endforeach
 		  </div>
 		  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>

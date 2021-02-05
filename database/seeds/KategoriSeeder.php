@@ -12,24 +12,24 @@ class KategoriSeeder extends Seeder
     public function run()
     {
         $value = array(
-            ['nama' => 'Kopi'],
-            ['nama' => 'Kakao'],
-            ['nama' => 'Teh'],
-            ['nama' => 'Bawang Merah'],
-            ['nama' => 'Gabah'],
-            ['nama' => 'Beras'],
-            ['nama' => 'Jagung'],
-            ['nama' => 'Lada'],
-            ['nama' => 'Garam'],
-            ['nama' => 'Karet'],
-            ['nama' => 'Rotan'],
-            ['nama' => 'Pala'],
-            ['nama' => 'Gambir'],
-            ['nama' => 'Kopra'],
-            ['nama' => 'Timah'],
-            ['nama' => 'Ikan'],
-            ['nama' => 'Rumput Laut'],
-            ['nama' => 'Ayam Beku']
+            ['nama' => 'Kopi','icon' => '/images/kategori/Kopi.png'],
+            ['nama' => 'Kakao','icon' => '/images/kategori/Kakao.png'],
+            ['nama' => 'Teh','icon' => '/images/kategori/Teh.png'],
+            ['nama' => 'Bawang Merah','icon' => '/images/kategori/Bawang.png'],
+            ['nama' => 'Gabah','icon' => '/images/kategori/Gabah.png'],
+            ['nama' => 'Beras','icon' => '/images/kategori/Beras.png'],
+            ['nama' => 'Jagung','icon' => '/images/kategori/Jagung.png'],
+            ['nama' => 'Lada','icon' => '/images/kategori/Lada.png'],
+            ['nama' => 'Garam','icon' => '/images/kategori/Garam.png'],
+            ['nama' => 'Karet','icon' => '/images/kategori/Karet.png'],
+            ['nama' => 'Rotan','icon' => '/images/kategori/Rotan.png'],
+            ['nama' => 'Pala','icon' => '/images/kategori/Pala.png'],
+            ['nama' => 'Gambir','icon' => '/images/kategori/Gambir.png'],
+            ['nama' => 'Kopra','icon' => '/images/kategori/Kopra.png'],
+            ['nama' => 'Timah','icon' => '/images/kategori/Timah.png'],
+            ['nama' => 'Ikan','icon' => '/images/kategori/Ikan.png'],
+            ['nama' => 'Rumput Laut','icon' => '/images/kategori/Rumput.png'],
+            ['nama' => 'Ayam Beku','icon' => '/images/kategori/Ayam.png']
         );
         $category = array(
           ['icon'=>'grass','nama'=>'Pertanian'],
