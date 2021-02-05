@@ -70,6 +70,8 @@ class PemesananBulkyController extends Controller
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pemesananBulky->status == 5) {
                         return '&nbsp;Pesanan Sudah Diterima';
+                    } elseif ($data->pemesananBulky->status == 6) {
+                        return '&nbsp;Pesanan Diambil';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){

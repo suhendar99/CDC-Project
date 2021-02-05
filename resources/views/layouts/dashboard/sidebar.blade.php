@@ -283,7 +283,7 @@
                                 <a href="{{route('bulky.pemesanan.index')}}">Pesanan dari Retail</a>
                             </li>
                             <li class="{{ Request::is('v1/bulky/pemesanan/keluar*') ? 'active' : false }}">
-                                <a href="{{route('bulky.pemesanan.keluar.index')}}">Pembelian ke Pemasok</a>
+                                <a href="{{route('bulky.pemesanan.keluar.index')}}">Pemesanan ke Pemasok</a>
                             </li>
                             <li class="{{ Request::is('v1/bulky/retur/masuk*') ? 'active' : false }}">
                                 <a href="{{route('bulky.retur.masuk.index')}}">Retur dari Retail</a>

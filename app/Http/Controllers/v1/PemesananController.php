@@ -63,6 +63,8 @@ class PemesananController extends Controller
                         return '&nbsp;Menunggu Pesanan Sampai .....';
                     } elseif ($data->pemesananPembeli->status == 5) {
                         return '&nbsp;Sudah Diterima';
+                    } elseif ($data->pemesananPembeli->status == 6) {
+                        return '&nbsp;Pesanan Diambil';
                     }
                 })
                 ->addColumn('jumlah_barang', function($data){
@@ -102,6 +104,8 @@ class PemesananController extends Controller
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pemesananPembeli->status == 5) {
                         return '&nbsp;Pesanan Sudah Diterima';
+                    } elseif ($data->pemesananPembeli->status == 6) {
+                        return '&nbsp;Pesanan Diambil';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
@@ -172,6 +176,8 @@ class PemesananController extends Controller
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pesanan->status == 5) {
                         return '&nbsp;Pesanan Sudah Diterima';
+                    } elseif ($data->pesanan->status == 6) {
+                        return '&nbsp;Pesanan Diambil';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
@@ -280,7 +286,7 @@ class PemesananController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $v = Validator::make($request->all(),[
             'penerima_po' => 'required|string|max:50',
             'nama_pemesan' => 'nullable|string|max:50',

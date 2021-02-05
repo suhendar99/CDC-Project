@@ -112,6 +112,7 @@ class StorageKeluarBulkyController extends Controller
         $gudang = GudangBulky::all();
         $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')
         ->where('status', '2')
+        ->orWhere('status','6')
         ->get();
 
         // dd($pemesanan);
