@@ -244,23 +244,25 @@
                     @endif
                     @endif
                     @if (isset($pengurusGudangBulky))
-                    <li class="
-                        {{ Request::is('v1/gudang-bulky*') ? 'active' : false }}
-                        {{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}
-                    ">
-                        <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
-                        <ul class="collapse list-unstyled
-                            {{ Request::is('v1/gudang-bulky*') ? 'show' : false }}
-                            {{ Request::is('v1/bulky/pengurus*') ? 'show' : false }}
-                        " id="gudangSubmenu">
-                            <li class="{{ Request::is('v1/gudang-bulky*') ? 'active' : false }}">
-                                <a href="{{route('gudang-bulky.index')}}">Identitas Gudang</a>
-                            </li>
-                            <li class="{{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}">
-                                <a href="{{route('bulky.pengurus.index')}}">Pengurus Gudang</a>
-                            </li>
-                        </ul>
-                    </li>
+                        @if (Auth::user()->pengurusGudangBulky->status == 1)
+                        <li class="
+                            {{ Request::is('v1/gudang-bulky*') ? 'active' : false }}
+                            {{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}
+                        ">
+                            <a href="#gudangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">house_siding</i>Gudang</a>
+                            <ul class="collapse list-unstyled
+                                {{ Request::is('v1/gudang-bulky*') ? 'show' : false }}
+                                {{ Request::is('v1/bulky/pengurus*') ? 'show' : false }}
+                            " id="gudangSubmenu">
+                                <li class="{{ Request::is('v1/gudang-bulky*') ? 'active' : false }}">
+                                    <a href="{{route('gudang-bulky.index')}}">Identitas Gudang</a>
+                                </li>
+                                <li class="{{ Request::is('v1/bulky/pengurus*') ? 'active' : false }}">
+                                    <a href="{{route('bulky.pengurus.index')}}">Pengurus Gudang</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
                     <li class="{{ Request::is('v1/bulky/storage*') ? 'active' : false }}">
                         <a href="{{route('bulky.storage.index')}}" class="valign-center"><i class="material-icons">work</i>Pengelolaan Barang</a>
                     </li>

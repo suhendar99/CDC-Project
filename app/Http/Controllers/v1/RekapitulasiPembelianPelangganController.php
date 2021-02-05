@@ -16,8 +16,10 @@ class RekapitulasiPembelianPelangganController extends Controller
      */
     public function index(Request $request)
     {
+        $data = RekapitulasiPembelianPelanggan::with('barangMasuk')->orderBy('id','desc')->get();
+        $total = $data->sum('total');
+
         if($request->ajax()){
-            $data = RekapitulasiPembelianPelanggan::with('barangMasuk')->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -35,7 +37,7 @@ class RekapitulasiPembelianPelangganController extends Controller
                 ->rawColumns(['action','jumlah','hargas','totals'])
                 ->make(true);
         }
-        return view('app.transaksi.rekapitulasi.pembelianPelanggan.index');
+        return view('app.transaksi.rekapitulasi.pembelianPelanggan.index',compact('total'));
     }
 
     /**

@@ -133,7 +133,7 @@ class StorageMasukBulkyController extends Controller
 
         StorageBulky::create([
             'storage_masuk_bulky_kode' => $kode,
-            'jumlah' => $request->jumlah,
+            'jumlah' => $jumlah,
             'satuan' => $barang->satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
@@ -144,15 +144,16 @@ class StorageMasukBulkyController extends Controller
         ])->first();
 
         if($checkStock !== null){
-            $updateJumlah = $checkStock->jumlah + $request->jumlah;
+            $updateJumlah = $checkStock->jumlah + $jumlah;
 
             $checkStock->update([
                 'jumlah' => $updateJumlah,
                 'satuan' => $barang->satuan
             ]);
         }else{
-            StockBarangBulky::create($request->only('bulky_id', 'barang_kode', 'jumlah')+[
-                'satuan' => $barang->satuan
+            StockBarangBulky::create($request->only('bulky_id', 'barang_kode')+[
+                'satuan' => $barang->satuan,
+                'jumlah' => $jumlah
             ]);
         }
 

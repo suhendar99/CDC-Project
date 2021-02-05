@@ -311,6 +311,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::get('bulky/pemesanan/masuk', 'PemesananBulkyController@index')->name('bulky.pemesanan.index');
 
+        Route::delete('bulky/pemesanan/masuk/delete/{id}', 'PemesananBulkyController@destroy')->name('bulky.pemesanan.delete');
+
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
 
         Route::resource('bulky/pemesanan/keluar', 'PemesananKeluarBulkyController', [

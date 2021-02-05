@@ -333,10 +333,10 @@ class StorageOutController extends Controller
         foreach ($bp as $key => $value) {
             $jumlah += $value->jumlah_barang;
             $total += $value->harga;
-            $harga_total = $jumlah * $total;
             $satuan = $value->satuan;
         }
-
+        $harga_total = $jumlah * $total;
+        // dd($harga_total);
         RekapitulasiPenjualan::create([
             'storage_out_id' => $out->id,
             'tanggal_penjualan' => $out->waktu,

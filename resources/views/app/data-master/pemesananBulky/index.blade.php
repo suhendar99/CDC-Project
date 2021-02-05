@@ -367,7 +367,7 @@
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/pemesanan/'+id
+            formDelete.action = '/v1/bulky/pemesanan/masuk/delete/'+id
 
             const Toast = Swal.mixin({
             toast: true,
