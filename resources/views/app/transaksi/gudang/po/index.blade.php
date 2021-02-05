@@ -136,6 +136,9 @@
                                         Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
                                 @else
+                                <div class="col-md-4">
+                                    No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                </div>
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br>
                                         <span class="text-14 bold">

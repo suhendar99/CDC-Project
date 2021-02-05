@@ -129,6 +129,9 @@
                                         Status Pemesanan : <br><span class="text-14 bold"> Bayar dengan metode {{$d->metode_pembayaran}}</span>
                                     </div>
                                 @endif
+                                <div class="col-md-4">
+                                    No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                </div>
                                 <hr>
                             </div>
                             <div class="row">
