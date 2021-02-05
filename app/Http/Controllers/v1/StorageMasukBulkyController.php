@@ -119,12 +119,13 @@ class StorageMasukBulkyController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $jumlah = ($barang->satuan == 'Kg') ? ($request->jumlah * 1000) : $request->jumlah ;
+        $jumlah = ($barang->satuan == 'Kg') ? $request->jumlah : $request->jumlah ;
+        $satuan = ($barang->satuan == 'Kg') ? 'Ton' : $request->satuan ;
 
         $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'jumlah' => $jumlah,
             'kode' => $kode,
-            'satuan' => $barang->satuan,
+            'satuan' => $satuan,
             'user_id' => auth()->user()->id,
             'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
@@ -134,7 +135,7 @@ class StorageMasukBulkyController extends Controller
         StorageBulky::create([
             'storage_masuk_bulky_kode' => $kode,
             'jumlah' => $jumlah,
-            'satuan' => $barang->satuan,
+            'satuan' => $satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
 
@@ -148,16 +149,16 @@ class StorageMasukBulkyController extends Controller
 
             $checkStock->update([
                 'jumlah' => $updateJumlah,
-                'satuan' => $barang->satuan
+                'satuan' => $satuan
             ]);
         }else{
             StockBarangBulky::create($request->only('bulky_id', 'barang_kode')+[
-                'satuan' => $barang->satuan,
+                'satuan' => $satuan,
                 'jumlah' => $jumlah
             ]);
         }
 
-        $total = ($masuk->harga_beli / $masuk->jumlah);
+        $total = ($masuk->harga_beli / ($masuk->jumlah));
 
         RekapitulasiPembelianBulky::create([
             'storage_masuk_bulky_id' => $masuk->id,
@@ -168,7 +169,7 @@ class StorageMasukBulkyController extends Controller
             'nama_penjual' => $masuk->barang->pemasok->nama,
             'barang' => $masuk->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
-            'satuan' => $barang->satuan,
+            'satuan' => $satuan,
             'harga' => round($total, 0, PHP_ROUND_HALF_UP),
             'total' => $masuk->harga_beli
         ]);

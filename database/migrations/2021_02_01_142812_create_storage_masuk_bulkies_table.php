@@ -22,7 +22,7 @@ class CreateStorageMasukBulkiesTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();
             $table->bigInteger('harga_beli');
-            $table->bigInteger('jumlah');
+            $table->float('jumlah', 11, 2);
             $table->string('satuan');
             $table->dateTime('waktu');
             $table->string('nomor_kwitansi');
