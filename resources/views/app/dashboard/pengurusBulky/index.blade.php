@@ -7,7 +7,13 @@
   $storageIn = \App\Models\StorageMasukBulky::all();
   $storageOut = \App\Models\StorageKeluarBulky::all();
   $pmsk = \App\Models\Pemasok::all();
-  $gudang = App\Models\GudangBulky::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
+  $gudang = App\Models\GudangBulky::with('rak')
+  ->whereHas('akunGudangBulky', function($query){
+      $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+  })
+  ->where('status',1)
+  ->get();
+  // ->where('user_id',Auth::user()->id)
   $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
@@ -41,7 +47,7 @@
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
                         <span class="text-my-primary">{{$storage->count()}} Jenis</span><br>
-                        <span class="text-my-subtitle">Barang Retail</span>
+                        <span class="text-my-subtitle">Barang Bulky</span>
                     </div>
                   </div>
                 </div>
