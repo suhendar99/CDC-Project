@@ -34,6 +34,9 @@ class SuratJalanBulkyController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/bulky/surat-jalan/print?id='.$data->id.'" target="_blank" class="btn btn-primary btn-sm">Cetak PDF</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
 

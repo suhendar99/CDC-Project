@@ -47,10 +47,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Waktu</th>
                                 <th>Nomor Kwitansi</th>
                                 <th>Kode Barang</th>
                                 <th>Barang</th>
                                 <th>Jumlah Barang</th>
+                                <th>satuan</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
                                 <th>Action</th>
@@ -77,12 +79,15 @@
             ajax : "{{ route('bulky.retur.keluar.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
                 {data : 'nomor_kwitansi', name: 'kode'},
                 {data : 'barang_kode', name: 'kode_barang'},
                 {data : 'barang.nama_barang', name: 'nama_barang'},
-                {data : function(data,a,b,c){
-                    return data.jumlah_barang+' '+data.satuan;
-                }, name: 'jumlah'},
+                {data : 'jumlah_barang', name: 'jumlah_barang'},
+                {data : 'satuan', name: 'satuan'},
+                // {data : function(data,a,b,c){
+                //     return data.jumlah_barang+' '+data.satuan;
+                // }, name: 'jumlah'},
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
                 {data : 'action', name: 'action'}

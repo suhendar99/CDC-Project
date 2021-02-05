@@ -32,6 +32,9 @@ class ReturKeluarBulkyController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
 

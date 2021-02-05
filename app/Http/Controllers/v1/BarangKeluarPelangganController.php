@@ -40,6 +40,9 @@ class BarangKeluarPelangganController extends Controller
                 ->addColumn('pemesanan',function($data){
                     return $data->pemesanan->kode.' | '.$data->pemesanan->pembeli->nama;
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['action','nama_barang','jumlah_barang','pemesanan'])
                 ->make(true);
         }

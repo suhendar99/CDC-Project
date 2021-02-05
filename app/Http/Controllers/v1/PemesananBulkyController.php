@@ -33,9 +33,6 @@ class PemesananBulkyController extends Controller
                 ->addColumn('total_pembayaran', function($data){
                     return '&nbsp;Rp. '.Number_format($data->harga,0,',','.');
                 })
-                ->addColumn('jumlah_barang', function($data){
-                    return $data->jumlah_barang.' '.$data->satuan;
-                })
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pemesananBulky->metode_pembayaran == null && $data->pemesananBulky->foto_bukti == null) {
                         return "<span class='text-danger'>Hutang</span>";
@@ -63,7 +60,7 @@ class PemesananBulkyController extends Controller
                     if($data->pemesananBulky->status == 0){
                         return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
                     } elseif ($data->pemesananBulky->status == 1){
-                        return '&nbsp;<span class="text-danger">Pembayaran Belum Terverifikasi</span>';
+                        return '&nbsp;<span class="text-danger">Pemesanan Belum Terverifikasi</span>';
                     }elseif ($data->pemesananBulky->status == 2) {
                         return '&nbsp;Pembayaran Terverifikasi';
                     } elseif ($data->pemesananBulky->status == 4) {
@@ -85,7 +82,10 @@ class PemesananBulkyController extends Controller
                         return '&nbsp;-&nbsp;';
                     }
                 })
-                ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','jumlah_barang','status_pembayaran','status_pemesanan'])
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
+                ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }
 

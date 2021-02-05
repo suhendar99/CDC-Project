@@ -26,6 +26,9 @@ class ReturOutController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/returOut/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->make(true);
         }
 
@@ -50,7 +53,7 @@ class ReturOutController extends Controller
     public function barangKwitansi($id)
     {
         $barang = KwitansiBulky::with('pemesananBulky.barang')->find($id);
-        
+
         return response()->json([
             'data' => $barang
         ],200);
@@ -110,7 +113,7 @@ class ReturOutController extends Controller
             $query->where('gudang_retail_id', auth()->user()->pengurus_gudang_id);
         })->doesntHave('returMasukBulky')
         ->get();;
-        
+
         $data = ReturMasukBulky::findOrFail($id);
 
         return view('app.transaksi.returOut.edit', compact('kwitansi', 'data'));

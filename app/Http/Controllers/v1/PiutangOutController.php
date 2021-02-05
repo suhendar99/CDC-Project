@@ -24,6 +24,9 @@ class PiutangOutController extends Controller
                 ->addColumn('hutang', function($data){
                     return 'Rp '.number_format($data->hutang);
                 })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
                 ->rawColumns(['hutang'])
                 ->make(true);
         }

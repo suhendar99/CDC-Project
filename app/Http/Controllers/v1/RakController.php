@@ -34,7 +34,10 @@ class RakController extends Controller
                     } else {
                         return '<a href="/v1/gudang/'.$gudang.'/rak/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Barang</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>&nbsp;<button type="button" class="btn btn-success btn-sm" id="status-rak-'.$data->id.'" onclick="change('.$data->id.','.$gudang.')" title="Klik untuk ubah status rak">Rak Penuh</button>';
                     }
-                    
+
+                })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
                 ->make(true);
         }
@@ -53,7 +56,7 @@ class RakController extends Controller
             $data->update([
                 'status' => $status
             ]);
-            
+
             return response()->json([
                 'data' => $data
             ],200);
@@ -111,7 +114,7 @@ class RakController extends Controller
             'kode' => $faker->unique()->regexify('([A-Z]{3})+([0-9]{7})')
         ]);
 
-        for ($i=1; $i <= (integer)$request->tingkat; $i++) { 
+        for ($i=1; $i <= (integer)$request->tingkat; $i++) {
             TingkatanRak::create([
                 'nama' => 'tingkat '.$i,
                 'rak_id' => $rak->id
@@ -182,14 +185,14 @@ class RakController extends Controller
         $rak->update($request->only('nama', 'lebar', 'panjang', 'tinggi', 'kapasitas_berat'));
 
         if ($request->tingkat > $rak->tingkat_count) {
-            for ($i=((integer)$rak->tingkat_count + 1); $i <= (integer)$request->tingkat; $i++) { 
+            for ($i=((integer)$rak->tingkat_count + 1); $i <= (integer)$request->tingkat; $i++) {
                 TingkatanRak::create([
                     'nama' => 'tingkat '.$i,
                     'rak_id' => $id
                 ]);
             }
         } elseif ($request->tingkat < $rak->tingkat_count) {
-            for ($i=((integer)$rak->tingkat_count - 1); $i >= (integer)$request->tingkat; $i--) { 
+            for ($i=((integer)$rak->tingkat_count - 1); $i >= (integer)$request->tingkat; $i--) {
                 TingkatanRak::orderBy('id', 'desc')->first()->delete();
             }
         }
