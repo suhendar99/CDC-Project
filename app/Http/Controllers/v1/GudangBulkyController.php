@@ -169,6 +169,7 @@ class GudangBulkyController extends Controller
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move(public_path("upload/foto/bulky"), $foto);
                 $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                    'status' => 1,
                     'foto' => 'upload/foto/bulky/'.$foto,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
@@ -180,6 +181,7 @@ class GudangBulkyController extends Controller
                 ]));
             } else {
                 $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                    'status' => 1,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
                 ]));
