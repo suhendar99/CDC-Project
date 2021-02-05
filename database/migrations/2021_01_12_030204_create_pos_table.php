@@ -26,7 +26,7 @@ class CreatePosTable extends Migration
             $table->text('alamat_pemesan');
             $table->dateTime('tanggal_pemesanan', 0);
             $table->string('metode_pembayaran', 50)->nullable();
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }
