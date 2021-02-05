@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal Pengembalian</th>
                                 <th>Kode Kwitansi</th>
                                 <th>Nama Pemesan</th>
                                 <th>Barang</th>
-                                <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
@@ -150,6 +150,7 @@
             ajax : "{{ route('returIn.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'kwitansi.kode', name: 'kode'},
                 {data : 'kwitansi.pemesanan.nama_pemesan', name: 'nama_pemesan'},
                 {data : 'barang', render:function(data,a,b,c){
@@ -164,7 +165,6 @@
                         return o;
                     }
                 },
-                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
                 // {data : 'action', name: 'action'}
             ]

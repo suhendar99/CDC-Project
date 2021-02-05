@@ -47,10 +47,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Tanggal Pengembalian</th>
                                 <th>Kode Pemesanan</th>
                                 <th>Nama Pemesan</th>
                                 <th>Barang</th>
-                                <th>Tanggal Pengembalian</th>
                                 <th>Keterangan</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
@@ -76,10 +76,10 @@
             ajax : "{{ route('returMasukPembeli.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'pemesanan.kode', name: 'kode'},
                 {data : 'pemesanan.nama_pemesan', name: 'nama_pemesan'},
                 {data : 'barang', name: 'barang'},
-                {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'keterangan', name: 'keterangan'},
                 // {data : 'action', name: 'action'}
             ]

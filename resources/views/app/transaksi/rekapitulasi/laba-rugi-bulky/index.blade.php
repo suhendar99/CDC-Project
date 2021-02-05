@@ -47,7 +47,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Waktu</th>
+                                <th>Waktu Pencatatan</th>
                                 <th>Bulan</th>
                                 <th>Laba Kotor</th>
                                 <th>Penjualan</th>
@@ -78,7 +78,15 @@
             ajax : "{{ route('bulky.laba-rugi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+<<<<<<< HEAD
+                {data : function(data){
+                        let current_datetime = new Date(data.created_at);
+                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
+
+                    }, name: 'waktu'},
+=======
                 {data : 'created_at', name: 'created_at'},
+>>>>>>> 4be65c50d8b8546575bd9220e8c38dfa8833d3b3
                 {
                     data : 'bulan', render:function(data,a,b,c){
                         if (data == 1) {

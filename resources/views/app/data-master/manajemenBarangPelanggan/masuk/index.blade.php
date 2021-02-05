@@ -46,6 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Waktu Pencatatan</th>
                                 <th>Kode Penyimpanan / Barcode</th>
                                 <th>Nama Gudang Pengirim</th>
                                 <th>Nama Barang</th>
@@ -144,6 +145,7 @@
             ajax : "{{ route('barangMasukPelanggan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {data : 'nama_gudang', name: 'nama_gudang'},
                 {data : 'nama_barang', name: 'nama_barang'},
