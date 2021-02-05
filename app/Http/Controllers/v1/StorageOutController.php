@@ -124,7 +124,7 @@ class StorageOutController extends Controller
                 return back()->with('failed','Barang Sudah Dikirm! Mohon Cek Di Data Barang Keluar');
             }
         }else{
-            $pemesanan = Pemesanan::where('status','2')->doesntHave('storageOut')->get();
+            $pemesanan = Pemesanan::where('status','2')->orWhere('status','5')->doesntHave('storageOut')->get();
             $setted = false;
         }
 

@@ -225,7 +225,7 @@ class ShopController extends Controller
                     'nomor_pemesanan' => $kode,
                     'nama_pemesan' => $request->nama_pemesan,
                     'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => '5'
+                    'status' => '6'
                 ]));
             } else {
                 $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -343,7 +343,7 @@ class ShopController extends Controller
                     'penerima_po' => $penerima_po,
                     'nama_pemesan' => $nama_pemesan,
                     'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => '5'
+                    'status' => '6'
                 ]));
             } else {
                 $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -478,7 +478,7 @@ class ShopController extends Controller
                     'nomor_pemesanan' => $kode,
                     'nama_pemesan' => $request->nama_pemesan,
                     'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => '5'
+                    'status' => '6'
                 ]));
             } else {
                 $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[

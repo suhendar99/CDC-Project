@@ -61,7 +61,7 @@
                                         @endforeach
                                         , Belum Diproses Penjual
                                     </span>
-                                    @if ($d->status == 5)
+                                    @if ($d->status == 6)
                                         @if($d->foto_bukti == null)
                                         <a class="btn btn-sm btn-primary" href="#"><i class="fas fa-shopping-bag"></i> Ambil Barang</a>
                                         @else
