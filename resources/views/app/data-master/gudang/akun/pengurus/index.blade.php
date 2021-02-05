@@ -149,12 +149,12 @@
             ajax : "{{ route('pengurus-gudang.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'pengurusGudang.nama', name: 'name'},
+                {data : 'pengurus_gudang.nama', name: 'name'},
                 {data : 'username', name: 'username'},
                 {data : 'email', name: 'email'},
                 {
-                  data : 'pengurusGudang.gudang', render:function(data,a,b,c){
-                        return data.nama;
+                  data : 'pengurus_gudang.gudang', render:function(data,a,b,c){
+                        return data[0].nama;
                   }
                 },
                 {data : 'action', name: 'action'}

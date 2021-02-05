@@ -106,7 +106,7 @@
                                     <div class="form-group col-md-4">
                                         <label>Jumlah Barang (Lihat kwitansi) <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
-                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend" id="jumlah">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend"></span>
                                             </div>
@@ -178,9 +178,16 @@
     $('#barang').change(function(event) {
         /* Act on the event */
         let satuan = $('#barang option:selected').data("satuan")
-         console.log(satuan)
-         $('#satuanAppend').text(satuan)
-         $('#here').text(satuan)
+         // console.log(satuan)
+
+         if (satuan == 'Kg') {
+             $('#satuanAppend').text('Ton')
+             $('#jumlah').attr('type', 'numeric');
+         } else {
+             $('#here').text(satuan)
+             $('#jumlah').attr('type', 'number');
+         }
+
 
          // for (var i = $('.tab').length - 1; i >= 1; i--) {
 
