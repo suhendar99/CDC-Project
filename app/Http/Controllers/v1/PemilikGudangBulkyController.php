@@ -3,19 +3,11 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\PengurusGudangBulky;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Bank;
-use App\Mail\SendPasswordMail;
-use App\Models\Gudang;
-use App\Models\PengurusGudang;
-use App\User;
 
-class PemilikGudangController extends Controller
+class PemilikGudangBulkyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +17,7 @@ class PemilikGudangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = PengurusGudang::orderBy('id', 'desc')
+            $data = PengurusGudangBulky::orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -50,7 +42,7 @@ class PemilikGudangController extends Controller
                 ->make(true);
         }
 
-        return view('app.data-master.gudang.akun.pemilik.index');
+        return view('app.data-master.gudang.akun.pemilik-bulky.index');
     }
 
     /**
@@ -60,7 +52,7 @@ class PemilikGudangController extends Controller
      */
     public function create()
     {
-        return view('app.data-master.gudang.akun.pemilik.create');
+        //
     }
 
     /**
@@ -71,19 +63,7 @@ class PemilikGudangController extends Controller
      */
     public function store(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50',
-            'alamat' => 'required|string|max:200',
-            'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
-            'nik' => 'required|numeric',
-            'tempat_lahir' => 'required|string|max:30',
-            'no_rek' => 'required',
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        }
-        return redirect(route('pemilik-gudang.index'))->with('success', __( 'Pemilik Account Created' ));
+        //
     }
 
     /**
@@ -105,10 +85,7 @@ class PemilikGudangController extends Controller
      */
     public function edit($id)
     {
-        $data = User::whereHas('pengurusGudang', function($query){
-                $query->where('status', 1);
-            })->findOrFail($id);
-        return view('app.data-master.gudang.akun.pemilik.edit', compact('data'));
+        //
     }
 
     /**
@@ -120,19 +97,7 @@ class PemilikGudangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $v = Validator::make($request->all(),[
-            'name' => 'required|string|max:50',
-            'username' => 'required|string|max:50',
-            'email' => 'required|email|unique:users,email,'.$id
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        }
-
-        User::findOrFail($id)->update($request->only('name', 'username', 'email'));
-
-        return redirect(route('pemilik-gudang.index'))->with('success', __( 'Pemilik Account Updated' ));
+        //
     }
 
     /**
@@ -143,15 +108,6 @@ class PemilikGudangController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::whereHas('pengurusGudang', function($query){
-                $query->where('status', 1);
-            })
-            ->findOrFail($id);
-
-        PengurusGudang::where('id', $user->pengurus_gudang_id)->first()->delete();
-
-        $user->delete();
-
-        return back()->with('success', __( 'Pemilik Account Deleted' ));
+        //
     }
 }

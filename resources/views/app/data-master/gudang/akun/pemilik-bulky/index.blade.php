@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemilik Gudang Retail';
+        $pageTitle = 'Data Pemilik Gudang Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemilik Gudang Retail</a>
+            <a href="#" class="text-14">Data Pemilik Gudang Bulky</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                {{-- <a href="{{route('pemilik-gudang-retail.create')}}" class="btn btn-primary btn-sm">Tambah Pemilik Gudang Retail</a> --}}
+                                {{-- <a href="{{route('pemilik-gudang-bulky.create')}}" class="btn btn-primary btn-sm">Tambah Pemilik Gudang Bulky</a> --}}
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('pemilik-gudang-retail.index') }}",
+            ajax : "{{ route('pemilik-gudang-bulky.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
@@ -128,7 +128,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/pemilik-gudang-retail/'+id
+            formDelete.action = '/v1/pemilik-gudang-bulky/'+id
 
             const Toast = Swal.mixin({
             toast: true,
