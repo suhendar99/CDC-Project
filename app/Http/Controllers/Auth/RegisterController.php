@@ -127,6 +127,7 @@ class RegisterController extends Controller
         } elseif ($data['role'] == 'bulky') {
             $bulki = PengurusGudangBulky::create([
                 'nama' => $data['nama'],
+                'status' => 1
             ]);
 
             return User::create([
@@ -153,6 +154,7 @@ class RegisterController extends Controller
         } elseif ($data['role'] == 'retail') {
             $pengurusGudang = PengurusGudang::create([
                 'nama' => $data['nama'],
+                'status' => 1
             ]);
 
             return User::create([

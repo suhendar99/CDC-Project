@@ -25,7 +25,7 @@ class PemilikGudangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = User::whereHas('pengurusGudang', function($query){
+            $data = User::with('pengurusGudang')->whereHas('pengurusGudang', function($query){
                 $query->where('status', 1);
             })
             ->orderBy('id', 'desc')
@@ -33,7 +33,7 @@ class PemilikGudangController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<div class="text-center" style="width: 100%"><a href="/v1/pemilik-gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/pemilik-gudang-retail/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));

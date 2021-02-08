@@ -29,5 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(KoperasiSeeder::class);
         $this->call(ArmadaPengirimanSeeder::class);
         $this->call(PengaturanTransaksiSeeder::class);
+        $this->call(SatuanSeeder::class);
+        $this->call(KodeRoleAksesSeeder::class);
     }
 }

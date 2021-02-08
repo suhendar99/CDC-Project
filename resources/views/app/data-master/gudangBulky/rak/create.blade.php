@@ -1,7 +1,7 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Tambah Data Rak Gudang Bulky';
-        
+
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Maksimal Kapasitas Berat ( Kg ) <small class="text-success">*Harus diisi</small></label>
+                                        <label>Maksimal Kapasitas Berat ( Ton ) <small class="text-success">*Harus diisi</small></label>
                                         <input type="numeric" class="form-control @error('kapasitas_berat') is-invalid @enderror" name="kapasitas_berat" value="{{ old('kapasitas_berat') }}" placeholder="Masukan Berat...">
                                         @error('kapasitas_berat')
                                             <span class="invalid-feedback" role="alert">
