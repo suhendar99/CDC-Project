@@ -1,6 +1,9 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemilik Gudang Retail';
+        $pageTitle = 'Kode Role Akses';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemilik Gudang Retail</a>
+            <a href="#" class="text-14">Data Kode Role Akses</a>
           </div>
         </div>
     </div>
@@ -36,20 +39,18 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('pemilik-gudang-retail.create')}}" class="btn btn-primary btn-sm">Tambah Pemilik Gudang</a>
+                                <a href="{{route('kode-role-akses.create')}}" class="btn btn-primary btn-sm">Tambah Kode Role Akses</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="card-body">
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Pemilik</th>
-                                <th>Username</th>
-                                <th>Email</th>
+                                <th>Nama Role</th>
+                                <th>Kode Role Akses</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -63,66 +64,28 @@
     @csrf
     @method('DELETE')
 </form>
+@endsection
 @push('script')
-    <script>
-        let table = $('#data_table').DataTable({
+{{-- Chart Section --}}
+<script type="text/javascript">
+    let table = $('#data_table').DataTable({
             processing : true,
             serverSide : true,
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('pemilik-gudang-retail.index') }}",
+            ajax : "{{ route('kode-role-akses.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'pengurusGudang.nama', name: 'pengurus_gudang_id'1``},
-                {data : 'username', name: 'username'},
-                {data : 'email', name: 'email'},
+                {data : 'nama', name: 'nama'},
+                {data : 'kode_role', name: 'kode_role'},
                 {data : 'action', name: 'action'}
             ]
         });
 
-        function detail(id){
-            $('.namaBank').text('LOADING...')
-            $('.namaAkun').text('LOADING...')
-            $('.username').text('LOADING...')
-            $('.email').text('LOADING...')
-            $('.tahun').text('LOADING...')
-            $('.telepon').text('LOADING...')
-            $('.alamat').text('LOADING...')
-
-            $.ajax({
-                url: "/api/v1/detail/bank/"+id,
-                method: "GET",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: (response)=>{
-                    // console.log(response.data)
-                    let bank = response.data;
-
-                    $('.namaBank').text(bank.nama)
-                    $('.namaAkun').text(bank.user[0].name)
-                    $('.username').text(bank.user[0].username)
-                    $('.email').text(bank.user[0].email)
-                    $('.tahun').text(bank.tahun_berdiri)
-                    $('.telepon').text(bank.telepon)
-                    $('.alamat').text(bank.alamat)
-
-                    if (bank.foto == null) {
-                        $("#foto").text('- Tidak Ada Foto Bank -');
-                    }else{
-                        $("#foto").html(`<img class="foto" style="width:100%; height:300px;" src="{{asset('${bank.foto}')}}">`);
-                    }
-                },
-                error: (xhr)=>{
-                    let res = xhr.responseJSON;
-                    console.log(res)
-                }
-            });
-        }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/pemilik-gudang-retail/'+id
+            formDelete.action = '/v1/kode-role-akses/'+id
 
             const Toast = Swal.mixin({
             toast: true,
@@ -152,6 +115,6 @@
                 }
             })
         }
-    </script>
+</script>
+{{--  --}}
 @endpush
-@endsection

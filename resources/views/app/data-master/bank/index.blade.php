@@ -48,9 +48,6 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Tahun Berdiri</th>
-                                <th>Telepon</th>
-                                <th>Foto</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -132,34 +129,6 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
-                {
-                    data : 'tahun_berdiri', render:function(data,a,b,c){
-                        if (data == null) {
-                            return ""
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    data : 'telepon', render:function(data,a,b,c){
-                        if (data == null) {
-                            return ""
-                        } else {
-                            return data;
-                        }
-                    }
-                },
-                {
-                    data : 'foto', render:function(data,a,b,c){
-                        if (data == null) {
-                            return "";
-                        } else {
-                            return `<img src="{{ asset('') }}${data}" height=\"50px\"width=\"50px\">`;
-
-                        }
-                    }
-                },
                 {data : 'action', name: 'action'}
             ]
         });
