@@ -2,6 +2,12 @@
         $icon = 'dashboard';
         $pageTitle = 'Dashboard Admin';
         $dashboard = true;
+        $komoditi = App\Models\Kategori::all();
+        $gudangBulky = App\Models\GudangBulky::where('status',1)->get();
+        $gudangRetail = App\Models\Gudang::where('status',1)->get();
+        $warung = App\Models\Pelanggan::all();
+        $pembeli = App\Models\Pembeli::all();
+        $koperasi = App\Models\Koperasi::all();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -33,7 +39,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">20 Jenis</span><br>
+                        <span class="text-my-primary">{{$komoditi->count()}} Jenis</span><br>
                         <span class="text-my-subtitle">Komoditi</span>
                     </div>
                   </div>
@@ -51,7 +57,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">20 Unit</span><br>
+                        <span class="text-my-primary">{{$gudangBulky->count()}} Unit</span><br>
                         <span class="text-my-subtitle">Gudang Bulky</span>
                     </div>
                   </div>
@@ -69,7 +75,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">50 Unit</span><br>
+                        <span class="text-my-primary">{{$gudangRetail->count()}} Unit</span><br>
                         <span class="text-my-subtitle">Gudang Retail</span>
                     </div>
                   </div>
@@ -87,7 +93,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">200 Akun</span><br>
+                        <span class="text-my-warning">{{$warung->count()}} Akun</span><br>
                         <span class="text-my-subtitle">Warung</span>
                     </div>
                   </div>
@@ -105,7 +111,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">1000 Akun</span><br>
+                        <span class="text-my-warning">{{$pembeli->count()}} Akun</span><br>
                         <span class="text-my-subtitle">Pembeli</span>
                     </div>
                   </div>
@@ -123,7 +129,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">50 Unit</span><br>
+                        <span class="text-my-warning">{{$koperasi->count()}} Unit</span><br>
                         <span class="text-my-subtitle">Koperasi</span>
                     </div>
                   </div>
@@ -141,7 +147,7 @@
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Persentase Pengguna</span>
+            <span class="ml-2">Bagaian Pengguna CDC (Consolidated Distribution Center)</span>
         </div>
         {{-- <hr> --}}
         <div id="chartPengguna"></div>
@@ -153,7 +159,7 @@
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Persentase Anggota Koperasi</span>
+            <span class="ml-2">Persentase Anggota CDC (Consolidated Distribution Center)</span>
         </div>
         {{-- <hr> --}}
         <div id="chartAnggota"></div>
@@ -281,6 +287,28 @@
 {{--  --}}
 {{-- Map Section --}}
 <script>
+    var groupRetail = []
+    var groupBulky = []
+    var gudangBulky = JSON.parse('{!! json_encode($gudangBulky) !!}')
+    var gudangRetail = JSON.parse('{!! json_encode($gudangRetail) !!}')
+    console.log(gudangRetail);
+
+    var retailMarker = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+    var bulkyMarker = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
     var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="">Badan Perencanaan Pembangunan Daerah Kabupaten Bekasi</a>',
                         maxZoom:20, }),
@@ -297,18 +325,39 @@
     ghybrid     = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
                         subdomains:['mt0','mt1','mt2','mt3'],
                         maxZoom: 20, });
-    var baseLayers = {
+                        var baseLayers = {
         "OSM": osm,
         "Google Street"     : gstreet,
         "Google Terrain"    : gterrain,
         "Google Satelite"   : gsatelite,
         "Google Hybrid"     : ghybrid
     };
+    gudangRetail.forEach(async function (value) {
+        var hehe = groupRetail.push(L.marker([value.lat, value.long], {icon: retailMarker}).bindPopup(`
+        <p><center>Gudang Retail</center></p>
+        <b>Gudang : ${value.nama}</b><br />
+        Milik : ${value.pemilik}<br />
+        `))
+        // console.log(element.id);
+    })
+    gudangBulky.forEach(async function (element) {
+        console.log(element);
+        var ohoh = groupBulky.push(L.marker([element.lat, element.long], {icon: bulkyMarker}).bindPopup(`
+        <p><center>Gudang Bulky</center></p>
+        <b>Gudang : ${element.nama}</b><br />
+        Milik : ${element.pemilik}<br />
+        `))
+    })
+    let gudangGudangBulky = L.layerGroup(groupBulky)
+    let gudangGudang = L.layerGroup(groupRetail)
+
     var map = L.map('mapid', {
-            center: [-6.241586, 106.992416],
-            zoom: 10,
-            layers: [ghybrid]
+        center: [-6.967647303787534, 107.65589059670471],
+        zoom: 10,
+        layers: [ghybrid, gudangGudang, gudangGudangBulky]
     });
+    // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
+    // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
 </script>
 {{--  --}}

@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('pemasok.create')}}" class="btn btn-primary btn-sm">Tambah Data Pemasok</a>
+                                {{-- <a href="{{route('pemasok.create')}}" class="btn btn-primary btn-sm">Tambah Data Pemasok</a> --}}
                             </div>
                         </div>
                     </div>
@@ -46,11 +46,13 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode Pemasok</th>
                                 <th>Nama</th>
-                                <th>Alamat</th>
                                 <th>Telepon</th>
-                                <th>Action</th>
+                                <th>Tempat, Tanggal Lahir</th>
+                                <th>Agama</th>
+                                <th>Pekerjaan</th>
+                                <th>ALamat</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -152,17 +154,13 @@
             ajax : "{{ route('pemasok.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'kode_pemasok', name: 'kode_pemasok'},
                 {data : 'nama', name: 'nama'},
-                {data : 'alamat', render:function(data,a,b,c){
-                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
-                    }
-                },
-                {data : 'telepon', render:function(data,a,b,c){
-                        return (data == null || data == "") ? "Mohon Lengkapi Data !" : data;
-                    }
-                },
-                {data : 'action', name: 'action'}
+                {data : 'telepon', name: 'telepon'},
+                {data : 'ttl', name: 'ttl'},
+                {data : 'agama', name: 'agama'},
+                {data : 'pekerjaan', name: 'pekerjaan'},
+                {data : 'alamat', name: 'alamat'},
+                // {data : 'action', name: 'action'}
             ]
         });
         function detail(id){

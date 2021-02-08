@@ -21,7 +21,6 @@ use App\Models\RekapitulasiPenjualan;
 use App\Models\RekapitulasiPenjualanBulky;
 use App\Models\SuratJalanBulky;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class StorageKeluarBulkyController extends Controller
@@ -34,7 +33,7 @@ class StorageKeluarBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageKeluarBulky::with('barang', 'bulky', 'pemesananBulky')->where('user_id',Auth::user()->id)
+            $data = StorageKeluarBulky::with('barang', 'bulky', 'pemesananBulky')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

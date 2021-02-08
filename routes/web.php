@@ -114,8 +114,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemasok', 'PemasokController');
         // Armada Pengiriman
         Route::resource('armada', 'ArmadaPengirimanController');
-        // Pembeli
+        // wARUNG
         Route::resource('pelanggan', 'PelangganController');
+        // Pembleli
+        Route::resource('pembeli', 'PembeliController');
         // Satuan
         Route::resource('satuan', 'SatuanController');
         // Kode Role Akses
@@ -125,7 +127,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
-        // Kategori Barang Induk
+        // Kategori Barang Indukas
         Route::resource('kategoriBarang', 'KategoriBarangController');
         // Pemilik Gudang
         Route::resource('pemilik-gudang-retail', 'PemilikGudangController');

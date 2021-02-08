@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                {{-- <a href="{{route('pembeli.create')}}" class="btn btn-primary btn-sm">Tambah Data Pembeli</a> --}}
+                                {{-- <a href="{{route('pelanggan.create')}}" class="btn btn-primary btn-sm">Tambah Data Pembeli</a> --}}
                             </div>
                         </div>
                     </div>
@@ -83,14 +83,14 @@
           </div>
           <div class="row">
             <div class="col-12 text-center">
-                <span>Foto Pemasok</span><br>
+                <span>Foto Pelanggan</span><br>
                 <div id="foto" class="my-4"></div>
             </div>
               <div class="col-12">
                   <table class="table">
                       <tbody>
                         <tr>
-                            <th scope="row">Nama Pemasok</th>
+                            <th scope="row">Nama Pelanggan</th>
                             <td class="nama"></td>
                         </tr>
                         <tr>
@@ -151,7 +151,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('pembeli.index') }}",
+            ajax : "{{ route('pelanggan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
@@ -163,6 +163,7 @@
                 // {data : 'action', name: 'action'}
             ]
         });
+
         function detail(id){
             $('#foto').text("Mendapatkan Data.......")
             $('.nama').text("Mendapatkan Data.......")
@@ -177,7 +178,7 @@
             $('.pekerjaan').text("Mendapatkan Data.......")
             $('.kewarganegaraan').text("Mendapatkan Data.......")
             $.ajax({
-                url: "/api/v1/getPemasok/"+id,
+                url: "/api/v1/getPelanggan/"+id,
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -215,7 +216,7 @@
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/pemasok/'+id
+            formDelete.action = '/v1/pelanggan/'+id
 
             const Toast = Swal.mixin({
             toast: true,

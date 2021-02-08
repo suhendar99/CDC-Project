@@ -14,7 +14,6 @@ use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\StockBarangBulky;
 use App\Models\RekapitulasiPembelianBulky;
-use Illuminate\Support\Facades\Auth;
 
 class StorageMasukBulkyController extends Controller
 {
@@ -26,7 +25,7 @@ class StorageMasukBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageMasukBulky::with('barang', 'bulky')->where('user_id',Auth::user()->id)
+            $data = StorageMasukBulky::with('barang', 'bulky')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

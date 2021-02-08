@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Edit Data Pembeli';
+        $pageTitle = 'Edit Data Pemasok';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,9 +15,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pembeli</a>
+            <a href="#" class="text-14">Data Pemasok</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Edit Data Pembeli</a>
+            <a href="#" class="text-14">Edit Data Pemasok</a>
           </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('pelanggan.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('pemasok.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('pelanggan.update',$data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('pemasok.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">

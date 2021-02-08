@@ -14,7 +14,6 @@ use App\Models\StorageBulky;
 use App\Models\Barang;
 use App\Models\GudangBulky;
 use App\Models\KwitansiBulky;
-use Illuminate\Support\Facades\Auth;
 
 class KwitansiBulkiController extends Controller
 {
@@ -26,7 +25,7 @@ class KwitansiBulkiController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = KwitansiBulky::with('pemesananBulky', 'bulky')->where('user_id',Auth::user()->id)
+            $data = KwitansiBulky::with('pemesananBulky', 'bulky')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

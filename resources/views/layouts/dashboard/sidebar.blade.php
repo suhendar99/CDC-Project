@@ -65,8 +65,10 @@
                         {{ Request::is('v1/bank*') ? 'active' : false }}
                         {{ Request::is('v1/akun-bank*') ? 'active' : false }}
                         {{ Request::is('v1/pemilik-gudang-retail*') ? 'active' : false }}
+                        {{ Request::is('v1/pemilik-gudang-bulky*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
+                        {{ Request::is('v1/pembeli*') ? 'active' : false }}
                         {{ Request::is('v1/satuan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                         {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
@@ -84,8 +86,10 @@
                             {{ Request::is('v1/bank*') ? 'show' : false }}
                             {{ Request::is('v1/akun-bank*') ? 'show' : false }}
                             {{ Request::is('v1/pemilik-gudang-retail*') ? 'show' : false }}
+                            {{ Request::is('v1/pemilik-gudang-bulky*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
+                            {{ Request::is('v1/pembeli*') ? 'show' : false }}
                             {{ Request::is('v1/satuan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
                             {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
@@ -112,19 +116,29 @@
                                 <a href="{{route('bank.index')}}">Bank</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/pemilik-gudang-retail*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('pemilik-gudang-retail.index')}}">Pemilik Gudang Retail</a>
-                            </li>
-                            <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
                             ">
                                 <a href="{{route('pemasok.index')}}">Pemasok</a>
                             </li>
                             <li class="
+                                {{ Request::is('v1/pemilik-gudang-bulky*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pemilik-gudang-bulky.index')}}">Pemilik Gudang Bulky</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/pemilik-gudang-retail*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pemilik-gudang-retail.index')}}">Pemilik Gudang Retail</a>
+                            </li>
+                            <li class="
                                 {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                             ">
-                                <a href="{{route('pelanggan.index')}}">Pembeli</a>
+                                <a href="{{route('pelanggan.index')}}">Warung</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/pembeli*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pembeli.index')}}">Pembeli</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
