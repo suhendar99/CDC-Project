@@ -120,6 +120,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('satuan', 'SatuanController');
         // Kode Role Akses
         Route::resource('kode-role-akses', 'KodeRoleAksesController');
+        // Kode Transaksi
+        Route::resource('kode-transaksi', 'KodeTransaksiController');
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');

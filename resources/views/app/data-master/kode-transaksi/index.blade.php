@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Kode Role Akses';
+        $pageTitle = 'Kode Transaksi';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -18,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Kode Role Akses</a>
+            <a href="#" class="text-14">Data Kode Transaksi</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('kode-role-akses.create')}}" class="btn btn-primary btn-sm">Tambah Kode Role Akses</a>
+                                <a href="{{route('kode-transaksi.create')}}" class="btn btn-primary btn-sm">Tambah Kode Transaksi</a>
                             </div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Role</th>
-                                <th>Kode Role Akses</th>
+                                <th>Nama Transaksi</th>
+                                <th>Kode Transaksi</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -74,18 +74,18 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('kode-role-akses.index') }}",
+            ajax : "{{ route('kode-transaksi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
-                {data : 'kode_role', name: 'kode_role'},
+                {data : 'kode_transaksi', name: 'kode_transaksi'},
                 {data : 'action', name: 'action'}
             ]
         });
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/kode-role-akses/'+id
+            formDelete.action = '/v1/kode-transaksi/'+id
 
             const Toast = Swal.mixin({
             toast: true,

@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Tambah Kode Role Akses';
+        $pageTitle = 'Edit Kode Transaksi';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -20,7 +20,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Pembeli</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Tambah Kode Role Akses</a>
+            <a href="#" class="text-14">Edit Kode Transaksi</a>
           </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('kode-role-akses.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('kode-transaksi.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -49,14 +49,15 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('kode-role-akses.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('kode-transaksi.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Nama Role <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama') }}">
+                                                <label>Nama Transaksi <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ $data->nama }}">
                                                 @error('nama')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -68,9 +69,9 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Kode Role <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" class="form-control @error('kode_role') is-invalid @enderror" name="kode_role" value="{{ old('kode_role') }}">
-                                                @error('kode_role')
+                                                <label>Kode Transaksi <small class="text-success">*Harus diisi</small></label>
+                                                <input type="text" class="form-control @error('kode_transaksi') is-invalid @enderror" name="kode_transaksi" value="{{ $data->kode_transaksi }}">
+                                                @error('kode_transaksi')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>

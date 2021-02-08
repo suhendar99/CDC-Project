@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PengaturanTransaksiSeeder::class);
         $this->call(SatuanSeeder::class);
         $this->call(KodeRoleAksesSeeder::class);
+        $this->call(KodeTransaksiSeeder::class);
     }
 }
