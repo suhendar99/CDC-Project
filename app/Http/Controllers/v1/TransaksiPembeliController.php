@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemesananPembeli;
 use App\Models\BarangWarung;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiPembeliController extends Controller
 {

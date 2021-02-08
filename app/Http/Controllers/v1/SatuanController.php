@@ -3,22 +3,20 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\RakBulky;
-use App\Models\TingkatRakBulky;
-use App\Models\StorageMasukBulky;
-use App\Models\StorageBulky;
-use App\Models\Barang;
-use App\Models\GudangBulky;
-use App\Models\KwitansiBulky;
-use App\Models\SuratJalanBulky;
-use Illuminate\Support\Facades\Auth;
 
-class SuratJalanBulkyController extends Controller
+class SatuanController extends Controller
 {
+    public function __construct()
+    {
+        $this->Data = new Satuan;
+
+        $this->path = 'app.data-master.satuan.';
+        $this->alert = 'Data Berhasil ';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,21 +25,15 @@ class SuratJalanBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = SuratJalanBulky::with('pemesananBulky')->where('user_id',Auth::user()->id)
-            ->orderBy('id', 'desc')
-            ->get();
+            $data = $this->Data->getData();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/bulky/surat-jalan/print?id='.$data->id.'" target="_blank" class="btn btn-primary btn-sm">Cetak PDF</a>';
-                })
-                ->editColumn('created_at',function($data){
-                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                    return '<a href="/v1/satuan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
-
-        return view('app.data-master.storageBulky.index');
+        return view($this->path.'index');
     }
 
     /**
@@ -51,7 +43,7 @@ class SuratJalanBulkyController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->path.'create');
     }
 
     /**
@@ -62,7 +54,18 @@ class SuratJalanBulkyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'nama' => 'required|string|max:50',
+            'satuan' => 'required|string|max:10'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $this->Data->storeData($request->only('nama','satuan'));
+
+            return back()->with('success',$this->alert.'ditambah !');
+        }
     }
 
     /**
@@ -73,7 +76,7 @@ class SuratJalanBulkyController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -84,7 +87,8 @@ class SuratJalanBulkyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Satuan::find($id);
+        return view($this->path.'edit',compact('data'));
     }
 
     /**
@@ -96,7 +100,17 @@ class SuratJalanBulkyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $v = Validator::make($request->all(),[
+            'nama' => 'required|string|max:50',
+            'satuan' => 'required|string|max:10'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $data = $this->Data->updateData($id,$request->only('nama','satuan'));
+            return back()->with('success',$this->alert.'diedit !');
+        }
     }
 
     /**
@@ -107,6 +121,8 @@ class SuratJalanBulkyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->Data->deleteData($id);
+
+        return back()->with('success',$this->alert.'dihapus !');
     }
 }
