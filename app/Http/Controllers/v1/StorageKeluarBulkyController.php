@@ -20,6 +20,8 @@ use App\Models\LogTransaksi;
 use App\Models\RekapitulasiPenjualan;
 use App\Models\RekapitulasiPenjualanBulky;
 use App\Models\SuratJalanBulky;
+use App\Mail\KwitansiDanSuratJalanMail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use PDF;
 
@@ -139,6 +141,7 @@ class StorageKeluarBulkyController extends Controller
      */
     public function store(Request $request)
     {
+        set_time_limit(120);
         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             // 'gudang_id' => 'required|exists:gudangs,id',
@@ -332,6 +335,8 @@ class StorageKeluarBulkyController extends Controller
         $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
         // $kode_surat = $faker->unique()->ean13;
 
+        $date = date('d-m-Y');
+
         $kwitansi = KwitansiBulky::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_bulky_id', 'tempat', 'keterangan')+[
             'user_id' => auth()->user()->id,
             'kode' => $kode_kwi,
@@ -346,6 +351,24 @@ class StorageKeluarBulkyController extends Controller
             'user_id' => auth()->user()->id,
             'tanggal' => now('Asia/Jakarta')
         ]);
+
+        $counterKwitansi = $kwitansi->count();
+        $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
+        $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print_bulky', [
+            'data' => $kwitansi,
+            'date' => $date,
+            'kode' => $pdfKodeKwi
+        ]);
+
+        $counterSJ = $surat->count();
+        $pdfKodeSJ = sprintf("%'.04d", (String)$counterSJ);
+        $pdfSJ = PDF::loadview('app.transaksi.surat-jalan.print_bulky', [
+            'data' => $surat,
+            'date' => $date,
+            'kode' => $pdfKodeSJ
+        ]);
+        // $pesanan->retail->user->email
+        Mail::to('filok5267@gmail.com')->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->first();
         $jumlah = 0;
