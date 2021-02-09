@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\BatasPiutang;
+use App\Models\PengaturanWangpas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class BatasPiutangController extends Controller
+class PengaturanWangpasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class BatasPiutangController extends Controller
      */
     public function index()
     {
-        $data = BatasPiutang::find(1);
-        return view('app.data-master.batasPiutang.index',compact('data'));
+        $data = PengaturanWangpas::find(1);
+        return view('app.pengaturanWangpas.index',compact('data'));
     }
 
     /**
@@ -39,18 +39,23 @@ class BatasPiutangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'jumlah_hari' => 'required|numeric',
-            'batas_jumlah_uang' => 'required|numeric'
+            'pendaftaran' => 'required',
+            'top_up' => 'required',
+            'pembayaran' => 'required',
+            'cek_saldo' => 'required',
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
             $id = $request->id;
-            $data = BatasPiutang::find($id);
+            $data = pengaturanWangpas::find($id);
+
             $data->update($request->all());
+
+            return back()->with('success','Data Berhasil Di Ubah !');
         }
-        return back()->with('success','Data Berhasil Di Ubah !');
+
     }
 
     /**

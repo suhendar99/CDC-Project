@@ -14,12 +14,13 @@
   // 	['icon'=>'free_breakfast','nama'=>'Minuman'],
   // 	['icon'=>'rice_bowl','nama'=>'Makanan Instan'],
   // );
-	$banner = array(
-		['path'=>'images/Banner1.png'],
-		['path'=>'images/Banner2.png'],
-		['path'=>'images/Banner3.png'],
-		['path'=>'images/Banner4.png'],
-	);
+	// $banner = array(
+	// 	['path'=>'images/Banner1.png'],
+	// 	['path'=>'images/Banner2.png'],
+	// 	['path'=>'images/Banner3.png'],
+	// 	['path'=>'images/Banner4.png'],
+    // );
+    $banner = App\Models\UiBanner::all();
 @endphp
 @push('style')
 <style type="text/css">
@@ -60,7 +61,7 @@
 		  <div class="carousel-inner">
 		  	@foreach($banner as $key => $b)
 		    <div class="carousel-item {{($key == 0 ) ? 'active' : false}}">
-		      <img class="d-block w-100 img-banner" src="{{asset($b['path'])}}" alt="{{$key+1}} slide">
+		      <img class="d-block w-100 img-banner" src="{{asset($b->foto)}}" alt="{{$key+1}} slide">
 		    </div>
 		    @endforeach
 		  </div>

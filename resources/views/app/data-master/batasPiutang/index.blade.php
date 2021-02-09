@@ -16,7 +16,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Pengaturan</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Batas Piutang</a>
           </div>
@@ -49,7 +49,7 @@
                                 @csrf
                                 <input type="hidden" name="id" value="{{$data->id}}">
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Jumlah Hari <small class="text-success">*Harus diisi</small></label>
@@ -62,9 +62,26 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success btn-block btn-sm mt-4 p-2">Simpan</button>
+                                            <div class="col-md-12">
+                                                <label>Batas Hutang ( Rp ) <small class="text-success">*Harus diisi</small></label>
+                                                <input type="number" min="1" class="form-control @error('batas_jumlah_uang') is-invalid @enderror" name="batas_jumlah_uang" value="{{ $data->batas_jumlah_uang }}">
+                                                @error('batas_jumlah_uang')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-6 float-right">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
