@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Storage as InternalStorage;
 use App\Models\Pemesanan;
 use App\Models\PemesananBulky;
 use App\Models\PemesananPembeli;
@@ -20,6 +21,8 @@ use App\Models\Piutang;
 use App\Models\Storage;
 use App\User;
 use Carbon\Carbon;
+use App\Mail\SendProofOfPaymentMail;
+use Illuminate\Support\Facades\Mail;
 use PDF;
 
 class PemesananController extends Controller
@@ -205,14 +208,29 @@ class PemesananController extends Controller
     public function buktiRetail(Request $request, $id)
     {
         // dd($request->file('foto_bukti'));
+        set_time_limit(120);
         $data = $this->modelBulky::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
+
+        $type = explode("/", $foto_bukti->getClientMimeType());
+
+
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
         $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
+        // dd(InternalStorage::disk('public')->get('/upload/foto/bukti/'.$nama_bukti));
+        
+        // dd($data->bulky->user->email);
+
+        Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('/upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        // $data->retail->user
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
+
+        if (Mail::failures()) {
+            dd(Mail::failures());
+        }
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
@@ -455,6 +473,7 @@ class PemesananController extends Controller
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
+
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
