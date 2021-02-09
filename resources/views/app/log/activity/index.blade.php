@@ -1,6 +1,6 @@
 @php
         $icon = 'shopping_cart';
-        $pageTitle = 'Kategori Induk';
+        $pageTitle = 'Log Aktivitas';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -18,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Kategori Induk</a>
+            <a href="#" class="text-14">Data Log Aktivitas</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,6 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('kategoriBarang.create')}}" class="btn btn-primary btn-sm">Tambah Kategori Induk</a>
                             </div>
                         </div>
                     </div>
@@ -49,9 +48,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kategori</th>
-                                <th>Foto Kategori</th>
-                                <th>Action</th>
+                                <th>Waktu</th>
+                                <th>Nama Pengguna</th>
+                                <th>Aktivitas</th>
+                                {{-- <th>Menu</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -74,12 +74,24 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('kategoriBarang.index') }}",
+            ajax : "{{ route('log-activity.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'nama', name: 'nama'},
-                {data : 'foto', name: 'foto'},
-                {data : 'action', name: 'action'}
+                {data : 'created_at', name: 'created_at'},
+                {data : 'user.name', name: 'causer_id'},
+                {data : 'description', name: 'description'},
+                // {
+                //     data: function (data, type, row, meta) {
+                //         if(data.subject_type == "App\\Models\\Pengunjung") {
+                //             return 'Pengunjung';
+                //         }else if(data.subject_type == "App\\Models\\Pegawai") {
+                //             return 'Pegawai ';
+                //         }else if(data.subject_type == null) {
+                //             return 'Auth';
+                //         }
+                //     },
+                //     name: 'locked'
+                // },
             ]
         });
 

@@ -58,6 +58,18 @@
                     @endif
                     @if (isset($admin))
                     <li class="
+                        {{ Request::is('v1/ui-banner*') ? 'active' : false }}
+                    ">
+                        <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">airplay</i>UI Element</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/ui-banner*') ? 'show' : false }}
+                        " id="piutangSubmenu">
+                            <li class="{{ Request::is('v1/ui-banner*') ? 'active' : false }}">
+                                <a href="{{route('ui-banner.index')}}">Banner</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="
                         @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
                         {{ Request::is('v1/kode-role-akses*') ? 'active' : false }}
@@ -71,7 +83,6 @@
                         {{ Request::is('v1/pembeli*') ? 'active' : false }}
                         {{ Request::is('v1/satuan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
-                        {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
                         {{ Request::is('v1/koperasi*') ? 'active' : false }}
                         {{ Request::is('v1/armada*') ? 'active' : false }}
                         @endif
@@ -92,7 +103,6 @@
                             {{ Request::is('v1/pembeli*') ? 'show' : false }}
                             {{ Request::is('v1/satuan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
-                            {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
                             {{ Request::is('v1/koperasi*') ? 'show' : false }}
                             {{ Request::is('v1/armada*') ? 'show' : false }}
                             @endif
@@ -156,11 +166,6 @@
                                 <a href="{{route('satuan.index')}}">Satuan Barang</a>
                             </li>
                             <li class="
-                                {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('batasPiutang.index')}}">Batas Piutang</a>
-                            </li>
-                            <li class="
                                 {{ Request::is('v1/koperasi*') ? 'active' : false }}
                             ">
                                 <a href="{{route('koperasi.index')}}">Data Koperasi</a>
@@ -178,6 +183,18 @@
                                 <a href="{{route('barang.index')}}">Barang</a>
                             </li>
                             @endif
+                        </ul>
+                    </li>
+                    <li class="
+                        {{ Request::is('v1/log-activity*') ? 'active' : false }}
+                    ">
+                        <a href="#logSub" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">grading</i>Log</a>
+                        <ul class="collapse list-unstyled
+                            {{ Request::is('v1/log-activity*') ? 'show' : false }}
+                        " id="logSub">
+                            <li class="{{ Request::is('v1/log-activity*') ? 'active' : false }}">
+                                <a href="{{route('log-activity.index')}}">Log Aktivitas</a>
+                            </li>
                         </ul>
                     </li>
                     @endif
@@ -539,16 +556,30 @@
                     <li class="
                         {{ Request::is('v1/setApp*') ? 'active' : false }}
                         {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}
+                        {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
+                        {{ Request::is('v1/pengaturan-wangpas*') ? 'active' : false }}
                     ">
                         <a href="#colapsePengaturan" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">settings</i> Pengaturan</a>
                         <ul id="colapsePengaturan" class="collapse list-unstyled
                             {{ Request::is('v1/setApp*') ? 'show' : false }}
                             {{ Request::is('v1/pengaturanTransaksi*') ? 'show' : false }}
+                            {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
+                            {{ Request::is('v1/pengaturan-wangpas*') ? 'show' : false }}
                         ">
+                            <li class="
+                                {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('batasPiutang.index')}}">Piutang</a>
+                            </li>
                             <li class="
                             {{ Request::is('v1/setApp*') ? 'active' : false }}
                             ">
                                 <a href="{{route('setApp.index')}}">Aplikasi</a>
+                            </li>
+                            <li class="
+                            {{ Request::is('v1/pengaturan-wangpas*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pengaturan-wangpas.index')}}">Wangpas</a>
                             </li>
                             <li class="
                             {{ Request::is('v1/pengaturanTransaksi*') ? 'active' : false }}

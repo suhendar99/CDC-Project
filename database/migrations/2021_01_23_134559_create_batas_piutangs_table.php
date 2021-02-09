@@ -16,6 +16,7 @@ class CreateBatasPiutangsTable extends Migration
         Schema::create('batas_piutangs', function (Blueprint $table) {
             $table->id();
             $table->integer('jumlah_hari');
+            $table->bigInteger('batas_jumlah_uang');
             $table->timestamps();
         });
     }

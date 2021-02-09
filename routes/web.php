@@ -108,8 +108,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
         // Koperasi
         Route::resource('koperasi', 'KoperasiController');
+        // UI Element
+        Route::resource('ui-banner', 'UiBannerController');
         // Pengaturan Transaksi
         Route::resource('pengaturanTransaksi', 'PengaturanTransaksiController');
+        // Pengaturan Wangpas
+        Route::resource('pengaturan-wangpas', 'PengaturanWangpasController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Armada Pengiriman
@@ -124,7 +128,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('kode-role-akses', 'KodeRoleAksesController');
         // Kode Transaksi
         Route::resource('kode-transaksi', 'KodeTransaksiController');
-
+        // log
+        Route::resource('log-activity', 'LogActivityController');
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
         // Kategori Barang Indukas

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -35,6 +36,29 @@ class LoginController extends Controller
      *
      * @return void
      */
+    public function logout(Request $request)
+    {
+        Log::create([
+            'log_name' => 'default',
+            'description' => 'logout',
+            'causer_id' => $this->guard()->user()->id,
+            'causer_type' => 'App\User',
+            'created_at' => now(),
+        ]);
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        if ($response = $this->loggedOut($request)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+            ? new Response('', 204)
+            : redirect('/');
+    }
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
@@ -52,7 +76,13 @@ class LoginController extends Controller
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
-
+            Log::create([
+                'log_name' => 'default',
+                'description' => 'login',
+                'causer_id' => $this->guard()->user()->id,
+                'causer_type' => 'App\User',
+                'created_at' => now(),
+            ]);
             if (Auth::user()->status == 0) {
                 Auth::logout();
                 return redirect('/')->with('error','Akun Anda sedang menunggu persetujuan administrator kami.');

@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
+use App\Models\UiBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class KategoriBarangController extends Controller
+class UiBannerController extends Controller
 {
     public function __construct()
     {
-        $this->Data = new Kategori;
-
-        $this->path = 'app.data-master.kategori.';
-        $this->alert = 'Data Berhasil ';
+        $this->path = 'app.ui-element.banner.';
     }
     /**
      * Display a listing of the resource.
@@ -26,15 +23,15 @@ class KategoriBarangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = $this->Data->getData();
+            $data = UiBanner::orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/kategoriBarang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/ui-banner/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('foto', function($data){
-                    if ($data->icon != null) {
-                        return '<img src="'.asset($data->icon).'" class="rounded mx-auto" height="100" width="100" alt="Icon">';
+                    if ($data->foto != null) {
+                        return '<img src="'.asset($data->foto).'" class="rounded mx-auto" height="100" width="250" alt="Icon">';
                     } else {
                         return "<small class='text-danger'>Foto Kosong !</small>";
                     }
@@ -66,23 +63,23 @@ class KategoriBarangController extends Controller
     {
         $v = Validator::make($request->all(),[
             'nama' => 'required|string|max:50',
-            'icon' => 'required|image|mimes:png,jpg|max:1048'
+            'foto' => 'nullable|image|mimes:png,jpg|max:1048'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            if ($request->hasFile('icon')) {
-                $image = $request->file('icon');
+            if ($request->hasFile('foto')) {
+                $image = $request->file('foto');
                 $name = rand(). '.' . $image->getClientOriginalExtension();
-                $image->move("upload/foto/komoditi", $name);
-                $this->Data->storeData($request->only('nama')+['icon' => '/upload/foto/komoditi/'.$name]);
+                $image->move("upload/foto/banner", $name);
+                UiBanner::create($request->only('nama')+['foto' => '/upload/foto/banner/'.$name]);
             } else {
-                $this->Data->storeData($request->only('nama'));
+                UiBanner::create($request->only('nama'));
             }
 
 
-            return back()->with('success',$this->alert.'ditambah !');
+            return back()->with('success','Data berhasil ditambah !');
         }
     }
 
@@ -105,7 +102,7 @@ class KategoriBarangController extends Controller
      */
     public function edit($id)
     {
-        $data = Kategori::find($id);
+        $data = UiBanner::find($id);
         return view($this->path.'edit',compact('data'));
     }
 
@@ -120,25 +117,25 @@ class KategoriBarangController extends Controller
     {
         $v = Validator::make($request->all(),[
             'nama' => 'required|string|max:50',
-            'icon' => 'required|image|mimes:png,jpg|max:1048'
+            'foto' => 'nullable|image|mimes:png,jpg|max:1048'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            if ($request->hasFile('icon')) {
-                $data = Kategori::find($id);
-                File::delete(public_path($data->icon));
-                $image = $request->file('icon');
+            $data = UiBanner::find($id);
+            if ($request->hasFile('foto')) {
+                File::delete(public_path($data->foto));
+                $image = $request->file('foto');
                 $name = rand(). '.' . $image->getClientOriginalExtension();
-                $image->move("upload/foto/komoditi", $name);
+                $image->move("upload/foto/banner", $name);
 
-                $this->Data->updateData($id,$request->only('nama')+['icon' => '/upload/foto/komoditi/'.$name]);
+                $data->update($request->only('nama')+['foto' => '/upload/foto/banner/'.$name]);
             } else {
-                $this->Data->updateData($id,$request->only('nama'));
+                $data->update($request->only('nama'));
             }
 
-            return back()->with('success',$this->alert.'diedit !');
+            return back()->with('success','Data berhasil diedit !');
         }
     }
 
@@ -150,10 +147,10 @@ class KategoriBarangController extends Controller
      */
     public function destroy($id)
     {
-        $data = Kategori::find($id);
-        File::delete(public_path($data->icon));
-        $this->Data->deleteData($id);
+        $data = UiBanner::find($id);
+        File::delete(public_path($data->foto));
+        $data->delete();
 
-        return back()->with('success',$this->alert.'dihapus !');
+        return back()->with('success','Data berhasil dihapus !');
     }
 }

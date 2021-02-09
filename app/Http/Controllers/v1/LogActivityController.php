@@ -3,21 +3,30 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\BatasPiutang;
+use App\Models\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
 
-class BatasPiutangController extends Controller
+class LogActivityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = BatasPiutang::find(1);
-        return view('app.data-master.batasPiutang.index',compact('data'));
+        if($request->ajax()){
+            $data = Log::with('user')->orderBy('id', 'desc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->editColumn('created_at',function($data){
+                    return date('d-F-Y H:i:s', strtotime($data->created_at)).' WIB';
+                })
+                ->make(true);
+        }
+        // dd($count);
+        return view('app.log.activity.index');
     }
 
     /**
@@ -38,19 +47,7 @@ class BatasPiutangController extends Controller
      */
     public function store(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'jumlah_hari' => 'required|numeric',
-            'batas_jumlah_uang' => 'required|numeric'
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        } else {
-            $id = $request->id;
-            $data = BatasPiutang::find($id);
-            $data->update($request->all());
-        }
-        return back()->with('success','Data Berhasil Di Ubah !');
+        //
     }
 
     /**

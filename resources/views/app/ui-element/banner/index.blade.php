@@ -1,6 +1,6 @@
 @php
-        $icon = 'shopping_cart';
-        $pageTitle = 'Kategori Induk';
+        $icon = 'airplay';
+        $pageTitle = 'Banner';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -16,9 +16,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">UI Element</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Kategori Induk</a>
+            <a href="#" class="text-14">Data Banner</a>
           </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('kategoriBarang.create')}}" class="btn btn-primary btn-sm">Tambah Kategori Induk</a>
+                                <a href="{{route('ui-banner.create')}}" class="btn btn-primary btn-sm">Tambah Banner</a>
                             </div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Kategori</th>
-                                <th>Foto Kategori</th>
+                                <th>Nama Banner</th>
+                                <th>Foto Banner</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -74,7 +74,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('kategoriBarang.index') }}",
+            ajax : "{{ route('ui-banner.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
@@ -85,7 +85,7 @@
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/kategoriBarang/'+id
+            formDelete.action = '/v1/ui-banner/'+id
 
             const Toast = Swal.mixin({
             toast: true,

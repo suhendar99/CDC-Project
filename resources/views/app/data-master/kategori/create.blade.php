@@ -68,6 +68,21 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label>Icon / Foto Kategori <small class="text-success">*Harus diisi</small></label>
+                                                <input type="file" accept="image/*" class="form-control @error('icon') is-invalid @enderror" name="icon" value="{{ old('icon') }}">
+                                                @error('icon')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                     <div class="float-right">
                                         <button type="submit" class="btn btn-success btn-sm">Simpan</button>
                                     </div>
