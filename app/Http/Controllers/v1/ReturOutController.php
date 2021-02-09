@@ -84,7 +84,7 @@ class ReturOutController extends Controller
         $log = LogTransaksi::create([
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'Aktifitas_transaksi' => 'Retur Barang Keluar'
+            'aktifitas_transaksi' => 'Retur Barang Keluar'
         ]);
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Created!' ));

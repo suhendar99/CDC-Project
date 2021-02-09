@@ -17,7 +17,8 @@ class CreateLogTransaksisTable extends Migration
             $table->id();
             $table->date('tanggal');
             $table->time('jam');
-            $table->string('Aktifitas_transaksi');
+            $table->string('aktifitas_transaksi');
+            $table->string('role')->nullable();
             $table->timestamps();
         });
     }

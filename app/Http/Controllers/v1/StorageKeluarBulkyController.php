@@ -267,7 +267,7 @@ class StorageKeluarBulkyController extends Controller
         $log = LogTransaksi::create([
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'Aktifitas_transaksi' => 'Pengiriman Barang'
+            'aktifitas_transaksi' => 'Pengiriman Barang'
         ]);
 
         $kodex = $pesanan->barangPesananBulky;

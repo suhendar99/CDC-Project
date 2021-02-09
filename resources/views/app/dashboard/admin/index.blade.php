@@ -8,6 +8,9 @@
         $warung = App\Models\Pelanggan::all();
         $pembeli = App\Models\Pembeli::all();
         $koperasi = App\Models\Koperasi::all();
+        $pmsk = App\Models\Pemasok::all();
+        $anggotaKoperasi = App\User::where('keanggotaan',1)->get();
+        $bukanAnggotaKoperasi = App\User::where('keanggotaan',0)->get();
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -182,8 +185,13 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+  var gudangBulky = JSON.parse('{!! json_encode($gudangBulky->count()) !!}')
+  var gudangRetail = JSON.parse('{!! json_encode($gudangRetail->count()) !!}')
+  var warung = JSON.parse('{!! json_encode($warung->count()) !!}')
+  var pembeli = JSON.parse('{!! json_encode($pembeli->count()) !!}')
+  var pemasok = JSON.parse('{!! json_encode($pmsk->count()) !!}')
   var optionsPengguna = {
-        series: [44, 55, 41, 30, 29],
+        series: [pemasok, gudangBulky, gudangRetail, warung, pembeli],
         labels: ['Pemasok','Gudang Bulky','Gudang Retail','Warung','Pembeli'],
         chart: {
             type: 'donut',
@@ -216,8 +224,10 @@
     var chartPengguna = new ApexCharts(document.querySelector("#chartPengguna"), optionsPengguna);
     chartPengguna.render();
 
+    var anggota = JSON.parse('{!! json_encode($anggotaKoperasi->count()) !!}')
+    var bukan = JSON.parse('{!! json_encode($bukanAnggotaKoperasi->count()) !!}')
   var optionsAnggota = {
-        series: [44, 55],
+        series: [anggota, bukan],
         labels: ['Anggota Koperasi','Umum'],
         chart: {
             type: 'donut',
@@ -291,10 +301,9 @@
     var groupBulky = []
     var gudangBulky = JSON.parse('{!! json_encode($gudangBulky) !!}')
     var gudangRetail = JSON.parse('{!! json_encode($gudangRetail) !!}')
-    console.log(gudangRetail);
 
     var retailMarker = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -341,7 +350,6 @@
         // console.log(element.id);
     })
     gudangBulky.forEach(async function (element) {
-        console.log(element);
         var ohoh = groupBulky.push(L.marker([element.lat, element.long], {icon: bulkyMarker}).bindPopup(`
         <p><center>Gudang Bulky</center></p>
         <b>Gudang : ${element.nama}</b><br />

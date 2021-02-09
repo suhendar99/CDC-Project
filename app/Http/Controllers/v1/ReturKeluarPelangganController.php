@@ -98,7 +98,7 @@ class ReturKeluarPelangganController extends Controller
         $log = LogTransaksi::create([
             'tanggal' => now(),
             'jam' => now(),
-            'Aktifitas_transaksi' => 'Retur Barang Masuk'
+            'aktifitas_transaksi' => 'Retur Barang Masuk'
         ]);
 
 
