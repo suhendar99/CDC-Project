@@ -35,9 +35,17 @@ class PemasokController extends Controller
                 ->addColumn('action', function($data){
                     return '<a href="/v1/pemasok/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('ttl',function($data){
+                    if ($data->tgl_lahir != null && $data->tempat_lahir != null) {
+                        return $data->tempat_lahir.', '.date('d-F-Y', strtotime($data->tgl_lahir));
+                    } else {
+                        return "";
+                    }
+                })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->rawColumns(['action','ttl'])
                 ->make(true);
         }
         return view($this->path.'index');

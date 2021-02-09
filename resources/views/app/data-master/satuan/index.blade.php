@@ -1,6 +1,9 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemilik Gudang Retail';
+        $pageTitle = 'Satuan';
+        $dashboard = true;
+        $admin = true;
+        // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pemilik Gudang Retail</a>
+            <a href="#" class="text-14">Data Satuan</a>
           </div>
         </div>
     </div>
@@ -36,24 +39,19 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                {{-- <a href="{{route('pemilik-gudang-retail.create')}}" class="btn btn-primary btn-sm">Tambah Pemilik Gudang Retail</a> --}}
+                                <a href="{{route('satuan.create')}}" class="btn btn-primary btn-sm">Tambah Satuan</a>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="card-body">
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Telepon</th>
-                                <th>Tempat, Tanggal Lahir</th>
-                                <th>Agama</th>
-                                <th>Pekerjaan</th>
-                                <th>ALamat</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Nama Satuan</th>
+                                <th>Singkatan Satuan</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -66,69 +64,28 @@
     @csrf
     @method('DELETE')
 </form>
+@endsection
 @push('script')
-    <script>
-        let table = $('#data_table').DataTable({
+{{-- Chart Section --}}
+<script type="text/javascript">
+    let table = $('#data_table').DataTable({
             processing : true,
             serverSide : true,
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('pemilik-gudang-retail.index') }}",
+            ajax : "{{ route('satuan.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
-                {data : 'telepon', name: 'telepon'},
-                {data : 'ttl', name: 'ttl'},
-                {data : 'agama', name: 'agama'},
-                {data : 'pekerjaan', name: 'pekerjaan'},
-                {data : 'alamat', name: 'alamat'},
-                // {data : 'action', name: 'action'}
+                {data : 'satuan', name: 'satuan'},
+                {data : 'action', name: 'action'}
             ]
         });
 
-        function detail(id){
-            $('.namaBank').text('LOADING...')
-            $('.namaAkun').text('LOADING...')
-            $('.username').text('LOADING...')
-            $('.email').text('LOADING...')
-            $('.tahun').text('LOADING...')
-            $('.telepon').text('LOADING...')
-            $('.alamat').text('LOADING...')
-
-            $.ajax({
-                url: "/api/v1/detail/bank/"+id,
-                method: "GET",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: (response)=>{
-                    // console.log(response.data)
-                    let bank = response.data;
-
-                    $('.namaBank').text(bank.nama)
-                    $('.namaAkun').text(bank.user[0].name)
-                    $('.username').text(bank.user[0].username)
-                    $('.email').text(bank.user[0].email)
-                    $('.tahun').text(bank.tahun_berdiri)
-                    $('.telepon').text(bank.telepon)
-                    $('.alamat').text(bank.alamat)
-
-                    if (bank.foto == null) {
-                        $("#foto").text('- Tidak Ada Foto Bank -');
-                    }else{
-                        $("#foto").html(`<img class="foto" style="width:100%; height:300px;" src="{{asset('${bank.foto}')}}">`);
-                    }
-                },
-                error: (xhr)=>{
-                    let res = xhr.responseJSON;
-                    console.log(res)
-                }
-            });
-        }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/pemilik-gudang-retail/'+id
+            formDelete.action = '/v1/satuan/'+id
 
             const Toast = Swal.mixin({
             toast: true,
@@ -158,6 +115,6 @@
                 }
             })
         }
-    </script>
+</script>
+{{--  --}}
 @endpush
-@endsection

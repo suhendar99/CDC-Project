@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +21,6 @@ Web Routes
         Artisan::call('view:clear');
         Artisan::call('config:cache');
         return "Berhasil Cache";
-    });
-    Route::get('call/cache/clear', function () {
-        Artisan::call('cache:clear');
-        return redirect('/');
     });
     // Route::get('/down', function () {
     //     Artisan::call('down');
@@ -117,15 +114,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemasok', 'PemasokController');
         // Armada Pengiriman
         Route::resource('armada', 'ArmadaPengirimanController');
-        // Pembeli
+        // wARUNG
         Route::resource('pelanggan', 'PelangganController');
+        // Pembleli
+        Route::resource('pembeli', 'PembeliController');
+        // Satuan
+        Route::resource('satuan', 'SatuanController');
+        // Kode Role Akses
+        Route::resource('kode-role-akses', 'KodeRoleAksesController');
+        // Kode Transaksi
+        Route::resource('kode-transaksi', 'KodeTransaksiController');
 
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
-        // Kategori Barang Induk
+        // Kategori Barang Indukas
         Route::resource('kategoriBarang', 'KategoriBarangController');
-
-        Route::resource('pemilik-gudang', 'PemilikGudangController');
+        // Pemilik Gudang
+        Route::resource('pemilik-gudang-retail', 'PemilikGudangController');
+        Route::resource('pemilik-gudang-bulky', 'PemilikGudangBulkyController');
         // Batas Piutang
         Route::resource('batasPiutang', 'BatasPiutangController');
         // Bank

@@ -25,19 +25,28 @@ class PemilikGudangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = User::whereHas('pengurusGudang', function($query){
-                $query->where('status', 1);
-            })
-            ->orderBy('id', 'desc')
+            $data = PengurusGudang::orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<div class="text-center" style="width: 100%"><a href="/v1/pemilik-gudang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/pemilik-gudang-retail/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
+                })
+                ->addColumn('ttl',function($data){
+                    if ($data->tgl_lahir != null && $data->tempat_lahir != null) {
+                        return $data->tempat_lahir.', '.date('d-F-Y', strtotime($data->tgl_lahir));
+                    } else {
+                        return "";
+                    }
                 })
                 ->editColumn('created_at',function($data){
-                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                    if ($data->tgl_lahir != null && $data->tempat_lahir != null) {
+                        return date('d-m-Y H:i:s', strtotime($data->created_at));
+                    } else {
+                        return "";
+                    }
                 })
+                ->rawColumns(['action','ttl'])
                 ->make(true);
         }
 
@@ -63,32 +72,17 @@ class PemilikGudangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'name' => 'required|string|max:50',
-            'username' => 'required|string|max:50',
-            'email' => 'required|email|unique:users,email'
+            'nama' => 'required|string|max:50',
+            'alamat' => 'required|string|max:200',
+            'telepon' => 'required|string|regex:/(08)[0-9]{9}/',
+            'nik' => 'required|numeric',
+            'tempat_lahir' => 'required|string|max:30',
+            'no_rek' => 'required',
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
-
-        $faker = \Faker\Factory::create('id_ID');
-
-        $password = $faker->unique()->regexify('([A-Za-z0-9]{10})');
-
-        Mail::to($request->email)->send(new SendPasswordMail($password));
-
-        $pengurus = PengurusGudang::create([
-            'nama' => $request->name,
-            'status' => 1
-        ]);
-
-        User::create($request->only('name', 'username', 'email')+[
-            'password' => Hash::make($password),
-            'pengurus_gudang_id' => $pengurus->id,
-            'status' => 1
-        ]);
-
         return redirect(route('pemilik-gudang.index'))->with('success', __( 'Pemilik Account Created' ));
     }
 

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
+use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class KategoriBarangController extends Controller
+class SatuanController extends Controller
 {
     public function __construct()
     {
-        $this->Data = new Kategori;
+        $this->Data = new Satuan;
 
-        $this->path = 'app.data-master.kategori.';
+        $this->path = 'app.data-master.satuan.';
         $this->alert = 'Data Berhasil ';
     }
     /**
@@ -29,7 +29,7 @@ class KategoriBarangController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/kategoriBarang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="/v1/satuan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->make(true);
         }
@@ -55,13 +55,14 @@ class KategoriBarangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
+            'nama' => 'required|string|max:50',
+            'satuan' => 'required|string|max:10'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $this->Data->storeData($request->only('nama'));
+            $this->Data->storeData($request->only('nama','satuan'));
 
             return back()->with('success',$this->alert.'ditambah !');
         }
@@ -75,7 +76,7 @@ class KategoriBarangController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -86,7 +87,7 @@ class KategoriBarangController extends Controller
      */
     public function edit($id)
     {
-        $data = Kategori::find($id);
+        $data = Satuan::find($id);
         return view($this->path.'edit',compact('data'));
     }
 
@@ -100,16 +101,16 @@ class KategoriBarangController extends Controller
     public function update(Request $request, $id)
     {
         $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
+            'nama' => 'required|string|max:50',
+            'satuan' => 'required|string|max:10'
         ]);
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            $this->Data->updateData($id,$request->only('nama'));
-
+            $data = $this->Data->updateData($id,$request->only('nama','satuan'));
             return back()->with('success',$this->alert.'diedit !');
-        }//
+        }
     }
 
     /**

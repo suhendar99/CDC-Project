@@ -3,20 +3,12 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kategori;
+use App\Models\PengurusGudangBulky;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
-class KategoriBarangController extends Controller
+class PemilikGudangBulkyController extends Controller
 {
-    public function __construct()
-    {
-        $this->Data = new Kategori;
-
-        $this->path = 'app.data-master.kategori.';
-        $this->alert = 'Data Berhasil ';
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,15 +17,32 @@ class KategoriBarangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = $this->Data->getData();
+            $data = PengurusGudangBulky::orderBy('id', 'desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a href="/v1/kategoriBarang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<div class="text-center" style="width: 100%"><a href="/v1/pemilik-gudang-retail/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a></div>';
                 })
+                ->addColumn('ttl',function($data){
+                    if ($data->tgl_lahir != null && $data->tempat_lahir != null) {
+                        return $data->tempat_lahir.', '.date('d-F-Y', strtotime($data->tgl_lahir));
+                    } else {
+                        return "";
+                    }
+                })
+                ->editColumn('created_at',function($data){
+                    if ($data->tgl_lahir != null && $data->tempat_lahir != null) {
+                        return date('d-m-Y H:i:s', strtotime($data->created_at));
+                    } else {
+                        return "";
+                    }
+                })
+                ->rawColumns(['action','ttl'])
                 ->make(true);
         }
-        return view($this->path.'index');
+
+        return view('app.data-master.gudang.akun.pemilik-bulky.index');
     }
 
     /**
@@ -43,7 +52,7 @@ class KategoriBarangController extends Controller
      */
     public function create()
     {
-        return view($this->path.'create');
+        //
     }
 
     /**
@@ -54,17 +63,7 @@ class KategoriBarangController extends Controller
      */
     public function store(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        } else {
-            $this->Data->storeData($request->only('nama'));
-
-            return back()->with('success',$this->alert.'ditambah !');
-        }
+        //
     }
 
     /**
@@ -86,8 +85,7 @@ class KategoriBarangController extends Controller
      */
     public function edit($id)
     {
-        $data = Kategori::find($id);
-        return view($this->path.'edit',compact('data'));
+        //
     }
 
     /**
@@ -99,17 +97,7 @@ class KategoriBarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $v = Validator::make($request->all(),[
-            'nama' => 'required|string|max:50'
-        ]);
-
-        if ($v->fails()) {
-            return back()->withErrors($v)->withInput();
-        } else {
-            $this->Data->updateData($id,$request->only('nama'));
-
-            return back()->with('success',$this->alert.'diedit !');
-        }//
+        //
     }
 
     /**
@@ -120,8 +108,6 @@ class KategoriBarangController extends Controller
      */
     public function destroy($id)
     {
-        $this->Data->deleteData($id);
-
-        return back()->with('success',$this->alert.'dihapus !');
+        //
     }
 }

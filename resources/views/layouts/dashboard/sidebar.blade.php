@@ -60,11 +60,16 @@
                     <li class="
                         @if (isset($admin))
                         {{ Request::is('v1/user*') ? 'active' : false }}
+                        {{ Request::is('v1/kode-role-akses*') ? 'active' : false }}
+                        {{ Request::is('v1/kode-transaksi*') ? 'active' : false }}
                         {{ Request::is('v1/bank*') ? 'active' : false }}
                         {{ Request::is('v1/akun-bank*') ? 'active' : false }}
-                        {{ Request::is('v1/pemilik-gudang*') ? 'active' : false }}
+                        {{ Request::is('v1/pemilik-gudang-retail*') ? 'active' : false }}
+                        {{ Request::is('v1/pemilik-gudang-bulky*') ? 'active' : false }}
                         {{ Request::is('v1/pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/pelanggan*') ? 'active' : false }}
+                        {{ Request::is('v1/pembeli*') ? 'active' : false }}
+                        {{ Request::is('v1/satuan*') ? 'active' : false }}
                         {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                         {{ Request::is('v1/batasPiutang*') ? 'active' : false }}
                         {{ Request::is('v1/koperasi*') ? 'active' : false }}
@@ -76,11 +81,16 @@
                         <ul id="dataSubmenu" class="collapse list-unstyled
                             @if (isset($admin))
                             {{ Request::is('v1/user*') ? 'show' : false }}
+                            {{ Request::is('v1/kode-role-akses*') ? 'show' : false }}
+                            {{ Request::is('v1/kode-transaksi*') ? 'show' : false }}
                             {{ Request::is('v1/bank*') ? 'show' : false }}
                             {{ Request::is('v1/akun-bank*') ? 'show' : false }}
-                            {{ Request::is('v1/pemilik-gudang*') ? 'show' : false }}
+                            {{ Request::is('v1/pemilik-gudang-retail*') ? 'show' : false }}
+                            {{ Request::is('v1/pemilik-gudang-bulky*') ? 'show' : false }}
                             {{ Request::is('v1/pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/pelanggan*') ? 'show' : false }}
+                            {{ Request::is('v1/pembeli*') ? 'show' : false }}
+                            {{ Request::is('v1/satuan*') ? 'show' : false }}
                             {{ Request::is('v1/kategoriBarang*') ? 'show' : false }}
                             {{ Request::is('v1/batasPiutang*') ? 'show' : false }}
                             {{ Request::is('v1/koperasi*') ? 'show' : false }}
@@ -96,19 +106,14 @@
                                 <a href="{{route('user.index')}}">Akun</a>
                             </li>
                             <li class="
+                                {{ Request::is('v1/kode-role-akses*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('kode-role-akses.index')}}">Kode Role Akses</a>
+                            </li>
+                            <li class="
                                 {{ Request::is('v1/bank*') ? 'active' : false }}
                             ">
                                 <a href="{{route('bank.index')}}">Bank</a>
-                            </li>
-                            <li class="
-                                {{ Request::is('v1/akun-bank*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('akun-bank.index')}}">Bank Account</a>
-                            </li>
-                            <li class="
-                                {{ Request::is('v1/pemilik-gudang*') ? 'active' : false }}
-                            ">
-                                <a href="{{route('pemilik-gudang.index')}}">Pemilik Gudang</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/pemasok*') ? 'active' : false }}
@@ -116,14 +121,39 @@
                                 <a href="{{route('pemasok.index')}}">Pemasok</a>
                             </li>
                             <li class="
+                                {{ Request::is('v1/pemilik-gudang-bulky*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pemilik-gudang-bulky.index')}}">Pemilik Gudang Bulky</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/pemilik-gudang-retail*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pemilik-gudang-retail.index')}}">Pemilik Gudang Retail</a>
+                            </li>
+                            <li class="
                                 {{ Request::is('v1/pelanggan*') ? 'active' : false }}
                             ">
-                                <a href="{{route('pelanggan.index')}}">Pembeli</a>
+                                <a href="{{route('pelanggan.index')}}">Warung</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/pembeli*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('pembeli.index')}}">Pembeli</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/kategoriBarang*') ? 'active' : false }}
                             ">
                                 <a href="{{route('kategoriBarang.index')}}">Kategori Induk</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/kode-transaksi*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('kode-transaksi.index')}}">Kode Transaksi</a>
+                            </li>
+                            <li class="
+                                {{ Request::is('v1/satuan*') ? 'active' : false }}
+                            ">
+                                <a href="{{route('satuan.index')}}">Satuan Barang</a>
                             </li>
                             <li class="
                                 {{ Request::is('v1/batasPiutang*') ? 'active' : false }}

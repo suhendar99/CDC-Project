@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Bank';
+        $pageTitle = 'Data Pemilik Gudang Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Master</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Bank</a>
+            <a href="#" class="text-14">Data Pemilik Gudang Bulky</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('bank.create')}}" class="btn btn-primary btn-sm">Tambah Bank</a>
+                                {{-- <a href="{{route('pemilik-gudang-bulky.create')}}" class="btn btn-primary btn-sm">Tambah Pemilik Gudang Bulky</a> --}}
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,12 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Action</th>
+                                <th>Telepon</th>
+                                <th>Tempat, Tanggal Lahir</th>
+                                <th>Agama</th>
+                                <th>Pekerjaan</th>
+                                <th>ALamat</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -61,62 +66,6 @@
     @csrf
     @method('DELETE')
 </form>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labe   lledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Detail</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-12 text-center">
-                <span>Foto Bank</span><br>
-                <div id="foto" class="my-4"></div>
-            </div>
-          </div>
-          <div class="row">
-              <div class="col-6">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                            <th scope="row">Nama Bank</th>
-                            <td class="namaBank"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Tahun Berdiri</th>
-                          <td class="tahun"></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Telepon</th>
-                          <td class="telepon"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-12">
-                  <table class="table">
-                      <tbody>
-                        <tr>
-                          <th>Alamat</th>
-                          <td class="alamat"></td>
-                        </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -125,16 +74,24 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('bank.index') }}",
+            ajax : "{{ route('pemilik-gudang-bulky.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
-                {data : 'action', name: 'action'}
+                {data : 'telepon', name: 'telepon'},
+                {data : 'ttl', name: 'ttl'},
+                {data : 'agama', name: 'agama'},
+                {data : 'pekerjaan', name: 'pekerjaan'},
+                {data : 'alamat', name: 'alamat'},
+                // {data : 'action', name: 'action'}
             ]
         });
 
         function detail(id){
             $('.namaBank').text('LOADING...')
+            $('.namaAkun').text('LOADING...')
+            $('.username').text('LOADING...')
+            $('.email').text('LOADING...')
             $('.tahun').text('LOADING...')
             $('.telepon').text('LOADING...')
             $('.alamat').text('LOADING...')
@@ -150,6 +107,9 @@
                     let bank = response.data;
 
                     $('.namaBank').text(bank.nama)
+                    $('.namaAkun').text(bank.user[0].name)
+                    $('.username').text(bank.user[0].username)
+                    $('.email').text(bank.user[0].email)
                     $('.tahun').text(bank.tahun_berdiri)
                     $('.telepon').text(bank.telepon)
                     $('.alamat').text(bank.alamat)
@@ -168,7 +128,7 @@
         }
         function sweet(id){
             const formDelete = document.getElementById('formDelete')
-            formDelete.action = '/v1/bank/'+id
+            formDelete.action = '/v1/pemilik-gudang-bulky/'+id
 
             const Toast = Swal.mixin({
             toast: true,

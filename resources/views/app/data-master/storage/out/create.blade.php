@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
 
-                                <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
+                                <div class="tab" data-keterangan="Isi Form Untuk Kuitansi Pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Dibayar oleh <small class="text-success">*Harus diisi</small></label>
@@ -299,7 +299,7 @@ function fixStepIndicator(n) {
 <script>
 
     @if($setted == true)
-    changed()
+    // changed()
     @endif
     function changed() {
         /* Act on the event */
