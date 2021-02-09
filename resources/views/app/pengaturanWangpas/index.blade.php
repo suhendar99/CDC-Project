@@ -26,11 +26,6 @@
 <div class="row match-height">
     <div class="col-md-12 col-12">
         <div class="card">
-            <div class="card-header">
-                <div class="float-left">
-                    <h4 class="card-title">Setting App</h4>
-                </div>
-            </div>
             <div class="card-body">
                 <form action="{{ route('pengaturan-wangpas.store') }}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="{{ $data->id }}">

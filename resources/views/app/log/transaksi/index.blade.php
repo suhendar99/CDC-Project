@@ -1,6 +1,6 @@
 @php
         $icon = 'shopping_cart';
-        $pageTitle = 'Log Aktivitas';
+        $pageTitle = 'Log Transaksi';
         $dashboard = true;
         $admin = true;
         // $rightbar = true;
@@ -18,7 +18,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Log</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Log Aktivitas</a>
+            <a href="#" class="text-14">Data Log Transaksi</a>
           </div>
         </div>
     </div>
@@ -48,10 +48,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Waktu</th>
-                                <th>Nama Pengguna</th>
-                                <th>Aktivitas</th>
-                                {{-- <th>Menu</th> --}}
+                                <th>Tanggal</th>
+                                <th>Jam</th>
+                                <th>Aktivitas Transaksi</th>
+                                <th>User</th>
                             </tr>
                         </thead>
                     </table>
@@ -74,12 +74,13 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('log-activity.index') }}",
+            ajax : "{{ route('log-transaksi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', name: 'created_at'},
-                {data : 'user.name', name: 'causer_id'},
-                {data : 'description', name: 'description'},
+                {data : 'tanggal', name: 'tanggal'},
+                {data : 'jam', name: 'jam'},
+                {data : 'aktifitas_transaksi', name: 'aktifitas_transaksi'},
+                {data : 'role', name: 'role'},
                 // {
                 //     data: function (data, type, row, meta) {
                 //         if(data.subject_type == "App\\Models\\Pengunjung") {

@@ -187,13 +187,18 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/log-activity*') ? 'active' : false }}
+                        {{ Request::is('v1/log-transaksi*') ? 'active' : false }}
                     ">
                         <a href="#logSub" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">grading</i>Log</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/log-activity*') ? 'show' : false }}
+                            {{ Request::is('v1/log-transaksi*') ? 'show' : false }}
                         " id="logSub">
                             <li class="{{ Request::is('v1/log-activity*') ? 'active' : false }}">
                                 <a href="{{route('log-activity.index')}}">Log Aktivitas</a>
+                            </li>
+                            <li class="{{ Request::is('v1/log-transaksi*') ? 'active' : false }}">
+                                <a href="{{route('log-transaksi.index')}}">Log Transaksi</a>
                             </li>
                         </ul>
                     </li>

@@ -130,6 +130,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('kode-transaksi', 'KodeTransaksiController');
         // log
         Route::resource('log-activity', 'LogActivityController');
+        Route::resource('log-transaksi', 'LogTransaksiController');
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
         // Kategori Barang Indukas

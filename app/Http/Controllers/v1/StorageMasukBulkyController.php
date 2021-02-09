@@ -188,7 +188,7 @@ class StorageMasukBulkyController extends Controller
         $log = LogTransaksi::create([
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'Aktifitas_transaksi' => 'Penerimaan Barang'
+            'aktifitas_transaksi' => 'Penerimaan Barang'
         ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
