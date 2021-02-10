@@ -126,7 +126,17 @@ class DashboardController extends Controller
             }
             return view('app.data-master.gudangBulky.index');
         } else {
-    		return view($this->pathAdmin.'index');
+            $provinsi = Provinsi::all();
+            $pengguna = [];
+            $provNama = [];
+            foreach ($provinsi as $key => $value) {
+                $prov = $value;
+                $provNama[] = $value->nama;
+                $pengguna[] = User::with('pelanggan.provinsi')->where('keanggotaan',1)->whereHas('pelanggan',function($q) use ($prov){
+                    $q->where('provinsi_id','=',$prov->id);
+                })->count();
+            }
+    		return view($this->pathAdmin.'index',compact('pengguna','provNama'));
     	}
     }
     public function getDesa($id)
