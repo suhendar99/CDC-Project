@@ -145,7 +145,7 @@
   <div class="col-12 my-2">
     <div style="width: 100%; height: 350px ;" id="mapid"></div>
   </div>
-  <div class="col my-2">
+  <div class="col-md-6 my-2">
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center">
@@ -157,7 +157,7 @@
       </div>
     </div>
   </div>
-  <div class="col my-2">
+  <div class="col-md-6 my-2">
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center">
@@ -169,17 +169,17 @@
       </div>
     </div>
   </div>
-  {{-- <div class="col my-2">
+  <div class="col-md-12 my-2">
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Persentase Gudang Bulky dengan Retail</span>
+            <span class="ml-2">Bagaian Pengguna CDC (Consolidated Distribution Center) per-Provinsi</span>
         </div>
-        <div id="chartGudang"></div>
+        <div id="chartAnggotaPerProvinsi"></div>
       </div>
     </div>
-  </div> --}}
+  </div>
 </div>
 @endsection
 @push('script')
@@ -257,42 +257,82 @@
         }]
     };
 
+    var provName = JSON.parse('{!! json_encode($provNama) !!}')
+    var pengguna = JSON.parse('{!! json_encode($pengguna) !!}')
+    console.log(pengguna);
     var chartAnggota = new ApexCharts(document.querySelector("#chartAnggota"), optionsAnggota);
     chartAnggota.render();
 
-  // var optionsGudang = {
-  //       series: [44, 29],
-  //       labels: ['Gudang Bulky','Gudang Retail'],
-  //       chart: {
-  //           type: 'donut',
-  //           height: 260
-  //       },
-  //       plotOptions: {
-  //           pie: {
-  //             donut: {
-  //               size: '50%'
-  //             }
-  //           }
-  //       },
-  //       legend: {
-  //         show: true,
-  //         position: 'bottom',
-  //       },
-  //       responsive: [{
-  //           breakpoint: 480,
-  //           options: {
-  //               chart: {
-  //                 width: 300
-  //               },
-  //               legend: {
-  //                 position: 'bottom'
-  //               }
-  //           }
-  //       }]
-  //   };
+    var options = {
+    chart: {
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
+      type: 'bar',
+      height: '200px',
+      toolbar: {
+          show: false,
+      },
+      animations: {
+          enabled: true,
+          easing: 'easein',
+          speed: 800,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 350
+          }
+      }
+    },
+    legend: {
+        show:false,
+    },
+    plotOptions: {
+      bar: {
+          distributed: true,
+      }
+    },
+    markers: {
+      size: 0,
+    },
+    series: [{
+      name: 'Anggota',
+      data: pengguna
+    }],
+    xaxis: {
+      categories: provName,
+      labels: {
+        show: true,
+      }
+    },
+    yaxis: {
+      show: true,
+      title: {
+          text: 'Jumlah Anggota',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: '#373d3f',
+              fontSize: '12px',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+          },
+      }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    tooltip: {
+        enabled: true
+    }
+  }
 
-  //   var chartGudang = new ApexCharts(document.querySelector("#chartGudang"), optionsGudang);
-  //   chartGudang.render();
+  var chart = new ApexCharts(document.querySelector("#chartAnggotaPerProvinsi"), options);
+
+  chart.render();
+
 </script>
 {{--  --}}
 {{-- Map Section --}}
@@ -367,6 +407,25 @@
     // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
     // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
+
+    var legend = L.control({ position: "bottomleft" });
+
+    legend.onAdd = function(map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>Tegnforklaring</h4>";
+    div.innerHTML += '<i style="background: #477AC2"></i><span>Water</span><br>';
+    div.innerHTML += '<i style="background: #448D40"></i><span>Forest</span><br>';
+    div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
+    div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
+    div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
+    div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+
+
+
+    return div;
+    };
+
+    legend.addTo(map);
 </script>
 {{--  --}}
 @endpush
