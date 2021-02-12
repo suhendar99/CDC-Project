@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\FotoBarang;
 use App\Models\Kategori;
+use App\Models\Satuan;
 use App\Models\Storage;
 use App\Province;
 use Illuminate\Http\Request;
@@ -31,28 +32,20 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
-        $barang = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->paginate(24);
-        $foto = FotoBarang::all();
-        // if($request->ajax()){
-        //     $data = $this->Data->getData();
-        //     return DataTables::of($data)
-        //         ->addIndexColumn()
-        //         ->addColumn('action', function($data){
-        //             return '<a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-        //         })
-        //         ->addColumn('foto', function($data){
-        //             return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Show</a>';
-        //         })
-        //         ->addColumn('barcode', function($data){
-        //             return '<img src="data:image/png;base64,'.\DNS1D::getBarcodePNG($data->kode_barang, 'C39E',1,55,array(0,0,0), true).'" alt="barcode" />';
-        //         })
-        //         ->addColumn('jumsat', function($data){
-        //             return $data->jumlah.' '.$data->satuan;
-        //         })
-        //         ->rawColumns(['barcode','action','jumsat','foto'])
-        //         ->make(true);
-        // }
-        return view($this->path.'index',compact('barang','foto'));
+        if($request->ajax()){
+            $data = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    // <a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+                    return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i', strtotime($data->created_at)).' WIB';
+                })
+                ->make(true);
+        }
+        return view($this->path.'index');
     }
     public function getBarangByPelanggan(Request $request)
     {
@@ -88,13 +81,9 @@ class BarangController extends Controller
     public function create()
     {
         $kategori = Kategori::all();
+        $satuan = Satuan::all();
         $provinces = Province::pluck('name', 'province_id');
-        return view($this->path.'create',compact('kategori','provinces'));
-    }
-    public function getCities($id)
-    {
-        $city = City::where('province_id', $id)->pluck('name', 'city_id');
-        return response()->json($city);
+        return view($this->path.'create',compact('kategori','provinces','satuan'));
     }
 
     /**
@@ -112,14 +101,18 @@ class BarangController extends Controller
             'satuan' => 'required|string|max:10',
             'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
+            'keuntungan' => 'required|numeric',
             'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
             'foto.*' => 'required|mimes:png,jpg|max:2048'
         ]);
         if ($v->fails()) {
-            // dd($v->errors()->all());
+            dd($v->errors()->all());
             return back()->withErrors($v)->withInput();
         } else {
+            if ($request->satuan == null) {
+                return back()->with('error','Mohon Pilih !');
+            }
             // $pin = mt_rand(100, 999)
             //         .mt_rand(100, 999);
             // $date = date("Y");
@@ -127,7 +120,7 @@ class BarangController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
+            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','keuntungan','harga_total','deskripsi'),[
                 'kode_barang' => $kode,
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id

@@ -90,7 +90,7 @@ class LoginController extends Controller
             } else {
                 if (Auth::user()->name != null) {
                     return redirect('/v1/dashboard');
-                } else if(Auth::user()->pengurus_gudang_bulky_id != null) {
+                } else if(Auth::user()->pemasok_id != null) {
                     return redirect('/v1/dashboard');
                 }else{
                     return redirect('/shop');

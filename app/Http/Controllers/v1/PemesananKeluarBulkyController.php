@@ -25,18 +25,9 @@ class PemesananKeluarBulkyController extends Controller
         $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok')
         ->orderBy('id', 'desc')
         ->get();
-        if($request->ajax()){
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($data){
-                    return '<a class="btn btn-info btn-sm" href="/v1/bulky/pemesanan/keluar/'.$data->id.'/edit" title="Edit data">Edit</a> <a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
-                })
-                ->editColumn('created_at',function($data){
-                    return date('d-m-Y H:i:s', strtotime($data->created_at));
-                })
-                ->make(true);
-        }
-        return view('app.transaksi.pemesanan-keluar-bulky.index');
+        $gudang = GudangBulky::select('id')->where('user_id', auth()->user()->id)->get();
+        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky')->whereIn('bulky_id',$gudang)->orderBy('id','desc')->paginate(4);
+        return view('app.transaksi.pemesanan-keluar-bulky.index',compact('data'));
     }
 
     /**
@@ -51,6 +42,22 @@ class PemesananKeluarBulkyController extends Controller
             })->get();
         $barangs = Barang::all();
         return view('app.transaksi.pemesanan-keluar-bulky.create', compact('barangs', 'bulky'));
+    }
+
+    public function tolak($id)
+    {
+        $data = PemesananKeluarBulky::findOrFail($id);
+        $data->update(['status'=>'0']);
+
+        return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+
+    public function konfirmasi($id)
+    {
+        $data = PemesananKeluarBulky::find($id);
+        $data->update(['status'=>'5']);
+        // dd($data);
+        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     /**

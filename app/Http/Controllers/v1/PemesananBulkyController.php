@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
+use App\Models\PemesananKeluarBulky;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
@@ -92,6 +93,21 @@ class PemesananBulkyController extends Controller
         return view('app.data-master.pemesananBulky.index');
     }
 
+    public function bukti(Request $request, $id)
+    {
+        // dd($request->file('foto_bukti'));
+        $data = PemesananKeluarBulky::findOrFail($id);
+        $foto_bukti = $request->file('foto_bukti');
+        $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
+        $foto_bukti->move("upload/foto/bukti-bulky", $nama_bukti);
+
+        $data->update([
+            'foto_bukti' => '/upload/foto/bukti-bulky/'.$nama_bukti
+        ]);
+
+
+        return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
 
     public function getPemesananRetail($id)
     {

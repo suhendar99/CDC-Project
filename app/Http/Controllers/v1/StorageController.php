@@ -25,10 +25,6 @@ class StorageController extends Controller
      */
     public function index(Request $request)
     {
-        // $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.akunGudang.user')
-        // ->get();
-        // dd($data);
-
         if($request->ajax()){
             if (Auth::user()->pengurusGudang->status == 1) {
                 $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')

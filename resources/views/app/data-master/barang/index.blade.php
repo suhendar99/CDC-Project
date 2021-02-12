@@ -1,14 +1,10 @@
 @php
-    $icon = 'storage';
-    $pageTitle = 'Data Barang';
-    $indikator = $barang;
+        $icon = 'storage';
+        $pageTitle = 'Data Penyimpanan';
 @endphp
-
 @extends('layouts.dashboard.header')
 
 @section('content')
-{{-- {{dd($pemasok)}} --}}
-{{-- {{dd('Pemasok = '.$pemasok)}} --}}
 <div class="row valign-center mb-2">
     <div class="col-md-8 col-sm-12 valign-center py-2">
         <i class="material-icons md-48 text-my-warning">{{$icon}}</i>
@@ -17,13 +13,13 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Barang</a>
+            <a href="#" class="text-14">Data Penyimpanan</a>
           </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 valign-center py-2">
-        {{-- @include('layouts.dashboard.search') --}}
-    </div>
+    {{-- <div class="col-md-4 col-sm-12 valign-center py-2">
+        @include('layouts.dashboard.search')
+    </div> --}}
 </div>
 <div class="container">
     <div class="row">
@@ -31,228 +27,275 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-md-6">
-                            @include('layouts.dashboard.search')
+                        <div class="col-md-9">
+                            <div class="float-left">
+                                <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a href="#pills-home" class="nav-link active" id="pills-home-tab" data-toggle="pill" role="tab" aria-controls="pills-home" aria-selected="true" onclick="cleanBtn()">Pengelolaan Penyimpanan Barang</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#pills-keluar" class="nav-link" id="pills-keluar-tab" data-toggle="pill" role="tab" aria-controls="pills-keluar" aria-selected="false" onclick="storageOut()">Pengelolaan Barang Keluar</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="float-right">
-                                <a href="{{route('barang.create')}}" class="btn btn-primary btn-sm">Tambah Data Barang</a>
+                        <div class="col-md-3">
+                            <div class="float-right" id="btn-action">
+                                <a href="{{route('barang.create')}}" class="btn btn-success btn-sm">+ Data Barang Masuk</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="row">
-                @forelse($barang as $key => $value)
-                <div class="col-md-3 col-4 my-2">
-                    <div class="card">
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="carouselExampleIndicators{{$key}}" class="carousel slide" data-ride="carousel">
-                                    <ol class="carousel-indicators">
-                                        @forelse($value->foto as $keyFoto => $val)
-                                        <li data-target="#carouselExampleIndicators{{$key}}" data-slide-to="{{$keyFoto}}"></li>
-                                        @empty
-                                        @endforelse
-                                    </ol>
-                                    <div class="carousel-inner carousel-barang">
-                                        @forelse($value->foto as $keyFoto => $val)
-                                        <div class="carousel-item {{ $keyFoto == 0 ? 'active' : ''}}">
-                                            <img class="d-block w-100 cover " height="150" src="{{asset($val->foto)}}" alt="First slide">
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Waktu</th>
+                                                <th>Kode Barang</th>
+                                                <th>Nama Barang</th>
+                                                <th>Harga Barang</th>
+                                                <th>Stok Barang</th>
+                                                <th>Satuan</th>
+                                                <th>Harga Jual Barang</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="pills-keluar" role="tabpanel" aria-labelledby="pills-keluar-tab">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul class="nav nav-pills" id="sub-tab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a href="#sub-keluar" class="nav-link active rounded" id="sub-second-tab" data-toggle="pill" role="tab" aria-controls="sub-second" aria-selected="false" >Barang Keluar</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-kwitansi" class="nav-link rounded" id="sub-home-tab" data-toggle="pill" role="tab" aria-controls="sub-home" aria-selected="true" >Kwitansi</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-surat-jalan" class="nav-link rounded" id="sub-keluar-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Jalan</a>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        @empty
-                                        <div class="carousel-item active">
-                                            <div class="d-flex justify-content-center valign-center" style="height: 150px; background-color: #c6c6c6; color: #fff">
-                                                Gambar Belum Diisi!
+                                        <div class="col-md-12 pt-4">
+                                            <div class="tab-content" id="sub-tabContent">
+                                                <div class="tab-pane fade show active" id="sub-keluar" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Barang Keluar</h4>
+                                                    <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>DateTime</th>
+                                                                <th>Kode Barang</th>
+                                                                <th>Nama Pemasok</th>
+                                                                <th>Nama Barang</th>
+                                                                <th>Jumlah Barang</th>
+                                                                <th>Satuan</th>
+                                                                <th>Pemesanan</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-kwitansi" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Kwitansi</h4>
+                                                    <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Waktu</th>
+                                                                <th>Pembayar</th>
+                                                                <th>Jumlah Uang</th>
+                                                                <th>Pemesanan</th>
+                                                                <th>Pemasok</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-surat-jalan" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Surat Jalan</h4>
+                                                    <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Waktu</th>
+                                                                <th>Kode Surat Jalan</th>
+                                                                <th>Pengirim</th>
+                                                                <th>Penerima</th>
+                                                                <th>Tempat</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                        @endforelse
-                                    </div>
-                                    @if(count($value->foto) >= 1)
-                                    <a class="carousel-control-prev" href="#carouselExampleIndicators{{$key}}" role="button" data-slide="prev">
-                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                      <span class="sr-only">Previous</span>
-                                    </a>
-                                    <a class="carousel-control-next" href="#carouselExampleIndicators{{$key}}" role="button" data-slide="next">
-                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                      <span class="sr-only">Next</span>
-                                    </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row my-2">
-                                <div class="col-md-12 pr-4">
-                                    <div class="float-left">
-                                        <span class="barang-title">{{ $value->nama_barang }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 pr-4">
-                                    <div class="float-left">
-                                        <span>Tersedia {{ $value->jumlah.' '.$value->satuan }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 pr-4">
-                                    <div class="float-left">
-                                        <span class="harga-title">Rp. {{ number_format($value->harga_barang,0,',','.') }}</span>
-                                    </div>
-                                </div>
-                                <div class="float-right" style="position: absolute; right: 1rem;">
-                                    <div class="dropdown">
-                                        <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                        <div class="dropdown-menu" aria-labelledby="dropmenu">
-                                            <a href="{{ route('barang.edit', $value->id) }}" class="dropdown-item">Edit</a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModal" onclick="detail({{ $value->id }})" data-id="{{ $value->id }}">Detail</a>
-                                            <a href="#" class="dropdown-item" onclick="sweet({{ $value->id }})">Delete</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Hari Kerja: {{ $value->hari }}</li>
-                            <li class="list-group-item" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">{{ $value->jam_buka }} - {{ $value->jam_tutup }}</li>
-                        </ul>
-                        <div class="card-body" style="border-bottom: 5px solid #ffa723;">
-                            <h6>Alamat</h5>
-                            <p class="card-text">{{ $value->alamat }}</p>
-                        </div> --}}
                     </div>
-                </div>
-                @empty
-                <div class="col-md-12 my-4 py-4 d-flex justify-content-center valign-center" style="height: 300px">
-                    <center>
-                        <span class="oops">Oops!</span>
-                        <p class="not-found">Tidak ada data</p>
-                    </center>
-                </div>
-                @endforelse
-                <div class="col-md-12 d-flex justify-content-center">
-                    {{$barang->links()}}
                 </div>
             </div>
         </div>
-        {{-- <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Kode Barang / Barcode</th>
-                    <th>Nama Barang</th>
-                    <th>Harga Satuan</th>
-                    <th>Jumlah</th>
-                    <th>Total harga</th>
-                    <th>Kategori</th>
-                    <th>Foto</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table> --}}
     </div>
 </div>
 <form action="" id="formDelete" method="POST">
     @csrf
     @method('DELETE')
 </form>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Detail Data Barang</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-              <div class="col-md-12">
-                  <h4 id="nama"></h4>
-              </div>
-          </div>
-          <div class="row">
-            <div class="col-12 text-center">
-                {{-- <span>Foto Barang</span><br> --}}
-                <div id="foto" class="my-4 d-flex justify-content-center">
-                </div>
-            </div>
-            <div class="col-12">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                        <th scope="row">Pemasok</th>
-                        <td id="pemasok"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Kategori</th>
-                        <td id="kategori"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Harga</th>
-                        <td id="harga"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Jumlah</th>
-                        <td id="jumlah"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Total Harga</th>
-                        <td id="harga_total"></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Deskripsi</th>
-                        <td id="deskripsi"></td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-</div>
-@endsection
 @push('script')
-{{-- Chart Section --}}
-<script type="text/javascript">
-    // let table = $('#data_table').DataTable({
-    //     processing : true,
-    //     serverSide : true,
-    //     responsive: true,
-    //     ordering : true,
-    //     pageLength : 10,
-    //     ajax : "{{ route('barang.index') }}",
-    //     columns : [
-    //         {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-    //         {data : 'barcode', name: 'barcode'},
-    //         {data : 'nama_barang', name: 'nama_barang'},
-    //         {data : 'harga_barang', name: 'harga_barang'},
-    //         {data : 'jumsat', name: 'jumsat'},
-    //         {data : 'harga_total', name: 'harga_total'},
-    //         {data : 'kategori.nama', render:function(data,a,b,c){
-    //                 return (data == null || data == "") ? "Kosong !" : data;
-    //             }
-    //         },
-    //         {data : 'foto', name: 'foto'},
-    //         {data : 'action', name: 'action'},
-    //     ]
-    // });
+    <script>
+        let table = $('#data_table').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('barang.index') }}",
+            columns : [
+                {data : 'created_at', name: 'created_at'},
+                {data : 'kode_barang', name: 'kode_barang'},
+                {data : 'nama_barang', name: 'nama_barang'},
+                {data : function(data,a,b,c){
+                        if (data.harga_barang !== null) {
+                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
+                        } else {
+                            return 'Harga belum diatur.';
+                        }
+                    }, name: 'harga_barang'
+                },
+                {data : 'jumlah', name: 'jumlah'},
+                {data : 'satuan', name: 'satuan'},
+                {data : function(data,a,b,c){
+                        if (data.harga_total !== null) {
+                            return 'Rp. '+ (data.harga_total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                        } else {
+                            return 'Harga belum diatur.';
+                        }
+                    }, name: 'harga_total'
+                },
+                {data : 'action', name: 'action'}
+            ]
+        });
 
-    function sweet(id){
-        const formDelete = document.getElementById('formDelete')
-        formDelete.action = '/v1/barang/'+id
 
-        const Toast = Swal.mixin({
+        let table_kwitansi = $('#table_kwitansi').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('kwitansi-pemasok.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
+                {data : 'terima_dari', name: 'pembayar'},
+                {data : 'jumlah_uang', name: 'jumlah_uang'},
+                {data : 'pemesanan', name: 'pemesanan'},
+                {data : 'pemasok.nama', name: 'pemasok'},
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_surat_jalan = $('#table_surat_jalan').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('surat-jalan-pemasok.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
+                {data : 'kode', name: 'kode'},
+                {data : 'pengirim', name: 'pengirim'},
+                {data : 'penerima', name: 'penerima'},
+                {data : 'tempat', name: 'tempat'},
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_keluar = $('#table_keluar').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('storage-keluar-pemasok.index') }}",
+            columns : [
+                // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'waktu', name: 'waktu'},
+                {data : 'barang.kode_barang', name: 'kode'},
+                {
+                    data : 'pemasok', render:function(data,a,b,c){
+                        return data.nama;
+                    }
+                },
+                {data : 'barang', render:function(data,a,b,c){
+                        return data.nama_barang;
+                    }
+                },
+                {data : 'jumlah', name: 'jumlah'},
+                {data : 'satuan.satuan', name: 'satuan'},
+                {data : 'pemesanan', name: 'pemesanan'},
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        function penyimpanan(id, gudangId, barangKode){
+            $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
+
+            $.ajax({
+                url: "/api/v1/detail/penyimpanan/stock?id="+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    $('#dataPenyimpanan').html(``);
+                    let van = '';
+                    // console.log(response.data)
+                    let storageIn = response.data.barang.storage_in;
+
+                    for (var i = storageIn.length - 1; i >= 0; i--) {
+                        let space = `<tr style="font-size: .8rem;">
+                            <td id="waktu">${storageIn[i].waktu}</td>
+                            <td id="kodeBarang">${storageIn[i].kode}</td>
+                            <td id="jumlahBarang">${storageIn[i].storage.jumlah}&nbsp;${storageIn[i].storage.satuan}</td>
+                            <td id="rak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.rak.nama) : ('Belum Diatur')}</td>
+                            <td id="tingkatRak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.nama) : ('Belum Diatur')}</td>
+                            <td id="aksi"><a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>
+                        </tr>`;
+
+                        van += space;
+                    }
+
+                    $('#dataPenyimpanan').append(van);
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">Tidak Ada Data</td></tr>`);
+                    console.log(res)
+                }
+            });
+        }
+
+        function sweet(id){
+            const formDelete = document.getElementById('formDelete')
+            formDelete.action = id;
+
+            const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-        })
-        Swal.fire({
+            })
+            Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
             icon: 'warning',
@@ -260,45 +303,28 @@
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                formDelete.submit();
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Your file has been deleted,wait a minute !'
-                })
-                // Swal.fire(
-                // 'Deleted!',
-                // 'Your file has been deleted.',
-                // 'success'
-                // )
-            }
-        })
-    }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formDelete.submit();
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Your file has been deleted,wait a minute !'
+                    })
+                    // Swal.fire(
+                    // 'Deleted!',
+                    // 'Your file has been deleted.',
+                    // 'success'
+                    // )
+                }
+            })
+        }
 
-    function detail(id){
-        $.ajax({
-            method: "GET",
-            url: '/api/v1/detailBarang/'+id,
-        }).done(function(response){
-            // console.log(response)
-            let data = response.data
-            let foto = response.foto
-
-            $('#nama').text(data.nama_barang)
-            $('#pemasok').text(data.pemasok.nama)
-            $('#kategori').text(data.kategori.nama)
-            $('#harga').text('Rp. '+parseInt(data.harga_barang).toLocaleString())
-            $('#harga_total').text('Rp. '+parseInt(data.harga_total).toLocaleString())
-            $('#jumlah').text(parseInt(data.jumlah).toLocaleString()+' '+data.satuan)
-            $('#deskripsi').text(data.deskripsi)
-            $.each(foto, function( index, value ) {
-                $('#foto').append(`
-                    <img src="/`+value+`" class="detail-foto">
-                `)
-            });
-        });
-    }
-</script>
-{{--  --}}
+        function cleanBtn() {
+            $('#btn-action').html(`<a href="{{route('barang.create')}}" class="btn btn-success btn-sm">+ Data Barang Masuk</a>`);
+        }
+        function storageOut() {
+            $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
+        }
+    </script>
 @endpush
+@endsection
