@@ -18,13 +18,13 @@ class CreateBarangsTable extends Migration
             $table->foreignId('pemasok_id')->nullable()->constrained('pemasoks')->onDelete('cascade');
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->string('kode_barang')->unique();
-            $table->string('nama_barang',50);
-            $table->string('harga_barang',20);
-            $table->string('harga_total',20);
+            $table->string('nama_barang');
+            $table->string('harga_barang');
+            $table->string('harga_total');
             $table->text('deskripsi');
             $table->integer('jumlah');
-            // $table->integer('berat_satuan');
-            $table->string('satuan',10);
+            $table->string('satuan');
+            $table->integer('keuntungan');
             $table->timestamps();
         });
     }

@@ -408,20 +408,21 @@
     // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
 
-    var legend = L.control({ position: "bottomleft" });
+    var legend = L.control({position: 'bottomleft'});
 
-    legend.onAdd = function(map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>Tegnforklaring</h4>";
-    div.innerHTML += '<i style="background: #477AC2"></i><span>Water</span><br>';
-    div.innerHTML += '<i style="background: #448D40"></i><span>Forest</span><br>';
-    div.innerHTML += '<i style="background: #E6E696"></i><span>Land</span><br>';
-    div.innerHTML += '<i style="background: #E8E6E0"></i><span>Residential</span><br>';
-    div.innerHTML += '<i style="background: #FFFFFF"></i><span>Ice</span><br>';
-    div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+    legend.onAdd = function (map) {
 
+        var div = L.DomUtil.create('div', 'bg-light p-2 rounded'),
+        grades = ["Gudang Bulky ","Gudang Retail "],
+        labels = ["https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png","https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png"];
 
-
+         // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                // '<div style="background:white;">' +
+                grades[i] + (" <img src="+ labels[i] +" height='30' width='20'>") +'<br>';
+                // '</div>';
+        }
     return div;
     };
 

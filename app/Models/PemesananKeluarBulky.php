@@ -35,4 +35,20 @@ class PemesananKeluarBulky extends Model
     	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
     	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
+    public function storageKeluarPemasok()
+    {
+        return $this->hasMany('App\Models\StorageKeluarPemasok');
+    }
+    public function kwitansiPemasok()
+    {
+        return $this->hasMany('App\Models\KwitansiPemasok');
+    }
+    public function suratJalanPemasok()
+    {
+        return $this->hasMany('App\Models\SuratJalanPemasok');
+    }
+    public function barangKeluarPemesananBulky()
+    {
+        return $this->hasMany('App\Models\BarangKeluarPemesananBulky','pemesanan_id','id');
+    }
 }

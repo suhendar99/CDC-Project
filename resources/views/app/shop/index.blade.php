@@ -226,6 +226,62 @@
 	</div>
 	@endforelse
 </div>
+
+@elseif(Auth::user()->pengurus_gudang_bulky_id != null)
+<div class="row" id="product-list">
+	@forelse($barang as $b)
+	<div class="col-md-3 col-4">
+        <div class="card item-card">
+            @if(count($b->foto) < 1 || $b->foto == null)
+            <img src="{!! asset('/images/image-not-found.jpg') !!}">
+            @else
+            <img src="{{asset($b->foto[0]->foto)}}">
+            @endif
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 float-banner">
+                        <span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
+                        <span class="badge badge-pill badge-primary bg-my-primary">{{$b->kategori->nama}}</span>
+                        <span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
+                    </div>
+                    <div class="col-12">
+                        <span class="product-name">{{$b->nama_barang}} ({{$b->jumlah}} {{$b->satuan}})</span>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},-   ({{ ($b->satuan == 'Ton') ? 'Ton' : $b->satuan }})</span>
+                    </div>
+                    <div class="col-12">
+                        <span class="product-from">Dari {{$b->pemasok->nama}} <br /> Desa {{$b->pemasok->desa->nama}}</span>
+                    </div>
+                    {{-- <div class="float-right" style="position: absolute; right: 1rem; bottom: 3rem;">
+                        <div class="dropdown">
+                            <a href="#" title="Menu" class="dropdown-toggle p-2" id="dropmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                            <div class="dropdown-menu" aria-labelledby="dropmenu">
+                                <a href="{{route('shop.pesanan',$b->id)}}" class="dropdown-item">Pesan</a>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <a href="{{route('shop.pesanan',$b->id)}}" class="btn btn-sm btn-success btn-block">Pesan</a>
+                    </div>
+                    {{-- <div class="col">
+                        <a href="https://api.whatsapp.com/send?phone=+62{{ intval($b->pelanggan->telepon) }}" target="_blank" class="btn btn-sm btn-success" >Chat</a>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+	</div>
+    @empty
+	<div class="col-md-12 d-flex justify-content-center">
+		<center>
+			<span class="oops"></span>
+			<p class="not-found">Maaf, Barang {{$else}} tidak ditemukan. Mohon Cari Kembali</p>
+		</center>
+	</div>
+	@endforelse
+</div>
 @else
 <div class="row" id="product-list">
 	@forelse($barang as $b)
