@@ -33,7 +33,9 @@ Route::get('/v1/getPoPemasok/{id}','v1\PoController@show');
 // Route::get('/v1/getDataGudang/{id}','v1\GudangController@show');
 Route::get('/v1/getPemesananPelanggan/{id}','v1\PemesananController@show');
 Route::get('/v1/getFotoKtp/{id}','v1\UserController@show');
+Route::get('/v1/barang/{id}','v1\PenawaranPemasokController@show');
 Route::get('/v1/getGudang/{id}','v1\GudangController@show');
+Route::get('/v1/getGudang/{id}','v1\GudangBulkyController@show');
 Route::get('/v1/getBulky/{id}','v1\GudangBulkyController@show');
 Route::get('/v1/getGudang/{id}/bulky','v1\GudangBulkyController@show');
 Route::get('/v1/getPemasok/{id}','v1\PemasokController@show');
@@ -43,6 +45,7 @@ Route::get('/v1/getKecamatan/{id}','v1\DashboardController@getKecamatan');
 Route::get('/v1/getDesa/{id}','v1\DashboardController@getDesa');
 Route::get('/v1/getDataPemesanan/{id}','v1\PemesananController@getPemesanan');
 Route::get('/v1/getDataPemesanan/retail/{id}','v1\PemesananBulkyController@getPemesananRetail');
+Route::get('/v1/getDataPemesanan/bulky/{id}','v1\PemesananMasukPemasokController@getPemesananBulky');
 Route::get('/v1/getDataPemesananPembeli/{id}','v1\PemesananController@getPemesananPembeli');
 Route::get('/v1/storage/barang/{kode}', 'v1\StorageInController@checkBarang');
 Route::get('/v1/check/barang/{kode}', 'v1\StorageController@check');
@@ -71,10 +74,18 @@ Route::get('/v1/getGudang/{id}/user', function($id){
 		'data' => $data
 	],200);
 });
+Route::get('/v1/getGudangBulky/{id}/user', function($id){
+	$data = App\Models\GudangBulky::where('user_id', $id)->get();
+
+	return response()->json([
+		'data' => $data
+	],200);
+});
 Route::get('/v1/getPesanan/{id}', 'v1\PemesananController@getPesanan');
 Route::get('/v1/bulky/getPesanan/{id}', 'v1\PemesananBulkyController@getPesanan');
 Route::get('/v1/bulky/detail/pemesanan/{id}', 'v1\PemesananBulkyController@detail');
 Route::get('/v1/retail/pemesanan/{id}/terima', 'v1\PemesananController@terima');
+Route::get('/v1/bulky/pemesanan/{id}/terima', 'v1\PemesananController@terima');
 Route::get('/v1/retur/kwitansi/{id}/barang', 'v1\ReturOutController@barangKwitansi');
 Route::get('/v1/gudang/retail/{id}/pemesanan', 'v1\StorageInController@findStorageKeluar');
 // Route::get('/v1/bulky/proses/pengemasan/{id}', 'v1\PemesananBulkyController@proses');

@@ -52,7 +52,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
-                                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Enter nama barang">
+                                        <input type="text" class="form-control @error('nama_barang') is-invalid @enderror" name="nama_barang" value="{{ old('nama_barang') }}" placeholder="Masukan nama barang">
                                         @error('nama_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -90,7 +90,7 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="satuan" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Enter harga barang">
+                                        <input type="number" min="0" id="harga" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan harga barang">
                                         @error('harga_barang')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -100,13 +100,23 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Keuntungan (%) <small class="text-success">*Harus diisi</small></label>
+                                        <input type="number" min="0" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="{{ old('keuntungan') }}" placeholder="Masukan Keuntungan">
+                                        @error('keuntungan')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <select id="selectSatuan" class="form-control @error('satuan') is-invalid @enderror" name="satuan"  placeholder="Enter satuan">
-                                            <option value="Ton">Ton</option>
-                                            <option value="Kwintal">Kwintal</option>
-                                            <option value="kg">Kg</option>
-                                            <option value="Gram">gram</option>
-                                            <option value="Ons">ons</option>
+                                        <select name="satuan" id="satuanOn" class="form-control @error('satuan') is-invalid @enderror">
+                                            <option value="">-- Pilih Satuan --</option>
+                                            @foreach ($satuan as $item)
+                                                <option value="{{$item->satuan}}" {{ old('satuan') == $item->satuan ? 'selected' : ''}}>{{$item->satuan}}</option>
+                                            @endforeach
                                         </select>
                                         @error('satuan')
                                             <span class="invalid-feedback" role="alert">
@@ -144,8 +154,8 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Foto Barang <small class="text-success">*Harus diisi & bisa pilih banyak</small></label>
-                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Enter foto" multiple>
+                                        <label>Foto Barang <small class="text-success">*Harus diisi</small></label>
+                                        <input type="file" accept="image/*" class="form-control @error('foto') is-invalid @enderror " name="foto[]" value="{{ old('foto') }}" placeholder="Masukan foto" multiple>
                                         @error('foto')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -172,16 +182,24 @@
 @push('script')
 {{-- Chart Section --}}
 <script type="text/javascript">
+    $("#satuanOn").change(function () {
+        var satuan = $(this).val();
+        $('#satuanAppend').text(satuan);
+    });
     function inputed(){
-        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        $('#hasil').val($('#jumlah').val() * $('#keuntungan').val()/100 * $('#harga').val())
     }
     $('#jumlah').on('keyup',(value) => {
         console.log()
-        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        $('#hasil').val($('#jumlah').val() * $('#keuntungan').val()/100 * $('#harga').val())
     })
-    $('#satuan').on('keyup',(value) => {
+    $('#harga').on('keyup',(value) => {
         console.log()
-        $('#hasil').val($('#jumlah').val() * $('#satuan').val())
+        $('#hasil').val($('#jumlah').val() * $('#keuntungan').val()/100 * $('#harga').val())
+    })
+    $('#keuntungan').on('keyup',(value) => {
+        console.log()
+        $('#hasil').val($('#jumlah').val() * $('#keuntungan').val()/100 * $('#harga').val())
     })
 </script>
 {{--  --}}

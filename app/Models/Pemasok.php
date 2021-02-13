@@ -49,4 +49,12 @@ class Pemasok extends Model
     {
         return static::find($id)->delete();
     }
+    public function storageKeluarPemasok()
+    {
+        return $this->hasMany('App\Models\StorageKeluarPemasok');
+    }
+    public function kwitansiPemasok()
+    {
+        return $this->hasMany('App\Models\KwitansiPemasok');
+    }
 }

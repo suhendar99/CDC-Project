@@ -79,7 +79,7 @@ class ReturMasukPembeliController extends Controller
         // $log = LogTransaksi::create([
         //     'tanggal' => now(),
         //     'jam' => now(),
-        //     'Aktifitas_transaksi' => 'Retur Barang Keluar'
+        //     'aktifitas_transaksi' => 'Retur Barang Keluar'
         // ]);
 
         return back()->with('success', __( 'Retur Telah Dibuat !' ));

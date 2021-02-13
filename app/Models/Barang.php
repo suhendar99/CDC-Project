@@ -94,6 +94,10 @@ class Barang extends Model
         return $this->hasMany('App\Models\StockBarangBulky', 'barang_kode', 'kode_barang');
     }
 
+    public function barangKeluarPemesananBulky()
+    {
+        return $this->hasMany('App\Models\BarangKeluarPemesananBulky','barang_kode','kode_barang');
+    }
     /**
      * Barang has many StorageIn.
      *
@@ -169,5 +173,9 @@ class Barang extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
         return $this->hasMany('App\Models\PemesananKeluarBulky', 'barang_kode', 'kode_barang');
+    }
+    public function storageKeluarPemasok()
+    {
+        return $this->hasMany('App\Models\StorageKeluarPemasok','barang_id','id');
     }
 }

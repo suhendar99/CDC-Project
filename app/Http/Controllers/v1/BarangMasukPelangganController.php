@@ -178,7 +178,7 @@ class BarangMasukPelangganController extends Controller
         // $log = LogTransaksi::create([
         //     'tanggal' => now(),
         //     'jam' => now(),
-        //     'Aktifitas_transaksi' => 'Penerimaan Barang'
+        //     'aktifitas_transaksi' => 'Penerimaan Barang'
         // ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));

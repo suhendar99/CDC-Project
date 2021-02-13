@@ -50,6 +50,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Kategori</th>
+                                <th>Foto Kategori</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -77,6 +78,7 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'nama', name: 'nama'},
+                {data : 'foto', name: 'foto'},
                 {data : 'action', name: 'action'}
             ]
         });

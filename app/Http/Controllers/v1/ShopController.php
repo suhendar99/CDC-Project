@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Province;
 use App\City;
 use App\Models\Barang;
+use App\Models\BarangKeluarPemesananBulky;
 use App\Models\BarangPesanan;
 use App\Models\BarangPemesananBulky;
 use App\Models\BarangWarung;
@@ -15,6 +16,7 @@ use App\Models\Keranjang;
 use App\Models\LogTransaksi;
 use App\Models\Pemesanan;
 use App\Models\PemesananBulky;
+use App\Models\PemesananKeluarBulky;
 use App\Models\PemesananPembeli;
 use App\Models\PengaturanTransaksi;
 use App\Models\Piutang;
@@ -86,7 +88,25 @@ class ShopController extends Controller
                         ->paginate(20);
                     }
                 } else {
-                    $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                    $barang = BarangWarung::where('harga_barang','!=',null)
+                    ->orderBy('id','desc')
+                    ->paginate(20);
+                }
+            } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
+                if ($request->has('search') && $request->search !== '') {
+                    $search = trim($request->search);
+                    if($search == ''){
+                        $barang = Barang::where('harga_barang','!=',null)
+                        ->orderBy('id','desc')->paginate(20);
+                    }else{
+                        $barang = Barang::where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->orWhere('nama_barang','LIKE',"%".$search."%")
+                        ->orWhere('harga_barang','LIKE',"%".$search."%")
+                        ->paginate(20);
+                    }
+                } else {
+                    $barang = Barang::where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->paginate(20);
                 }
@@ -134,6 +154,8 @@ class ShopController extends Controller
             $data = StockBarang::find($id);
         } elseif (Auth::user()->pembeli_id!= null) {
             $data = BarangWarung::find($id);
+        } elseif (Auth::user()->pengurus_gudang_bulky_id!= null) {
+            $data = Barang::find($id);
         } else {
             $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
             ->find($id);
@@ -424,6 +446,76 @@ class ShopController extends Controller
                 }
             }
             return redirect('/v1/po')->with('sukses','Pesanan Telah dibuat !');
+        } elseif (Auth::user()->pengurus_gudang_bulky_id != null){
+
+            $date = date('ymd');
+            $latest = PemesananKeluarBulky::orderBy('id','desc')->first();
+
+            if ($latest == null) {
+                $counter = 1;
+            } else {
+                $counter = $latest->id+1;
+            }
+
+            $faker = \Faker\Factory::create('id_ID');
+
+            $kode_faker = $faker->unique()->regexify('[0-9]{9}');
+
+            // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
+            $kode = 'PEM/BKY/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+
+            $store = Barang::find($id);
+
+            $harga = $store->harga_barang * $request->jumlah;
+
+            if ($request->pengiriman == 'ambil') {
+                $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'bulky_id' => $request->gudang_id,
+                    'kode' => $kode_faker,
+                    'barang_kode' => $request->barangKode,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta'),
+                    'status' => '6'
+                ]));
+            } else {
+                $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    'bulky_id' => $request->gudang_id,
+                    'kode' => $kode_faker,
+                    'nomor_pemesanan' => $kode,
+                    'nama_pemesan' => $request->nama_pemesan,
+                    'tanggal_pemesanan' => now('Asia/Jakarta'),
+                    'status' => 1
+                ]));
+            }
+
+            $satuan = ($request->satuan == 'Ton') ? 'Ton' : $request->satuan;
+
+            // dd($request->barang);
+            $kodes = 'BP'.rand(10000,99999);
+            BarangKeluarPemesananBulky::create([
+                'kode' => $kodes,
+                'barang_kode' => $request->barangKode,
+                'pemesanan_id' => $pemesanan->id,
+                'nama_barang' => $request->nama_barang,
+                'satuan' => $satuan,
+                'pajak' => 0,
+                'biaya_admin' => $request->biaya_admin,
+                'jumlah_barang' => $request->jumlah,
+                'harga' => $harga
+            ]);
+
+            if ($request->pembayaran == 'later') {
+                $BarangPesanan = BarangKeluarPemesananBulky::where('pemesanan_id',$pemesanan->id)->get();
+                // dd($hutang);
+                Piutang::create([
+                    'barang_id' => $pemesanan->id,
+                    'tanggal'=> Carbon::now(),
+                    'nama_pembeli' => Auth::user()->pelanggan->nama,
+                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+                ]);
+            }
+            return redirect('/v1/bulky/pemesanan/keluar')->with('sukses','Pesanan Telah dibuat !');
         }
     }
     public function cariKategori($id)

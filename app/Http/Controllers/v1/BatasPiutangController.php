@@ -39,7 +39,8 @@ class BatasPiutangController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'jumlah_hari' => 'required|numeric'
+            'jumlah_hari' => 'required|numeric',
+            'batas_jumlah_uang' => 'required|numeric'
         ]);
 
         if ($v->fails()) {
@@ -49,7 +50,7 @@ class BatasPiutangController extends Controller
             $data = BatasPiutang::find($id);
             $data->update($request->all());
         }
-        return back()->with('success','Jumlah hari piutang di perbaharui menjadi '.$request->jumlah_hari.' hari');
+        return back()->with('success','Data Berhasil Di Ubah !');
     }
 
     /**

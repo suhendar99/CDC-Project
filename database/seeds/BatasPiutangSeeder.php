@@ -13,7 +13,8 @@ class BatasPiutangSeeder extends Seeder
     public function run()
     {
         BatasPiutang::create([
-            'jumlah_hari' => 25
+            'jumlah_hari' => 25,
+            'batas_jumlah_uang' => 10000000
         ]);
     }
 }

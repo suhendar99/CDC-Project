@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SatuanSeeder::class);
         $this->call(KodeRoleAksesSeeder::class);
         $this->call(KodeTransaksiSeeder::class);
+        $this->call(PengaturanWangpasSeeder::class);
+        $this->call(UIBannerSeeder::class);
     }
 }

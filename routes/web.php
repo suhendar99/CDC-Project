@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Twilio\Rest\Client;
+use phpDocumentor\Reflection\Types\Resource_;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,8 +127,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('/user/{id}/unapprove', 'UserController@unapprove')->name('admin.users.unapprove');
         // Koperasi
         Route::resource('koperasi', 'KoperasiController');
+        // UI Element
+        Route::resource('ui-banner', 'UiBannerController');
         // Pengaturan Transaksi
         Route::resource('pengaturanTransaksi', 'PengaturanTransaksiController');
+        // Pengaturan Wangpas
+        Route::resource('pengaturan-wangpas', 'PengaturanWangpasController');
         // Pemasok
         Route::resource('pemasok', 'PemasokController');
         // Armada Pengiriman
@@ -142,7 +147,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('kode-role-akses', 'KodeRoleAksesController');
         // Kode Transaksi
         Route::resource('kode-transaksi', 'KodeTransaksiController');
-
+        // log
+        Route::resource('log-activity', 'LogActivityController');
+        Route::resource('log-transaksi', 'LogTransaksiController');
         // Pengaturan Aplikasi
         Route::resource('setApp', 'PengaturanAplikasiController');
         // Kategori Barang Indukas
@@ -157,12 +164,24 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('akun-bank', 'AkunBankController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
+        // Pengelolaan Barang
+        Route::resource('barang', 'BarangController');
+        Route::resource('kwitansi-pemasok', 'KwitansiPemasokController');
+        Route::resource('surat-jalan-pemasok', 'SuratJalanPemasokController');
+        Route::resource('storage-keluar-pemasok', 'StorageKeluarPemasokController');
+        Route::get('pemasok/kwitansi/print', 'StorageKeluarPemasokController@printKwitansi');
+        Route::get('pemasok/surat-jalan/print', 'StorageKeluarPemasokController@printSuratJalan');
+        // Transaksi
+        Route::get('penawaran-pemasok-riwayat', 'PenawaranPemasokController@riwayat')->name('riwayat');
+        Route::resource('penawaran-pemasok', 'PenawaranPemasokController');
+        Route::resource('pemesanan-masuk-pemasok', 'PemesananMasukPemasokController');
+        Route::get('validasi/bukti/bulky/{id}','PemesananMasukPemasokController@validasi')->name('validasi.bukti.bulky');
+        Route::get('tolak/pesanan/bulky/{id}','PemesananKeluarBulkyController@tolak');
         // Brang Po Masuk
         Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
         Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
         Route::get('previewPemasok/{id}', 'PoController@preview')->name('po.previewPemasok');
         // Barang
-        Route::resource('barang', 'BarangController');
         Route::get('edit-foto-barang/{id}','BarangController@editFotoBarang')->name('edit.barang');
         Route::put('update-foto-barang/{id}','BarangController@updateFotoBarang')->name('update.barang');
         Route::get('create-foto-barang/{id}','BarangController@createFotoBarang')->name('create.barang');
@@ -249,6 +268,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::get('validasi/bukti/retail/{id}','PemesananBulkyController@validasi')->name('validasi.bukti.retail');
             // Menolak Pesanan Dari Warung
             Route::get('tolak/pesanan/retail/{id}','PemesananBulkyController@tolak');
+            Route::post('upload/bukti/bulky/{id}','PemesananBulkyController@bukti');
 
             Route::resource('bulky/pengurus', 'PengurusGudangBulkyController', [
                 'names' => [
@@ -261,6 +281,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 ]
             ]);
         });
+        Route::get('konfirmasi/penawaran/{id}','PenawaranPemasokController@konfirmasi')->name('konfirmasi.penawaran');
+        Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
+        Route::get('transaksi/bulky/konfirmasi/{id}','PemesananKeluarBulkyController@konfirmasi')->name('konfirmasi.terima.bulky');
 
         // Laporan Bulky
         Route::get('bulky/laporan/penjualan','LaporanGudangBulky@showLaporanBarangKeluar')->name('bulky.laporan.barang.keluar.index');
@@ -352,7 +375,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 'destroy' => 'bulky.pemesanan.keluar.destroy'
             ]
         ]);
-
+        Route::get('bulky/penawaran/pemasok','PenawaranPemasokController@penawaranBulky')->name('bulky.penawaran.pemasok');
         Route::get('bulky/retur/masuk', 'ReturMasukBulkyController@index')->name('bulky.retur.masuk.index');
         Route::resource('bulky/retur/keluar', 'ReturKeluarBulkyController', [
             'names' => [

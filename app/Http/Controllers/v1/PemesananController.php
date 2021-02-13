@@ -220,7 +220,7 @@ class PemesananController extends Controller
         $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
         // dd(InternalStorage::disk('public')->get('/upload/foto/bukti/'.$nama_bukti));
-        
+
         // dd($data->bulky->user->email);
 
         Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('/upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
@@ -490,7 +490,6 @@ class PemesananController extends Controller
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
-
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
