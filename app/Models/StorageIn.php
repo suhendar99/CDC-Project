@@ -19,11 +19,11 @@ class StorageIn extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function barang()
-    {
-    	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
-    }
+    // public function barang()
+    // {
+    // 	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
+    // 	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+    // }
 
     /**
      * StorageIn belongs to Gudang.
@@ -57,8 +57,31 @@ class StorageIn extends Model
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
     	return $this->hasOne('App\Models\Storage', 'storage_in_kode', 'kode');
     }
+
     public function rekapitulasi()
     {
     	return $this->hasMany('App\Models\RekapitulasiPembelian');
+    }
+
+    /**
+     * StorageIn belongs to PemesananBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pemesananBulky()
+    {
+        // belongsTo(RelatedModel, foreignKey = pemesananBulky_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\PemesananBulky', 'pemesanan_bulky_id');
+    }
+
+    /**
+     * StorageIn belongs to BarangBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function barangBulky()
+    {
+        // belongsTo(RelatedModel, foreignKey = barangBulky_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarangBulky', 'barang_bulky_id');
     }
 }

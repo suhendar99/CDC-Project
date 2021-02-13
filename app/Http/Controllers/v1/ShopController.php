@@ -392,7 +392,7 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             BarangPemesananBulky::create([
                 'kode' => $kodes,
-                'barang_kode' => $request->barangKode,
+                'barang_bulky_id' => $store->id,
                 'pemesanan_bulky_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
                 'satuan' => $satuan,

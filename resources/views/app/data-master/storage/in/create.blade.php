@@ -45,6 +45,22 @@
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('storage.in.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <div class="form-group row">
+                                    <div class="col-12">
+                                        <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
+                                        <select name="gudang_id" id="gudang" class="form-control">
+                                            <option value="0">--Pilih Gudang Retail--</option>
+                                            @foreach ($gudang as $list)
+                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('harga_barang')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
@@ -89,10 +105,7 @@
                                     <div class="form-group col-md-4">
                                         <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
-                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
-                                            @endforeach
+                                            <option value="0" data-satuan="-" disabled>--Pilih Gudang Dahulu--</option>
                                         </select>
                                         @error('barang_kode')
                                             <span class="invalid-feedback" role="alert">
@@ -105,7 +118,7 @@
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
                                             <div class="input-group-append">
-                                                <span class="input-group-text" id="satuanAppend"></span>
+                                                <span class="input-group-text" id="satuanAppend">-</span>
                                             </div>
                                         </div>
                                         @error('jumlah')
@@ -139,22 +152,6 @@
                                         @enderror
                                     </div> --}}
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-12">
-                                        <label>Pilih Gudang Retail Untuk Menyimpan Barang <small class="text-success">*Harus diisi</small></label>
-                                        <select name="gudang_id" id="" class="form-control">
-                                            <option value="0">--Pilih Gudang Retail--</option>
-                                            @foreach ($gudang as $list)
-                                                <option value="{{$list->id}}" {{ old('gudang_id') == $list->id ? 'selected' : ''}}>{{$list->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('harga_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
                                   <div class="row">
                                       <div class="col-md-12">
                                         <div class="float-right">
@@ -174,6 +171,31 @@
 @push('script')
 <script src="{{ asset('js/onscan.js') }}"></script>
 <script>
+    $('#gudang').change(function(event) {
+        /* Act on the event */
+
+        let id = $('#gudang option:selected').val()
+        $.ajax({
+                url: "/api/v1/gudang/retail/"+id+"/pemesanan",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    console.log(response.data)
+                    $('#gudang').html(`<option>-- Pilih Barang --</option>`);
+                    $.each(response.data, function(index, val) {
+                         /* iterate through array or object */
+                         $('#gudang').append(`<option value="${val.stock_barang_bulky.id}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
+                    });
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                    console.log('error')
+                }
+            });
+    });
     $('#barang').change(function(event) {
         /* Act on the event */
         let satuan = $('#barang option:selected').data("satuan")

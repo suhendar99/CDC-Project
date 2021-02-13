@@ -137,11 +137,11 @@ class Barang extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function barangPemesananBulky()
-    {
-        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
-        return $this->hasMany('App\Models\BarangPemesananBulky', 'barang_kode', 'kode_barang');
-    }
+    // public function barangPemesananBulky()
+    // {
+    //     // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
+    //     return $this->hasMany('App\Models\BarangPemesananBulky', 'barang_kode', 'kode_barang');
+    // }
 
     /**
      * Barang belongs to .

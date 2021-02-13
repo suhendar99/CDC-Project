@@ -19,6 +19,8 @@ use App\Models\Kwitansi;
 use App\Models\LogTransaksi;
 use App\Models\RekapitulasiPenjualan;
 use App\Models\SuratJalan;
+use App\Mail\KwitansiDanSuratJalanMail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use PDF;
 use Auth;
@@ -339,6 +341,7 @@ class StorageOutController extends Controller
 
         $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
         // $kode_surat = $faker->unique()->ean13;
+        $date = date('d-m-Y');
 
         $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'keterangan')+[
             'user_id' => auth()->user()->id,
@@ -354,6 +357,24 @@ class StorageOutController extends Controller
             'user_id' => auth()->user()->id,
             'tanggal' => now('Asia/Jakarta')
         ]);
+
+        $counterKwitansi = $kwitansi->count();
+        $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
+        $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print', [
+            'data' => $kwitansi,
+            'date' => $date,
+            'kode' => $pdfKodeKwi
+        ]);
+
+        $counterSJ = $surat->count();
+        $pdfKodeSJ = sprintf("%'.04d", (String)$counterSJ);
+        $pdfSJ = PDF::loadview('app.transaksi.surat-jalan.print', [
+            'data' => $surat,
+            'date' => $date,
+            'kode' => $pdfKodeSJ
+        ]);
+        // $pesanan->retail->user->email
+        Mail::to($pesanan->pelanggan->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPesanan::where('pemesanan_id',$out->pemesanan->id)->get();
         $jumlah = 0;

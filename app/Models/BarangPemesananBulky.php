@@ -19,10 +19,21 @@ class BarangPemesananBulky extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function barang()
+    // public function barang()
+    // {
+    // 	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
+    // 	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+    // }
+
+    /**
+     * BarangPemesananBulky belongs to StockBarangBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stockBarangBulky()
     {
-    	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+        // belongsTo(RelatedModel, foreignKey = stockBarangBulky_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarangBulky', 'barang_bulky_id');
     }
 
     /**

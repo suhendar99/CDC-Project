@@ -45,8 +45,9 @@
                 <hr class="m-0">
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" id="form-submit">
                         @csrf
+                        <input type="hidden" name="token" id="tokens">
 
                         <div class="form-group row">
                             <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username Atau Email') }}</label>
@@ -88,7 +89,7 @@
 
                         <div class="form-group row mb-4">
                             <div class="col-md-8 offset-md-4 float-right">
-                                <button type="submit" class="btn btn-primary btn-sm">
+                                <button type="button" class="btn btn-primary btn-sm" id="btn-action">
                                     {{ __('Login') }}
                                 </button> or
                                 <a href="{{route('register')}}">Register</a>
@@ -109,16 +110,82 @@
 </div>
 @endsection
 @push('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 <script>
     const togglePassword = document.querySelector('#togglePassword');
     const password = document.querySelector('#password');
 
     togglePassword.addEventListener('click', function (e) {
-    // toggle the type attribute
-    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-    password.setAttribute('type', type);
-    // toggle the eye slash icon
-    this.classList.toggle('fa-eye-slash');
-});
+        // toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        // toggle the eye slash icon
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyDIwI2rySPgRjg2tc5WG3-i9-WS_QBZUiA",
+        authDomain: "laravel-push-notif-53ca2.firebaseapp.com",
+        databaseURL: "https://laravel-push-notif-53ca2-default-rtdb.firebaseio.com",
+        projectId: "laravel-push-notif-53ca2",
+        storageBucket: "laravel-push-notif-53ca2.appspot.com",
+        messagingSenderId: "186579738404",
+        appId: "1:186579738404:web:1149f45244cd92fca75db1",
+        measurementId: "G-SQ9WLBCMV7"
+    };
+      
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+  
+    $('#btn-action').click(function(event) {
+            messaging
+            .requestPermission()
+            .then(function () {
+                return messaging.getToken()
+            })
+            .then(function(token) {
+                console.log(token);
+                
+                $('#tokens').val(token)
+                // $.ajaxSetup({
+                //     headers: {
+                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                //     }
+                // });
+  
+                // $.ajax({
+                //     url: '{{-- route("save.token") --}}',
+                //     type: 'POST',
+                //     data: {
+                //         token: token
+                //     },
+                //     dataType: 'JSON',
+                //     success: function (response) {
+                //         alert('Token saved successfully.');
+                //         // document.getElementById("form-submit").submit();
+                //     },
+                //     error: function (err) {
+                //         console.log('1. User Chat Token Error'+ err);
+                //     },
+                // });
+  
+            })
+            .then(function(){
+                document.getElementById("form-submit").submit();
+            })
+            .catch(function (err) {
+                console.log('2. User Chat Token Error'+ err);
+            });
+    });
+      
+    messaging.onMessage(function(payload) {
+        const noteTitle = payload.notification.title;
+        const noteOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(noteTitle, noteOptions);
+    });
 </script>
 @endpush

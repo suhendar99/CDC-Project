@@ -18,8 +18,10 @@ class CreateStorageInsTable extends Migration
             $table->dateTime('waktu');
             // $table->string('barang_kode');
             // $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
-            $table->foreignId('storage_keluar_bulky_id')->constrained('storage_keluar_bulkies')->onDelete('cascade');
-            $table->foreignId('storage_bulky_id')->constrained('storage_bulkies')->onDelete('cascade'); 
+            // $table->foreignId('storage_keluar_bulky_id')->constrained('storage_keluar_bulkies')->onDelete('cascade');
+            $table->foreignId('barang_bulky_id')->constrained('stock_barang_bulkies')->onDelete('cascade');
+            $table->foreignId('pemesanan_bulky_id')->constrained('pemesanan_bulkies')->onDelete('cascade');
+            // $table->foreignId('storage_bulky_id')->constrained('storage_bulkies')->onDelete('cascade'); 
             // $table->foreignId('barang_kode')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('tingkat_id')->constrained('tingkatan_raks')->onDelete('cascade');

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Twilio\Rest\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,23 @@ Route::group(['namespace' => 'v1'], function () {
 Route::get('/verification','Auth\RegisterController@verify');
 
 Auth::routes(['verify' => true,'middleware' => 'guest']);
+
+Route::get('message', function() {
+    // $twilio = new Client('ACc460909600bb11391c409fceac79ee00', '340f81c06b713123327f390ab7dd721f');
+
+    //     // dd($twilio->messages);
+
+    // $message = $twilio->messages->create(
+    //     "whatsapp:+6282115382089",
+    //     [
+    //         // "mediaUrl" => [asset('/upload/foto/bukti/'.$nama_bukti)],
+    //         "from" => "whatsapp:+14155238886",
+    //         "body" => "Bukti Pembayaran :)"
+    //     ]
+    // );
+
+    return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
+});
 
 Route::get('/home', function (){
     if (Auth::user()->name != null || Auth::user()->pemasok_id != null || Auth::user()->pengurus_gudang_bulky_id != null) {
