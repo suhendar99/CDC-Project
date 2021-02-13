@@ -17,8 +17,9 @@ class CreateBarangPemesananBulkiesTable extends Migration
             $table->id();
             $table->string('kode')->unique();
             $table->string('nama_barang',100);
-            $table->string('barang_kode', 100);
-            $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            // $table->string('barang_kode', 100);
+            // $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->foreignId('barang_bulky_id')->constrained('stock_barang_bulkies')->onDelete('cascade');
             $table->integer('jumlah_barang');
             $table->string('satuan', 50);
             $table->bigInteger('harga');

@@ -52,7 +52,7 @@
                                     </h6>
                                 </div>
                             </div>
-                            @elseif(count($d->storageKeluarBulky) < 1)
+                            @elseif($d->storageKeluarBulky == null)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>

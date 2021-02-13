@@ -368,7 +368,7 @@ class StorageKeluarBulkyController extends Controller
             'kode' => $pdfKodeSJ
         ]);
         // $pesanan->retail->user->email
-        Mail::to('filok5267@gmail.com')->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
+        Mail::to($pesanan->retail->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->first();
         $jumlah = 0;

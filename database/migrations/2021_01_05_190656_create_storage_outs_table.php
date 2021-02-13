@@ -18,7 +18,7 @@ class CreateStorageOutsTable extends Migration
             $table->dateTime('waktu');
             $table->string('kode')->unique();
             $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
-            $table->foreignId('barang_retail_id')->constrained('storages')->onDelete('cascade');
+            $table->foreignId('barang_retail_id')->constrained('stock_barangs')->onDelete('cascade');
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('satuan_id')->constrained('satuans')->onDelete('cascade');

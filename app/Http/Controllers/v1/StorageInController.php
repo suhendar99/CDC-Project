@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\PemesananBulky;
+use App\Models\BarangPemesananBulky;
+use App\Models\StockBarangBulky;
 use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
@@ -73,6 +76,42 @@ class StorageInController extends Controller
         }
     }
 
+    public function findStorageKeluar($id)
+    {
+        try {
+            $pesanan = BarangPemesananBulky::with('pemesananBulky', 'stockBarangBulky')
+            ->whereHas('pemesananBulky', function($query)use($id){
+                $query->->where([
+                    ['gudang_retail_id', $id],
+                    ['status' => 4]
+                ]);
+            })
+            ->has('pemesananBulky.storageKeluarBulky')
+            ->doesntHave('pemesananBulky.storageMasukRetail')
+            ->get();
+
+            // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
+            // ->whereIn('id', $pesanan)
+            // ->get();
+
+            if (!$pesanan) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $pesanan
+                ], 200);
+                # code...
+            }
+
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -85,6 +124,7 @@ class StorageInController extends Controller
         })
         ->where('status', 1)
         ->get();
+
 
         if($gudang->count() < 1){
             return back()->with('failed','Mohon Daftarkan/Aktifkan Gudang Anda Terlebih Dahulu!');

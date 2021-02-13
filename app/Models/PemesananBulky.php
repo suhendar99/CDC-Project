@@ -55,7 +55,7 @@ class PemesananBulky extends Model
     public function storageMasukRetail()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
-    	return $this->hasMany('App\Models\StorageIn', 'pemesanan_id');
+    	return $this->hasMany('App\Models\StorageIn', 'pemesanan_bulky_id');
     }
 
     /**
@@ -66,7 +66,7 @@ class PemesananBulky extends Model
     public function storageKeluarBulky()
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
-        return $this->hasMany('App\Models\StorageKeluarBulky', 'pemesanan_bulky_id');
+        return $this->hasOne('App\Models\StorageKeluarBulky', 'pemesanan_bulky_id');
     }
 
     /**

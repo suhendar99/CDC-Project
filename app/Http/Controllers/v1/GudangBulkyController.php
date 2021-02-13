@@ -139,7 +139,7 @@ class GudangBulkyController extends Controller
             'lat' => 'required',
             'long' => 'required',
             'nama' => 'required|string|max:50',
-            'kontak' => 'required|string|regex:/(08)[0-9]{9}/',
+            'kontak' => 'required|string|regex:/(628)[0-9]{9}/',
             'hari' => 'required|',
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
