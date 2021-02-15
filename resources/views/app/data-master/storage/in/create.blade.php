@@ -208,7 +208,7 @@
 
          console.log(satuan)
          if (satuan == 'Kg') {
-             $('#satuanAppend').text('Kwintal')
+             $('#satuanAppend').text('Kuintal')
              $('#jumlah').val(jumlah);
              $('#jumlah').attr('type', 'number');
              $('#pemesanan_bulky_id').val(pemesanan)
