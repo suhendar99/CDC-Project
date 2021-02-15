@@ -9,6 +9,7 @@ use App\Models\KwitansiPemasok;
 use App\Models\LogTransaksi;
 use App\Models\Pemasok;
 use App\Models\PemesananKeluarBulky;
+use App\Models\RekapitulasiPenjualanPemasok;
 use App\Models\Satuan;
 use App\Models\StorageKeluarPemasok;
 use App\Models\SuratJalanPemasok;
@@ -334,20 +335,19 @@ class StorageKeluarPemasokController extends Controller
             $satuan = $value->satuan;
         }
         $harga_total = $total / $jumlah;
-        // dd($harga_total);
-        // RekapitulasiPenjualan::create([
-        //     'storage_out_id' => $out->id,
-        //     'tanggal_penjualan' => $out->waktu,
-        //     'no_penjualan' => $out->kode,
-        //     'no_kwitansi' => $kwitansi->kode,
-        //     'no_surat_jalan' => $surat->kode,
-        //     'nama_pembeli' => $out->pemesanan->nama_pemesan,
-        //     'barang' => $out->pemesanan->barangPesanan[0]->barang->nama_barang,
-        //     'jumlah' => $jumlah,
-        //     'satuan' => $satuan,
-        //     'harga' => $harga_total,
-        //     'total' => $total
-        // ]);
+        RekapitulasiPenjualanPemasok::create([
+            'storage_keluar_id' => $out->id,
+            'tanggal_penjualan' => $out->waktu,
+            'no_penjualan' => $out->kode,
+            'no_kwitansi' => $kwitansi->kode,
+            'no_surat_jalan' => $surat->kode,
+            'nama_pembeli' => $out->pemesananKeluarBulky->nama_pemesan,
+            'barang' => $out->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->nama_barang,
+            'jumlah' => $jumlah,
+            'satuan' => $satuan,
+            'harga' => $harga_total,
+            'total' => $total
+        ]);
 
         $pesanan->update(['status'=>'4']);
         return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));

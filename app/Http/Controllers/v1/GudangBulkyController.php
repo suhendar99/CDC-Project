@@ -139,7 +139,7 @@ class GudangBulkyController extends Controller
             'lat' => 'required',
             'long' => 'required',
             'nama' => 'required|string|max:50',
-            'kontak' => 'required|string|regex:/(628)[0-9]{9}/',
+            'kontak' => 'required|string|regex:/(08)[0-9]{9}/',
             'hari' => 'required|',
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
@@ -168,8 +168,9 @@ class GudangBulkyController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move("upload/foto/bulky", $foto);
-                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'status' => 1,
+                    'kontak' => '62'.(int)$request->kontak,
                     'foto' => '/upload/foto/bulky/'.$foto,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
@@ -180,8 +181,9 @@ class GudangBulkyController extends Controller
                     'bulky_id' => $gudang_id
                 ]));
             } else {
-                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = GudangBulky::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'status' => 1,
+                    'kontak' => '62'.(int)$request->kontak,
                     'user_id' => $user_id,
                     'nomor_gudang' => "GUD/BKY/".$date.'/'.$kode
                 ]));
@@ -265,12 +267,15 @@ class GudangBulkyController extends Controller
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move("upload/foto/bulky", $foto);
 
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                    'kontak' => '62'.(int)$request->kontak,
                     'foto' => '/upload/foto/bulky/'.$foto
                 ]));
 
             } else {
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kontak','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik')));
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                    'kontak' => '62'.(int)$request->kontak,
+                ]));
             }
         }
         return back()->with('success','Diedit !');
