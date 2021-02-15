@@ -310,7 +310,7 @@ function fixStepIndicator(n) {
         }
 
         $.ajax({
-            url: "/api/v1/getPesanan/"+idPesanan,
+            url: "/api/v1/pemasok/getPesanan/"+idPesanan,
         }).done(function(response) {
             console.log(response);
             $('#dibayar_oleh').val(response.data.nama_pemesan);

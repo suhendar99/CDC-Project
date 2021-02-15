@@ -290,7 +290,7 @@
                 cache: false,
                 processData: false,
                 success: (response)=>{
-                    // console.log(response.data[0]);
+                    console.log(response.data);
                     $('#loader').text('');
                     $('#foto_bukti').attr('src',`${response.data.pemesanan_bulky.foto_bukti}`);
 

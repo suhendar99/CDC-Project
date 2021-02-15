@@ -47,7 +47,7 @@ class PoController extends Controller
         $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
         return view($this->indexPathPemasok.'index',compact('data'));
     }
-    
+
     public function index()
     {
         $gudang = Gudang::select('id')->where('user_id', auth()->user()->id)->get();

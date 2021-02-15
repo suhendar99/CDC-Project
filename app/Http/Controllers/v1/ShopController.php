@@ -159,14 +159,14 @@ class ShopController extends Controller
             $data = BarangWarung::find($id);
             $user = 'pembeli';
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
+            $user = 'bulky';
             if ($request->query('jumlah') != null) {
                 $jumlah = $request->query('jumlah');
                 $data = Barang::find($id);
-                return view($this->shopPath.'pesanan',compact('id','data','biaya','jumlah'));
+                return view($this->shopPath.'pesanan',compact('id','data','biaya','jumlah','user'));
             } else {
                 $data = Barang::find($id);
             }
-            $user = 'bulky';
         } elseif (Auth::user()->pengurus_gudang_id != null) {
             $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
             ->find($id);
