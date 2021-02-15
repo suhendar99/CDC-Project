@@ -176,6 +176,6 @@ class Barang extends Model
     }
     public function storageKeluarPemasok()
     {
-        return $this->hasMany('App\Models\StorageKeluarPemasok','barang_id','id');
+        return $this->hasMany('App\Models\StorageKeluarPemasok');
     }
 }

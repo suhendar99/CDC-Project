@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\v1\PiutangBulkyController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -177,6 +178,11 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemesanan-masuk-pemasok', 'PemesananMasukPemasokController');
         Route::get('validasi/bukti/bulky/{id}','PemesananMasukPemasokController@validasi')->name('validasi.bukti.bulky');
         Route::get('tolak/pesanan/bulky/{id}','PemesananKeluarBulkyController@tolak');
+        Route::resource('retur-bulky-pemasok', 'ReturBulkyController');
+        Route::get('retur-status-tolak/{id}', 'ReturBulkyController@tolak')->name('retur-status-tolak');
+        Route::get('retur-status-terima/{id}', 'ReturBulkyController@terima')->name('retur-status-terima');
+        // Piutang
+        Route::resource('piutang-bulky-pemasok', 'PiutangBulkyController');
         // Brang Po Masuk
         Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
         Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');
@@ -364,6 +370,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::delete('bulky/pemesanan/masuk/delete/{id}', 'PemesananBulkyController@destroy')->name('bulky.pemesanan.delete');
 
         Route::put('bulky/validate/bukti/{id}', 'PemesananBulkyController@validateBukti')->name('bulky.validate.bukti');
+        Route::post('bayar/piutang/bulky/{id}','PiutangBulkyController@create');
 
         Route::resource('bulky/pemesanan/keluar', 'PemesananKeluarBulkyController', [
             'names' => [

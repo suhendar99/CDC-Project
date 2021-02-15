@@ -26,7 +26,7 @@ class PemesananKeluarBulkyController extends Controller
         ->orderBy('id', 'desc')
         ->get();
         $gudang = GudangBulky::select('id')->where('user_id', auth()->user()->id)->get();
-        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky')->whereIn('bulky_id',$gudang)->orderBy('id','desc')->paginate(4);
+        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky','piutangBulky')->whereIn('bulky_id',$gudang)->orderBy('id','desc')->paginate(4);
         return view('app.transaksi.pemesanan-keluar-bulky.index',compact('data'));
     }
 
@@ -56,8 +56,7 @@ class PemesananKeluarBulkyController extends Controller
     {
         $data = PemesananKeluarBulky::find($id);
         $data->update(['status'=>'5']);
-        // dd($data);
-        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        return redirect('/v1/bulky/storage/masuk/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     /**

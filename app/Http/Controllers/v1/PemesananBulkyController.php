@@ -40,7 +40,11 @@ class PemesananBulkyController extends Controller
                     } elseif ($data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->foto_bukti == null ) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesananBulky->foto_bukti != null && $data->pemesananBulky->status == '2') {
-                        return "<span class='text-success'>Lunas</span>";
+                        if ($data->pemesananBulky->metode_pembayaran == null) {
+                            return "<span class='text-success'>Hutang</span>";
+                        } else {
+                            return "<span class='text-success'>Lunas</span>";
+                        }
                     } else {
                         return "Belum Terverifikasi";
                     }

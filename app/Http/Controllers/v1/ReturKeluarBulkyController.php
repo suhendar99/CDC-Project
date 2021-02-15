@@ -12,6 +12,8 @@ use App\Models\KwitansiBulky;
 use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\ReturKeluarBulky;
+use App\Models\StorageMasukBulky;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReturKeluarBulkyController extends Controller
@@ -23,18 +25,29 @@ class ReturKeluarBulkyController extends Controller
      */
     public function index(Request $request)
     {
+        $data = ReturKeluarBulky::with('barang','pengurusGudang','storageMasuk')
+        ->orderBy('id', 'desc')
+        ->get();
+        // dd($data);
         if($request->ajax()){
-            $data = ReturKeluarBulky::with('barang')
-            ->orderBy('id', 'desc')
-            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('status',function($data){
+                    if ($data->status == null) {
+                        return "<span class='text-primary'>Retur sedang diproses</span>";
+                    } elseif ($data->status == 1) {
+                        return "<span class='text-success'>Retur sudah di setujui</span>";
+                    } elseif ($data->status == 2) {
+                        return "<span class='text-danger'>Retur ditolak</span>";
+                    }
+                })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->rawColumns(['action','status'])
                 ->make(true);
         }
 
@@ -53,8 +66,9 @@ class ReturKeluarBulkyController extends Controller
         foreach (auth()->user()->pengurusGudangBulky->bulky as $value) {
             $arr[] = $value->id;
         }
-
-        $barang = PemesananKeluarBulky::with('barang', 'bulky')->whereIn('bulky_id', $arr)->get();
+        $barang = PemesananKeluarBulky::with('bulky','barangKeluarPemesananBulky.barang')->whereIn('bulky_id', $arr)->first();
+        $storageIn = StorageMasukBulky::whereIn('bulky_id',$arr)->get();
+        // dd($barang->barangKeluarPemesananBulky[0]->barang->kode_barang);
         // $barang = Barang::has('pemesananKeluarBulky')
         // ->whereHas('pemesananKeluarBulky', function($query)use($arr){
         //     $query->whereIn('bulky_id', $arr);
@@ -62,7 +76,7 @@ class ReturKeluarBulkyController extends Controller
         // ->get();
         // $barang = Barang::all();
 
-        return view('app.transaksi.retur-keluar-bulky.create', compact('barang'));
+        return view('app.transaksi.retur-keluar-bulky.create', compact('barang','storageIn'));
     }
 
     /**
@@ -97,8 +111,16 @@ class ReturKeluarBulkyController extends Controller
             $jumlah = $request->jumlah;
             $satuan = $barang->satuan;
         }
-
+        $arr = [];
+        // dd(auth()->user()->pengurusGudangBulky->bulky);
+        foreach (auth()->user()->pengurusGudangBulky->bulky as $value) {
+            $arr[] = $value->id;
+        }
+        $storageIn = StorageMasukBulky::whereIn('bulky_id',$arr)->first();
+        // dd($storageIn);
         $retur = ReturKeluarBulky::create($request->only('nomor_kwitansi', 'tanggal_pengembalian', 'keterangan', 'barang_kode')+[
+            'pengurus_gudang_id' => Auth::user()->pengurus_gudang_bulky_id,
+            'storage_masuk_id' => $storageIn->id,
             'jumlah_barang' => $jumlah,
             'satuan' => $satuan
         ]);

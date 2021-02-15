@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StorageMasukBulky extends Model
 {
@@ -25,6 +26,10 @@ class StorageMasukBulky extends Model
     	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
     }
 
+    public function returKeluar(): HasMany
+    {
+        return $this->hasMany(ReturKeluarBulky::class, 'storage_masuk_id', 'id');
+    }
     /**
      * StorageIn belongs to Gudang.
      *

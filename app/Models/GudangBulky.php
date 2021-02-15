@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GudangBulky extends Model
 {
@@ -123,4 +124,11 @@ class GudangBulky extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudangBulky_id, localKey = id)
         return $this->hasMany('App\Models\PemesananKeluarBulky', 'bulky_id');
     }
+
+    /**
+     * Get all of the comments for the GudangBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    
 }

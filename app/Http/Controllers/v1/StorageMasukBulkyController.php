@@ -12,6 +12,7 @@ use App\Models\StorageBulky;
 use App\Models\GudangBulky;
 use App\Models\Barang;
 use App\Models\LogTransaksi;
+use App\Models\PemesananKeluarBulky;
 use App\Models\StockBarangBulky;
 use App\Models\RekapitulasiPembelianBulky;
 
@@ -69,19 +70,34 @@ class StorageMasukBulkyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
-            $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
-        })
-        ->where('status', 1)
-        ->get();
+        if ($request->query('id') != null) {
+            $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
+                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+            })
+            ->where('status', 1)
+            ->get();
 
-        if ($gudang->count() == 0) {
-            return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
+            if ($gudang->count() == 0) {
+                return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
+            }
+            $pemesanan = PemesananKeluarBulky::with('kwitansiPemasok','suratJalanPemasok','storageKeluarPemasok','barangKeluarPemesananBulky')->find($request->query('id'));
+            $pesananId = $request->query('id');
+            return view('app.data-master.storageBulky.in.create', compact('gudang','pemesanan','pesananId'));
+        } else {
+            // dd($pemesanan->barangKeluarPemesananBulky[0]);
+            $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
+                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+            })
+            ->where('status', 1)
+            ->get();
+
+            if ($gudang->count() == 0) {
+                return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
+            }
+            return view('app.data-master.storageBulky.in.create', compact('gudang'));
         }
-
-        return view('app.data-master.storageBulky.in.create', compact('gudang'));
     }
 
     /**
@@ -99,7 +115,7 @@ class StorageMasukBulkyController extends Controller
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
             'nomor_kwitansi' => 'required|numeric',
-            'nomor_surat_jalan' => 'required|numeric',
+            'nomor_surat_jalan' => 'required|string',
             'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'foto_surat_jalan' => 'required|image|mimes:jpg,png,jpeg|max:2048'
         ]);
@@ -132,7 +148,7 @@ class StorageMasukBulkyController extends Controller
             $jumlah = $request->jumlah;
             $satuan = $barang->satuan;
         }
-        
+
         $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'jumlah' => $jumlah,
             'kode' => $kode,
@@ -191,7 +207,7 @@ class StorageMasukBulkyController extends Controller
             'aktifitas_transaksi' => 'Penerimaan Barang'
         ]);
 
-        return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
+        return redirect('/v1/bulky/storage')->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
     }
 
     /**

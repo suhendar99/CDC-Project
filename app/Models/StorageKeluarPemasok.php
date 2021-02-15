@@ -15,7 +15,7 @@ class StorageKeluarPemasok extends Model
     }
     public function barang()
     {
-        return $this->belongsTo('App\Models\Barang','barang_id','id');
+        return $this->belongsTo('App\Models\Barang');
     }
     public function pemasok()
     {

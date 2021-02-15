@@ -77,7 +77,7 @@ class PenawaranPemasokController extends Controller
     public function edit($id)
     {
         $barang = Barang::all();
-        $gudang = Gudang::find($id);
+        $gudang = GudangBulky::find($id);
         return view('app.transaksi.pemasok.penawaran.create',compact('gudang','barang'));
     }
 
@@ -140,11 +140,10 @@ class PenawaranPemasokController extends Controller
     }
     public function konfirmasi($id)
     {
-        $data = PenawaranBulky::findOrFail($id);
-        // dd($data);
-        $data->update(['status'=>'1']);
+        $penawaran = PenawaranBulky::findOrFail($id);
+        $penawaran->update(['status'=>'1']);
 
-        return redirect('/shop/pesanan/'.$data->barang->id)->with('success','Penawaran Telah Dikonfirmasi!');
+        return redirect('/shop/pesanan/'.$penawaran->barang->id.'?jumlah='.$penawaran->jumlah)->with('success','Penawaran Telah Dikonfirmasi!');
     }
     public function tolak($id)
     {
