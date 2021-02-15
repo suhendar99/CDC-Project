@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Atur Harga Barang '.$data->barang->nama_barang.' Di Gudang '.$data->gudang->nama;
+        $pageTitle = 'Atur Harga Barang '.$data->nama_barang.' Di Gudang '.$data->gudang->nama;
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -52,14 +52,14 @@
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
                                     <th>Harga Beli</th>
-                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Kwintal') ? 'Kg' : $base_harga->satuan }}</th>
+                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Kuintal') ? 'Kg' : $base_harga->satuan }}</th>
                                     <th>Keuntungan</th>
-                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Kwintal') ? 'Kg' : $base_harga->satuan }}</th>
+                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Kuintal') ? 'Kg' : $base_harga->satuan }}</th>
                                 </tr>
                             </thead>
                               <tbody id="dataPenyimpanan">
                                 <tr>
-                                    <td>{{ $base_harga->barang->nama_barang }}</td>
+                                    <td>{{ $base_harga->nama_barang }}</td>
                                     <td>{{ $base_harga->jumlah }} {{ $base_harga->satuan }}</td>
                                     <td>Rp. {{ number_format($base_harga->harga_beli,0,',','.') }}</td>
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / ($base_harga->jumlah * 100)),0,',','.') }}</td>
@@ -153,7 +153,7 @@
         $('#btn-save').removeClass('disabled');
         $('#btn-save').attr('type','sumbit');
         /* Act on the event */
-        if (satuan == 'Kwintal') {
+        if (satuan == 'Kuintal') {
             hargaSatuan = (parseInt(hargaBeli) / (parseInt(jumlahBarang) * 100));
         } else {
             hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));

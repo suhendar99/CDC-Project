@@ -23,14 +23,26 @@ class StockBarangController extends Controller
 
     public function editHarga($id)
     {
-        $data = StockBarang::with('barang', 'gudang')->findOrFail($id);
+        $data = StockBarang::with('stockBarangBulky', 'gudang', 'storage.storageIn')->findOrFail($id);
 
-        $base_harga = StorageIn::with('barang')
-        ->where([
-            ['gudang_id', $data->gudang_id],
-            ['barang_kode', $data->barang_kode]
-        ])->orderBy('id', 'desc')
-        ->first();
+        $standar = 0;
+        $total = 0;
+        $arr = [];
+
+        foreach ($data->storage as $storage) {
+            if ($storage->jumlah != 0) {
+                $standar += $storage->storageIn->jumlah;
+                $total += $storage->storageIn->harga_beli;
+            }
+        }
+
+        $arr['satuan'] = $data->satuan;   
+        $arr['nama_barang'] = $data->nama_barang;   
+        $arr['jumlah'] = $standar;   
+        $arr['harga_beli'] = $total;   
+
+        // dd($base_harga);
+        $base_harga = (object) $arr;
 
         $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
         $diskon = ($data->diskon === null) ? null : $data->diskon ;

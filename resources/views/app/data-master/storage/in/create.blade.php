@@ -104,10 +104,10 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_kode" id="barang" class="form-control">
+                                        <select name="barang_bulky_id" id="barang" class="form-control">
                                             <option value="0" data-satuan="-" disabled>--Pilih Gudang Dahulu--</option>
                                         </select>
-                                        @error('barang_kode')
+                                        @error('barang_bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -127,13 +127,14 @@
                                               </span>
                                         @enderror
                                     </div>
+                                    <input type="hidden" name="pemesanan_bulky_id" id="pemesanan_bulky_id">
                                     <div class="form-group col-md-4">
                                         <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
+                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}" id="harga">
                                         </div>
                                         @error('harga_beli')
                                               <span class="invalid-feedback" role="alert">
@@ -183,10 +184,10 @@
                 processData: false,
                 success: (response)=>{
                     console.log(response.data)
-                    $('#gudang').html(`<option>-- Pilih Barang --</option>`);
+                    $('#barang').html(`<option>-- Pilih Barang --</option>`);
                     $.each(response.data, function(index, val) {
                          /* iterate through array or object */
-                         $('#gudang').append(`<option value="${val.stock_barang_bulky.id}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
+                         $('#barang').append(`<option value="${val.barang_bulky_id}" data-satuan="${val.satuan}" data-jumlah="${val.jumlah_barang}" data-pemesanan="${val.pemesanan_bulky_id}" data-harga="${val.harga}" data-admin="${val.biaya_admin}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
                     });
                 },
                 error: (xhr)=>{
@@ -199,13 +200,25 @@
     $('#barang').change(function(event) {
         /* Act on the event */
         let satuan = $('#barang option:selected').data("satuan")
+        let jumlah = $('#barang option:selected').data("jumlah")
+        let pemesanan = $('#barang option:selected').data("pemesanan")
+        let harga = $('#barang option:selected').data("harga")
+        let admin = $('#barang option:selected').data("admin")
+        let total = harga - admin;
+
          console.log(satuan)
          if (satuan == 'Kg') {
              $('#satuanAppend').text('Kwintal')
+             $('#jumlah').val(jumlah);
              $('#jumlah').attr('type', 'number');
+             $('#pemesanan_bulky_id').val(pemesanan)
+             $('#harga').val(total)
          } else {
-             $('#satuanAppend').text(satuan)
+             $('#satuanAppend').text(satuan);
+             $('#jumlah').val(jumlah);
              $('#jumlah').attr('type', 'number');
+             $('#pemesanan_bulky_id').val(pemesanan)
+             $('#harga').val(total)
          }
 
          // for (var i = $('.tab').length - 1; i >= 1; i--) {

@@ -22,7 +22,18 @@ class Storage extends Model
     public function storageIn()
     {
     	// belongsTo(RelatedModel, foreignKey = storageIn_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\StorageIn', 'storage_in_kode', 'kode');
+    	return $this->belongsTo('App\Models\StorageIn', 'storage_masuk_id');
+    }
+
+    /**
+     * Storage belongs to StockBarangRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stockBarangRetail()
+    {
+        // belongsTo(RelatedModel, foreignKey = stockBarangRetail_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarang', 'barang_retail_id');
     }
 
     /**

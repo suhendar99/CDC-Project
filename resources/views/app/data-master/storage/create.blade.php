@@ -46,7 +46,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('storage.rak.simpan', $masuk->storageIn->kode)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('storage.rak.simpan', $masuk->storageIn->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">

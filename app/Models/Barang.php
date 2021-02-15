@@ -83,17 +83,6 @@ class Barang extends Model
         return $this->hasMany('App\Models\StockBarang', 'barang_kode', 'kode_barang');
     }
 
-    /**
-     * Barang has many StockBulky.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function stockBulky()
-    {
-        // hasMany(RelatedModel, foreignKeyOnRelatedModel = barang_id, localKey = id)
-        return $this->hasMany('App\Models\StockBarangBulky', 'barang_kode', 'kode_barang');
-    }
-
     public function barangKeluarPemesananBulky()
     {
         return $this->hasMany('App\Models\BarangKeluarPemesananBulky','barang_kode','kode_barang');

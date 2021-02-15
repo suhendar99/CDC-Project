@@ -15,14 +15,14 @@ class StorageKeluarBulky extends Model
     protected $guarded = [];
 
     /**
-     * StorageIn belongs to Barang.
+     * StorageKeluarBulky belongs to BarangBulky.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function barang()
+    public function barangBulky()
     {
-    	// belongsTo(RelatedModel, foreignKey = barang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+        // belongsTo(RelatedModel, foreignKey = barangBulky_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarangBulky', 'barang_bulky_id');
     }
 
     /**

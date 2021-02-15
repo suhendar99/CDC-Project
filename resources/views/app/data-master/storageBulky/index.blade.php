@@ -427,8 +427,8 @@
                         return data.nama;
                     }
                 },
-                {data : 'barang', render:function(data,a,b,c){
-                        return data.nama_barang;
+                {data : 'barang_bulky', render:function(data,a,b,c){
+                        return data.barang.nama_barang;
                     }
                 },
                 {data : 'jumlah', name: 'jumlah'},

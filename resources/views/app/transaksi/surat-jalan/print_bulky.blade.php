@@ -179,7 +179,7 @@
 			@endphp
 			<tr>
 				<td width="30%" class=" bold text-24 pb-1">
-					{{$data->pemesananKeluarBulky->bulky->nama}}
+					{{$data->pemesananBulky->bulky->nama}}
 				</td>
 				<td width="20%" rowspan="3" style="vertical-align: middle;" class="border-bottom pb-4">
 					<center>
@@ -190,19 +190,19 @@
 				<td width="30%" class=" text-14">
 					Kepada<br>
 					{{$data->penerima}} <br>
-					{{$data->pemesananKeluarBulky->alamat_pemesan}}
+					{{$data->pemesananBulky->alamat_pemesan}}
 				</td>
 			</tr>
 			<tr class="text-14">
 				<td class=" text-14 pb-1">
-					{{$data->pemesananKeluarBulky->bulky->alamat}}
+					{{$data->pemesananBulky->bulky->alamat}}
 				</td>
 				<td></td>
 				<td class="">
 				</td>
 			</tr>
 			<tr class="text-14">
-				<td class=" border-bottom pb-1">Telp. {{$data->pemesananKeluarBulky->bulky->kontak}}</td>
+				<td class=" border-bottom pb-1">Telp. {{$data->pemesananBulky->bulky->kontak}}</td>
 				<td></td>
 				<td class=""></td>
 			</tr>
@@ -229,15 +229,15 @@
 				<td>Ket</td>
 			</tr>
             @php
-                $id = $data->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->id;
+                $id = $data->pemesananBulky->barangPesananBulky->id;
                 $no = $id;
             @endphp
 			<tr>
                 <td>{{$no}}</td>
-				{{-- <td>{{ $data->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->count() }}</td> --}}
-				<td class="text-left">&nbsp; {{$data->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->nama_barang}}</td>
-				<td>{{$data->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->jumlah_barang}}</td>
-				<td>{{$data->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->satuan}}</td>
+				{{-- <td>{{ $data->pemesananBulky->barangPesananBulky->count() }}</td> --}}
+				<td class="text-left">&nbsp; {{$data->pemesananBulky->barangPesananBulky->nama_barang}}</td>
+				<td>{{$data->pemesananBulky->barangPesananBulky->jumlah_barang}}</td>
+				<td>{{$data->pemesananBulky->barangPesananBulky->satuan}}</td>
 				<td>&nbsp;</td>
 			</tr>
 		</table>
@@ -268,8 +268,8 @@
 				<td></td>
 				<td class="text-center text-14">
 
-					({{$data->pemesananKeluarBulky->bulky->pemilik}})<br>
-					{{$data->pemesananKeluarBulky->bulky->nama}}
+					({{$data->pemesananBulky->bulky->pemilik}})<br>
+					{{$data->pemesananBulky->bulky->nama}}
 				</td>
 				<td></td>
 			</tr>

@@ -556,7 +556,7 @@
                                                 <div class="input-group">
                                                     <input type="number" id="jumlah" min="1" max="{{ ($data->satuan == 'Ton') ? ($data->jumlah * 10) : $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                     <div class="input-group-append">
-                                                        <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Ton') ? 'Kwintal' : $data->satuan }}</span>
+                                                        <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Ton') ? 'Kuintal' : $data->satuan }}</span>
                                                     </div>
                                                 </div>
                                                 @error('jumlah')
@@ -822,7 +822,7 @@
                                         <div id="pilihMetode" class="col-md-4 col-12">
                                             <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
-                                                {{-- <option value="">-- Pilih Metode --</option> --}}
+                                                {{-- <option value=""> Pilih Metode -</option> --}}
                                                 <option value="kirim">Barang Dikirim</option>
                                                 <option value="ambil">Barang Diambil</option>
                                             </select>
@@ -929,8 +929,19 @@
     var biayaAdmin = '{{$biayaAdmin}}';
     var biayaMerchant = '{{$biayaMerchant}}';
     var hargaTotal = '{{$hargaBarang}}';
-    var satuan = '{{ ($satuan == 'Ton') ? 'Ton' : (($satuan == 'Ton') ? 'Kg' : $satuan) }}';
+    var satuan = '{{ $satuan }}';
+    var user = '{{ $user }}';
+
     $('#jumlah').on('keyup', function () {
+        if (user == 'bulky') {
+            if (satuan == 'Ton') {
+                satuan = 'Ton';
+            }
+        } else if(user == 'retail') {
+            if (satuan == 'Ton') {
+                satuan = 'Kuintal';
+            }
+        }
         // var biayaAdm = biayaAdmin * hargaTotal /100;
         var tot = $('#jumlah').val() * hargaTotal;
         var total = parseInt(tot) + parseInt(biayaAdmin)+parseInt(biayaMerchant);

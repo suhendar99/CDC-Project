@@ -27,14 +27,14 @@ class StorageController extends Controller
     {
         if($request->ajax()){
             if (Auth::user()->pengurusGudang->status == 1) {
-                $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+                $data = StockBarang::with('stockBarangBulky','storage.tingkat.rak', 'gudang', 'storage.storageIn')
                 ->whereHas('gudang.akunGudang', function($query){
                     $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
                 })
                 ->orderBy('id', 'desc')
                 ->get();
             } else {
-                $data = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang')
+                $data = StockBarang::with('stockBarangBulky','storage.tingkat.rak', 'gudang')
                 ->whereHas('gudang.akunGudang', function($query){
                     $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
                 })
@@ -60,7 +60,7 @@ class StorageController extends Controller
     public function detail(Request $request)
     {
         if ($request->query('id')) {
-            $data = StockBarang::with('barang.storageIn.storage.tingkat.rak')->find($request->query('id'));
+            $data = StockBarang::with('stockBarangBulky', 'storage.tingkat.rak', 'storage.storageIn')->find($request->query('id'));
 
             if ($data != null) {
                 return response()->json([
@@ -170,7 +170,7 @@ class StorageController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
-        $storage = Storage::where('storage_in_kode', $id)->first();
+        $storage = Storage::where('storage_masuk_id', $id)->first();
 
         $storage->update($request->only('tingkat_id'));
 

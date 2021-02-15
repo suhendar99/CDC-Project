@@ -15,8 +15,8 @@ class CreateStoragesTable extends Migration
     {
         Schema::create('storages', function (Blueprint $table) {
             $table->id();
-            // $table->string('storage_in_kode');
-            // $table->foreign('storage_in_kode')->references('kode')->on('storage_ins')->onDelete('cascade');
+            $table->foreignId('storage_masuk_id')->constrained('storage_ins')->onDelete('cascade');
+            $table->foreignId('barang_retail_id')->nullable()->constrained('stock_barangs')->onDelete('cascade');
             $table->float('jumlah', 11, 2);
             $table->string('satuan', 50);
             $table->dateTime('waktu');

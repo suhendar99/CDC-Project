@@ -35,7 +35,7 @@ class StorageKeluarBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = StorageKeluarBulky::with('barang', 'bulky', 'pemesananBulky')
+            $data = StorageKeluarBulky::with('barangBulky.barang', 'bulky', 'pemesananBulky')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -174,7 +174,8 @@ class StorageKeluarBulkyController extends Controller
 
         $satuan = ($barang->satuan == 'Ton') ? 'Kwintal' : $barang->satuan;
 
-        $kode_barang = $barang->barang_kode;
+        $kode_barang = $barang->stockBarangBulky->barang_kode;
+        $barangBulky = $barang->barang_bulky_id;
 
         $stok = StorageBulky::whereHas('storageMasukBulky', function($query)use($kode_barang, $gudang){
             $query->where([
@@ -249,7 +250,7 @@ class StorageKeluarBulkyController extends Controller
 
         $out = StorageKeluarBulky::create($request->only('pemesanan_bulky_id')+[
             'bulky_id' => $gudang->id,
-            'barang_kode' => $kode_barang,
+            'barang_bulky_id' => $barangBulky,
             'jumlah' => $barang->jumlah_barang,
             'satuan' => $barang->satuan,
             'kode' => $kode_out,
@@ -278,23 +279,19 @@ class StorageKeluarBulkyController extends Controller
         $jumlahAkhir = StorageBulky::whereHas('storageMasukBulky', function($query)use($kodex, $gudang){
             $query->where([
                     ['bulky_id', $gudang->id],
-                    ['barang_kode', $kodex->barang_kode]
+                    ['barang_kode', $kodex->stockBarangBulky->barang_kode]
                 ]);
         })->sum('jumlah');
 
-        StockBarangBulky::where([
-            ['bulky_id', $gudang->id],
-            ['barang_kode', $kodex->barang_kode]
-        ])
+        StockBarangBulky::find($kodex->barang_bulky_id)
         ->update([
             'jumlah' => $jumlahAkhir
         ]);
 
-
         $kode_kwi = $faker->unique()->ean13;
 
-        $surat = SuratJalanBulky::all();
-        $number = $surat->count();
+        $dataSurat = SuratJalanBulky::all();
+        $number = $dataSurat->count();
         $alpha = "LK";
         $date = date("ymdHis");
         $kode_surat = sprintf("%04s",abs($number+1));

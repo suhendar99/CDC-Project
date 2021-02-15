@@ -154,9 +154,11 @@ class ShopController extends Controller
 
         if (Auth::user()->pelanggan_id!= null) {
             $data = StockBarang::find($id);
+            $user = 'pelanggan';
         } elseif (Auth::user()->pembeli_id!= null) {
             $data = BarangWarung::find($id);
-        } elseif (Auth::user()->pengurus_gudang_bulky_id!= null) {
+            $user = 'pembeli';
+        } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
             if ($request->query('jumlah') != null) {
                 $jumlah = $request->query('jumlah');
                 $data = Barang::find($id);
@@ -164,12 +166,16 @@ class ShopController extends Controller
             } else {
                 $data = Barang::find($id);
             }
-        } else {
+            $user = 'bulky';
+        } elseif (Auth::user()->pengurus_gudang_id != null) {
             $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
             ->find($id);
+            $user = 'retail';
         }
 
-        return view($this->shopPath.'pesanan',compact('id','data','biaya'));
+        // dd($data);
+
+        return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user'));
     }
 
     public function pemesanan(Request $request, $id)
