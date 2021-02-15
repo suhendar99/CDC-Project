@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\PiutangBulky;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PiutangBulkyController extends Controller
 {
@@ -13,9 +14,22 @@ class PiutangBulkyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax()){
+            $data = PiutangBulky::with('pemesananKeluarBulky')->where('status','=',1)->orderBy('id','desc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('hutang', function($data){
+                    return 'Rp '.number_format($data->hutang);
+                })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
+                ->rawColumns(['hutang'])
+                ->make(true);
+        }
+        return view('app.data-master.piutangBulky.masukPemasok.index');
     }
 
     /**
