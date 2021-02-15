@@ -234,7 +234,7 @@ class StorageInController extends Controller
             'harga' => $harga,
             'total' => $masuk->harga_beli
         ]);
-        
+
         $log = LogTransaksi::create([
             'tanggal' => now(),
             'jam' => now(),
@@ -354,7 +354,7 @@ class StorageInController extends Controller
 
         $checkStock = StockBarang::where([
             ['gudang_id', $data->gudang_id],
-            ['barang_kode', $data->barang_kode]
+            ['barang_bulky_id', $data->barang_bulky_id]
         ])->first();
 
         if ($checkStock != null) {
