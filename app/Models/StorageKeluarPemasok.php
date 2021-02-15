@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StorageKeluarPemasok extends Model
 {
@@ -32,5 +33,14 @@ class StorageKeluarPemasok extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+    /**
+     * Get all of the rekapitulasi for the StorageKeluarPemasok
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rekapitulasi(): HasMany
+    {
+        return $this->hasMany(RekapitulasiPenjualanPemasok::class, 'storage_keluar_id', 'id');
     }
 }

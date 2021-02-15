@@ -479,7 +479,7 @@ class ShopController extends Controller
 
             $store = Barang::find($id);
 
-            $harga = $store->harga_barang * $request->jumlah;
+            // $harga = $store->harga_barang * $request->jumlah;
 
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -515,7 +515,7 @@ class ShopController extends Controller
                 'pajak' => 0,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
             $day = BatasPiutang::find(1);
             $jatuhTempo = date('Y-m-d',strtotime('+'.$day->jumlah_hari.' day'));

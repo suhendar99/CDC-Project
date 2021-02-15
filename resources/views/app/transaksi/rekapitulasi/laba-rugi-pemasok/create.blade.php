@@ -1,7 +1,29 @@
 @php
         $icon = 'book';
-        $pageTitle = 'Edit Kategori Induk';
+        $pageTitle = 'Tambah Laba Rugi';
         $dashboard = true;
+        $bulan = array(
+            ['no'=>'1','val' => 'Januari'],
+            ['no'=>'2','val' => 'Februari'],
+            ['no'=>'3','val' => 'Maret'],
+            ['no'=>'4','val' => 'April'],
+            ['no'=>'5','val' => 'Mei'],
+            ['no'=>'6','val' => 'Juni'],
+            ['no'=>'7','val' => 'Juli'],
+            ['no'=>'8','val' => 'Agustus'],
+            ['no'=>'9','val' => 'September'],
+            ['no'=>'10','val' => 'Oktober'],
+            ['no'=>'11','val' => 'November'],
+            ['no'=>'12','val' => 'Desember'],
+        );
+
+
+        $dataBulan = [];
+
+        foreach ($data as $key => $value) {
+            $dataBulan[] = $value->bulan;
+        }
+
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -17,9 +39,9 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Rekapitulasi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Laba Rugi</a>
+            <a href="#" class="text-14">Laba Rugi Pemasok</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Edit Laba Rugi</a>
+            <a href="#" class="text-14">Tambah Laba Rugi</a>
           </div>
         </div>
     </div>
@@ -40,7 +62,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('labaRugiPelanggan.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('laba-rugi-pemasok.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -48,28 +70,19 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('labaRugiPelanggan.update',$data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('laba-rugi-pemasok.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <label>Bulan <small class="text-success">*Harus dipilih</small></label>
                                                 <select name="bulan" id="" class="form-control @error('bulan') is-invalid @enderror">
-                                                    <option value="">--Pilih Bulan--</option>
-                                                    <option value="1" @if($data->bulan == 1) selected @endif>Januari</option>
-                                                    <option value="2" @if($data->bulan == 2) selected @endif>Februari</option>
-                                                    <option value="3" @if($data->bulan == 3) selected @endif>Maret</option>
-                                                    <option value="4" @if($data->bulan == 4) selected @endif>April</option>
-                                                    <option value="5" @if($data->bulan == 5) selected @endif>Mei</option>
-                                                    <option value="6" @if($data->bulan == 6) selected @endif>Juni</option>
-                                                    <option value="7" @if($data->bulan == 7) selected @endif>Juli</option>
-                                                    <option value="8" @if($data->bulan == 8) selected @endif>Agustus</option>
-                                                    <option value="9" @if($data->bulan == 9) selected @endif>September</option>
-                                                    <option value="10" @if($data->bulan == 10) selected @endif>Oktober</option>
-                                                    <option value="11" @if($data->bulan == 11) selected @endif>November</option>
-                                                    <option value="12" @if($data->bulan == 12) selected @endif>Desember</option>
+                                                    @foreach($bulan as $b)
+                                                        @if(!in_array($b['no'],$dataBulan))
+                                                            <option value="{{$b['no']}}" @if(old('bulan') == $b['no']) selected @endif>{{$b['val']}}</option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                                 @error('bulan')
                                                     <span class="invalid-feedback" role="alert">
@@ -86,7 +99,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="laba_kotor" class="form-control @error('laba_kotor') is-invalid @enderror" id="laba_kotor" placeholder="Masukan Jumlah Laba Kotor" aria-describedby="inputGroupPrepend" value="{{$data->laba_kotor}}" required>
+                                                <input type="number" min="1" name="laba_kotor" class="form-control @error('laba_kotor') is-invalid @enderror" id="laba_kotor" placeholder="Masukan Jumlah Laba Kotor" aria-describedby="inputGroupPrepend" value="{{old('laba_kotor')}}" required>
                                                 @error('laba_kotor')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -104,7 +117,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="pembelian" class="form-control @error('pembelian') is-invalid @enderror" id="pembelian" placeholder="Masukan Pembelian" aria-describedby="inputGroupPrepend" value="{{$data->pembelian}}" required>
+                                                <input type="number" min="1" name="pembelian" class="form-control @error('pembelian') is-invalid @enderror" id="pembelian" placeholder="Masukan Pembelian" aria-describedby="inputGroupPrepend" value="{{old('pembelian')}}" required>
                                                 @error('pembelian')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -120,7 +133,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="biaya_operasional" class="form-control @error('biaya_operasional') is-invalid @enderror" id="biaya_operasional" placeholder="Masukan Jumlah Biaya Operasional" aria-describedby="inputGroupPrepend" value="{{$data->biaya_operasional}}" required>
+                                                <input type="number" min="1" name="biaya_operasional" class="form-control @error('biaya_operasional') is-invalid @enderror" id="biaya_operasional" placeholder="Masukan Jumlah Biaya Operasional" aria-describedby="inputGroupPrepend" value="{{old('biaya_operasional')}}" required>
                                                 @error('biaya_operasional')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -138,7 +151,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="penjualan" class="form-control @error('penjualan') is-invalid @enderror" id="penjualan" placeholder="Masukan Penjualan" aria-describedby="inputGroupPrepend" value="{{$data->penjualan}}" required>
+                                                <input type="number" min="1" name="penjualan" class="form-control @error('penjualan') is-invalid @enderror" id="penjualan" placeholder="Masukan Penjualan" aria-describedby="inputGroupPrepend" value="{{old('penjualan')}}" required>
                                                 @error('penjualan')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -154,7 +167,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="laba_bersih" class="form-control @error('laba_bersih') is-invalid @enderror" id="laba_bersih" placeholder="Masukan Jumlah Laba Bersih" aria-describedby="inputGroupPrepend" value="{{$data->laba_bersih}}" required>
+                                                <input type="number" name="laba_bersih" class="form-control @error('laba_bersih') is-invalid @enderror" id="laba_bersih" placeholder="Masukan Jumlah Laba Bersih" aria-describedby="inputGroupPrepend" value="{{old('laba_bersih')}}" required>
                                                 @error('laba_bersih')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
