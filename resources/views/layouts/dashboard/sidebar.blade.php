@@ -105,18 +105,18 @@
                     </li>
                     <li class="
                         {{ Request::is('v1/laporan-penjualan-pemasok*') ? 'active' : false }}
-                        {{ Request::is('v1/bulky/laporan/barang*') ? 'active' : false }}
+                        {{ Request::is('v1/laporan-stok*') ? 'active' : false }}
                     ">
                         <a href="#reportSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">text_snippet</i>Laporan</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/laporan-penjualan-pemasok*') ? 'show' : false }}
-                            {{ Request::is('v1/bulky/laporan/barang*') ? 'show' : false }}
+                            {{ Request::is('v1/laporan-stok*') ? 'show' : false }}
                         " id="reportSubmenu">
                             <li class="{{ Request::is('v1/laporan-penjualan-pemasok*') ? 'active' : false }}">
                                 <a href="{{route('laporan.penjualan')}}">Penjualan</a>
                             </li>
-                            <li class="{{ Request::is('v1/bulky/laporan/barang*') ? 'active' : false }}">
-                                <a href="{{route('bulky.laporan.barang.index')}}">Stok Barang</a>
+                            <li class="{{ Request::is('v1/laporan-stok*') ? 'active' : false }}">
+                                <a href="{{route('laporan.stok')}}">Stok Barang</a>
                             </li>
                         </ul>
                     </li>

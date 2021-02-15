@@ -89,7 +89,7 @@
 
                         <div class="form-group row mb-4">
                             <div class="col-md-8 offset-md-4 float-right">
-                                <button type="button" class="btn btn-primary btn-sm" id="btn-action">
+                                <button type="submit" class="btn btn-primary btn-sm">
                                     {{ __('Login') }}
                                 </button> or
                                 <a href="{{route('register')}}">Register</a>
@@ -134,10 +134,10 @@
         appId: "1:186579738404:web:1149f45244cd92fca75db1",
         measurementId: "G-SQ9WLBCMV7"
     };
-      
+
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
-  
+
     $('#btn-action').click(function(event) {
         $('#btn-action').text('LOADING...')
         $('#btn-action').attr('disabled', 'disabled');
@@ -157,7 +157,7 @@
                 console.log('2. User Chat Token Error'+ err);
             });
     });
-      
+
     messaging.onMessage(function(payload) {
         const noteTitle = payload.notification.title;
         const noteOptions = {

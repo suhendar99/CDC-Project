@@ -116,7 +116,7 @@ class PemesananBulkyController extends Controller
     public function getPemesananRetail($id)
     {
 
-        $data = BarangPemesananBulky::with('barang', 'pemesananBulky.storageKeluarBulky')->where('id',$id)->first();
+        $data = BarangPemesananBulky::with('pemesananBulky.storageKeluarBulky')->where('id',$id)->first();
         // $data = PemesananPembeliItem::with('pemesananPembeli.barangKeluar')->where('id',$id)->get();
         return response()->json([
             'data' => $data

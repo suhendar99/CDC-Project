@@ -72,14 +72,14 @@ class StorageKeluarPemasokController extends Controller
         set_time_limit(120);
         $date = date('d-m-Y');
         $data = SuratJalanPemasok::whereId($request->query('id'))->with('user','pemesananKeluarBulky.bulky','pemesananKeluarBulky.barangKeluarPemesananBulky')->first();
-
+        // dd($data);
         // dd($data);
         // PDF::;
         // $customPaper = array(0,0,283.80,567.00);
 
         $counter = $data->count();
         $kode = sprintf("%'.04d", (String)$counter);
-        $pdf = PDF::loadview('app.transaksi.surat-jalan.print_bulky', compact('data','date','kode'));
+        $pdf = PDF::loadview('app.transaksi.surat-jalan.print_pemasok', compact('data','date','kode'));
         return $pdf->stream();
 
         // return view('app.transaksi.surat-jalan.print');

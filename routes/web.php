@@ -193,9 +193,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
         Route::post('laporan-penjualan-pemasok-excel','LaporanPemasokController@LaporanPenjualanExcel')->name('laporan.penjualan.excel');
 
-        Route::get('laporan-barang-keluar','laporanPengurusGudangController@showLaporanBarangKeluar')->name('laporan.barang.keluar');
-        Route::post('laporan-barang-keluar-pdf','laporanPengurusGudangController@LaporanBarangKeluarPdf')->name('laporan.barang.keluar.pdf');
-        Route::post('laporan-barang-keluar-excel','laporanPengurusGudangController@LaporanBarangKeluarExcel')->name('laporan.barang.keluar.excel');
+        Route::get('laporan-stok','laporanPemasokController@showLaporanStok')->name('laporan.stok');
+        Route::post('laporan-stok-pdf','laporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
+        Route::post('laporan-stok-excel','laporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
 
         Route::get('laporan-barang','laporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
         Route::post('laporan-barang-pdf','laporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
