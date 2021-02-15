@@ -124,7 +124,7 @@
         this.classList.toggle('fa-eye-slash');
     });
 
-    var firebaseConfig = {
+    var newFirebaseConfig = {
         apiKey: "AIzaSyDIwI2rySPgRjg2tc5WG3-i9-WS_QBZUiA",
         authDomain: "laravel-push-notif-53ca2.firebaseapp.com",
         databaseURL: "https://laravel-push-notif-53ca2-default-rtdb.firebaseio.com",
@@ -134,17 +134,17 @@
         appId: "1:186579738404:web:1149f45244cd92fca75db1",
         measurementId: "G-SQ9WLBCMV7"
     };
-
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
+      
+    firebase.initializeApp(newFirebaseConfig);
+    const newMessage = firebase.messaging();
+    
     $('#btn-action').click(function(event) {
         $('#btn-action').text('LOADING...')
         $('#btn-action').attr('disabled', 'disabled');
-            messaging
+            newMessage
             .requestPermission()
             .then(function () {
-                return messaging.getToken()
+                return newMessage.getToken()
             })
             .then(function(token) {
                 // alert(token);
@@ -154,11 +154,12 @@
                 document.getElementById("form-submit").submit();
             })
             .catch(function (err) {
+                alert(err);
                 console.log('2. User Chat Token Error'+ err);
             });
     });
-
-    messaging.onMessage(function(payload) {
+      
+    newMessage.onMessage(function(payload) {
         const noteTitle = payload.notification.title;
         const noteOptions = {
             body: payload.notification.body,

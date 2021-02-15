@@ -205,6 +205,9 @@ integrity="sha512-K0Vddb4QdnVOAuPJBHkgrua+/A9Moyv8AQEWi0xndQ+fqbRfAFd47z4A9u1AW/
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <!-- Bootstrap JS -->
 
+{{-- Firebase --}}
+<script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+
 <script type="text/javascript">
     // $('.material-icons').css('display','none')
     $(document).ready(function () {
@@ -254,6 +257,29 @@ integrity="sha512-K0Vddb4QdnVOAuPJBHkgrua+/A9Moyv8AQEWi0xndQ+fqbRfAFd47z4A9u1AW/
                 $(this).val(0);
             }
         })
+    });
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyDIwI2rySPgRjg2tc5WG3-i9-WS_QBZUiA",
+        authDomain: "laravel-push-notif-53ca2.firebaseapp.com",
+        databaseURL: "https://laravel-push-notif-53ca2-default-rtdb.firebaseio.com",
+        projectId: "laravel-push-notif-53ca2",
+        storageBucket: "laravel-push-notif-53ca2.appspot.com",
+        messagingSenderId: "186579738404",
+        appId: "1:186579738404:web:1149f45244cd92fca75db1",
+        measurementId: "G-SQ9WLBCMV7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.onMessage(function(payload) {
+        const noteTitle = payload.notification.title;
+        const noteOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(noteTitle, noteOptions);
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
