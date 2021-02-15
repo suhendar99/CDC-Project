@@ -777,7 +777,7 @@
                                             <div class="form-group">
                                                 <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                                 <div class="input-group">
-                                                    <input type="number" id="jumlah" min="1" max="{{ $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
+                                                    <input type="number" id="jumlah" min="1" max="{{ $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{(isset($jumlah)) ? $jumlah : '' }}" aria-describedby="satuanAppend">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Ton') ? 'Ton' : $data->satuan }}</span>
                                                     </div>
@@ -938,6 +938,14 @@
         $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga').val(total);
     });
+
+    @if (isset($jumlah))
+        var tot = $('#jumlah').val() * hargaTotal;
+        var total = parseInt(tot) + parseInt(biayaAdmin)+parseInt(biayaMerchant);
+        $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
+        $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+        $('#harga').val(total);
+    @endif
 
     function barang(id){
         $('#select-gudang').html(``);

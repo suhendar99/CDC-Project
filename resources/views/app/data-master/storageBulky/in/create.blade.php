@@ -51,7 +51,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
+                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ isset($pesananId) ? $pemesanan->kwitansiPemasok->kode : old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
+                                        <input type="text" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ isset($pesananId) ? $pemesanan->suratJalanPemasok->kode : old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -93,8 +93,8 @@
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach (\App\Models\Barang::get() as $barang)
-                                                <option value="{{$barang->kode_barang}}" {{ old('barang_kode') == $barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
+                                            @foreach (isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky : \App\Models\Barang::get() as $barang)
+                                                <option value="{{isset($pesananId) ? $barang->barang_kode : $barang->kode_barang}}" {{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->barang->kode_barang == $barang->barang_kode ? 'selected' : '' : old('barang_kode' == $barang->kode_barang ? 'selected' : '') }} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_kode')
@@ -106,7 +106,7 @@
                                     <div class="form-group col-md-4">
                                         <label>Jumlah Barang (Lihat kwitansi) <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
-                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend" id="jumlah">
+                                            <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->jumlah_barang : old('jumlah') }}" aria-describedby="satuanAppend" id="jumlah">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend"></span>
                                             </div>
@@ -123,7 +123,7 @@
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
+                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->harga : old('harga_beli') }}">
                                         </div>
                                         @error('harga_beli')
                                               <span class="invalid-feedback" role="alert">

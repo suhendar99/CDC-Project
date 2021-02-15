@@ -47,7 +47,7 @@
                         {{ Request::is('v1/penawaran-pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/riwayat*') ? 'active' : false }}
                         {{ Request::is('v1/po*') ? 'active' : false }}
-                        {{ Request::is('v1/returIn*') ? 'active' : false }}
+                        {{ Request::is('v1/retur-bulky-pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/returOut*') ? 'active' : false }}
                         {{ Request::is('v1/pemesanan-masuk-pemasok*') ? 'active' : false }}
                     ">
@@ -56,7 +56,7 @@
                             {{ Request::is('v1/penawaran-pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/riwayat*') ? 'show' : false }}
                             {{ Request::is('v1/po*') ? 'show' : false }}
-                            {{ Request::is('v1/returIn*') ? 'show' : false }}
+                            {{ Request::is('v1/retur-bulky-pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/returOut*') ? 'show' : false }}
                             {{ Request::is('v1/pemesanan-masuk-pemasok*') ? 'show' : false }}
                         " id="transaksiSubmenu">
@@ -69,28 +69,23 @@
                             <li class="{{ Request::is('v1/pemesanan-masuk-pemasok*') ? 'active' : false }}">
                                 <a href="{{route('pemesanan-masuk-pemasok.index')}}">Pesanan dari Bulky</a>
                             </li>
-                            <li class="{{ Request::is('v1/returIn*') ? 'active' : false }}">
-                                <a href="{{route('returIn.index')}}">Retur dari Bulky</a>
+                            <li class="{{ Request::is('v1/retur-bulky-pemasok*') ? 'active' : false }}">
+                                <a href="{{route('retur-bulky-pemasok.index')}}">Retur dari Bulky</a>
                             </li>
                         </ul>
                     </li>
-                    {{-- <li class="
-                        {{ Request::is('v1/piutangIn*') ? 'active' : false }}
-                        {{ Request::is('v1/piutangOut*') ? 'active' : false }}
+                    <li class="
+                        {{ Request::is('v1/piutang-bulky-pemasok*') ? 'active' : false }}
                     ">
                         <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Piutang</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/piutangIn*') ? 'show' : false }}
-                            {{ Request::is('v1/piutangOut*') ? 'show' : false }}
+                            {{ Request::is('v1/piutang-bulky-pemasok*') ? 'show' : false }}
                         " id="piutangSubmenu">
-                            <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                                <a href="{{route('piutangIn.index')}}">Piutang dari Warung</a>
-                            </li>
-                            <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
-                                <a href="{{route('piutangOut.index')}}">Piutang ke Bulky</a>
+                            <li class="{{ Request::is('v1/piutang-bulky-pemasok*') ? 'active' : false }}">
+                                <a href="{{route('piutang-bulky-pemasok.index')}}">Piutang dari Bulky</a>
                             </li>
                         </ul>
-                    </li> --}}
+                    </li>
                     <li class="
                         {{ Request::is('v1/rekapitulasiPembelian*') ? 'active' : false }}
                         {{ Request::is('v1/rekapitulasiPenjualan*') ? 'active' : false }}

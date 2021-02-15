@@ -50,8 +50,12 @@
                             <form action="{{route('bulky.retur.keluar.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                    <input type="numeric" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
+                                    <label>Kode Kwitansi <small class="text-success">*Harus dipilih</small></label>
+                                    <select name="nomor_kwitansi" id="nomor" class="form-control @error('nomor_kwitansi') is-invalid @enderror">
+                                        @foreach ($storageIn as $item)
+                                            <option value="{{$item->nomor_kwitansi}}" {{ old('nomor_kwitansi') == $item->nomor_kwitansi ? 'selected' : ''}} >{{$item->nomor_kwitansi}}</option>
+                                        @endforeach
+                                    </select>
                                     @error('nomor_kwitansi')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -60,11 +64,11 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Barang <small class="text-success">*Harus diisi</small></label>
+                                        <label>Barang <small class="text-success">*Harus dipilih</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($barang as $pesan)
-                                                <option value="{{$pesan->barang->kode_barang}}" {{ old('barang_kode') == $pesan->barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $pesan->barang->satuan }}" data-jumlah="{{ $pesan->jumlah }}">{{$pesan->barang->kode_barang}} | {{ $pesan->bulky->nama }} | {{$pesan->barang->nama_barang}}</option>
+                                            @foreach ($barang->barangKeluarPemesananBulky as $pesan)
+                                                <option value="{{$pesan->barang->kode_barang}}" {{ old('barang_kode') == $pesan->barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $pesan->satuan }}" data-jumlah="{{ $pesan->jumlah }}">{{$pesan->barang->kode_barang}} | {{$pesan->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_kode')
@@ -126,7 +130,7 @@
 <script>
     $('#barang').change(function(event) {
         /* Act on the event */
-        
+
         if ($('#barang option:selected').data('satuan') == 'Kg') {
             $('#satuanAppend').text('Ton')
             $('#jumlah').attr('type', 'numeric');

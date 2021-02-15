@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PengurusGudangBulky extends Model
 {
@@ -24,7 +25,7 @@ class PengurusGudangBulky extends Model
     {
         return $this->hasOne('App\User','pengurus_gudang_bulky_id','id');
     }
-    
+
     public function desa()
     {
         return $this->belongsTo('App\Models\Desa');
@@ -41,5 +42,8 @@ class PengurusGudangBulky extends Model
     {
         return $this->belongsTo('App\Models\Provinsi');
     }
-
+    public function returKeluar(): HasMany
+    {
+        return $this->hasMany(ReturKeluarBulky::class, 'pengurus_gudang_id', 'id');
+    }
 }
