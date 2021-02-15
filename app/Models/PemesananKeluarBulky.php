@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PemesananKeluarBulky extends Model
 {
@@ -37,18 +38,27 @@ class PemesananKeluarBulky extends Model
     }
     public function storageKeluarPemasok()
     {
-        return $this->hasMany('App\Models\StorageKeluarPemasok');
+        return $this->hasOne('App\Models\StorageKeluarPemasok');
     }
     public function kwitansiPemasok()
     {
-        return $this->hasMany('App\Models\KwitansiPemasok');
+        return $this->hasOne('App\Models\KwitansiPemasok');
     }
     public function suratJalanPemasok()
     {
-        return $this->hasMany('App\Models\SuratJalanPemasok');
+        return $this->hasOne('App\Models\SuratJalanPemasok');
     }
     public function barangKeluarPemesananBulky()
     {
         return $this->hasMany('App\Models\BarangKeluarPemesananBulky','pemesanan_id','id');
+    }
+    /**
+     * Get all of the piutangBulky for the PemesananKeluarBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function piutangBulky(): HasMany
+    {
+        return $this->hasMany(PiutangBulky::class, 'pemesanan_keluar_id', 'id');
     }
 }

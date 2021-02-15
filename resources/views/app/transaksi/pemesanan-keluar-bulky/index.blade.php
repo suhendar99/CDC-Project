@@ -52,7 +52,7 @@
                                     </h6>
                                 </div>
                             </div>
-                            @elseif(count($d->storageKeluarPemasok) < 1)
+                            @elseif($d->storageKeluarPemasok == null)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
@@ -63,6 +63,20 @@
                                     @if ($d->status == 6)
                                         @if($d->foto_bukti == null)
                                         <a class="btn btn-sm btn-primary"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
+                                        @else
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' :
+                                                (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
+                                            }}
+                                        </a>
+                                        @endif
+                                    @elseif ($d->metode_pembayaran == null)
+                                        @if($d->foto_bukti == null)
+                                        {{-- {{dd($d->piutangBulky->hutang)}} --}}
+                                        <span>Hutang Anda : Rp. {{number_format($d->piutangBulky->hutang,0,'.',',')}}</span>
+                                        <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#piutangModal" onclick="piutangCek({{ $d->piutangBulky->id }})" data-id="{{ $d->id }}"><i class="fas fa-hand-holding-usd"></i> Bayar Piutang</a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
@@ -119,7 +133,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarPemasok[0]->user->pemasok->nama}} ({{$d->storageKeluarPemasok[0]->user->pemasok->kabupaten->nama}})</span>
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarPemasok->user->pemasok->nama}} ({{$d->storageKeluarPemasok->user->pemasok->kabupaten->nama}})</span>
                                 </div>
                                 {{-- {{dd($d->retail->akunGudang[0]->kabupaten->nama)}} --}}
                                 <div class="col-md-4 border-right">
@@ -225,11 +239,44 @@
       </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="piutangModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form action="" id="form" method="post" enctype="multipart/form-data">
+        @csrf
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Bayar Piutang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Jumlah Yang Dibayar</label><br>
+                    <input type="number" min="1" name="bayar_hutang" class="">
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+          {{-- <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button> --}}
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
 @endsection
 @push('script')
 <script type="text/javascript">
     function uploadBukti(id){
         $('#form').attr('action',`/v1/upload/bukti/bulky/${id}`);
+    }
+    function piutangCek(id){
+        $('#form').attr('action',`/v1/bayar/piutang/bulky/${id}`);
     }
     function terima(id) {
         $.ajax({

@@ -17,11 +17,14 @@ class CreateReturKeluarBulkiesTable extends Migration
             $table->id();
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->foreignId('pengurus_gudang_id')->constrained('pengurus_gudang_bulkies')->onDelete('cascade');
+            $table->foreignId('storage_masuk_id')->constrained('storage_masuk_bulkies')->onDelete('cascade');
             $table->float('jumlah_barang', 11, 2);
             $table->string('satuan');
             $table->string('nomor_kwitansi');
             $table->date('tanggal_pengembalian');
             $table->text('keterangan');
+            $table->tinyInteger('status')->nullable()->comment("1 = Diterima, 2 = Ditolak");
             $table->timestamps();
         });
     }

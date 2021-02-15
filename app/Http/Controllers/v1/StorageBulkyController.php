@@ -40,7 +40,7 @@ class StorageBulkyController extends Controller
                     return '<a href="/v1/bulky/barang/stock/'.$data->id.'" class="btn btn-dark btn-sm">Atur Harga Barang</a>';
                 })
                 ->editColumn('created_at',function($data){
-                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                    return date('d-m-Y H:i', strtotime($data->created_at)).' WIB';
                 })
                 ->make(true);
         }

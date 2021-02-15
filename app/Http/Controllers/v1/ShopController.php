@@ -12,6 +12,7 @@ use App\Models\BarangKeluarPemesananBulky;
 use App\Models\BarangPesanan;
 use App\Models\BarangPemesananBulky;
 use App\Models\BarangWarung;
+use App\Models\BatasPiutang;
 use App\Models\Keranjang;
 use App\Models\LogTransaksi;
 use App\Models\Pemesanan;
@@ -24,6 +25,7 @@ use App\Models\Storage;
 use App\Models\StockBarang;
 use App\Models\StockBarangBulky;
 use App\Models\PemesananPembeliItem;
+use App\Models\PiutangBulky;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -146,7 +148,7 @@ class ShopController extends Controller
         }
 	}
 
-    public function showPemesanan($id)
+    public function showPemesanan(Request $request, $id)
     {
         $biaya = PengaturanTransaksi::find(1);
 
@@ -157,7 +159,13 @@ class ShopController extends Controller
             $data = BarangWarung::find($id);
             $user = 'pembeli';
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
-            $data = Barang::find($id);
+            if ($request->query('jumlah') != null) {
+                $jumlah = $request->query('jumlah');
+                $data = Barang::find($id);
+                return view($this->shopPath.'pesanan',compact('id','data','biaya','jumlah'));
+            } else {
+                $data = Barang::find($id);
+            }
             $user = 'bulky';
         } elseif (Auth::user()->pengurus_gudang_id != null) {
             $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
@@ -453,7 +461,6 @@ class ShopController extends Controller
             }
             return redirect('/v1/po')->with('sukses','Pesanan Telah dibuat !');
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null){
-
             $date = date('ymd');
             $latest = PemesananKeluarBulky::orderBy('id','desc')->first();
 
@@ -499,7 +506,7 @@ class ShopController extends Controller
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
-            BarangKeluarPemesananBulky::create([
+            $out = BarangKeluarPemesananBulky::create([
                 'kode' => $kodes,
                 'barang_kode' => $request->barangKode,
                 'pemesanan_id' => $pemesanan->id,
@@ -510,15 +517,15 @@ class ShopController extends Controller
                 'jumlah_barang' => $request->jumlah,
                 'harga' => $harga
             ]);
-
+            $day = BatasPiutang::find(1);
+            $jatuhTempo = date('Y-m-d',strtotime('+'.$day->jumlah_hari.' day'));
             if ($request->pembayaran == 'later') {
-                $BarangPesanan = BarangKeluarPemesananBulky::where('pemesanan_id',$pemesanan->id)->get();
-                // dd($hutang);
-                Piutang::create([
-                    'barang_id' => $pemesanan->id,
+                PiutangBulky::create([
+                    'pemesanan_keluar_id' => $pemesanan->id,
                     'tanggal'=> Carbon::now(),
-                    'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
+                    'nama_pembeli' => Auth::user()->pengurusGudangBulky->nama,
+                    'hutang' => $out->harga,
+                    'jatuh_tempo' => $jatuhTempo
                 ]);
             }
             return redirect('/v1/bulky/pemesanan/keluar')->with('sukses','Pesanan Telah dibuat !');

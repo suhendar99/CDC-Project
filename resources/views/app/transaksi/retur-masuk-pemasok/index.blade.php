@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pengembalian Barang Ke Pemasok';
+        $pageTitle = 'Data Pengembalian Barang Dari Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -15,7 +15,7 @@
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Transaksi</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pengembalian Barang Ke Pemasok</a>
+            <a href="#" class="text-14">Data Pengembalian Barang Dari Bulky</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="float-right">
-                              <a href="{{route('bulky.retur.keluar.create')}}" class="btn btn-primary btn-sm">Buat Retur Keluar</a>
+                              {{-- <a href="{{route('bulky.retur.keluar.create')}}" class="btn btn-primary btn-sm">Buat Retur Keluar</a> --}}
                           </div>
                         </div>
                     </div>
@@ -54,8 +54,7 @@
                                 <th>Jumlah Barang</th>
                                 <th>satuan</th>
                                 <th>Keterangan</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>status</th>
                             </tr>
                         </thead>
                     </table>
@@ -76,7 +75,7 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('bulky.retur.keluar.index') }}",
+            ajax : "{{ route('retur-bulky-pemasok.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
@@ -89,7 +88,7 @@
                 {data : 'satuan', name: 'satuan'},
                 {data : 'keterangan', name: 'keterangan'},
                 {data : 'status', name: 'status'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
