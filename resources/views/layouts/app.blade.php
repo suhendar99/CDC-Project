@@ -137,6 +137,30 @@
     $(document).ready(function () {
         $('.card').delay(1000).addClass('stop');
     });
+
+    
+    var firebaseConfig = {
+        apiKey: "AIzaSyDIwI2rySPgRjg2tc5WG3-i9-WS_QBZUiA",
+        authDomain: "laravel-push-notif-53ca2.firebaseapp.com",
+        databaseURL: "https://laravel-push-notif-53ca2-default-rtdb.firebaseio.com",
+        projectId: "laravel-push-notif-53ca2",
+        storageBucket: "laravel-push-notif-53ca2.appspot.com",
+        messagingSenderId: "186579738404",
+        appId: "1:186579738404:web:1149f45244cd92fca75db1",
+        measurementId: "G-SQ9WLBCMV7"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.onMessage(function(payload) {
+        const noteTitle = payload.notification.title;
+        const noteOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(noteTitle, noteOptions);
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
