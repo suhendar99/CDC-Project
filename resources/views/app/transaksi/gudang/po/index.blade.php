@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarBulky[0]->user->pengurusGudangBulky->nama}} ({{$d->storageKeluarBulky[0]->user->pengurusGudangBulky->kabupaten->nama}})</span>
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageKeluarBulky->user->pengurusGudangBulky->nama}} ({{$d->storageKeluarBulky->user->pengurusGudangBulky->kabupaten->nama}})</span>
                                 </div>
                                 {{-- {{dd($d->retail->akunGudang[0]->kabupaten->nama)}} --}}
                                 <div class="col-md-4 border-right">

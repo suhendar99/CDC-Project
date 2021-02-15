@@ -55,7 +55,7 @@ class StorageIn extends Model
     public function storage()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = storageIn_id, localKey = id)
-    	return $this->hasOne('App\Models\Storage', 'storage_in_kode', 'kode');
+    	return $this->hasOne('App\Models\Storage', 'storage_masuk_id');
     }
 
     public function rekapitulasi()
@@ -83,5 +83,16 @@ class StorageIn extends Model
     {
         // belongsTo(RelatedModel, foreignKey = barangBulky_id, keyOnRelatedModel = id)
         return $this->belongsTo('App\Models\StockBarangBulky', 'barang_bulky_id');
+    }
+
+    /**
+     * StorageIn belongs to Satuan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function satuan()
+    {
+        // belongsTo(RelatedModel, foreignKey = satuan_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Satuan', 'satuan_id');
     }
 }

@@ -36,4 +36,15 @@ class Satuan extends Model
     {
         return $this->hasMany('App\Models\StorageKeluarPemasok');
     }
+
+    /**
+     * Satuan has many StorageMasukRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageMasukRetail()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = satuan_id, localKey = id)
+        return $this->hasMany('App\Models\StorageIn', 'satuan_id');
+    }
 }

@@ -285,13 +285,13 @@
             ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : function(data){
+                {data : function(data,a,b,c){
                         let current_datetime = new Date(data.created_at);
                         return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
 
                     }, name: 'waktu'},
                 {data : 'gudang.nama', name: 'gudang'},
-                {data : 'barang.nama_barang', name: 'nama_barang'},
+                {data : 'nama_barang', name: 'nama_barang'},
                 {data : function(data,a,b,c){
                         return data.jumlah + " " + data.satuan;
                     }, name: 'jumlah'
@@ -299,9 +299,9 @@
                 {data : function (data, type, row, meta) {
                         let van = '';
                         // console.log(data)
-                        let storageIn = data.barang.storage_in;
+                        let storageIn = data.storage.storage_in;
 
-                        return `<a class="btn btn-info btn-sm col-md-12" data-toggle="modal" data-target="#modalPenyimapanStok" onclick="penyimpanan(${data.id},${data.gudang_id},${data.barang_kode})" data-id="${data.id}" style="cursor: pointer;" title="Detail">Detail</a>`;
+                        return `<a class="btn btn-info btn-sm col-md-12" data-toggle="modal" data-target="#modalPenyimapanStok" onclick="penyimpanan(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Detail">Detail</a>`;
 
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
@@ -391,13 +391,10 @@
                         return data.nama;
                     }
                 },
-                {data : 'barang', render:function(data,a,b,c){
-                        return data.nama_barang;
-                    }
-                },
+                {data : 'nama_barang', name: 'nama_barang'},
                 {
                     data: function (data, type, row, meta) {
-                        return data.jumlah + " " + data.satuan;
+                        return data.jumlah + " " + data.satuan.satuan;
                     },
                     name: 'jumlah'
                 },
@@ -463,10 +460,10 @@
                     let storage = response.data;
 
                     $('#kode').text("Kode Storage: " + storage.kode)
-                    $('.kodeBarang').text(storage.barang.kode_barang)
-                    $('.nama').text(storage.barang.nama_barang)
-                    $('.harga').text(storage.barang.harga_barang)
-                    $('.satuan').text(storage.barang.satuan)
+                    $('.kodeBarang').text(storage.barang_bulky.barang_kode)
+                    $('.nama').text(storage.nama_barang)
+                    $('.harga').text(storage.harga_beli)
+                    $('.satuan').text(storage.satuan.satuan)
                     $('.jumlah').text(storage.jumlah)
                     $('.gudang').text(storage.gudang.nama)
                     $('.karyawan').text(storage.user.pengurus_gudang.nama)
@@ -479,8 +476,8 @@
             });
         }
 
-        function penyimpanan(id, gudangId, barangKode){
-            $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
+        function penyimpanan(id){
+            $('#dataPenyimpanan').html(`<tr><td colspan="6" class="text-center">LOADING</td></tr>`);
 
             $.ajax({
                 url: "/api/v1/detail/penyimpanan/stock?id="+id,
@@ -492,16 +489,16 @@
                     $('#dataPenyimpanan').html(``);
                     let van = '';
                     // console.log(response.data)
-                    let storageIn = response.data.barang.storage_in;
+                    let storageIn = response.data.storage;
 
                     for (var i = storageIn.length - 1; i >= 0; i--) {
                         let space = `<tr style="font-size: .8rem;">
                             <td id="waktu">${storageIn[i].waktu}</td>
-                            <td id="kodeBarang">${storageIn[i].kode}</td>
-                            <td id="jumlahBarang">${storageIn[i].storage.jumlah}&nbsp;${storageIn[i].storage.satuan}</td>
-                            <td id="rak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.rak.nama) : ('Belum Diatur')}</td>
-                            <td id="tingkatRak">${(storageIn[i].storage.tingkat != null) ? (storageIn[i].storage.tingkat.nama) : ('Belum Diatur')}</td>
-                            <td id="aksi"><a href="/v1/storage/penyimpanan/${storageIn[i].storage.id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>
+                            <td id="kodeBarang">${storageIn[i].storage_in.kode}</td>
+                            <td id="jumlahBarang">${storageIn[i].jumlah}&nbsp;${storageIn[i].satuan}</td>
+                            <td id="rak">${(storageIn[i].tingkat != null) ? (storageIn[i].tingkat.rak.nama) : ('Belum Diatur')}</td>
+                            <td id="tingkatRak">${(storageIn[i].tingkat != null) ? (storageIn[i].tingkat.nama) : ('Belum Diatur')}</td>
+                            <td id="aksi"><a href="/v1/storage/penyimpanan/${storageIn[i].id}" class="btn btn-primary btn-sm">Atur Penyimpanan</a></td>
                         </tr>`;
 
                         van += space;
@@ -511,7 +508,7 @@
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;
-                    $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">Tidak Ada Data</td></tr>`);
+                    $('#dataPenyimpanan').html(`<tr><td colspan="6" class="text-center">Tidak Ada Data</td></tr>`);
                     console.log(res)
                 }
             });

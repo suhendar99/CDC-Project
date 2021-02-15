@@ -57,4 +57,26 @@ class StockBarangBulky extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = stockBarangBulky_id, localKey = id)
         return $this->hasMany('App\Models\BarangPemesananBulky', 'barang_bulky_id');
     }
+
+    /**
+     * StockBarangBulky has many StockBarangRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stockBarangRetail()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = stockBarangBulky_id, localKey = id)
+        return $this->hasMany('App\Models\StockBarang', 'barang_bulky_id');
+    }
+
+    /**
+     * StockBarangBulky has many StorageKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = stockBarangBulky_id, localKey = id)
+        return $this->hasMany('App\Models\StorageKeluarBulky', 'barang_bulky_id');
+    }
 }

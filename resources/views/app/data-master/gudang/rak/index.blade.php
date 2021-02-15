@@ -212,8 +212,8 @@
                               /* iterate through array or object */
                               $('#inputBarang').append(`<tr>
                                 <td>${val.nama}</td>  
-                                <td>${b.storage_in.barang.nama_barang}</td>
-                                <td>${b.jumlah + b.satuan}</td>
+                                <td>${b.storage_in.nama_barang}</td>
+                                <td>${b.jumlah} ${b.satuan}</td>
                                 </tr>`);
                              // array.push(b.storageIn.barang.nama)
                          });

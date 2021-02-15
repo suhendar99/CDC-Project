@@ -139,6 +139,8 @@
     const messaging = firebase.messaging();
   
     $('#btn-action').click(function(event) {
+        $('#btn-action').text('LOADING...')
+        $('#btn-action').attr('disabled', 'disabled');
             messaging
             .requestPermission()
             .then(function () {
@@ -146,30 +148,7 @@
             })
             .then(function(token) {
                 console.log(token);
-                
                 $('#tokens').val(token)
-                // $.ajaxSetup({
-                //     headers: {
-                //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                //     }
-                // });
-  
-                // $.ajax({
-                //     url: '{{-- route("save.token") --}}',
-                //     type: 'POST',
-                //     data: {
-                //         token: token
-                //     },
-                //     dataType: 'JSON',
-                //     success: function (response) {
-                //         alert('Token saved successfully.');
-                //         // document.getElementById("form-submit").submit();
-                //     },
-                //     error: function (err) {
-                //         console.log('1. User Chat Token Error'+ err);
-                //     },
-                // });
-  
             })
             .then(function(){
                 document.getElementById("form-submit").submit();

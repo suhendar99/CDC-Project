@@ -24,7 +24,7 @@ class CreateStorageInsTable extends Migration
             // $table->foreignId('storage_bulky_id')->constrained('storage_bulkies')->onDelete('cascade'); 
             // $table->foreignId('barang_kode')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
-            $table->foreignId('tingkat_id')->constrained('tingkatan_raks')->onDelete('cascade');
+            $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->bigInteger('harga_beli');
             $table->string('kode')->unique();

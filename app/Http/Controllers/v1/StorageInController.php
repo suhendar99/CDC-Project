@@ -14,6 +14,7 @@ use App\Models\StorageIn;
 use App\Models\Storage;
 use App\Models\Gudang;
 use App\Models\Barang;
+use App\User;
 use App\Models\LogTransaksi;
 use App\Models\StockBarang;
 use App\Models\RekapitulasiPembelian;
@@ -30,11 +31,11 @@ class StorageInController extends Controller
     {
         if($request->ajax()){
             if (Auth::user()->pengurusGudang->status == 1) {
-                $data = StorageIn::with('barang', 'gudang')
+                $data = StorageIn::with('barangBulky', 'gudang', 'satuan')
                 ->orderBy('id', 'desc')
                 ->get();
             } else {
-                $data = StorageIn::with('barang', 'gudang')
+                $data = StorageIn::with('barangBulky', 'gudang', 'satuan')
                 ->where('gudang_id', Auth::user()->pengurusGudang->gudang[0]->id)
                 ->orderBy('id', 'desc')
                 ->get();
@@ -79,17 +80,18 @@ class StorageInController extends Controller
     public function findStorageKeluar($id)
     {
         try {
-            $pesanan = BarangPemesananBulky::with('pemesananBulky', 'stockBarangBulky')
+            $pesanan = BarangPemesananBulky::with('pemesananBulky', 'stockBarangBulky.barang')
             ->whereHas('pemesananBulky', function($query)use($id){
-                $query->->where([
+                $query->where([
                     ['gudang_retail_id', $id],
-                    ['status' => 4]
+                    ['status', 5]
                 ]);
             })
             ->has('pemesananBulky.storageKeluarBulky')
             ->doesntHave('pemesananBulky.storageMasukRetail')
             ->get();
 
+            // dd($pesanan);
             // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
             // ->whereIn('id', $pesanan)
             // ->get();
@@ -142,7 +144,8 @@ class StorageInController extends Controller
     {
         // dd($request->all());
         $v = Validator::make($request->all(),[
-            'barang_kode' => 'required|exists:barangs,kode_barang',
+            'barang_bulky_id' => 'required|exists:stock_barang_bulkies,id',
+            'pemesanan_bulky_id' => 'required|exists:pemesanan_bulkies,id',
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
@@ -160,9 +163,10 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
-        $barang = Barang::where('kode_barang', $request->barang_kode)->first();
+        $barang = StockBarangBulky::with('barang')->find($request->barang_bulky_id);
 
-        $satuan = ($barang->satuan == 'Kg') ? 'Kwintal' : $barang->satuan;
+        $one = ($barang->satuan == 'Ton') ? 2 : 1;
+        $satuan = ($barang->satuan == 'Ton') ? 'Kuintal' : $barang->satuan;
 
         $jumlah = $request->jumlah;
 
@@ -174,26 +178,20 @@ class StorageInController extends Controller
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageIn::create($request->only('barang_kode', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+        $masuk = StorageIn::create($request->only('barang_bulky_id', 'pemesanan_bulky_id', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'kode' => $kode,
+            'nama_barang' => $barang->barang->nama_barang,
             'jumlah' => $jumlah,
-            'satuan' => $satuan,
+            'satuan_id' => $one,
             'user_id' => auth()->user()->id,
             'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
             'waktu' => now('Asia/Jakarta')
         ]);
 
-        Storage::create([
-            'storage_in_kode' => $kode,
-            'jumlah' => $jumlah,
-            'satuan' => $satuan,
-            'waktu' => now('Asia/Jakarta')
-        ]);
-
         $checkStock = StockBarang::where([
             ['gudang_id', $request->gudang_id],
-            ['barang_kode', $request->barang_kode]
+            ['barang_bulky_id', $request->barang_bulky_id]
         ])->first();
 
         if($checkStock !== null){
@@ -203,24 +201,40 @@ class StorageInController extends Controller
                 'jumlah' => $updateJumlah,
                 'satuan' => $satuan
             ]);
+
+            $stock_id = $checkStock->id;
         }else{
-            StockBarang::create($request->only('gudang_id', 'barang_kode')+[
+            $stok = StockBarang::create($request->only('gudang_id', 'barang_bulky_id')+[
                 'jumlah' => $jumlah,
+                'nama_barang' => $barang->barang->nama_barang,
                 'satuan' => $satuan
             ]);
+
+            $stock_id = $stok->id;
         }
+
+        Storage::create([
+            'storage_masuk_id' => $masuk->id,
+            'barang_retail_id' => $stock_id,
+            'jumlah' => $jumlah,
+            'satuan' => $satuan,
+            'waktu' => now('Asia/Jakarta')
+        ]);
+
+        $harga = $masuk->harga_beli / $masuk->jumlah;
 
         RekapitulasiPembelian::create([
             'storage_in_id' => $masuk->id,
             'tanggal_pembelian' => $masuk->waktu,
             'no_pembelian' => $masuk->kode,
-            'nama_penjual' => $masuk->barang->pemasok->nama,
-            'barang' => $masuk->barang->nama_barang,
+            'nama_penjual' => $masuk->barangBulky->barang->pemasok->nama,
+            'barang' => $masuk->barangBulky->barang->nama_barang,
             'jumlah' => $masuk->jumlah,
             'satuan' => $satuan,
-            'harga' => $masuk->barang->harga_barang,
-            'total' => $masuk->barang->harga_total
+            'harga' => $harga,
+            'total' => $masuk->harga_beli
         ]);
+        
         $log = LogTransaksi::create([
             'tanggal' => now(),
             'jam' => now(),
@@ -244,7 +258,7 @@ class StorageInController extends Controller
     public function detail($id)
     {
         try {
-            $data = StorageIn::with('barang', 'gudang', 'user.pengurusGudang')->where('id', $id)->first();
+            $data = StorageIn::with('barangBulky', 'gudang', 'user.pengurusGudang', 'satuan')->where('id', $id)->first();
 
             return response()->json([
                 'data' => $data

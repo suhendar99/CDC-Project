@@ -78,7 +78,7 @@ class GudangController extends Controller
 
     public function detailBarang($id)
     {
-        $data = Rak::with('tingkat.storage.storageIn.barang')->find($id);
+        $data = Rak::with('tingkat.storage.storageIn.barangBulky')->find($id);
 
         return response()->json([
             'data' => $data

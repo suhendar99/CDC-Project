@@ -20,7 +20,7 @@ class PemesananBulkyController extends Controller
      */
     public function index(Request $request)
     {
-        $data = BarangPemesananBulky::with('barang', 'pemesananBulky.storageKeluarBulky')
+        $data = BarangPemesananBulky::with('pemesananBulky.storageKeluarBulky', 'stockBarangBulky')
         ->orderBy('id', 'desc')
         ->get();
         // dd($data[0]);

@@ -47,6 +47,7 @@ class PoController extends Controller
         $data = $po->whereIn('gudang_id',$arrayGudang)->with('po_item')->get();
         return view($this->indexPathPemasok.'index',compact('data'));
     }
+    
     public function index()
     {
         $gudang = Gudang::select('id')->where('user_id', auth()->user()->id)->get();
@@ -54,6 +55,7 @@ class PoController extends Controller
         // dd($data[0]->barangPesananBulky->nama_barang);
         return view($this->indexPath.'index',compact('data'));
     }
+
     public function preview($id)
     {
         $data = Po::where('id',$id)->with('po_item')->first();
