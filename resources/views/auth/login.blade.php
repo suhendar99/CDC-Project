@@ -147,7 +147,7 @@
                 return messaging.getToken()
             })
             .then(function(token) {
-                console.log(token);
+                // alert(token);
                 $('#tokens').val(token)
             })
             .then(function(){

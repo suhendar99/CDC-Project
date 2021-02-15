@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Province;
 use App\City;
+use App\User;
 use App\Models\Barang;
 use App\Models\BarangKeluarPemesananBulky;
 use App\Models\BarangPesanan;
@@ -305,6 +306,19 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+
+            $gudang = $request->gudang_id;
+
+            $firebaseToken = User::whereHas('gudang', function($query)use($gudang){
+                $query->where('id', $gudang);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')->all();
+
+            $judul = __( 'Pesanan Baru!' );
+
+            $this->notif($judul, $firebaseToken);
+
             return redirect('v1/pemesananKeluarWarung')->with('success','Pemesanan Ke Retail Berhasil!');
 
         } elseif (Auth::user()->pembeli_id != null) {
@@ -459,6 +473,19 @@ class ShopController extends Controller
                     ]);
                 }
             }
+
+            $gudang = $request->bulky_id;
+
+            $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($gudang){
+                $query->where('bulky_id', $gudang);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')->all();
+
+            $judul = __( 'Pesanan Baru!' );
+
+            $this->notif($judul, $firebaseToken);
+
             return redirect('/v1/po')->with('sukses','Pesanan Telah dibuat !');
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null){
             $date = date('ymd');
@@ -517,6 +544,7 @@ class ShopController extends Controller
                 'jumlah_barang' => $request->jumlah,
                 'harga' => $harga
             ]);
+
             $day = BatasPiutang::find(1);
             $jatuhTempo = date('Y-m-d',strtotime('+'.$day->jumlah_hari.' day'));
             if ($request->pembayaran == 'later') {
@@ -528,9 +556,47 @@ class ShopController extends Controller
                     'jatuh_tempo' => $jatuhTempo
                 ]);
             }
+
+
+            
+
             return redirect('/v1/bulky/pemesanan/keluar')->with('sukses','Pesanan Telah dibuat !');
         }
     }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pemesanan' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        return true;
+    }
+
     public function cariKategori($id)
     {
         return $id;

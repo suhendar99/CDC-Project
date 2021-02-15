@@ -76,6 +76,7 @@ class LoginController extends Controller
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
+            auth()->user()->update(['device_token' => $request->token]);
             Log::create([
                 'log_name' => 'default',
                 'description' => 'login',
