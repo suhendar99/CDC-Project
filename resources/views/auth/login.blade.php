@@ -89,9 +89,11 @@
 
                         <div class="form-group row mb-4">
                             <div class="col-md-8 offset-md-4 float-right">
-                                <button type="submit" class="btn btn-primary btn-sm">
+                                {{-- JANGAN UBAH TYPE BUTTON!!! --}}
+                                <button type="button" class="btn btn-primary btn-sm">
                                     {{ __('Login') }}
                                 </button> or
+                                {{-- END --}}
                                 <a href="{{route('register')}}">Register</a>
                                 <a href="#" style="margin-left:115px;">Bantuan</a>
 
