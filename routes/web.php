@@ -183,6 +183,23 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('retur-status-terima/{id}', 'ReturBulkyController@terima')->name('retur-status-terima');
         // Piutang
         Route::resource('piutang-bulky-pemasok', 'PiutangBulkyController');
+        //Rekapitulasi
+        Route::resource('rekapitulasi-penjualan-pemasok', 'RekapitulasiPenjualanPemasokController');
+        Route::get('rekapitulasi-penjualan-pemasok/print/PDF', 'RekapitulasiPenjualanPemasokController@printPdf')->name('print-rekapitulasi-penjualan-pemasok.pdf');
+        Route::get('rekapitulasi-penjualan-pemasok/print/Excel', 'RekapitulasiPenjualanPemasokController@printExcel')->name('print-rekapitulasi-penjualan-pemasok.excel');
+        Route::resource('laba-rugi-pemasok', 'LabaRugiPemasokController');
+        // Laporan
+        Route::get('laporan-penjualan-pemasok','LaporanPemasokController@showLaporanPenjualan')->name('laporan.penjualan');
+        Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
+        Route::post('laporan-penjualan-pemasok-excel','LaporanPemasokController@LaporanPenjualanExcel')->name('laporan.penjualan.excel');
+
+        Route::get('laporan-stok','laporanPemasokController@showLaporanStok')->name('laporan.stok');
+        Route::post('laporan-stok-pdf','laporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
+        Route::post('laporan-stok-excel','laporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
+
+        Route::get('laporan-barang','laporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
+        Route::post('laporan-barang-pdf','laporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
+        Route::post('laporan-barang-excel','laporanPengurusGudangController@LaporanBarangExcel')->name('laporan.barang.excel');
         // Brang Po Masuk
         Route::get('po-masuk-pemasok','PoController@getDataMasukPemasok')->name('po.masuk.pemasok');
         Route::get('accept-po-gudang/{id}','PoController@acceptGudang')->name('accept.po.gudang');

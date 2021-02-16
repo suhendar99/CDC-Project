@@ -67,8 +67,8 @@ class ReturKeluarBulkyController extends Controller
             $arr[] = $value->id;
         }
         $barang = PemesananKeluarBulky::with('bulky','barangKeluarPemesananBulky.barang')->whereIn('bulky_id', $arr)->first();
-        $storageIn = StorageMasukBulky::whereIn('bulky_id',$arr)->get();
-        // dd($barang->barangKeluarPemesananBulky[0]->barang->kode_barang);
+        $storageIn = StorageMasukBulky::with('barang','bulky')->whereIn('bulky_id',$arr)->get();
+        // dd($storageIn[0]);
         // $barang = Barang::has('pemesananKeluarBulky')
         // ->whereHas('pemesananKeluarBulky', function($query)use($arr){
         //     $query->whereIn('bulky_id', $arr);

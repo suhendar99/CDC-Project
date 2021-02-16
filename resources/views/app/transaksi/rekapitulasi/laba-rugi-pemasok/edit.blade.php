@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('labaRugiPelanggan.index')}}" class="btn btn-primary btn-sm">Kembali</a>
+                                <a href="{{route('laba-rugi-pemasok.index')}}" class="btn btn-primary btn-sm">Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('labaRugiPelanggan.update',$data->id)}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('laba-rugi-pemasok.update',$data->id)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">

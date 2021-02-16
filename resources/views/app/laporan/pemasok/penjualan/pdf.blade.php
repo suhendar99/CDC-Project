@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Stok Barang</title>
+	<title>laporan Penjualan Pemasok</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +107,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Stok Barang</h3>
+            <h3>laporan Penjualan Pemasok</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
@@ -129,18 +129,20 @@
                 <th>Waktu Barang Masuk</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
-                <th>Jumlah Barang</th>
+                <th>Nama Pemasok</th>
+                <th>Kode Barang Masuk</th>
+                <th>Jumlah</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->waktu)) }}</td>
-                    <td>{{ $a->storageIn->kode }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->storageIn->barang->nama_barang }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
+                    <td>{{ $a->waktu }}</td>
+                    <td>{{ $a->barang->kode_barang }}</td>
+                    <td>{{ $a->barang->nama_barang }}</td>
+                    <td>{{ $a->pemasok->nama }}</td>
+                    <td>{{ $a->kode }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
                 </tr>
             @endforeach
@@ -149,7 +151,7 @@
 
 	<div style="float: right; margin-top:30px;">
         Bandung,  {{$date}}<br><br><br><br>
-		{{Auth::user()->pengurusGudang->nama}}
+		{{Auth::user()->pemasok->nama}}
 	</div>
 	<div id="footer">
 	  <div class="page-number"></div>

@@ -1,11 +1,12 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
+    $title = 'PDF Data Rekapitulasi Penjualan'
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Stok Barang</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,10 +108,10 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Stok Barang</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
-		<tr>
+		{{-- <tr>
 			@if ($month != null)
             <td rowspan="2" style="text-align:left; font-size:13px;">
 				Sumber Data : {{ $sumber }}
@@ -120,37 +121,45 @@
 				Waktu : {{$awal}} s.d. {{$akhir}}
 			</td>
             @endif
-		</tr>
+		</tr> --}}
 	</table>
     <table width="100%" style="margin-bottom: -10px; " id="customers">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Waktu Barang Masuk</th>
-                <th>Kode Barang</th>
+                <th>Tanggal Pembelian</th>
+                <th>No Pembelian</th>
+                <th>No Kwitansi</th>
+                <th>No Surat Jalan</th>
+                <th>Nama Penjual</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
+                <th>Harga Barang</th>
+                <th>Total Harga Barang</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->waktu)) }}</td>
-                    <td>{{ $a->storageIn->kode }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->storageIn->barang->nama_barang }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
+                    <td>{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
+                    <td>{{ $a->no_pembelian }}</td>
+                    <td>{{ $a->no_kwitansi }}</td>
+                    <td>{{ $a->no_surat_jalan }}</td>
+                    <td>{{ $a->nama_penjual }}</td>
+                    <td>{{ $a->barang }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
+                    <td>{{ $a->harga }}</td>
+                    <td>{{ $a->total }}</td>
                 </tr>
             @endforeach
         </tbody>
 	</table>
 
-	<div style="float: right; margin-top:30px;">
+	{{-- <div style="float: right; margin-top:30px;">
         Bandung,  {{$date}}<br><br><br><br>
 		{{Auth::user()->pengurusGudang->nama}}
-	</div>
+	</div> --}}
 	<div id="footer">
 	  <div class="page-number"></div>
 	</div>

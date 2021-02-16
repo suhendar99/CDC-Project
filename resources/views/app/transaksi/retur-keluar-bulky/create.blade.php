@@ -53,7 +53,7 @@
                                     <label>Kode Kwitansi <small class="text-success">*Harus dipilih</small></label>
                                     <select name="nomor_kwitansi" id="nomor" class="form-control @error('nomor_kwitansi') is-invalid @enderror">
                                         @foreach ($storageIn as $item)
-                                            <option value="{{$item->nomor_kwitansi}}" {{ old('nomor_kwitansi') == $item->nomor_kwitansi ? 'selected' : ''}} >{{$item->nomor_kwitansi}}</option>
+                                            <option value="{{$item->nomor_kwitansi}}" {{ old('nomor_kwitansi') == $item->nomor_kwitansi ? 'selected' : ''}} >{{$item->nomor_kwitansi}} | {{$item->barang->nama_barang}} | {{$item->bulky->nama}}</option>
                                         @endforeach
                                     </select>
                                     @error('nomor_kwitansi')
@@ -67,8 +67,8 @@
                                         <label>Barang <small class="text-success">*Harus dipilih</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($barang->barangKeluarPemesananBulky as $pesan)
-                                                <option value="{{$pesan->barang->kode_barang}}" {{ old('barang_kode') == $pesan->barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $pesan->satuan }}" data-jumlah="{{ $pesan->jumlah }}">{{$pesan->barang->kode_barang}} | {{$pesan->nama_barang}}</option>
+                                            @foreach ($storageIn as $pesan)
+                                                <option value="{{$pesan->barang->kode_barang}}" {{ old('barang_kode') == $pesan->barang->kode_barang ? 'selected' : ''}} data-satuan="{{ $pesan->satuan }}" data-jumlah="{{ $pesan->jumlah }}">{{$pesan->barang->kode_barang}} | {{$pesan->barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('barang_kode')

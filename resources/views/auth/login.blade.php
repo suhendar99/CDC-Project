@@ -89,7 +89,7 @@
 
                         <div class="form-group row mb-4">
                             <div class="col-md-8 offset-md-4 float-right">
-                                <button type="button" class="btn btn-primary btn-sm" id="btn-action">
+                                <button type="submit" class="btn btn-primary btn-sm">
                                     {{ __('Login') }}
                                 </button> or
                                 <a href="{{route('register')}}">Register</a>
@@ -137,7 +137,7 @@
       
     firebase.initializeApp(newFirebaseConfig);
     const newMessage = firebase.messaging();
-  
+    
     $('#btn-action').click(function(event) {
         $('#btn-action').text('LOADING...')
         $('#btn-action').attr('disabled', 'disabled');

@@ -29,6 +29,16 @@ class PemesananKeluarBulkyController extends Controller
         $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky','piutangBulky')->whereIn('bulky_id',$gudang)->orderBy('id','desc')->paginate(4);
         return view('app.transaksi.pemesanan-keluar-bulky.index',compact('data'));
     }
+    function getPesanan($id){
+        $data = PemesananKeluarBulky::with('barangKeluarPemesananBulky')->first();
+        $barang = $data->barangKeluarPemesananBulky[0];
+        $harga = $barang->sum('harga');
+        return response()->JSON([
+            'data' => $data,
+            'barang' => $barang,
+            'harga' => $harga,
+        ]);
+    }
 
     /**
      * Show the form for creating a new resource.

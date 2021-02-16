@@ -160,14 +160,14 @@ class ShopController extends Controller
             $data = BarangWarung::find($id);
             $user = 'pembeli';
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
+            $user = 'bulky';
             if ($request->query('jumlah') != null) {
                 $jumlah = $request->query('jumlah');
                 $data = Barang::find($id);
-                return view($this->shopPath.'pesanan',compact('id','data','biaya','jumlah'));
+                return view($this->shopPath.'pesanan',compact('id','data','biaya','jumlah','user'));
             } else {
                 $data = Barang::find($id);
             }
-            $user = 'bulky';
         } elseif (Auth::user()->pengurus_gudang_id != null) {
             $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')
             ->find($id);
@@ -518,7 +518,7 @@ class ShopController extends Controller
 
             $store = Barang::find($id);
 
-            $harga = $store->harga_barang * $request->jumlah;
+            // $harga = $store->harga_barang * $request->jumlah;
 
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -554,7 +554,7 @@ class ShopController extends Controller
                 'pajak' => 0,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,
-                'harga' => $harga
+                'harga' => $request->harga
             ]);
 
             $day = BatasPiutang::find(1);
