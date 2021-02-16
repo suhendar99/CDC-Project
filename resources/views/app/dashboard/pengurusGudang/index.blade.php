@@ -103,7 +103,7 @@
         </div>
     </div>
 </div>
-<div class="row my-4">
+{{-- <div class="row my-4">
     <div class="col-md-4 col-sm-12">
         <div class="card shadow" style="height: 400px">
             <div class="line-strip bg-my-primary"></div>
@@ -137,11 +137,11 @@
                   </table>
                     <div class="col-12 d-flex">
                         <div class="ml-auto p-2">
-                            {{-- @if ($logTransaksi->count() > 1) --}}
+                            @if ($logTransaksi->count() > 1)
                             <center>
                                 {{$logTransaksi->links()}}
                             </center>
-                            {{-- @endif --}}
+                            @endif 
                         </div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
   <div class="col-md-8" id="mapMap">
     <div style="height: 400px; width: 100%;" id="mapid"></div>
   </div>
-</div>
+</div> --}}
 <div class="row my-4">
   <div class="col-md-12">
     <div class="card">
