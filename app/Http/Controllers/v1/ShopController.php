@@ -343,6 +343,7 @@ class ShopController extends Controller
 
             $penerima_po = $request->penerima_po;
             $nama_pemesan = Auth::user()->pembeli->nama;
+            
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
                     'kode' => $kode_faker,
@@ -377,7 +378,9 @@ class ShopController extends Controller
                 'biaya_admin' => $request->biaya_admin,
                 'harga' => $request->harga
             ]);
+
             $stok = $store->jumlah - $barangPesanan->jumlah_barang;
+
             $store->update([
                 'jumlah' => $stok
             ]);
@@ -392,6 +395,15 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+
+            $firebaseToken = User::where('pelanggan_id', $request->pelanggan_id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+            $judul = __( 'Pesanan Baru!' );
+
+            $this->notif($judul, $firebaseToken);
 
             return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
 
@@ -547,6 +559,7 @@ class ShopController extends Controller
 
             $day = BatasPiutang::find(1);
             $jatuhTempo = date('Y-m-d',strtotime('+'.$day->jumlah_hari.' day'));
+
             if ($request->pembayaran == 'later') {
                 PiutangBulky::create([
                     'pemesanan_keluar_id' => $pemesanan->id,
@@ -557,8 +570,14 @@ class ShopController extends Controller
                 ]);
             }
 
+            $firebaseToken = User::where('pemasok_id', $request->pemasok_id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
 
-            
+            $judul = __( 'Pesanan Baru!' );
+
+            $this->notif($judul, $firebaseToken);
 
             return redirect('/v1/bulky/pemesanan/keluar')->with('sukses','Pesanan Telah dibuat !');
         }
