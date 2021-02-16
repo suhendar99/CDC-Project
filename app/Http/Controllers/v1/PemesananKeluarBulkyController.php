@@ -22,11 +22,19 @@ class PemesananKeluarBulkyController extends Controller
      */
     public function index(Request $request)
     {
-        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok')
-        ->orderBy('id', 'desc')
-        ->get();
+        // $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok')
+        // ->orderBy('id', 'desc')
+        // ->get();
         $gudang = GudangBulky::select('id')->where('user_id', auth()->user()->id)->get();
-        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky','piutangBulky')->whereIn('bulky_id',$gudang)->orderBy('id','desc')->paginate(4);
+        $data = PemesananKeluarBulky::with('bulky', 'barang.pemasok','barangKeluarPemesananBulky','piutangBulky')
+        ->has('barangKeluarPemesananBulky')
+        ->whereIn('bulky_id',$gudang)
+        ->orderBy('id','desc')
+        ->paginate(4);
+            // foreach ($gudang as $key => $value) {
+            //     dd($value);
+            // }
+        // dd($data);
         return view('app.transaksi.pemesanan-keluar-bulky.index',compact('data'));
     }
     function getPesanan($id){

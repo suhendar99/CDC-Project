@@ -173,8 +173,7 @@ class ShopController extends Controller
             ->find($id);
             $user = 'retail';
         }
-
-        // dd($data);
+        // dd($data->stockBarangBulky);
 
         return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user'));
     }
@@ -258,7 +257,7 @@ class ShopController extends Controller
             $kode_faker = $faker->unique()->regexify('[0-9]{9}');
 
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-            $kode = 'PEM/RTL/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+            $kode = 'PEM/WRG/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
             $store = StockBarang::find($id);
 
@@ -343,7 +342,7 @@ class ShopController extends Controller
 
             $penerima_po = $request->penerima_po;
             $nama_pemesan = Auth::user()->pembeli->nama;
-            
+
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
                     'kode' => $kode_faker,
@@ -448,7 +447,7 @@ class ShopController extends Controller
                 ]));
             }
 
-            $satuan = ($request->satuan == 'Ton') ? 'Kwintal' : $request->satuan;
+            $satuan = ($request->satuan == 'Ton') ? 'Kuintal' : $request->satuan;
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);

@@ -585,7 +585,7 @@
                                         <div id="pilihMetode" class="col-md-4 ">
                                             <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                             <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                                
+
                                                 <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                                 <option value="wangpas">Wangpas</option>
                                                 <option value="bayar di tempat">Bayar di tempat</option>
@@ -808,7 +808,7 @@
                                         <div id="pilihMetode" class="col-md-4 ">
                                             <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                             <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                                
+
                                                 <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                                 <option value="wangpas">Wangpas</option>
                                                 <option value="bayar di tempat">Bayar di tempat</option>

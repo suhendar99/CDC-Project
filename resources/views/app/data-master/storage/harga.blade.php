@@ -131,12 +131,14 @@
 @push('script')
 <script>
     let hargaBeli = '{{ $base_harga->harga_beli }}';
+    console.log(hargaBeli);
     let jumlahBarang = '{{ $base_harga->jumlah }}';
+    console.log(jumlahBarang);
     let satuan = '{{ $base_harga->satuan }}';
+    console.log(satuan);
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;
-
     // $('#keuntungan').keyup(function(event) {
     //     /* Act on the event */
     //     hargaSatuan = (parseInt(hargaBeli) / parseInt(jumlahBarang));
@@ -149,7 +151,6 @@
 
 
     function inputed(event) {
-
         $('#btn-save').removeClass('disabled');
         $('#btn-save').attr('type','sumbit');
         /* Act on the event */
@@ -162,6 +163,10 @@
         untung = hargaSatuan * ($(event).val() / 100);
 
         akhir = hargaSatuan + untung;
+
+        console.log(hargaSatuan);
+        console.log(untung);
+        console.log(akhir);
 
         $('#sugest').text('Rp. '+(akhir.toFixed(0).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga_barang').val(akhir.toFixed(0));

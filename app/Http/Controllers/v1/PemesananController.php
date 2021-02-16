@@ -136,6 +136,7 @@ class PemesananController extends Controller
         $data = BarangPesanan::with('pesanan.storageOut', 'barang')
         ->orderBy('id', 'desc')
         ->get();
+        // dd($data);
         if($request->ajax()){
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -502,7 +503,7 @@ class PemesananController extends Controller
      */
     public function getPemesanan($id)
     {
-        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->where('id',$id)->get();
+        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->find($id);
         return response()->json([
             'data' => $data
         ]);

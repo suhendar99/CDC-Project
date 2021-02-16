@@ -115,7 +115,7 @@
                             )</span>
 						</div>
 						<div class="col-12 mb-2">
-							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- ({{ ($b->satuan == 'Kwintal') ? 'Kg' : $b->satuan }})</span>
+							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- ({{ ($b->satuan == 'Kuintal') ? 'Kg' : $b->satuan }})</span>
 						</div>
 						<div class="col-12">
 							<span class="product-from">Dari {{$b->gudang->nama}} <br /> Desa {{$b->gudang->desa->nama}}</span>
