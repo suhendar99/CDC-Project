@@ -335,7 +335,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::resource('bulky/storage/masuk', 'StorageMasukBulkyController', [
             'names' => [
-                'index' => 'bulky.storage.masuk.index',
+                'index' => '
+                .masuk.index',
                 'create' => 'bulky.storage.masuk.create',
                 'store' => 'bulky.storage.masuk.store',
                 'edit' => 'bulky.storage.masuk.edit',

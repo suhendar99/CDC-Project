@@ -72,9 +72,8 @@
                                             }}
                                         </a>
                                         @endif
-                                    @elseif ($d->metode_pembayaran == null)
+                                    {{-- @elseif ($d->metode_pembayaran == null)
                                         @if($d->foto_bukti == null)
-                                        {{-- {{dd($d->piutangBulky->hutang)}} --}}
                                         <span>Hutang Anda : Rp. {{number_format($d->piutangBulky->hutang,0,'.',',')}}</span>
                                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#piutangModal" onclick="piutangCek({{ $d->piutangBulky->id }})" data-id="{{ $d->id }}"><i class="fas fa-hand-holding-usd"></i> Bayar Piutang</a>
                                         @else
@@ -85,7 +84,7 @@
                                                 (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
                                             }}
                                         </a>
-                                        @endif
+                                        @endif --}}
                                     @else
                                         @if($d->foto_bukti == null)
                                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
