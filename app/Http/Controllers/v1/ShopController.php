@@ -48,15 +48,15 @@ class ShopController extends Controller
                 if ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
                         ->whereHas('gudang', function($query){
                             $query->where('status', 1);
                         })->paginate(20);
                     }else{
-                        $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
-                        ->whereHas('barang',function($q) use ($search){
+                        ->whereHas('stockBarangBulky',function($q) use ($search){
                             $q->where('nama_barang','LIKE',"%".$search."%")
                             ->orWhere('harga_barang','LIKE',"%".$search."%");
                         })
@@ -66,7 +66,7 @@ class ShopController extends Controller
                         ->paginate(20);
                     }
                 } else {
-                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                    $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('gudang', function($query){
                         $query->where('status', 1);
@@ -264,7 +264,7 @@ class ShopController extends Controller
 
             $harga = $store->harga_barang * $request->jumlah;
 
-            $satuan = ($request->satuan == 'Kwintal') ? 'Kg' : $request->satuan;
+            $satuan = ($request->satuan == 'Kuintal') ? 'Kg' : $request->satuan;
 
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -286,9 +286,9 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             BarangPesanan::create([
                 'kode' => $kodes,
-                'barang_kode' => $request->barangKode,
+                'barang_kode' => $store->stockBarangBulky->barang_kode,
                 'pemesanan_id' => $pemesanan->id,
-                'nama_barang' => $request->nama_barang,
+                'nama_barang' => $store->nama_barang,
                 'satuan' => $satuan,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
