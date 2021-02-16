@@ -48,15 +48,15 @@ class ShopController extends Controller
                 if ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
                         ->whereHas('gudang', function($query){
                             $query->where('status', 1);
                         })->paginate(20);
                     }else{
-                        $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
-                        ->whereHas('barang',function($q) use ($search){
+                        ->whereHas('stockBarangBulky',function($q) use ($search){
                             $q->where('nama_barang','LIKE',"%".$search."%")
                             ->orWhere('harga_barang','LIKE',"%".$search."%");
                         })
@@ -66,7 +66,7 @@ class ShopController extends Controller
                         ->paginate(20);
                     }
                 } else {
-                    $barang = StockBarang::with('barang.storageIn.storage.tingkat.rak', 'gudang.user', 'barang.foto')->where('harga_barang','!=',null)
+                    $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('gudang', function($query){
                         $query->where('status', 1);
@@ -173,8 +173,7 @@ class ShopController extends Controller
             ->find($id);
             $user = 'retail';
         }
-
-        // dd($data);
+        // dd($data->stockBarangBulky);
 
         return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user'));
     }
@@ -258,13 +257,13 @@ class ShopController extends Controller
             $kode_faker = $faker->unique()->regexify('[0-9]{9}');
 
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-            $kode = 'PEM/RTL/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+            $kode = 'PEM/WRG/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
             $store = StockBarang::find($id);
 
             $harga = $store->harga_barang * $request->jumlah;
 
-            $satuan = ($request->satuan == 'Kwintal') ? 'Kg' : $request->satuan;
+            $satuan = ($request->satuan == 'Kuintal') ? 'Kg' : $request->satuan;
 
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -343,7 +342,7 @@ class ShopController extends Controller
 
             $penerima_po = $request->penerima_po;
             $nama_pemesan = Auth::user()->pembeli->nama;
-            
+
             if ($request->pengiriman == 'ambil') {
                 $pemesanan = PemesananPembeli::create(array_merge($request->only('pelanggan_id','pembeli_id','telepon','alamat_pemesan','metode_pembayaran'),[
                     'kode' => $kode_faker,
@@ -448,7 +447,7 @@ class ShopController extends Controller
                 ]));
             }
 
-            $satuan = ($request->satuan == 'Ton') ? 'Kwintal' : $request->satuan;
+            $satuan = ($request->satuan == 'Ton') ? 'Kuintal' : $request->satuan;
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);

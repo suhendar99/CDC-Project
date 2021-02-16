@@ -41,7 +41,7 @@ Route::group(['namespace' => 'v1'], function () {
     Route::get('shop/pesanan/{id}','ShopController@showPemesanan')->name('shop.pesanan')->middleware('auth');
     Route::post('shop/pemesanan/{id}','ShopController@pemesanan')->name('shop.pesanan.action');
     Route::get('citiesShop/{id}', 'ShopController@getCities');
-    Route::post('ongkirShop', 'PembelianController@check_ongkir');
+    // Route::post('ongkirShop', 'PembelianController@check_ongkir');
     Route::get('search', 'ShopController@index')->name('home.search.barang');
     Route::post('searchBarang', 'SearchController@barang')->name('search.barang');
 });
@@ -218,7 +218,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('selectGudang', 'TransaksiPemasokController@selectGudang')->name('select.gudang');
         Route::get('suratJalan', 'TransaksiPemasokController@suratJalan')->name('transaksiPemasok.surat');
     });
-    Route::get('/getKota/{id}', 'BarangConptroller@getCities');
     Route::group(['middleware' => ['bank']], function () {
         // Bunga Bank
         Route::resource('bungaBank', 'BungaBankController');
@@ -335,8 +334,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         Route::resource('bulky/storage/masuk', 'StorageMasukBulkyController', [
             'names' => [
-                'index' => '
-                .masuk.index',
+                'index' => 'bulky.storage.masuk.index',
                 'create' => 'bulky.storage.masuk.create',
                 'store' => 'bulky.storage.masuk.store',
                 'edit' => 'bulky.storage.masuk.edit',

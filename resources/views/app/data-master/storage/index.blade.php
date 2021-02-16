@@ -285,11 +285,7 @@
             ajax : "{{ route('storage.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : function(data,a,b,c){
-                        let current_datetime = new Date(data.created_at);
-                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
-
-                    }, name: 'waktu'},
+                {data : 'created_at', name: 'created_at'},
                 {data : 'gudang.nama', name: 'gudang'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : function(data,a,b,c){

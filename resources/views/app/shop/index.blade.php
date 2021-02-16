@@ -92,21 +92,21 @@
 	<div class="col-md-3 col-4">
 		{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 			<div class="card item-card">
-				@if(count($b->barang->foto) < 1 || $b->barang->foto == null)
+				@if($b->stockBarangBulky->foto_barang == null)
 				<img src="{!! asset('/images/image-not-found.jpg') !!}">
 				@else
 				{{-- {{dd($b)}} --}}
-				<img src="{{asset($b->barang->foto[0]->foto)}}">
+				<img src="{{asset($b->stockBarangBulky->foto_barang)}}">
 				@endif
 				<div class="card-body">
 					<div class="row">
 						<div class="col-12 float-banner">
 							<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
-							<span class="badge badge-pill badge-primary bg-my-primary">{{$b->barang->kategori->nama}}</span>
+							<span class="badge badge-pill badge-primary bg-my-primary"></span>
 							<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 						</div>
 						<div class="col-12">
-							<span class="product-name">{{$b->barang->nama_barang}} (
+							<span class="product-name">{{$b->nama_barang}} (
                                 @if ($b->jumlah == 0)
                                     Habis
                                 @else
@@ -115,7 +115,7 @@
                             )</span>
 						</div>
 						<div class="col-12 mb-2">
-							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- ({{ ($b->satuan == 'Kwintal') ? 'Kg' : $b->satuan }})</span>
+							<span class="product-price">Rp. {{ number_format($b->harga_barang,0,',','.')}},- ({{ ($b->satuan == 'Kuintal') ? 'Kg' : $b->satuan }})</span>
 						</div>
 						<div class="col-12">
 							<span class="product-from">Dari {{$b->gudang->nama}} <br /> Desa {{$b->gudang->desa->nama}}</span>

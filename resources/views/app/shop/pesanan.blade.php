@@ -90,9 +90,9 @@
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
-                            <input type="hidden" name="nama_barang" value="{{$data->barang->nama_barang}}">
+                            <input type="hidden" name="nama_barang" value="{{$data->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
-                            <input type="hidden" name="barangKode" value="{{$data->barang->kode_barang}}">
+                            <input type="hidden" name="barangKode" value="{{$data->stockBarangBulky->barang_kode}}">
                             {{-- <input type="hidden" name="pajak" value="{{$pajak}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="card-body">
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="col-md-7 col-6">
                                                 <div class="float-left">:</div>
-                                                <div class="float-left ml-2" id="nama"><h6>{{$data->barang->nama_barang}}</h6></div>
+                                                <div class="float-left ml-2" id="nama"><h6>{{$data->nama_barang}}</h6></div>
                                             </div>
                                             <div class="col-md-5 col-6">
                                                 <h6>Harga Barang</h6>
@@ -168,9 +168,9 @@
                                         <div class="form-group">
                                             <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
                                             <div class="input-group">
-                                                <input type="number" id="jumlah" min="1" max="{{ ($data->satuan == 'Kwintal') ? ($data->jumlah * 100) : $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
+                                                <input type="number" id="jumlah" min="1" max="{{ ($data->satuan == 'Kuintal') ? ($data->jumlah * 100) : $data->jumlah }}" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="" aria-describedby="satuanAppend">
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Kwintal') ? 'Kg' : $data->satuan }}</span>
+                                                    <span class="input-group-text" id="satuanAppend">{{ ($data->satuan == 'Kuintal') ? 'Kg' : $data->satuan }}</span>
                                                 </div>
                                             </div>
                                             @error('jumlah')
@@ -585,7 +585,7 @@
                                         <div id="pilihMetode" class="col-md-4 ">
                                             <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                             <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                                
+
                                                 <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                                 <option value="wangpas">Wangpas</option>
                                                 <option value="bayar di tempat">Bayar di tempat</option>
@@ -808,7 +808,7 @@
                                         <div id="pilihMetode" class="col-md-4 ">
                                             <label>Metode Pembayaran <small class="text-success">*Harus diisi</small></label>
                                             <select class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran"  >
-                                                
+
                                                 <option value="transfer">Transfer Ke (Rekening Penjual)</option>
                                                 <option value="wangpas">Wangpas</option>
                                                 <option value="bayar di tempat">Bayar di tempat</option>
@@ -940,6 +940,10 @@
         } else if(user == 'retail') {
             if (satuan == 'Ton') {
                 satuan = 'Kuintal';
+            }
+        } else if(user == 'pelanggan') {
+            if (satuan == 'Kuintal') {
+                satuan = 'Kg';
             }
         }
         // var biayaAdm = biayaAdmin * hargaTotal /100;

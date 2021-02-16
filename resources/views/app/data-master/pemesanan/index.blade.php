@@ -265,7 +265,7 @@
         }
 
         function bukti(id){
-
+            console.log(id);
             $.ajax({
                 url: "/api/v1/getDataPemesanan/"+id,
                 method: "GET",
@@ -273,7 +273,7 @@
                 cache: false,
                 processData: false,
                 success: (response)=>{
-                    // console.log(response.data[0]);
+                    console.log(response);
                     $('#foto_bukti').attr('src',`${response.data[0].pesanan.foto_bukti}`);
                     $('#button_accept').attr('href','/v1/validasi/bukti/warung/'+response.data[0].pesanan.id);
 

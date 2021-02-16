@@ -3,9 +3,11 @@
   $pageTitle = 'Dashboard Pemasok';
   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
-//   $barang = App\Models\Barang::all();
-//   $gudang = App\Models\Gudang::all();
-//   $pembeli = App\Models\PenurusGudang::all();
+  $barang = App\Models\Barang::all();
+  $gudang = App\Models\GudangBulky::all();
+  $bulky = App\Models\PengurusGudangBulky::all();
+  $kategori = App\Models\Kategori::all();
+  dd($kategori);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -22,12 +24,9 @@
           </div>
         </div>
     </div>
-    <div class="col-md-4 col-sm-12 valign-center py-2">
-        @include('layouts.dashboard.search')
-    </div>
 </div>
 <div class="row my-3">
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body dashboard">
@@ -37,7 +36,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">20 Jenis</span><br>
+                        <span class="text-my-primary">{{$barang->count()}} Jenis</span><br>
                         <span class="text-my-subtitle">Barang</span>
                     </div>
                   </div>
@@ -45,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-warning"></div>
             <div class="card-body dashboard">
@@ -55,7 +54,7 @@
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">20 Unit</span><br>
+                        <span class="text-my-warning">{{$gudang->count()}} Unit</span><br>
                         <span class="text-my-subtitle">Gudang</span>
                     </div>
                   </div>
@@ -63,35 +62,17 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="card my-3 shadow">
-            <div class="line-strip bg-my-danger"></div>
-            <div class="card-body dashboard">
-                <div class="row">
-                  <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-danger">people</i>
-                  </div>
-                  <div class="col-8 valign-center flex-last">
-                    <div class="float-right text-right">
-                        <span class="text-my-danger">200 Akun</span><br>
-                        <span class="text-my-subtitle">Pembeli</span>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
+    <div class="col">
         <div class="card my-3 shadow">
             <div class="line-strip bg-my-success"></div>
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">extension</i>
+                    <i class="material-icons md-48 text-my-success">user</i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-success">100 Orang</span><br>
+                        <span class="text-my-success">{{$bulky->count()}} Orang</span><br>
                         <span class="text-my-subtitle">Pemasok</span>
                     </div>
                   </div>
@@ -101,15 +82,10 @@
     </div>
 </div>
 <div class="row my-3">
-  <div class="col-md-12 col-sm-12">
-    <div style="height: 350px; width: 100%;" id="mapid"></div>
-  </div>
-</div>
-<div class="row my-3">
-    <div class="col-md-6 col-sm-12">
-        <div class="card shadow" style="height: 260px">
+    <div class="col-md-12 col-sm-12">
+        <div class="card shadow" style="height: auto">
             <div class="line-strip bg-my-warning"></div>
-            <div class="row m-2">
+            <div class="row p-3">
               <div class="col-12 valign-center">
                 <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Penjualan Bulanan</span>
               </div>
@@ -119,7 +95,20 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-12 col-sm-12 mt-4">
+        <div class="card shadow" style="height: auto">
+            <div class="line-strip bg-my-warning"></div>
+            <div class="row p-3">
+              <div class="col-12 valign-center">
+                <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Penjualan Bulanan</span>
+              </div>
+              <div class="col-12">
+                <div id="chartKomoditi"></div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 mt-4">
         <div class="card shadow" style="height: 260px">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body">
@@ -221,39 +210,6 @@
 </div>
 @endsection
 @push('script')
-{{-- Map Section --}}
-<script>
-    var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="">Google</a>',
-                        maxZoom:20, }),
-    gstreet     = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        attribution: 'Google',
-                        maxZoom: 20, }),
-    gterrain    = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, }),
-    gsatelite   = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, }),
-    ghybrid     = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, });
-    var baseLayers = {
-        "OSM": osm,
-        "Google Street"     : gstreet,
-        "Google Terrain"    : gterrain,
-        "Google Satelite"   : gsatelite,
-        "Google Hybrid"     : ghybrid
-    };
-    var map = L.map('mapid', {
-            center: [-6.241586, 106.992416],
-            zoom: 10,
-            layers: [ghybrid]
-    });
-    L.control.layers(baseLayers).addTo(map);
-</script>
-{{--  --}}
 <script type="text/javascript">
     $('#calendar').datepicker({
       format: "yyyy-mm-dd",
@@ -267,6 +223,33 @@
     });
 </script>
 <script type="text/javascript">
+var komoditi = JSON.parse('{!! json_encode($kategori) !!}')
+var optionsKomoditi = {
+          series: [{
+          data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+        }],
+          chart: {
+          type: 'bar',
+          height: 350
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        xaxis: {
+          categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
+            'United States', 'China', 'Germany'
+          ],
+        }
+        };
+
+        var charts = new ApexCharts(document.querySelector("#chartKomoditi"), optionsKomoditi);
+charts.render();
+
 var options = {
   chart: {
     type: 'area',
