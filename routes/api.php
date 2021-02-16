@@ -88,4 +88,5 @@ Route::get('/v1/retail/pemesanan/{id}/terima', 'v1\PemesananController@terima');
 Route::get('/v1/bulky/pemesanan/{id}/terima', 'v1\PemesananController@terima');
 Route::get('/v1/retur/kwitansi/{id}/barang', 'v1\ReturOutController@barangKwitansi');
 Route::get('/v1/gudang/retail/{id}/pemesanan', 'v1\StorageInController@findStorageKeluar');
+Route::get('/v1/gudang/bulky/{id}/pemesanan', 'v1\StorageMasukBulkyController@findStorageKeluar');
 // Route::get('/v1/bulky/proses/pengemasan/{id}', 'v1\PemesananBulkyController@proses');

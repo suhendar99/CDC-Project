@@ -30,12 +30,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
+                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('storage.index')}}" class="btn btn-primary btn-sm">Next <i class="fa fa-arrow-right"></i></a>
+                                <a href="{{route('bulky.storage.index')}}" class="btn btn-primary btn-sm">Next <i class="fa fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,7 @@
                 <div class="card-body ">
                     <div class="row">
                         <div class="col-md-12 col-sm-6">
-                            <form action="{{route('storage.in.store')}}" method="post" enctype="multipart/form-data">
+                            <form action="{{route('bulky.storage.masuk.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-12">
@@ -177,7 +177,7 @@
 
         let id = $('#gudang option:selected').val()
         $.ajax({
-                url: "/api/v1/gudang/retail/"+id+"/pemesanan",
+                url: "/api/v1/gudang/bulky/"+id+"/pemesanan",
                 method: "GET",
                 contentType: false,
                 cache: false,
@@ -220,157 +220,6 @@
              $('#pemesanan_bulky_id').val(pemesanan)
              $('#harga').val(total)
          }
-    });
-
-    onScan.attachTo(document, {
-        suffixKeyCodes: [13],
-        reactToPaste: true,
-        onScan: function(sCode, qty){
-            console.log(sCode)
-            $('#scanBarang').val(sCode)
-            $.ajax({
-                url: "/api/v1/storage/barang/"+sCode,
-                method: "GET",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: (response)=>{
-                    console.log(response.data)
-                    $('#barangStatus').empty();
-                    $('#barangStatus').append('Barang ditemukan <a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a>')
-                    $('#card-table').remove();
-                    $('#card-form').after(`<div class="card card-block d-flex" id="card-table">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-6">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Kode Barang</td>
-                                            <td id="kodeBarang">${response.data.kode_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama Barang</td>
-                                            <td id="nama">${response.data.nama_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kategori Barang</td>
-                                            <td id="kategori">${response.data.kategori.nama}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Harga Barang</td>
-                                            <td id="harga">${response.data.harga_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pemasok Barang</td>
-                                            <td id="pemasok">${(response.data.pemasok == null) ? 'NULL' : response.data.pemasok.nama}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>`)
-                },
-                error: (xhr)=>{
-                    let res = xhr.responseJSON;
-                    console.log(res)
-                    console.log('error')
-                    $('#barangStatus').empty();
-                    $('#card-table').remove();
-                    $('#barangStatus').append('Barang tidak ditemukan! <a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a>');
-                }
-            });
-        }
-        // onKeyDetect: function(key){
-        //     console.log(key)
-        // }
-    });
-
-    $(document).ready(function() {
-        $('#scanBarang').keyup(function(event) {
-            /* Act on the event */
-            let kode = $(this).val()
-
-            $.ajax({
-                url: "/api/v1/storage/barang/"+kode,
-                method: "GET",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: (response)=>{
-                    console.log(response.data)
-                    $('#barangStatus').empty();
-                    $('#barangStatus').append('Barang ditemukan <a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a>')
-                    $('#card-table').remove();
-                    $('#card-form').after(`<div class="card card-block d-flex" id="card-table">
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-6">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Kode Barang</td>
-                                            <td id="kodeBarang">${response.data.kode_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama Barang</td>
-                                            <td id="nama">${response.data.nama_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kategori Barang</td>
-                                            <td id="kategori">${response.data.kategori.nama}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Harga Barang</td>
-                                            <td id="harga">${response.data.harga_barang}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pemasok Barang</td>
-                                            <td id="pemasok">${(response.data.pemasok == null) ? 'NULL' : response.data.pemasok.nama}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>`)
-                },
-                error: (xhr)=>{
-                    let res = xhr.responseJSON;
-                    console.log(res)
-                    console.log('error')
-                    $('#barangStatus').empty();
-                    $('#card-table').remove();
-                    $('#barangStatus').append('Barang tidak ditemukan! <a href="{{ route('barang.create') }}" title="Create Barang" class="text-primary">Tambah Barang</a>');
-                }
-            });
-        });
-
-        // $('#barang').change(function(event) {
-        //     /* Act on the event */
-        //     let kode = $('#barang').val()
-
-        //     $.ajax({
-        //         url: "/api/v1/check/barang/"+kode,
-        //         method: "GET",
-        //         contentType: false,
-        //         cache: false,
-        //         processData: false,
-        //         success: (response)=>{
-        //             // console.log(response.data)
-        //             let harga = response.data.harga_barang;
-
-        //             $('#harga_barang').val(harga)
-        //             $('#ada_harga').text('Harga untuk barang yang sama di gudang ini')
-        //         },
-        //         error: (xhr)=>{
-        //             let res = xhr.responseJSON;
-        //             console.log(res)
-        //             console.log('error')
-        //         }
-        //     });
-        // });
     });
 </script>
 @endpush

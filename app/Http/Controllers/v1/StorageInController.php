@@ -87,8 +87,8 @@ class StorageInController extends Controller
                     ['status', 5]
                 ]);
             })
-            ->has('pemesananBulky.storageKeluarBulky')
-            ->doesntHave('pemesananBulky.storageMasukRetail')
+            ->has('pemesanan.storageKeluarBulky')
+            ->doesntHave('pemesanan.storageMasukRetail')
             ->get();
 
             // dd($pesanan);
