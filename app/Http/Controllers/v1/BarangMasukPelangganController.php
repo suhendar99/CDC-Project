@@ -25,7 +25,7 @@ class BarangMasukPelangganController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = BarangMasukPelanggan::with('storageOut.gudang','storageOut.barang', 'user')
+            $data = BarangMasukPelanggan::with('storageOut.gudang','storageOut.stockBarangRetail', 'user')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -36,9 +36,6 @@ class BarangMasukPelangganController extends Controller
                 })
                 ->addColumn('nama_gudang',function($data){
                     return $data->storageOut->gudang->nama;
-                })
-                ->addColumn('nama_barang',function($data){
-                    return $data->storageOut->barang->nama_barang;
                 })
                 ->addColumn('jumlah_barang',function($data){
                     return $data->jumlah.' '.$data->satuan;
@@ -114,7 +111,7 @@ class BarangMasukPelangganController extends Controller
 
         $masuk = BarangMasukPelanggan::create($request->only('storage_out_kode', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'kode' => $kode,
-            'satuan' => $barang->satuan,
+            'satuan' => $barang->satuan->satuan,
             'user_id' => auth()->user()->id,
             'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
             'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
@@ -126,7 +123,7 @@ class BarangMasukPelangganController extends Controller
             'pelanggan_id' => Auth::user()->pelanggan_id,
             'kode' => rand(1000000,9999999),
             'jumlah' => $request->jumlah,
-            'satuan' => $barang->satuan,
+            'satuan' => $barang->satuan->satuan,
             'waktu' => now('Asia/Jakarta')
         ]);
 
@@ -137,11 +134,11 @@ class BarangMasukPelangganController extends Controller
             'no_kwitansi' => $masuk->nomor_kwitansi,
             'no_surat_jalan' => $masuk->nomor_surat_jalan,
             'nama_penjual' => $masuk->storageOut->pemesanan->penerima_po,
-            'barang' => $masuk->storageOut->barang->nama_barang,
+            'barang' => $masuk->storageOut->stockBarangRetail->nama_barang,
             'jumlah' => $masuk->jumlah,
-            'satuan' => $barang->satuan,
-            'harga' => $masuk->storageOut->barang->harga_barang,
-            'total' => $masuk->jumlah*$masuk->storageOut->barang->harga_barang
+            'satuan' => $barang->satuan->satuan,
+            'harga' => $masuk->storageOut->stockBarangRetail->harga_barang,
+            'total' => $masuk->jumlah*$masuk->storageOut->stockBarangRetail->harga_barang
         ]);
 
         // dd($rekapitulasi);

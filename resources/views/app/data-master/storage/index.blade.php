@@ -116,7 +116,7 @@
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
-                                                                <th>Pemesanan</th>
+                                                                <th>No Pemesanan</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -131,7 +131,7 @@
                                                                 <th>Waktu</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
-                                                                <th>Pemesanan</th>
+                                                                <th>No Pemesanan</th>
                                                                 <th>Gudang</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -462,13 +462,13 @@
                         return data.nama;
                     }
                 },
-                {data : 'barang', render:function(data,a,b,c){
+                {data : 'stock_barang_retail', render:function(data,a,b,c){
                         return data.nama_barang;
                     }
                 },
                 {
                     data: function (data, type, row, meta) {
-                        return data.jumlah + " " + data.satuan;
+                        return data.jumlah + " " + data.satuan.satuan;
                     },
                     name: 'jumlah'
                 },

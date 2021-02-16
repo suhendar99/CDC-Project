@@ -148,7 +148,7 @@
                 {data : 'waktu', name: 'waktu'},
                 {data : 'kode', name: 'kode'},
                 {data : 'nama_gudang', name: 'nama_gudang'},
-                {data : 'nama_barang', name: 'nama_barang'},
+                {data : 'storage_out.stock_barang_retail.nama_barang', name: 'nama_barang'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
                 {data : 'harga_beli', name: 'harga_beli'},
                 {data : 'action', name: 'action'}

@@ -32,7 +32,7 @@ class BarangKeluarPelangganController extends Controller
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('nama_barang',function($data){
-                    return $data->barangWarung->storageOut->barang->nama_barang;
+                    return $data->barangWarung->storageOut->stockBarangRetail->nama_barang;
                 })
                 ->addColumn('jumlah_barang',function($data){
                     return $data->jumlah.' '.$data->satuan;
