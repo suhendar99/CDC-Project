@@ -77,6 +77,7 @@ class LoginController extends Controller
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
             auth()->user()->update(['device_token' => $request->token]);
+
             Log::create([
                 'log_name' => 'default',
                 'description' => 'login',
@@ -84,6 +85,7 @@ class LoginController extends Controller
                 'causer_type' => 'App\User',
                 'created_at' => now(),
             ]);
+            
             if (Auth::user()->status == 0) {
                 Auth::logout();
                 return redirect('/')->with('error','Akun Anda sedang menunggu persetujuan administrator kami.');
