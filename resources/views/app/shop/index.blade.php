@@ -162,21 +162,21 @@
 	<div class="col-md-3 col-4">
 		{{-- <a href="{{route('shop.detail',$b->id)}}"> --}}
 			<div class="card item-card">
-				@if(count($b->storageOut->barang->foto) < 1 || $b->storageOut->barang->foto == null)
+				@if($b->storageOut->stockBarangRetail->foto != '' || $b->storageOut->stockBarangRetail->foto == null)
 				<img src="{!! asset('/images/image-not-found.jpg') !!}">
 				@else
 				{{-- {{dd($b)}} --}}
-				<img src="{{asset($b->storageOut->barang->foto[0]->foto)}}">
+				<img src="{{asset($b->storageOut->stockBarangRetail->foto[0]->foto)}}">
 				@endif
 				<div class="card-body">
 					<div class="row">
 						<div class="col-12 float-banner">
 							<span class="badge badge-pill badge-danger bg-my-warning">Terlaris</span>
-							<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageOut->barang->kategori->nama}}</span>
+							<span class="badge badge-pill badge-primary bg-my-primary">{{$b->storageOut->stockBarangRetail->stockBarangBulky->barang->kategori->nama}}</span>
 							<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 						</div>
 						<div class="col-12">
-							<span class="product-name">{{$b->storageOut->barang->nama_barang}} (
+							<span class="product-name">{{$b->storageOut->stockBarangRetail->nama_barang}} (
                                 @if ($b->jumlah == 0)
                                     Habis
                                 @else

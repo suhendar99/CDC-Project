@@ -57,7 +57,7 @@
                             </thead>
                               <tbody id="dataPenyimpanan">
                                 <tr>
-                                    <td>{{ $base_harga->storageOut->barang->nama_barang }}</td>
+                                    <td>{{ $base_harga->storageOut->stockBarangRetail->nama_barang }}</td>
                                     <td>{{ $base_harga->jumlah }} {{ $base_harga->satuan }}</td>
                                     <td>Rp. {{ number_format($base_harga->harga_beli,0,',','.') }}</td>
                                     <td>Rp. {{ number_format(($base_harga->harga_beli / $base_harga->jumlah),0,',','.') }}</td>

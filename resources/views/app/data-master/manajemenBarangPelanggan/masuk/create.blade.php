@@ -91,7 +91,7 @@
                                         <select name="storage_out_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
                                             @foreach ($barang as $barangs)
-                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->barang->satuan }}">{{$barangs->barang->nama_barang}}</option>
+                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->satuan->satuan }}">{{$barangs->stockBarangRetail->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('storage_out_kode')

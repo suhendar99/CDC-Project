@@ -57,6 +57,17 @@ class StorageOut extends Model
     }
 
     /**
+     * Storage belongs to StockBarangRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stockBarangRetail()
+    {
+        // belongsTo(RelatedModel, foreignKey = stockBarangRetail_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarang', 'barang_retail_id');
+    }
+
+    /**
      * StorageOut belongs to Pemesanan.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -65,5 +76,16 @@ class StorageOut extends Model
     {
         // belongsTo(RelatedModel, foreignKey = pemesanan_id, keyOnRelatedModel = id)
         return $this->belongsTo('App\Models\Pemesanan');
+    }
+
+    /**
+     * StorageIn belongs to Satuan.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function satuan()
+    {
+        // belongsTo(RelatedModel, foreignKey = satuan_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Satuan', 'satuan_id');
     }
 }

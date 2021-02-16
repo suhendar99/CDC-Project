@@ -37,6 +37,17 @@ class StockBarang extends Model
     }
 
     /**
+     * StockBarang has many Storage.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageOut()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = stockBarang_id, localKey = id)
+        return $this->hasMany('App\Models\StorageOut', 'barang_retail_id');
+    }
+
+    /**
      * StockBarang belongs to Gudang.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

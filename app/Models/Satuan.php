@@ -47,4 +47,15 @@ class Satuan extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = satuan_id, localKey = id)
         return $this->hasMany('App\Models\StorageIn', 'satuan_id');
     }
+
+    /**
+     * Satuan has many StorageOutRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function storageOutRetail()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = satuan_id, localKey = id)
+        return $this->hasMany('App\Models\StorageOut', 'satuan_id');
+    }
 }
