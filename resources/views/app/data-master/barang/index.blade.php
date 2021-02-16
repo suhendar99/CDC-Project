@@ -95,7 +95,7 @@
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang</th>
                                                                 <th>Satuan</th>
-                                                                <th>Pemesanan</th>
+                                                                <th>No Pemesanan</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>

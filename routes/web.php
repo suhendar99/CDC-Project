@@ -4,7 +4,6 @@ use App\Http\Controllers\v1\PiutangBulkyController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Twilio\Rest\Client;
 use phpDocumentor\Reflection\Types\Resource_;
 
 /*
@@ -498,6 +497,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             Route::resource('pengurus-gudang', 'PengurusGudangController');
         });
 
+        // Foto Stock
+        // Route::put('retail/storage/stock/{id}/foto', 'StockBarangBulkyController@uploadFoto')->name('retail.stock.foto');
 
         // Laba Bulky
         Route::resource('retail/laba-rugi', 'LabaRugiRetailController', [

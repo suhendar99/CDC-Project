@@ -159,6 +159,8 @@ class StorageInController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
+        date_default_timezone_set('Asia/Jakarta');
+
         $faker = \Faker\Factory::create('id_ID');
 
         $kode = $faker->unique()->ean13;

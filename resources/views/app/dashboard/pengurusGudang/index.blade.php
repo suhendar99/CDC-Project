@@ -279,7 +279,7 @@
 @push('script')
 
 {{-- Map Section --}}
-<script>
+{{-- <script>
     var group = []
     var gudang = JSON.parse('{!! json_encode($gudang) !!}')
     var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -340,10 +340,10 @@
     // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
     // markers.push(Me);
     L.control.layers(baseLayers).addTo(map);
-</script>
+</script> --}}
 
 {{-- Detail Gudang Section --}}
-<script>
+{{-- <script>
     $('#close').click(function (e) {
         e.preventDefault();
         $('#mapMap').addClass('col-md-8');
@@ -400,7 +400,7 @@
             }
         });
     }
-</script>
+</script> --}}
 
 {{-- Calendar Section --}}
 <script type="text/javascript">

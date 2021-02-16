@@ -68,6 +68,7 @@
                                                 <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
                                                 <th>Diskon Barang</th>
+                                                {{-- <th>Foto Stock Barang</th> --}}
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -274,6 +275,43 @@
       </div>
     </div>
 </div>
+{{-- END --}}
+
+<!-- Modal Penyimpanan Stok Barang -->
+<div class="modal fade" id="modalFotoBarang" tabindex="-1" aria-labelledby="fotoBarang" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fotoBarang">Foto Stock Barang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12" id="foto">
+                <div class="row">
+                    <div class="col-12" id="tempat-foto">
+                        
+                    </div>
+                    <div class="col-12">
+                        <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
+                            @csrf
+                            @method('PUT')
+                            <input type="file" name="foto" onchange="this.form.submit()">
+                        </form>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+{{-- END --}}
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -286,8 +324,7 @@
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : function(data,a,b,c){
-                        let current_datetime = new Date(data.created_at);
-                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
+                        return data.created_at;
 
                     }, name: 'waktu'},
                 {data : 'gudang.nama', name: 'gudang'},
@@ -303,7 +340,7 @@
 
                         return `<a class="btn btn-info btn-sm col-md-12" data-toggle="modal" data-target="#modalPenyimapanStok" onclick="penyimpanan(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Detail">Detail</a>`;
 
-                    }, name: 'jumlah'},
+                    }, name: 'penyimpanan'},
                 {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {
                             return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
@@ -321,6 +358,9 @@
                         }
                     }, name: 'diskon'
                 },
+                // {data : function (data, type, row, meta) {
+                //         return `<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>`;
+                //     }, name: 'penyimpanan'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -474,6 +514,37 @@
                     console.log(res)
                 }
             });
+        }
+
+        function foto(id){
+            $('#tempat-foto').html('LOADING...')
+            $('#form-foto').attr('action', '{{ asset('') }}v1/retail/storage/stock/'+id+'/foto');
+
+            // $.ajax({
+            //     url: "/api/v1/detail/storage/in/"+id,
+            //     method: "GET",
+            //     contentType: false,
+            //     cache: false,
+            //     processData: false,
+            //     success: (response)=>{
+            //         console.log(response.data)
+            //         let storage = response.data;
+
+            //         $('#kode').text("Kode Storage: " + storage.kode)
+            //         $('.kodeBarang').text(storage.barang_bulky.barang_kode)
+            //         $('.nama').text(storage.nama_barang)
+            //         $('.harga').text(storage.harga_beli)
+            //         $('.satuan').text(storage.satuan.satuan)
+            //         $('.jumlah').text(storage.jumlah)
+            //         $('.gudang').text(storage.gudang.nama)
+            //         $('.karyawan').text(storage.user.pengurus_gudang.nama)
+            //         $('.waktu').text(storage.waktu)
+            //     },
+            //     error: (xhr)=>{
+            //         let res = xhr.responseJSON;
+            //         console.log(res)
+            //     }
+            // });
         }
 
         function penyimpanan(id){
