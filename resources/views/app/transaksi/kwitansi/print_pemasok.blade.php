@@ -220,7 +220,12 @@
 			<table class="table mt-2 pt-2 line">
 				<tr>
 					<td colspan="7" class="text-12">
-						No : {{$data->kode}}
+						No Kwitansi: {{$data->kode}}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="7" class="text-12">
+						No Pemesanan: {{$data->pemesananKeluarBulky->kode}}
 					</td>
 				</tr>
 				<tr>
