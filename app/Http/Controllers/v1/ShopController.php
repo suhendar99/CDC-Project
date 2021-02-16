@@ -48,13 +48,13 @@ class ShopController extends Controller
                 if ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
                         ->whereHas('gudang', function($query){
                             $query->where('status', 1);
                         })->paginate(20);
                     }else{
-                        $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
                         ->whereHas('stockBarangBulky',function($q) use ($search){
                             $q->where('nama_barang','LIKE',"%".$search."%")
@@ -66,7 +66,7 @@ class ShopController extends Controller
                         ->paginate(20);
                     }
                 } else {
-                    $barang = StockBarang::with('stockBarangBulky', 'gudang.user')->where('harga_barang','!=',null)
+                    $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('gudang', function($query){
                         $query->where('status', 1);
@@ -285,9 +285,9 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             BarangPesanan::create([
                 'kode' => $kodes,
-                'barang_kode' => $request->barangKode,
+                'barang_kode' => $store->stockBarangBulky->barang_kode,
                 'pemesanan_id' => $pemesanan->id,
-                'nama_barang' => $request->nama_barang,
+                'nama_barang' => $store->nama_barang,
                 'satuan' => $satuan,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,

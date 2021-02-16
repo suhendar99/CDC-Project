@@ -136,10 +136,10 @@
         appId: "1:186579738404:web:1149f45244cd92fca75db1",
         measurementId: "G-SQ9WLBCMV7"
     };
-      
+
     firebase.initializeApp(newFirebaseConfig);
     const newMessage = firebase.messaging();
-    
+
     $('#btn-action').click(function(event) {
         $('#btn-action').text('LOADING...')
         $('#btn-action').attr('disabled', 'disabled');
@@ -160,7 +160,7 @@
                 console.log('2. User Chat Token Error'+ err);
             });
     });
-      
+
     newMessage.onMessage(function(payload) {
         const noteTitle = payload.notification.title;
         const noteOptions = {

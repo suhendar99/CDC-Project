@@ -89,28 +89,6 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label>Harga Satuan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="harga" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Masukan harga barang">
-                                        @error('harga_barang')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <label>Keuntungan (%) <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" min="0" id="keuntungan" class="form-control @error('keuntungan') is-invalid @enderror" name="keuntungan" value="{{ old('keuntungan') }}" placeholder="Masukan Keuntungan">
-                                        @error('keuntungan')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
                                         <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                         <select name="satuan" id="satuanOn" class="form-control @error('satuan') is-invalid @enderror">
                                             <option value="">-- Pilih Satuan --</option>
@@ -123,6 +101,38 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Harga Barang<small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group mb-3">
+                                          <input type="number" type="number" id="harga" class="form-control @error('jumlah') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" aria-describedby="satAppend">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text" id="satAppend">/</span>
+                                          </div>
+                                          @error('harga_barang')
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $message }}</strong>
+                                              </span>
+                                          @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label>Keuntungan <small class="text-success">*Harus diisi</small></label>
+                                        <div class="input-group mb-3">
+                                          <input type="number" type="number" id="keuntungan" class="form-control @error('jumlah') is-invalid @enderror" name="keuntungan" value="{{ old('keuntungan') }}">
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">%</span>
+                                          </div>
+                                          @error('keuntungan')
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $message }}</strong>
+                                              </span>
+                                          @enderror
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -185,6 +195,7 @@
     $("#satuanOn").change(function () {
         var satuan = $(this).val();
         $('#satuanAppend').text(satuan);
+        $('#satAppend').text('Per-'+satuan);
     });
     function inputed(){
         $('#hasil').val($('#jumlah').val() * $('#keuntungan').val()/100 * $('#harga').val())

@@ -90,7 +90,7 @@
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
-                            <input type="hidden" name="nama_barang" value="{{$data->nama_barang}}">
+                            <input type="hidden" name="nama_barang" value="{{$data->stockBarangBulky->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->stockBarangBulky->barang_kode}}">
                             {{-- <input type="hidden" name="pajak" value="{{$pajak}}"> --}}
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="col-md-7 col-6">
                                                 <div class="float-left">:</div>
-                                                <div class="float-left ml-2" id="nama"><h6>{{$data->nama_barang}}</h6></div>
+                                                <div class="float-left ml-2" id="nama"><h6>{{$data->stockBarangBulky->barang->nama_barang}}</h6></div>
                                             </div>
                                             <div class="col-md-5 col-6">
                                                 <h6>Harga Barang</h6>

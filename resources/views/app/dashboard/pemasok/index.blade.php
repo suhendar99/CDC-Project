@@ -1,13 +1,36 @@
 @php
   $icon = "dashboard";
   $pageTitle = 'Dashboard Pemasok';
-  $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
+//   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
   $barang = App\Models\Barang::all();
   $gudang = App\Models\GudangBulky::all();
   $bulky = App\Models\PengurusGudangBulky::all();
-  $kategori = App\Models\Kategori::all();
-  dd($kategori);
+  $kat = App\Models\Kategori::all();
+  $ketegori = [];
+  $jumlahBarang = [];
+  foreach ($kat as $key => $value) {
+      $kategori[] =$value->nama;
+  }
+  $bulan = array(
+        ['no'=>'1','val' => 'Januari'],
+        ['no'=>'2','val' => 'Februari'],
+        ['no'=>'3','val' => 'Maret'],
+        ['no'=>'4','val' => 'April'],
+        ['no'=>'5','val' => 'Mei'],
+        ['no'=>'6','val' => 'Juni'],
+        ['no'=>'7','val' => 'Juli'],
+        ['no'=>'8','val' => 'Agustus'],
+        ['no'=>'9','val' => 'September'],
+        ['no'=>'10','val' => 'Oktober'],
+        ['no'=>'11','val' => 'November'],
+        ['no'=>'12','val' => 'Desember'],
+    );
+    $bul = [];
+    foreach ($bulan as $key => $value) {
+        $bul[] = $value;
+    }
+        //
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -90,7 +113,7 @@
                 <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Penjualan Bulanan</span>
               </div>
               <div class="col-12">
-                <div id="frekuensichart"></div>
+                <div id="chartBulanan"></div>
               </div>
             </div>
         </div>
@@ -100,7 +123,7 @@
             <div class="line-strip bg-my-warning"></div>
             <div class="row p-3">
               <div class="col-12 valign-center">
-                <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Penjualan Bulanan</span>
+                <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Jumlah Komoditi</span>
               </div>
               <div class="col-12">
                 <div id="chartKomoditi"></div>
@@ -181,23 +204,13 @@
     <div class="col-12">
         <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
             <div class="MultiCarousel-inner">
-                @foreach($data as $d)
+                @foreach($barang as $d)
                 <div class="item px-1">
                     <div class="card shadow">
                         <img class="card-img-top" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_176acb1444e%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_176acb1444e%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2299.1171875%22%20y%3D%2296.3%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
                         <div class="card-body text-left">
-                            <span class="carousel-card-title">Beras Super {{$d}}</span><br>
-                            <span class="carousel-card-subtitle">Tersedia {{$d}} Ton</span><br>
-                            {{-- <div class="row border-top pt-1">
-                                <div class="col-12 d-flex justify-content-center">
-                                    <a class="btn bg-transparent" href="#" title="Edit" tooltip="Edit">
-                                        <i class="material-icons text-my-warning md-18 ">edit</i>
-                                    </a>
-                                    <a class="btn bg-transparent" href="#" title="Hapus" tooltip="Hapus">
-                                        <i class="material-icons text-my-danger md-18 ">delete</i>
-                                    </a>
-                                </div>
-                            </div> --}}
+                            <span class="carousel-card-title">{{$d->nama_barang}}</span><br>
+                            <span class="carousel-card-title">{{$d->jumlah}} {{$d->satuan}}</span><br>
                         </div>
                     </div>
                 </div>
@@ -224,6 +237,7 @@
 </script>
 <script type="text/javascript">
 var komoditi = JSON.parse('{!! json_encode($kategori) !!}')
+console.log(komoditi);
 var optionsKomoditi = {
           series: [{
           data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
@@ -241,56 +255,80 @@ var optionsKomoditi = {
           enabled: false
         },
         xaxis: {
-          categories: ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan',
-            'United States', 'China', 'Germany'
-          ],
+          categories: komoditi,
         }
         };
 
-        var charts = new ApexCharts(document.querySelector("#chartKomoditi"), optionsKomoditi);
+    var charts = new ApexCharts(document.querySelector("#chartKomoditi"), optionsKomoditi);
 charts.render();
 
+var bulan = JSON.parse('{!! json_encode($bul) !!}')
 var options = {
-  chart: {
-    type: 'area',
-    height: '200px',
-    toolbar: {
-        show: false,
+    chart: {
+      type: 'bar',
+      height: '200px',
+      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
+      toolbar: {
+          show: false,
+      },
+      animations: {
+          enabled: true,
+          easing: 'easein',
+          speed: 800,
+          animateGradually: {
+              enabled: true,
+              delay: 150
+          },
+          dynamicAnimation: {
+              enabled: true,
+              speed: 350
+          }
+      }
     },
-    animations: {
-        enabled: true,
-        easing: 'easein',
-        speed: 800,
-        animateGradually: {
-            enabled: true,
-            delay: 150
-        },
-        dynamicAnimation: {
-            enabled: true,
-            speed: 350
-        }
+
+    plotOptions: {
+      bar: {
+          distributed: true,
+      }
+    },
+    markers: {
+      size: 0,
+    },
+    series: [{
+      name: 'Penjualan Bulanan',
+      data: [30,40,35,50]
+    }],
+    xaxis: {
+      categories: ['Januari','Februari','Maret','April'],
+      labels: {
+        show: false,
+      }
+    },
+    yaxis: {
+      show: true,
+      title: {
+          text: 'Jumlah Item',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: '#373d3f',
+              fontSize: '12px',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+          },
+      }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    tooltip: {
+        enabled: true
     }
-  },
-  markers: {
-    size: 0,
-  },
-  series: [{
-    name: 'Penjualan Bulanan',
-    data: [30,40,35,50]
-  }],
-  xaxis: {
-    categories: ['Jan','Feb','Mar','Apr']
-  },
-  dataLabels: {
-      enabled: false
-  },
-  tooltip: {
-      enabled: true
   }
-}
 
-var chart = new ApexCharts(document.querySelector("#frekuensichart"), options);
+  var pembelian = new ApexCharts(document.querySelector("#chartBulanan"), options);
 
-chart.render();
+  pembelian.render();
 </script>
 @endpush
