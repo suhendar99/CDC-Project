@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BarangKeluarPemesananBulky;
 use App\Models\PemesananKeluarBulky;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class PemesananMasukPemasokController extends Controller
@@ -18,6 +19,9 @@ class PemesananMasukPemasokController extends Controller
     public function index(Request $request)
     {
         $data = BarangKeluarPemesananBulky::with('barang', 'pemesanan')
+        ->whereHas('pemesanan',function($q){
+            $q->where('pemasok_id',Auth::user()->pemasok_id);
+        })
         ->orderBy('id', 'desc')
         ->get();
         // dd($data[0]);

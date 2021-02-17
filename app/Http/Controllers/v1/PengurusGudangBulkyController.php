@@ -15,6 +15,7 @@ use App\Mail\SendPasswordMail;
 use App\Models\GudangBulky;
 use App\Models\PengurusGudangBulky;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class PengurusGudangBulkyController extends Controller
 {
@@ -35,6 +36,7 @@ class PengurusGudangBulkyController extends Controller
                 $query->whereIn('bulky_id', $gudang);
             })->whereHas('pengurusGudangBulky', function($query){
                 $query->where('status', 0);
+                $query->where('id',Auth::user()->pengurus_gudang_bulky_id);
             })
             ->orderBy('id', 'desc')
             ->get();

@@ -217,6 +217,13 @@
                                     @else
                                     <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
                                     @endif
+                                @elseif ($d->status == 5
+                                )
+                                    @if($d->foto_bukti != null)
+                                    <a class="btn btn-sm btn-primary disabled" href="#"><i class="fas fa-shopping-bag"></i> Pesanan Sudah Diterima</a>
+                                    @else
+                                    <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
+                                    @endif
                                 @else
                                     @if($d->foto_bukti == null)
                                     <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>

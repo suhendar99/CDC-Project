@@ -12,15 +12,17 @@
                         <img src="{{asset('images/logo-app.png')}}" height="50" class="scale-down my-3">
                         @endif --}}
                         @if(Auth::user()->pengurus_gudang_id != null)
-                        <img src="{{asset('images/logo/logo-cdcretail-white.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_retail)}}" height="60" width="90%" class="scale-down my-3">
                         @elseif(Auth::user()->pengurus_gudang_bulky_id != null)
-                        <img src="{{asset('images/logo/logo-cdcbulky-white.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_bulky)}}" height="60" width="90%" class="scale-down my-3">
                         @elseif(Auth::user()->pelanggan_id != null)
-                        <img src="{{asset('images/logo/Logo-iwarung-white.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_warung)}}" height="60" width="90%" class="scale-down my-3">
                         @elseif(Auth::user()->pembeli_id != null)
-                        <img src="{{asset('images/logo/Logo-imarket-white.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_pembeli)}}" height="60" width="90%" class="scale-down my-3">
+                        @elseif(Auth::user()->pemasok_id != null)
+                        <img src="{{asset($set->logo_pemasok)}}" height="60" width="90%" class="scale-down my-3">
                         @else
-                        <img src="{{asset('images/logo/Logo-CDC-White.svg')}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_retail)}}" height="60" width="90%" class="scale-down my-3">
                         @endif
                     </center>
                 </div>

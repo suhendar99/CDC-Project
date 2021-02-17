@@ -25,11 +25,11 @@ class ReturKeluarBulkyController extends Controller
      */
     public function index(Request $request)
     {
-        $data = ReturKeluarBulky::with('barang','pengurusGudang','storageMasuk')
-        ->orderBy('id', 'desc')
-        ->get();
-        // dd($data);
         if($request->ajax()){
+            $data = ReturKeluarBulky::with('barang','pengurusGudang','storageMasuk')
+            ->where('pengurus_gudang_id',Auth::user()->pengurus_gudang_bulky_id)
+            ->orderBy('id', 'desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

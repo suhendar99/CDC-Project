@@ -130,5 +130,5 @@ class GudangBulky extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    
+
 }

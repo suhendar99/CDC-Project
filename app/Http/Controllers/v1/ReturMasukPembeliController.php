@@ -7,6 +7,7 @@ use App\Models\BarangWarung;
 use App\Models\PemesananPembeli;
 use App\Models\ReturMasukPelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,6 +22,9 @@ class ReturMasukPembeliController extends Controller
     {
         if($request->ajax()){
             $data = ReturMasukPelanggan::with('kode', 'pemesanan')
+            ->whereHas('pemesanan',function($q){
+                $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -29,7 +33,7 @@ class ReturMasukPembeliController extends Controller
                     return '<a href="/v1/returMasukPembeli/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('barang', function($data){
-                    return $data->kode->storageOut->barang->nama_barang;
+                    return $data->pemesanan->pemesananPembeliItem[0]->nama_barang;
                 })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));

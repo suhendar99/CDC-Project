@@ -165,6 +165,7 @@ class GudangController extends Controller
                     'kontak' => '62'.(int)$request->kontak,
                     'foto' => '/upload/foto/gudang/'.$foto,
                     'user_id' => $user_id,
+                    'status' => 1,
                     'nomor_gudang' => "GUD/RTI/".$date.'/'.$kode
                 ]));
 
@@ -176,6 +177,7 @@ class GudangController extends Controller
                 $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
                     'kontak' => '62'.(int)$request->kontak,
                     'user_id' => $user_id,
+                    'status' => 1,
                     'nomor_gudang' => "GUD/".$date.'/'.$kode
                 ]));
 

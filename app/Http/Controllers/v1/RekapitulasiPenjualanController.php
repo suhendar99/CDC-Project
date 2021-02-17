@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
@@ -25,7 +26,12 @@ class RekapitulasiPenjualanController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualan::with('storageOut')->orderBy('id','desc')->get();
+        $data = RekapitulasiPenjualan::with('storageOut')
+        ->whereHas('storageOut',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->orderBy('id','desc')
+        ->get();
         $total = $data->sum('total');
         if($request->ajax()){
             return DataTables::of($data)

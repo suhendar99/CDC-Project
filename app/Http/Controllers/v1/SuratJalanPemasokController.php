@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\SuratJalanPemasok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class SuratJalanPemasokController extends Controller
@@ -17,7 +18,7 @@ class SuratJalanPemasokController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = SuratJalanPemasok::with('pemesananKeluarBulky','user')
+            $data = SuratJalanPemasok::where('user_id',Auth::user()->id)->with('pemesananKeluarBulky','user')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

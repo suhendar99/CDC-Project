@@ -106,7 +106,7 @@
 							<span class="badge badge-pill badge-primary bg-my-danger">130Km</span>
 						</div>
 						<div class="col-12">
-							<span class="product-name">{{$b->stockBarangBulky->nama_barang}} (
+							<span class="product-name">{{$b->nama_barang}} (
                                 @if ($b->jumlah == 0)
                                     Habis
                                 @else

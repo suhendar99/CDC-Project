@@ -319,7 +319,10 @@
               fontFamily: 'Poppins, sans-serif',
               fontWeight: 400,
           },
-      }
+      },
+      ticks: {
+        stepSize: 1
+       }
     },
     dataLabels: {
         enabled: false

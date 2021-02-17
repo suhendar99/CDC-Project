@@ -14,6 +14,7 @@ use App\Models\Storage;
 use App\Models\Barang;
 use App\Models\Gudang;
 use App\Models\Kwitansi;
+use Illuminate\Support\Facades\Auth;
 
 class KwitansiController extends Controller
 {
@@ -26,6 +27,7 @@ class KwitansiController extends Controller
     {
         if($request->ajax()){
             $data = Kwitansi::with('pemesanan', 'gudang')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

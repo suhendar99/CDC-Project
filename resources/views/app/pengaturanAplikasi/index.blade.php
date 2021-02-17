@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="card-body">
                                     @if(!$data->logo_tab == null)
-                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 100px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_tab) }}">
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_tab) }}">
                                     @else
                                         <i class="mdi mdi-image-broken-variant" style="font-size: 100px;"></i>
                                     @endif
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="card-body">
                                     @if(!$data->logo_app == null)
-                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 100px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_app) }}">
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_app) }}">
                                     @else
                                         <i class="mdi mdi-image-broken-variant mb-2" style="font-size: 100px;"></i>
                                     @endif
@@ -75,6 +75,121 @@
                                     {{-- <label for="first-name-vertical">Logo Aplikasi</label> --}}
                                     <input type="file" id="first-name-vertical" class="form-control @error('logo_app') is-invalid @enderror" name="logo_app" placeholder="Logo Aplikasi" value="{{ $data->logo_app }}">
                                     @error('logo_app')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 pt-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <p>Logo Pemasok</p>
+                                </div>
+                                <div class="card-body">
+                                    @if(!$data->logo_pemasok == null)
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_pemasok) }}">
+                                    @else
+                                        <i class="mdi mdi-image-broken-variant" style="font-size: 100px;"></i>
+                                    @endif
+                                    <div class="form-group">
+                                    {{-- <label for="first-name-vertical">Logo Tab</label> --}}
+                                    <input type="file" id="first-name-vertical" class="form-control @error('logo_pemasok') is-invalid @enderror" name="logo_pemasok" placeholder="Logo Tab" value="{{ $data->logo_pemasok }}">
+                                    @error('logo_pemasok')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 pt-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <p>Logo Bulky</p>
+                                </div>
+                                <div class="card-body">
+                                    @if(!$data->logo_bulky == null)
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_bulky) }}">
+                                    @else
+                                        <i class="mdi mdi-image-broken-variant mb-2" style="font-size: 100px;"></i>
+                                    @endif
+                                    <div class="form-group">
+                                    {{-- <label for="first-name-vertical">Logo Aplikasi</label> --}}
+                                    <input type="file" id="first-name-vertical" class="form-control @error('logo_bulky') is-invalid @enderror" name="logo_bulky" placeholder="Logo Aplikasi" value="{{ $data->logo_bulky }}">
+                                    @error('logo_bulky')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 pt-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <p>Logo Retail</p>
+                                </div>
+                                <div class="card-body">
+                                    @if(!$data->logo_retail == null)
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_retail) }}">
+                                    @else
+                                        <i class="mdi mdi-image-broken-variant" style="font-size: 100px;"></i>
+                                    @endif
+                                    <div class="form-group">
+                                    {{-- <label for="first-name-vertical">Logo Tab</label> --}}
+                                    <input type="file" id="first-name-vertical" class="form-control @error('logo_retail') is-invalid @enderror" name="logo_retail" placeholder="Logo Tab" value="{{ $data->logo_retail }}">
+                                    @error('logo_retail')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 pt-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <p>Logo Warung</p>
+                                </div>
+                                <div class="card-body">
+                                    @if(!$data->logo_warung == null)
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_warung) }}">
+                                    @else
+                                        <i class="mdi mdi-image-broken-variant mb-2" style="font-size: 100px;"></i>
+                                    @endif
+                                    <div class="form-group">
+                                    {{-- <label for="first-name-vertical">Logo Aplikasi</label> --}}
+                                    <input type="file" id="first-name-vertical" class="form-control @error('logo_warung') is-invalid @enderror" name="logo_warung" placeholder="Logo Aplikasi" value="{{ $data->logo_warung }}">
+                                    @error('logo_warung')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 pt-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <p>Logo Pembeli</p>
+                                </div>
+                                <div class="card-body">
+                                    @if(!$data->logo_pembeli == null)
+                                        <img class="card-img-top" width="110" height="110" style="border-radius: 10px; height: 70px; width: auto; object-fit: scale-down;" src="{{ asset($data->logo_pembeli) }}">
+                                    @else
+                                        <i class="mdi mdi-image-broken-variant mb-2" style="font-size: 100px;"></i>
+                                    @endif
+                                    <div class="form-group">
+                                    {{-- <label for="first-name-vertical">Logo Aplikasi</label> --}}
+                                    <input type="file" id="first-name-vertical" class="form-control @error('logo_pembeli') is-invalid @enderror" name="logo_pembeli" placeholder="Logo Aplikasi" value="{{ $data->logo_pembeli }}">
+                                    @error('logo_pembeli')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

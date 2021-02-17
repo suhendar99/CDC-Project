@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         \Eloquent::unguard();
+        // \DB::unprepared(file_get_contents('public/db/cdc_for_seeder.sql'));
         \DB::unprepared(file_get_contents('public/db/wilayah_indo.sql'));
         $this->call(BankSeeder::class);
         $this->call(BulkySeeder::class);

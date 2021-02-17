@@ -38,11 +38,13 @@ class StorageOutController extends Controller
         if($request->ajax()){
             if (Auth::user()->pengurusGudang->status == 1) {
                 $data = StorageOut::with('stockBarangRetail', 'gudang', 'pemesanan', 'satuan')
+                ->where('user_id',Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
             } else {
                 $data = StorageOut::with('stockBarangRetail', 'gudang', 'pemesanan', 'satuan')
                 ->where('gudang_id', Auth::user()->pengurusGudang->gudang[0]->id)
+                ->where('user_id',Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
             }
