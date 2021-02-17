@@ -9,9 +9,15 @@ class BarangPesanan extends Model
     protected $table = 'barang_pesanans';
     protected $guarded = [];
 
-    public function barang()
+    /**
+     * BarangPesanan belongs to StockBarangRetail.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function stockBarangRetail()
     {
-        return $this->belongsTo('App\Models\Barang', 'barang_kode', 'kode_barang');
+        // belongsTo(RelatedModel, foreignKey = stockBarangRetail_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\StockBarang', 'barang_retail_id');
     }
 
     public function pesanan()

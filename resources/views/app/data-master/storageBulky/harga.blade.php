@@ -52,9 +52,9 @@
                                     <th>Barang</th>
                                     <th>Jumlah Barang</th>
                                     <th>Harga Beli</th>
-                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Ton') ? 'Kwintal' : $base_harga->satuan }}</th>
+                                    <th>Harga Dasar Per-{{ ($base_harga->satuan == 'Ton') ? 'Kuintal' : $base_harga->satuan }}</th>
                                     <th>Ambil Untung</th>
-                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Ton') ? 'Kwintal' : $base_harga->satuan }}</th>
+                                    <th>Harga Jual Per-{{ ($base_harga->satuan == 'Ton') ? 'Kuintal' : $base_harga->satuan }}</th>
                                 </tr>
                             </thead>
                               <tbody id="dataPenyimpanan">

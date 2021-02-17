@@ -286,7 +286,7 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             BarangPesanan::create([
                 'kode' => $kodes,
-                'barang_kode' => $store->stockBarangBulky->barang_kode,
+                'barang_retail_id' => $store->id,
                 'pemesanan_id' => $pemesanan->id,
                 'nama_barang' => $store->nama_barang,
                 'satuan' => $satuan,
@@ -448,7 +448,7 @@ class ShopController extends Controller
                 ]));
             }
 
-            $satuan = ($request->satuan == 'Ton') ? 'Kwintal' : $request->satuan;
+            $satuan = ($request->satuan == 'Ton') ? 'Kuintal' : $request->satuan;
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);

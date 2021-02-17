@@ -62,4 +62,15 @@ class StockBarang extends Model
     {
         return $this->hasMany('App\Models\BarangWarung', 'stok_id', 'id');
     }
+
+    /**
+     * StockBarang has many PemesananBarang.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesananBarang()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = stockBarang_id, localKey = id)
+        return $this->hasMany('App\Models\BarangPesanan', 'barang_retail_id');
+    }
 }

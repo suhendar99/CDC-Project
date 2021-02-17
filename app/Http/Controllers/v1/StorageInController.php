@@ -165,6 +165,8 @@ class StorageInController extends Controller
 
         $kode = $faker->unique()->ean13;
 
+        $kode_barang_retail = $faker->unique()->ean13;
+
         $barang = StockBarangBulky::with('barang')->find($request->barang_bulky_id);
 
         $one = ($barang->satuan == 'Ton') ? 2 : 1;
@@ -207,6 +209,7 @@ class StorageInController extends Controller
             $stock_id = $checkStock->id;
         }else{
             $stok = StockBarang::create($request->only('gudang_id', 'barang_bulky_id')+[
+                'kode' => $kode_barang_retail,
                 'jumlah' => $jumlah,
                 'nama_barang' => $barang->barang->nama_barang,
                 'satuan' => $satuan

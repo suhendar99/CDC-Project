@@ -127,6 +127,7 @@ class StorageMasukBulkyController extends Controller
         $faker = \Faker\Factory::create('id_ID');
 
         $kode = $faker->unique()->ean13;
+        $kode_stock_bulky = $faker->unique()->ean13;
 
         $barang = Barang::where('kode_barang', $request->barang_kode)->first();
 
@@ -180,6 +181,8 @@ class StorageMasukBulkyController extends Controller
             ]);
         }else{
             StockBarangBulky::create($request->only('bulky_id', 'barang_kode')+[
+                'kode' => $kode_stock_bulky,
+                'nama_barang' => $barang->nama_barang,
                 'satuan' => $satuan,
                 'jumlah' => $jumlah
             ]);
