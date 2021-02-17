@@ -23,6 +23,7 @@ class BarangKeluarPelangganController extends Controller
     {
         if($request->ajax()){
             $data = BarangKeluarPelanggan::with('user', 'barangWarung', 'pemesanan')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -67,7 +68,7 @@ class BarangKeluarPelangganController extends Controller
             $set = false;
         }
 
-        $barang = BarangWarung::all();
+        $barang = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->get();
         return view('app.data-master.manajemenBarangPelanggan.keluar.create',compact('pemesanan','barang','set'));
     }
 

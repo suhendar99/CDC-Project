@@ -323,6 +323,7 @@
             $('#btn-action').html(`<a href="{{route('barang.create')}}" class="btn btn-success btn-sm">+ Data Barang Masuk</a>`);
         }
         function storageOut() {
+            table_keluar.draw();
             $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
         }
     </script>

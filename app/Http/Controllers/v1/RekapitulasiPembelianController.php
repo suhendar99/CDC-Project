@@ -8,6 +8,7 @@ use App\Models\Po;
 use App\Models\RekapitulasiPembelian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -25,7 +26,12 @@ class RekapitulasiPembelianController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPembelian::with('storageIn')->orderBy('id','desc')->get();
+        $data = RekapitulasiPembelian::with('storageIn')
+        ->whereHas('storageIn',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->orderBy('id','desc')
+        ->get();
         $total = $data->sum('total');
 
         if($request->ajax()){

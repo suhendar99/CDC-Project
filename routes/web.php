@@ -271,6 +271,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::group(['middleware' => ['pembeli']], function() {
         Route::get('transaksi/pembeli/riwayat','TransaksiPembeliController@index')->name('transaksi.pembeli.riwayat');
 
+        Route::get('transaksi/pembeli/retur','TransaksiPembeliController@retur')->name('transaksi.pembeli.retur');
+
+        Route::resource('retur-pembeli', 'TransaksiPembeliController');
+
         Route::get('transaksi/pembeli/riwayat/konfirmasi/{id}','TransaksiPembeliController@konfirmasi')->name('konfirmasi.terima.pembeli');
 
         // Untuk Upload Bukti Pembayaran

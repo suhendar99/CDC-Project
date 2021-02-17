@@ -15,6 +15,7 @@ class CreateLabaRugiBulkiesTable extends Migration
     {
         Schema::create('laba_rugi_bulkies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('bulky_id')->nullable()->constrained('pengurus_gudang_bulkies')->onDelete('cascade');
             $table->integer('bulan');
             $table->bigInteger('laba_kotor');
             $table->bigInteger('penjualan');

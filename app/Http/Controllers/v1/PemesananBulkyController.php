@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
 use App\Models\PemesananKeluarBulky;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
@@ -20,10 +21,12 @@ class PemesananBulkyController extends Controller
      */
     public function index(Request $request)
     {
-        $data = BarangPemesananBulky::with('pemesananBulky.storageKeluarBulky', 'stockBarangBulky')
+        $data = BarangPemesananBulky::with('pemesananBulky.storageKeluarBulky', 'pemesananBulky.bulky.user', 'stockBarangBulky')
+        ->whereHas('pemesananBulky.bulky.user',function($q){
+            $q->where('pengurus_gudang_bulky_id',Auth::user()->pengurus_gudang_bulky_id);
+        })
         ->orderBy('id', 'desc')
         ->get();
-        // dd($data[0]);
         if($request->ajax()){
             return DataTables::of($data)
                 ->addIndexColumn()

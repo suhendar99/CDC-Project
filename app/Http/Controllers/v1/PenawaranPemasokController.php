@@ -76,7 +76,7 @@ class PenawaranPemasokController extends Controller
      */
     public function edit($id)
     {
-        $barang = Barang::all();
+        $barang = Barang::where('pemasok_id',Auth::user()->pemasok_id)->get();
         $gudang = GudangBulky::find($id);
         return view('app.transaksi.pemasok.penawaran.create',compact('gudang','barang'));
     }
@@ -84,6 +84,7 @@ class PenawaranPemasokController extends Controller
     public function riwayat(Request $request)
     {
         $data = PenawaranBulky::with('barang', 'gudangBulky','pemasok')
+        ->where('pemasok_id',Auth::user()->pemasok_id)
         ->orderBy('id', 'desc')
         ->get();
         // dd($data[0]);
@@ -130,7 +131,12 @@ class PenawaranPemasokController extends Controller
 
     public function penawaranBulky()
     {
-        $data = PenawaranBulky::with('barang','gudangBulky','pemasok')->orderBy('created_at','desc')->paginate(6);
+        $data = PenawaranBulky::with('barang','gudangBulky','pemasok')
+        ->whereHas('gudangBulky',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->orderBy('created_at','desc')
+        ->paginate(6);
         return view('app.transaksi.pemesanan-keluar-bulky.penawaran',compact('data'));
         // $data = PenawaranBulky::findOrFail($id);
         // // dd($data);

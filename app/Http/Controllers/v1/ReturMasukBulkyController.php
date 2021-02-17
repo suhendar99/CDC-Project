@@ -12,6 +12,7 @@ use App\Models\KwitansiBulky;
 use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\ReturMasukBulky;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReturMasukBulkyController extends Controller
@@ -24,7 +25,10 @@ class ReturMasukBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = ReturMasukBulky::with('kwitansiBulky.pemesananBulky.barangPesananBulky')
+            $data = ReturMasukBulky::with('kwitansiBulky.pemesananBulky.barangPesananBulky','kwitansiBulky.pemesananBulky.bulky')
+            ->whereHas('kwitansiBulky.pemesananBulky.bulky',function($q){
+                $q->where('user_id',Auth::user()->id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -34,6 +38,9 @@ class ReturMasukBulkyController extends Controller
                 })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
+                ->editColumn('barang',function($data){
+                    return '('.$data->kwitansiBulky->pemesananBulky->kode.') '.$data->kwitansiBulky->pemesananBulky->barangPesananBulky->nama_barang;
                 })
                 ->make(true);
         }

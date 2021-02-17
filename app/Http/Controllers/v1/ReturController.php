@@ -12,6 +12,7 @@ use App\Models\Kwitansi;
 use App\Models\Barang;
 use App\Models\LogTransaksi;
 use App\Models\Retur;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReturController extends Controller
@@ -24,7 +25,10 @@ class ReturController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Retur::with('barang', 'kwitansi.pemesanan')
+            $data = Retur::with('barang', 'kwitansi.pemesanan.gudang')
+            ->whereHas('kwitansi.pemesanan.gudang',function($q){
+                $q->where('user_id',Auth::user()->id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

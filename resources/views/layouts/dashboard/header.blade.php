@@ -50,6 +50,7 @@
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/sidebar.css')}}">
     <link rel="stylesheet" href="{{ asset('css/switch.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     {{-- <link rel="stylesheet" href="{{ asset('css/rightbar.css')}}"> --}}
     <link rel="stylesheet" href="{{ asset('css/carousel.css')}}">
     @if(isset($shop))

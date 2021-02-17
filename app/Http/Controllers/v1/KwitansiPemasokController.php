@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\KwitansiPemasok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class KwitansiPemasokController extends Controller
@@ -17,7 +18,7 @@ class KwitansiPemasokController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = KwitansiPemasok::with('storageKeluarPemasok', 'pemesananKeluarBulky','pemasok','user')
+            $data = KwitansiPemasok::where('pemasok_id',Auth::user()->pemasok_id)->with('storageKeluarPemasok', 'pemesananKeluarBulky','pemasok','user')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

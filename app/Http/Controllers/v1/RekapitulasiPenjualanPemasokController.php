@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualanPemasok;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -19,7 +20,11 @@ class RekapitulasiPenjualanPemasokController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualanPemasok::with('storageKeluar')->orderBy('id','desc')->get();
+        $data = RekapitulasiPenjualanPemasok::with('storageKeluar')
+        ->whereHas('storageKeluar',function($q){
+            $q->where('pemasok_id',Auth::user()->pemasok_id);
+        })
+        ->orderBy('id','desc')->get();
         $total = $data->sum('total');
         if($request->ajax()){
             return DataTables::of($data)

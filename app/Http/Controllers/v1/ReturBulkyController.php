@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\ReturKeluarBulky;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class ReturBulkyController extends Controller
@@ -18,6 +19,9 @@ class ReturBulkyController extends Controller
     {
         if($request->ajax()){
             $data = ReturKeluarBulky::with('barang')
+            ->whereHas('barang',function($q){
+                $q->where('pemasok_id',Auth::user()->pemasok_id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

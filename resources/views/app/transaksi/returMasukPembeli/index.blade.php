@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('returMasukPembeli.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a>
+                                {{-- <a href="{{route('returMasukPembeli.create')}}" class="btn btn-primary btn-sm">Buat Retur Masuk</a> --}}
                             </div>
                         </div>
                     </div>

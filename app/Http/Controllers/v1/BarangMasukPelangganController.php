@@ -26,12 +26,13 @@ class BarangMasukPelangganController extends Controller
     {
         if($request->ajax()){
             $data = BarangMasukPelanggan::with('storageOut.gudang','storageOut.stockBarangRetail', 'user')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    return '<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                    return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                     // return '<a href="/v1/barangMasukPelanggan/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="detail('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Detail">Detail</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
                 ->addColumn('nama_gudang',function($data){
@@ -68,7 +69,11 @@ class BarangMasukPelangganController extends Controller
      */
     public function create()
     {
-        $barang = StorageOut::all();
+        $barang = StorageOut::with('barang','barangWarung','barangMasukPelanggan','gudang','user','stockBarangRetail','pemesanan')
+        ->whereHas('pemesanan',function($q){
+            $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+        })
+        ->get();
         return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
     }
 

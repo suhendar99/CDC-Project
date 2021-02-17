@@ -337,10 +337,11 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', render:function(data,a,b,c){
-                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
-                    }
-                },
+                // {data : 'created_at', render:function(data,a,b,c){
+                //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                //     }
+                // },
+                {data : 'created_at', name: 'created_at'},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -363,10 +364,11 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', render:function(data,a,b,c){
-                        return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
-                    }
-                },
+                // {data : 'created_at', render:function(data,a,b,c){
+                //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                //     }
+                // },
+                {data : 'created_at', name: 'created_at'},
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
@@ -557,12 +559,15 @@
         }
 
         function storageIn() {
+            table_masuk.draw();
             $('#btn-action').html(`<a href="{{route('bulky.storage.masuk.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Masuk</a>`);
         }
         function storageOut() {
+            table_keluar.draw();
             $('#btn-action').html(`<a href="{{route('bulky.storage.keluar.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>`);
         }
         function cleanBtn() {
+            table.draw();
             $('#btn-action').empty();
         }
     </script>

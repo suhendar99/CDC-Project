@@ -93,7 +93,7 @@
                                         <label>Nama Barang <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach (isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky : \App\Models\Barang::get() as $barang)
+                                            @foreach (isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky : $barangs as $barang)
                                                 <option value="{{isset($pesananId) ? $barang->barang_kode : $barang->kode_barang}}" {{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->barang->kode_barang == $barang->barang_kode ? 'selected' : '' : old('barang_kode' == $barang->kode_barang ? 'selected' : '') }} data-satuan="{{ $barang->satuan }}">{{$barang->nama_barang}}</option>
                                             @endforeach
                                         </select>
@@ -108,7 +108,7 @@
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->jumlah_barang : old('jumlah') }}" aria-describedby="satuanAppend" id="jumlah">
                                             <div class="input-group-append">
-                                                <span class="input-group-text" id="satuanAppend"></span>
+                                                <span class="input-group-text" id="satuanAppend">{{ isset($pesananId) ? $pemesanan->barangKeluarPemesananBulky[0]->satuan : '' }}</span>
                                             </div>
                                         </div>
                                         @error('jumlah')

@@ -79,6 +79,14 @@ class RegisterController extends Controller
             if ($data['keanggotaan'] == 1) {
                 $pelanggan = Pelanggan::create([
                     'nama' => $data['nama'],
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
                 ]);
 
                 return User::create([
@@ -94,6 +102,14 @@ class RegisterController extends Controller
             } else {
                 $pelanggan = Pelanggan::create([
                     'nama' => $data['nama'],
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
                 ]);
 
                 return User::create([
@@ -113,7 +129,15 @@ class RegisterController extends Controller
             $kode = "SP".$date.$pin;
             $pemasok = Pemasok::create([
                 'nama' => $data['nama'],
-                'kode_pemasok' => $kode
+                'kode_pemasok' => $kode,
+                'nik' => $data['nik'],
+                'telepon' => '62'.(int)$data['telepon'],
+                'jenis_kelamin' => $data['jenis_kelamin'],
+                'provinsi_id' => $data['provinsi_id'],
+                'kabupaten_id' => $data['kabupaten_id'],
+                'kecamatan_id' => $data['kecamatan_id'],
+                'desa_id' => $data['desa_id'],
+                'alamat' => $data['alamat'],
             ]);
 
             return User::create([
@@ -127,7 +151,15 @@ class RegisterController extends Controller
         } elseif ($data['role'] == 'bulky') {
             $bulki = PengurusGudangBulky::create([
                 'nama' => $data['nama'],
-                'status' => 1
+                'status' => 1,
+                'nik' => $data['nik'],
+                'telepon' => '62'.(int)$data['telepon'],
+                'jenis_kelamin' => $data['jenis_kelamin'],
+                'provinsi_id' => $data['provinsi_id'],
+                'kabupaten_id' => $data['kabupaten_id'],
+                'kecamatan_id' => $data['kecamatan_id'],
+                'desa_id' => $data['desa_id'],
+                'alamat' => $data['alamat'],
             ]);
 
             return User::create([
@@ -141,6 +173,14 @@ class RegisterController extends Controller
         } elseif ($data['role'] == 'pembeli') {
             $pembeli = Pembeli::create([
                 'nama' => $data['nama'],
+                'nik' => $data['nik'],
+                'telepon' => '62'.(int)$data['telepon'],
+                'jenis_kelamin' => $data['jenis_kelamin'],
+                'provinsi_id' => $data['provinsi_id'],
+                'kabupaten_id' => $data['kabupaten_id'],
+                'kecamatan_id' => $data['kecamatan_id'],
+                'desa_id' => $data['desa_id'],
+                'alamat' => $data['alamat'],
             ]);
 
             return User::create([
@@ -154,7 +194,15 @@ class RegisterController extends Controller
         } elseif ($data['role'] == 'retail') {
             $pengurusGudang = PengurusGudang::create([
                 'nama' => $data['nama'],
-                'status' => 1
+                'status' => 1,
+                'nik' => $data['nik'],
+                'telepon' => '62'.(int)$data['telepon'],
+                'jenis_kelamin' => $data['jenis_kelamin'],
+                'provinsi_id' => $data['provinsi_id'],
+                'kabupaten_id' => $data['kabupaten_id'],
+                'kecamatan_id' => $data['kecamatan_id'],
+                'desa_id' => $data['desa_id'],
+                'alamat' => $data['alamat'],
             ]);
 
             return User::create([

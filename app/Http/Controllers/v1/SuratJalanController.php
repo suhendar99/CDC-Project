@@ -15,6 +15,7 @@ use App\Models\Barang;
 use App\Models\Gudang;
 use App\Models\Kwitansi;
 use App\Models\SuratJalan;
+use Illuminate\Support\Facades\Auth;
 
 class SuratJalanController extends Controller
 {
@@ -33,6 +34,7 @@ class SuratJalanController extends Controller
     {
         if($request->ajax()){
             $data = $this->model::with('pemesanan')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
