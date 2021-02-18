@@ -24,7 +24,6 @@ class PemesananMasukPemasokController extends Controller
         })
         ->orderBy('id', 'desc')
         ->get();
-        // dd($data[0]);
         if($request->ajax()){
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -41,8 +40,10 @@ class PemesananMasukPemasokController extends Controller
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == '5') {
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
-                        return "Belum Terverifikasi";
+                        return "Belum Diterima";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){

@@ -3,33 +3,9 @@
   $pageTitle = 'Dashboard Pemasok';
 //   $data = [1,2,3,4,6,1,1,1,1,1,1,1,2,1,1,1,1];
   $dashboard = true;
-  $barang = App\Models\Barang::all();
   $gudang = App\Models\GudangBulky::all();
   $bulky = App\Models\PengurusGudangBulky::all();
-  $kat = App\Models\Kategori::all();
-  $ketegori = [];
-  $jumlahBarang = [];
-  foreach ($kat as $key => $value) {
-      $kategori[] =$value->nama;
-  }
-  $bulan = array(
-        ['no'=>'1','val' => 'Januari'],
-        ['no'=>'2','val' => 'Februari'],
-        ['no'=>'3','val' => 'Maret'],
-        ['no'=>'4','val' => 'April'],
-        ['no'=>'5','val' => 'Mei'],
-        ['no'=>'6','val' => 'Juni'],
-        ['no'=>'7','val' => 'Juli'],
-        ['no'=>'8','val' => 'Agustus'],
-        ['no'=>'9','val' => 'September'],
-        ['no'=>'10','val' => 'Oktober'],
-        ['no'=>'11','val' => 'November'],
-        ['no'=>'12','val' => 'Desember'],
-    );
-    $bul = [];
-    foreach ($bulan as $key => $value) {
-        $bul[] = $value;
-    }
+    $year = Carbon\Carbon::now()->format('Y');
         //
 @endphp
 @extends('layouts.dashboard.header')
@@ -55,7 +31,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-primary">work</i>
+                    <i class="ri-shopping-bag-line text-my-primary display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -73,30 +49,12 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-warning">house_siding</i>
+                    <i class="ri-exchange-dollar-line text-my-warning display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">{{$gudang->count()}} Unit</span><br>
-                        <span class="text-my-subtitle">Gudang</span>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card my-3 shadow">
-            <div class="line-strip bg-my-success"></div>
-            <div class="card-body dashboard">
-                <div class="row">
-                  <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">user</i>
-                  </div>
-                  <div class="col-8 valign-center flex-last">
-                    <div class="float-right text-right">
-                        <span class="text-my-success">{{$bulky->count()}} Orang</span><br>
-                        <span class="text-my-subtitle">Pemasok</span>
+                        <span class="text-my-warning">{{$jumakumulasi->count()}} Penjualan</span><br>
+                        <span class="text-my-subtitle">Terkirim</span>
                     </div>
                   </div>
                 </div>
@@ -110,7 +68,7 @@
             <div class="line-strip bg-my-warning"></div>
             <div class="row p-3">
               <div class="col-12 valign-center">
-                <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Penjualan Bulanan</span>
+                <i class="ri-bar-chart-fill text-my-warning mr-1 h5"></i><span style="font-size: 14px">Grafik Penjualan Barang Per-Bulan ({{$year}})</span>
               </div>
               <div class="col-12">
                 <div id="chartBulanan"></div>
@@ -123,7 +81,7 @@
             <div class="line-strip bg-my-warning"></div>
             <div class="row p-3">
               <div class="col-12 valign-center">
-                <i class="material-icons md-24 text-my-warning mr-1">auto_graph</i><span style="font-size: 14px">Grafik Jumlah Komoditi</span>
+                <i class="ri-bar-chart-horizontal-fill text-my-warning mr-1 h5"></i><span style="font-size: 14px">Grafik Jumlah Komoditi</span>
               </div>
               <div class="col-12">
                 <div id="chartKomoditi"></div>
@@ -132,65 +90,57 @@
         </div>
     </div>
     <div class="col-md-12 col-sm-12 mt-4">
-        <div class="card shadow" style="height: 260px">
+        <div class="card shadow" style="height: auto">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body">
               <div class="row">
-                <div class="col-6 border-right">
+                <div class="col-4 border-right">
+                <i class="ri-folder-open-line text-my-primary h4"></i><span style="font-size: 14px"> Rekapitulasi Transaksi hari Ini</span><br><hr class="mb-2">
                   <center>
                     <div id="calendar"></div>
                   </center>
                 </div>
-                <div class="col-6" style="font-size: .8rem;">
-                  <span style="font-size: 1rem">Hari Ini</span><br><hr class="mb-1">
-                  <div class="float-left">
-                    Item Terjual
-                  </div>
-                  <div class="float-right">
-                    20 Item
-                  </div>
-                  <br>
-                  <hr class="my-1">
-                  <div class="float-left">
-                    Barang Dikirim
-                  </div>
-                  <div class="float-right">
-                    10 Item
-                  </div>
-                  <br>
-                  <hr class="my-1">
-                  <div class="float-left">
-                    Barang Diterima
-                  </div>
-                  <div class="float-right">
-                    10 Item
-                  </div>
-                  <br>
-                  <hr class="my-1">
-                  <div class="float-left">
-                    Pesanan Lunas
-                  </div>
-                  <div class="float-right">
-                    18 Item
-                  </div>
-                  <br>
-                  <hr class="my-1">
-                  <div class="float-left">
-                    Pesanan Belum Lunas
-                  </div>
-                  <div class="float-right">
-                    2 Item
-                  </div>
-                  <br>
-                  <hr class="my-1">
-                  <div class="float-left">
-                    Total Pendapatan
-                  </div>
-                  <div class="float-right">
-                    Rp. 200.000
-                  </div>
-                  <br>
-                  <hr class="my-1">
+                <div class="col-md-8">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12" style="font-size: .7rem;">
+                            <i class="ri-currency-line text-my-primary h4"></i><span style="font-size: 14px" class="ml-2">Log Transaksi </span><br><hr class="mb-2">
+                            <div id="table_log">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Tanggal</th>
+                                        <th scope="col">Jam</th>
+                                        <th scope="col">Aktivitas Transaksi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse ($logTransaksi as $key => $value)
+                                    <tr>
+                                        <th scope="row">{{$key+1}}</th>
+                                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
+                                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
+                                        <td>{{$value->aktifitas_transaksi}}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4"><center>Data Kosong !</center></td>
+                                    </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                                <div class="col-12 d-flex">
+                                    <div class="ml-auto p-2">
+                                        <center>
+                                            {{$logTransaksi->links()}}
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -199,7 +149,7 @@
 </div>
 <div class="row my-3">
     <div class="col-md-12 valign-center">
-      <i class="material-icons md-24 text-my-warning mr-1">work</i><span style="font-size: 14px">Daftar Barang Saya</span>
+        <i class="ri-shopping-bag-line text-my-primary h4"></i><span style="font-size: 14px" class="ml-3"> Daftar Barang Yang dimiliki / Tersedia</span>
     </div>
     <div class="col-12">
         <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
@@ -232,15 +182,77 @@
     }).on('changeDate', ()=>{
         // let value = $('#calendar').datepicker('getFormattedDate');
         // updateChart(value)
-        console.log($('#calendar').datepicker('getFormattedDate'));
+        let value = $('#calendar').datepicker('getFormattedDate');
+        $.ajax({
+            url: "/api/v1/logTransaksi/date/"+value,
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                let value = $('#calendar').datepicker('getFormattedDate');
+                var data = response.data;
+                console.log(data);
+                if (data.length > 0) {
+                    $('#table_log').html(`
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Jam</th>
+                            <th scope="col">Aktivitas Transaksi</th>
+                        </tr>
+                        </thead>
+                        <tbody id="isiTable">
+
+                        </tbody>
+                    </table>
+                `)
+                } else if(data.length < 1) {
+                    $('#table_log').html(`
+                        <table class="table table-striped" id="table_log">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Jam</th>
+                                <th scope="col">Aktivitas Transaksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4"><center>Data Kosong !</center></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    `)
+                }
+                $.each(data, function (a, b) {
+                    $('#isiTable').append(`
+                        <tr>
+                            <th scope="row">${a+1}</th>
+                            <td>${b.tanggal}</td>
+                            <td>${b.jam}</td>
+                            <td>${b.aktifitas_transaksi}</td>
+                        </tr>
+                    `)
+                });
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
+            }
+        });
     });
 </script>
 <script type="text/javascript">
 var komoditi = JSON.parse('{!! json_encode($kategori) !!}')
-console.log(komoditi);
+var jumlah = JSON.parse('{!! json_encode($jumlahBarang) !!}')
 var optionsKomoditi = {
-          series: [{
-          data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+        series: [{
+          name: 'Jumlah Barang',
+          data: jumlah,
         }],
           chart: {
           type: 'bar',
@@ -256,18 +268,41 @@ var optionsKomoditi = {
         },
         xaxis: {
           categories: komoditi,
+          title: {
+                text: 'Jumlah Barang',
+                rotate: -90,
+                offsetX: 0,
+                offsetY: 0,
+                style: {
+                    color: '#373d3f',
+                    fontSize: '12px',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 400,
+                },
+            },
+            labels: {
+                formatter: function(val) {
+                    let vals = val.toFixed(0);
+                    if (Number.isInteger(val)) {
+                        return vals;
+                    } else {
+                        return "";
+                    }
+                }
+            }
         }
-        };
+    };
 
     var charts = new ApexCharts(document.querySelector("#chartKomoditi"), optionsKomoditi);
 charts.render();
 
 var bulan = JSON.parse('{!! json_encode($bul) !!}')
+var color = JSON.parse('{!! json_encode($warna) !!}')
+var akumulasi = JSON.parse('{!! json_encode($akumulasi) !!}')
 var options = {
     chart: {
       type: 'bar',
       height: '200px',
-      colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63'],
       toolbar: {
           show: false,
       },
@@ -286,6 +321,13 @@ var options = {
       }
     },
 
+    legend: {
+        show:false,
+    },
+    fill: {
+        colors: color,
+    },
+
     plotOptions: {
       bar: {
           distributed: true,
@@ -295,19 +337,13 @@ var options = {
       size: 0,
     },
     series: [{
-      name: 'Penjualan Bulanan',
-      data: [30,40,35,50]
+      name: 'Banyaknya Penjualan Per-Bulan',
+      data: akumulasi
     }],
     xaxis: {
-      categories: ['Januari','Februari','Maret','April'],
-      labels: {
-        show: false,
-      }
-    },
-    yaxis: {
-      show: true,
+      categories: bulan,
       title: {
-          text: 'Jumlah Item',
+          text: 'Bulan tahun {{$year}}',
           rotate: -90,
           offsetX: 0,
           offsetY: 0,
@@ -317,7 +353,35 @@ var options = {
               fontFamily: 'Poppins, sans-serif',
               fontWeight: 400,
           },
+      },
+      labels: {
+        show: true,
       }
+    },
+    yaxis: {
+      show: true,
+      title: {
+          text: 'Jumlah Barang',
+          rotate: -90,
+          offsetX: 0,
+          offsetY: 0,
+          style: {
+              color: '#373d3f',
+              fontSize: '12px',
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+          },
+      },
+      labels: {
+            formatter: function(val) {
+                let vals = val.toFixed(0);
+                if (Number.isInteger(val)) {
+                    return vals;
+                } else {
+                    return "";
+                }
+            }
+        }
     },
     dataLabels: {
         enabled: false

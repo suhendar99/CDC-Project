@@ -265,8 +265,7 @@
 				<td></td>
 				<td class="text-center text-14">
 
-					({{$data->pemesananKeluarBulky->bulky->pemilik}})<br>
-					{{$data->pemesananKeluarBulky->bulky->nama}}
+					({{$data->user->pemasok->nama}})<br>
 				</td>
 				<td></td>
 			</tr>

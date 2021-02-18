@@ -4,16 +4,20 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
+use App\Models\Barang;
 use App\models\Bulky;
 use App\Models\Desa;
 use App\Models\Kabupaten;
 use App\Models\Karyawan;
+use App\Models\Kategori;
 use App\Models\Kecamatan;
+use App\Models\LogTransaksi;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
 use App\Models\Pembeli;
 use App\Models\PengurusGudang;
 use App\Models\Provinsi;
+use App\Models\StorageKeluarPemasok;
 use App\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -36,6 +40,13 @@ class DashboardController extends Controller
         $this->pathFotoKtp = 'app.managementAkun.completeAkun.fotoKtp.';
         $this->pathFotoKtpSelfie = 'app.managementAkun.completeAkun.fotoKtpSelfie.';
 	}
+    public function getLogByDate($date)
+    {
+        $data = LogTransaksi::whereDate('tanggal',$date)->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
 
     public function index()
     {
@@ -45,6 +56,45 @@ class DashboardController extends Controller
             // if ($auth->pemasok->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPemasok',compact('auth','provinsi'));
             // }
+            $bulan = array(
+                ['no'=>'1','val' => 'Januari'],
+                ['no'=>'2','val' => 'Februari'],
+                ['no'=>'3','val' => 'Maret'],
+                ['no'=>'4','val' => 'April'],
+                ['no'=>'5','val' => 'Mei'],
+                ['no'=>'6','val' => 'Juni'],
+                ['no'=>'7','val' => 'Juli'],
+                ['no'=>'8','val' => 'Agustus'],
+                ['no'=>'9','val' => 'September'],
+                ['no'=>'10','val' => 'Oktober'],
+                ['no'=>'11','val' => 'November'],
+                ['no'=>'12','val' => 'Desember'],
+            );
+            $bul = [];
+            $no = [];
+            $warna = [];
+            $akumulasi = [];
+            foreach ($bulan as $key => $value) {
+                $bul[] = $value['val'];
+                $no[] = $value['no'];
+                $warna[] = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+                $akumulasi[] = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok_id)
+                ->whereMonth('waktu',$value['no'])
+                ->orderBy('id','desc')->count();
+            }
+            $jumakumulasi = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok_id)->orderBy('id','desc')->get();
+            $barang =  Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->orderBy('id','desc')->get();
+
+            $kat = Kategori::all();
+            $ketegori = [];
+            $jumlahBarang = [];
+            foreach ($kat as $key => $value) {
+                $kategori[] = $value->nama;
+                $kategoris = $value;
+                $jumlahBarang[] = Barang::where('kategori_id',$kategoris->id)->count();
+            }
+            $logTransaksi = LogTransaksi::where('role','pemasok')->orderBy('jam','desc')->paginate(3);
+
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPemasok');
             }
@@ -55,7 +105,7 @@ class DashboardController extends Controller
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathPemasok.'index');
+            return view($this->pathPemasok.'index',compact('barang','akumulasi','warna','bul','no','jumakumulasi','kategori','jumlahBarang','logTransaksi'));
     	} elseif ($auth->pengurus_gudang_bulky_id != null) {
             // if ($auth->karyawan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));

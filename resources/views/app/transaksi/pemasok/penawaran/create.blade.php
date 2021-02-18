@@ -73,13 +73,18 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Harga Barang <small class="text-success">*Harus diisi</small></label>
-                                                <input type="text" id="hargaBarang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" readonly>
-                                                @error('harga_barang')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
+                                                <label>Harga Barang</label>
+                                                <div class="input-group mb-3">
+                                                  <input type="number" min="1" max="" id="hargaBarang" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" aria-describedby="satuanAppend">
+                                                  <div class="input-group-append">
+                                                    <span class="input-group-text" id="satAppend"></span>
+                                                  </div>
+                                                  @error('harga_barang')
+                                                      <span class="invalid-feedback" role="alert">
+                                                          <strong>{{ $message }}</strong>
+                                                      </span>
+                                                  @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -132,6 +137,7 @@
                 var data = response.data
                 $('#hargaBarang').val(data.harga_barang);
                 $('#satuanAppend').text(data.satuan);
+                $('#satAppend').text('per-'+data.satuan);
                 $('#satuan').val(data.satuan);
                 $('#jumlah').attr("max",data.jumlah);
             }

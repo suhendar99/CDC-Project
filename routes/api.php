@@ -23,7 +23,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
   	Route::get('detailBarang/{id}','BarangController@detail');
   	Route::get('detailGudang/{id}','TransaksiPemasokController@selectedGudang');
 });
-
+// get Date
+Route::get('/v1/logTransaksi/date/{date}','v1\DashboardController@getLogByDate');
+// End
 Route::get('citiesLoad/{id}', function($id){
     dd($id);
 })->name('citiesLoad');
