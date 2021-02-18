@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pemasok extends Model
 {
@@ -56,5 +57,14 @@ class Pemasok extends Model
     public function kwitansiPemasok()
     {
         return $this->hasMany('App\Models\KwitansiPemasok');
+    }
+    /**
+     * Get all of the labaRugiPemasok for the Pemasok
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function labaRugiPemasok(): HasMany
+    {
+        return $this->hasMany(LabaRugiPemasok::class, 'pemasok_id', 'id');
     }
 }

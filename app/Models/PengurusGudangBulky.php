@@ -46,4 +46,13 @@ class PengurusGudangBulky extends Model
     {
         return $this->hasMany(ReturKeluarBulky::class, 'pengurus_gudang_id', 'id');
     }
+    /**
+     * Get all of the labaRugiBulky for the PengurusGudangBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function labaRugiBulky(): HasMany
+    {
+        return $this->hasMany(LabaRugiBulky::class, 'bulky_id', 'id');
+    }
 }
