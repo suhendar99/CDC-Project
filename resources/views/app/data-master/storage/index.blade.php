@@ -68,7 +68,7 @@
                                                 <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
                                                 <th>Diskon Barang</th>
-                                                {{-- <th>Foto Stock Barang</th> --}}
+                                                <th>Foto Stock Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -294,11 +294,11 @@
                     <div class="col-12" id="tempat-foto">
 
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mt-3">
                         <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
                             @csrf
                             @method('PUT')
-                            <input type="file" name="foto" onchange="this.form.submit()">
+                            <input type="file" class="form-control-file" name="foto" onchange="document.querySelector('#foto-load').innerHTML = 'Loading...';this.form.submit();" id="file-foto">
                         </form>
                     </div>
                 </div>
@@ -306,7 +306,10 @@
           </div>
         </div>
         <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            <div class="float-left" id="foto-load">
+                
+            </div>
+          <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -358,9 +361,9 @@
                         }
                     }, name: 'diskon'
                 },
-                // {data : function (data, type, row, meta) {
-                //         return `<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>`;
-                //     }, name: 'penyimpanan'},
+                {data : function (data, type, row, meta) {
+                        return `<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>`;
+                    }, name: 'foto'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -517,34 +520,33 @@
         }
 
         function foto(id){
+            $('#foto-load').html(``);
             $('#tempat-foto').html('LOADING...')
             $('#form-foto').attr('action', '{{ asset('') }}v1/retail/storage/stock/'+id+'/foto');
 
-            // $.ajax({
-            //     url: "/api/v1/detail/storage/in/"+id,
-            //     method: "GET",
-            //     contentType: false,
-            //     cache: false,
-            //     processData: false,
-            //     success: (response)=>{
-            //         console.log(response.data)
-            //         let storage = response.data;
+            $.ajax({
+                url: "/api/v1/retail/stock/"+id+"/foto",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    // console.log(response.data)
 
-            //         $('#kode').text("Kode Storage: " + storage.kode)
-            //         $('.kodeBarang').text(storage.barang_bulky.barang_kode)
-            //         $('.nama').text(storage.nama_barang)
-            //         $('.harga').text(storage.harga_beli)
-            //         $('.satuan').text(storage.satuan.satuan)
-            //         $('.jumlah').text(storage.jumlah)
-            //         $('.gudang').text(storage.gudang.nama)
-            //         $('.karyawan').text(storage.user.pengurus_gudang.nama)
-            //         $('.waktu').text(storage.waktu)
-            //     },
-            //     error: (xhr)=>{
-            //         let res = xhr.responseJSON;
-            //         console.log(res)
-            //     }
-            // });
+                    let foto = response.data.foto_barang;
+
+                    if (foto !== null) {
+                      $('#tempat-foto').html(`<img src="{{ asset('') }}${foto}" alt="" width="100%">`);
+                    } else {
+                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)     
+                    }
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
         }
 
         function penyimpanan(id){

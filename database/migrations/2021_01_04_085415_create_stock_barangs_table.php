@@ -15,6 +15,7 @@ class CreateStockBarangsTable extends Migration
     {
         Schema::create('stock_barangs', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->unique();
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('barang_bulky_id')->nullable()->constrained('stock_barang_bulkies')->onDelete('cascade');
             $table->string('nama_barang', 50);

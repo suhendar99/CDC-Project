@@ -15,9 +15,12 @@ class CreateStockBarangBulkiesTable extends Migration
     {
         Schema::create('stock_barang_bulkies', function (Blueprint $table) {
             $table->id();
+            $table->string('kode')->unique();
             $table->foreignId('bulky_id')->constrained('gudang_bulkies')->onDelete('cascade');
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
+            $table->string('nama_barang', 50);
+            $table->text('foto_barang')->nullable();
             $table->float('jumlah', 11, 2);
             $table->string('satuan');
             $table->bigInteger('harga_barang')->nullable();

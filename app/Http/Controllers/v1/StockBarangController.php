@@ -68,6 +68,42 @@ class StockBarangController extends Controller
         return redirect(route('storage.index'))->with('success', __( 'Harga Barang telah disimpan.' ));
     }
 
+    public function uploadFoto(Request $request, $id)
+    {
+        $v = Validator::make($request->all(),[
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+
+        $foto_barang = $request->file('foto');
+        $nama_barang = "RTL".time()."_".$foto_barang->getClientOriginalName();
+        $foto_barang->move(public_path("upload/foto/barang/retail"), $nama_barang);
+
+        StockBarang::findOrFail($id)->update([
+            'foto_barang' => 'upload/foto/barang/retail/'.$nama_barang 
+        ]);
+
+        return redirect(route('storage.index'))->with('success', __( 'Foto telah diunggah.' ));
+    }
+
+    public function getFoto($id)
+    {
+        try {
+            $data = StockBarang::select('foto_barang')->find($id);
+
+            return response()->json([
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ],400);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
