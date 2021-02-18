@@ -232,6 +232,11 @@
                       </tbody>
                   </table>
               </div>
+              <div class="col-6" id="foto-kwitansi">
+
+              </div>
+              <div class="col-6" id="foto-sj">
+              </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -317,6 +322,7 @@
     </div>
 </div>
 {{-- END --}}
+<div id="img-custom-overlay"></div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -528,6 +534,21 @@
                     $('.gudang').text(storage.bulky.nama)
                     $('.karyawan').text(storage.user.pengurus_gudang_bulky.nama)
                     $('.waktu').text(storage.waktu)
+
+                    $('#foto-kwitansi').html(`<p>Foto Kwitansi</p><img src="{{ asset('') }}${storage.foto_kwitansi}" alt="" width="100%" class="img-bukti">`);
+                    $('#foto-sj').html(`<p>Foto Surat Jalan</p><img src="{{ asset('') }}${storage.foto_surat_jalan}" alt="" width="100%" class="img-bukti">`);
+
+
+                    $('.img-bukti').on('click', function(event) {
+                        /* Act on the event */
+                        $('#img-custom-overlay')
+                            .css({backgroundImage: `url(${this.src})`})
+                            .addClass('open')
+                            .one('click', function() {
+                                /* Act on the event */
+                                $(this).removeClass('open');
+                            });
+                    });
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;
