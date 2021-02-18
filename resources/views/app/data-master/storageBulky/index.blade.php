@@ -69,6 +69,7 @@
                                                 <th>Penyimpanan Stok Barang</th>
                                                 <th>Harga Jual Barang</th>
                                                 <th>Diskon Barang</th>
+                                                <th>Foto Stock Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -277,6 +278,45 @@
       </div>
     </div>
 </div>
+
+<!-- Modal Penyimpanan Stok Barang -->
+<div class="modal fade" id="modalFotoBarang" tabindex="-1" aria-labelledby="fotoBarang" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fotoBarang">Foto Stock Barang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12" id="foto">
+                <div class="row">
+                    <div class="col-12" id="tempat-foto">
+                        
+                    </div>
+                    <div class="col-12 mt-3">
+                        <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
+                            @csrf
+                            @method('PUT')
+                            <input type="file" class="form-control-file" name="foto" onchange="document.querySelector('#foto-load').innerHTML = 'Loading...';this.form.submit();" id="file-foto">
+                        </form>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
+            <div class="float-left" id="foto-load">
+                
+            </div>
+          <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+{{-- END --}}
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -308,7 +348,7 @@
                     }, name: 'jumlah'},
                 {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {
-                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + ((data.satuan == 'Ton') ? 'Kwintal' : data.satuan);
+                            return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + ((data.satuan == 'Ton') ? 'Kuintal' : data.satuan);
                         } else {
                             return 'Harga belum diatur.';
                         }
@@ -323,6 +363,9 @@
                         }
                     }, name: 'diskon'
                 },
+                {data : function (data, type, row, meta) {
+                        return `<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto(${data.id})" data-id="${data.id}" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>`;
+                    }, name: 'foto'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -337,11 +380,15 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', render:function(data,a,b,c){
+                        // return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                        return data;
+                    }
+                },
                 // {data : 'created_at', render:function(data,a,b,c){
                 //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
                 //     }
                 // },
-                {data : 'created_at', name: 'created_at'},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -364,11 +411,15 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', render:function(data,a,b,c){
+                        // return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
+                        return data;
+                    }
+                },
                 // {data : 'created_at', render:function(data,a,b,c){
                 //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
                 //     }
                 // },
-                {data : 'created_at', name: 'created_at'},
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
@@ -477,6 +528,36 @@
                     $('.gudang').text(storage.bulky.nama)
                     $('.karyawan').text(storage.user.pengurus_gudang_bulky.nama)
                     $('.waktu').text(storage.waktu)
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+        }
+
+        function foto(id){
+            $('#foto-load').html(``);
+            $('#tempat-foto').html('LOADING...')
+            $('#form-foto').attr('action', '{{ asset('') }}v1/bulky/storage/stock/'+id+'/foto');
+
+            $.ajax({
+                url: "/api/v1/bulky/stock/"+id+"/foto",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    // console.log(response.data)
+
+                    let foto = response.data.foto_barang;
+
+                    if (foto !== null) {
+                      $('#tempat-foto').html(`<img src="{{ asset('') }}${foto}" alt="" width="100%">`);
+                    } else {
+                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)     
+                    }
+
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;

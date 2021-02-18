@@ -185,13 +185,11 @@ class StorageOutController extends Controller
         }
 
         foreach ($pesanan->barangPesanan as $barang) {
-            $kode_barang = $barang->barang_kode;
+            $kode_barang = $barang->barang_retail_id;
 
             $satuan = ($barang->satuan == 'Kuintal') ? 'Kg' : $barang->satuan;
 
-            $stok = Storage::whereHas('stockBarangRetail.stockBarangBulky', function($query)use($kode_barang, $gudang){
-                $query->where('barang_kode', $kode_barang);
-            })
+            $stok = Storage::where('barang_retail_id', $kode_barang)
             ->whereHas('storageIn', function($query)use($kode_barang, $gudang){
                 $query->where('gudang_id', $gudang->id);
             })
@@ -257,10 +255,7 @@ class StorageOutController extends Controller
 
             $kode_out = $faker->unique()->ean13;
 
-            $barangRetail = StockBarang::whereHas('stockBarangBulky', function($query)use($kode_barang, $gudang){
-                $query->where('barang_kode', $kode_barang);
-            })
-            ->where('gudang_id', $gudang->id)
+            $barangRetail = StockBarang::where('id', $kode_barang)
             ->first();
 
             $satuanId = ($barangRetail->satuan == 'Kuintal') ? 3 : 2 ;
@@ -292,21 +287,13 @@ class StorageOutController extends Controller
         }
 
         foreach ($pesanan->barangPesanan as $kodex){
-            $jumlahAkhir = Storage::whereHas('stockBarangRetail.stockBarangBulky', function($query)use($kode_barang, $gudang){
-                $query->where('barang_kode', $kode_barang);
-            })
-            ->whereHas('storageIn', function($query)use($kode_barang, $gudang){
-                $query->where('gudang_id', $gudang->id);
-            })->sum('jumlah');
+            $jumlahAkhir = Storage::where('barang_retail_id', $kodex->barang_retail_id)
+            ->sum('jumlah');
 
-            $new = Storage::whereHas('stockBarangRetail.stockBarangBulky', function($query)use($kode_barang, $gudang){
-                $query->where('barang_kode', $kode_barang);
-            })
-            ->whereHas('storageIn', function($query)use($kode_barang, $gudang){
-                $query->where('gudang_id', $gudang->id);
-            })->first();
+            $new = Storage::where('barang_retail_id', $kodex->barang_retail_id)
+            ->first();
 
-            $new->stockBarangRetail->update([
+            StockBarang::find($kodex->barang_retail_id)->update([
                 'jumlah' => $jumlahAkhir
             ]);
         }
@@ -410,7 +397,7 @@ class StorageOutController extends Controller
             'no_kwitansi' => $kwitansi->kode,
             'no_surat_jalan' => $surat->kode,
             'nama_pembeli' => $out->pemesanan->nama_pemesan,
-            'barang' => $out->pemesanan->barangPesanan[0]->barang->nama_barang,
+            'barang' => $out->pemesanan->barangPesanan[0]->stockBarangRetail->nama_barang,
             'jumlah' => $jumlah,
             'satuan' => $satuan,
             'harga' => $harga_total,

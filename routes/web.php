@@ -371,6 +371,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             ]
         ]);
 
+        // Foto Stock Bulky
+        Route::put('bulky/storage/stock/{id}/foto', 'StockBarangBulkyController@uploadFoto')->name('bulky.stock.foto');
+
         // Ubah Harga Barang
         Route::get('bulky/barang/stock/{id}', 'StockBarangBulkyController@editHarga')->name('bulky.harga.edit');
         Route::put('bulky/barang/stock/{id}/simpan', 'StockBarangBulkyController@simpanHarga')->name('bulky.harga.simpan');
@@ -501,7 +504,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         });
 
         // Foto Stock
-        // Route::put('retail/storage/stock/{id}/foto', 'StockBarangBulkyController@uploadFoto')->name('retail.stock.foto');
+        Route::put('retail/storage/stock/{id}/foto', 'StockBarangController@uploadFoto')->name('retail.stock.foto');
 
         // Laba Bulky
         Route::resource('retail/laba-rugi', 'LabaRugiRetailController', [
