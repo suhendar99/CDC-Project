@@ -185,7 +185,7 @@ class StorageInController extends Controller
 
         $masuk = StorageIn::create($request->only('barang_bulky_id', 'pemesanan_bulky_id', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
             'kode' => $kode,
-            'nama_barang' => $barang->barang->nama_barang,
+            'nama_barang' => $barang->nama_barang,
             'jumlah' => $jumlah,
             'satuan_id' => $one,
             'user_id' => auth()->user()->id,
