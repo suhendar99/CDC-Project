@@ -186,6 +186,7 @@
                     console.log(response.data)
                     $('#barang').html(`<option>-- Pilih Barang --</option>`);
                     $.each(response.data, function(index, val) {
+                        
                          /* iterate through array or object */
                          $('#barang').append(`<option value="${val.barang_bulky_id}" data-satuan="${val.satuan}" data-jumlah="${val.jumlah_barang}" data-pemesanan="${val.pemesanan_bulky_id}" data-harga="${val.harga}" data-admin="${val.biaya_admin}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
                     });
@@ -220,12 +221,6 @@
              $('#pemesanan_bulky_id').val(pemesanan)
              $('#harga').val(total)
          }
-
-         // for (var i = $('.tab').length - 1; i >= 1; i--) {
-
-         //     let keterangan = $('#satuanAppend').get(i).attributes[0].value+' '+kode;
-         // }
-        // $('.tab').get(n).attributes[0].value
     });
 
     onScan.attachTo(document, {

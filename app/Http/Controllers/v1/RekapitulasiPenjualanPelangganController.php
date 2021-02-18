@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualanPelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class RekapitulasiPenjualanPelangganController extends Controller
@@ -16,7 +17,12 @@ class RekapitulasiPenjualanPelangganController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan')->orderBy('id','desc')->get();
+        $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan')
+        ->whereHas('barangKeluarPelanggan',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->orderBy('id','desc')
+        ->get();
         $total = $data->sum('total');
 
         if($request->ajax()){

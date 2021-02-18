@@ -106,7 +106,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                     <div class="float-right">
-                                        <button type="submit" class="btn btn-success btn-sm">Simpan</button>
+                                        <button type="submit" class="btn btn-success btn-sm">Tawarkan</button>
                                     </div>
                                     </div>
                                 </div>

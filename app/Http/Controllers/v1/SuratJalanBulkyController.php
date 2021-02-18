@@ -15,6 +15,7 @@ use App\Models\Barang;
 use App\Models\GudangBulky;
 use App\Models\KwitansiBulky;
 use App\Models\SuratJalanBulky;
+use Illuminate\Support\Facades\Auth;
 
 class SuratJalanBulkyController extends Controller
 {
@@ -27,6 +28,7 @@ class SuratJalanBulkyController extends Controller
     {
         if($request->ajax()){
             $data = SuratJalanBulky::with('pemesananBulky')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

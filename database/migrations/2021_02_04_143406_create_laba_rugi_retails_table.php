@@ -15,6 +15,7 @@ class CreateLabaRugiRetailsTable extends Migration
     {
         Schema::create('laba_rugi_retails', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('retail_id')->nullable()->constrained('pengurus_gudangs')->onDelete('cascade');
             $table->integer('bulan');
             $table->bigInteger('laba_kotor');
             $table->bigInteger('penjualan');

@@ -8,6 +8,7 @@ use App\Models\Kwitansi;
 use App\Models\LogTransaksi;
 use App\Models\Retur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -23,6 +24,9 @@ class ReturKeluarPelangganController extends Controller
     {
         if($request->ajax()){
             $data = Retur::with('barang', 'kwitansi.pemesanan')
+            ->whereHas('kwitansi.pemesanan',function($q){
+                $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -58,7 +62,12 @@ class ReturKeluarPelangganController extends Controller
      */
     public function create()
     {
-        $kwitansi = Kwitansi::with('pemesanan')->get();
+        $kwitansi = Kwitansi::with('pemesanan')
+        ->whereHas('pemesanan',function($q){
+            $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+        })
+        ->orderBy('id','desc')
+        ->get();
         // $barang = Barang::all();
 
         return view('app.transaksi.retur.create', compact('kwitansi'));

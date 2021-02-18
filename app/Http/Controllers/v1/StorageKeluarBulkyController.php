@@ -23,6 +23,7 @@ use App\Models\SuratJalanBulky;
 use App\Mail\KwitansiDanSuratJalanMail;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class StorageKeluarBulkyController extends Controller
@@ -36,6 +37,7 @@ class StorageKeluarBulkyController extends Controller
     {
         if($request->ajax()){
             $data = StorageKeluarBulky::with('barangBulky.barang', 'bulky', 'pemesananBulky')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

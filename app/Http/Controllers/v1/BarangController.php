@@ -33,7 +33,7 @@ class BarangController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->get();
+            $data = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

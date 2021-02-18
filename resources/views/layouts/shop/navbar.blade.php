@@ -58,6 +58,10 @@
                 <a class="dropdown-item" href="{{ route('transaksi.pembeli.riwayat') }}">
                     Riwayat Transaksi
                 </a>
+
+                <a class="dropdown-item" href="{{ route('transaksi.pembeli.retur') }}">
+                    Retur Barang
+                </a>
             @endif
             @if (Auth::user()->pelanggan_id != null)
             <a class="dropdown-item" href="{{route('setPelanggan.show')}}">Perbaharui Akun</a>

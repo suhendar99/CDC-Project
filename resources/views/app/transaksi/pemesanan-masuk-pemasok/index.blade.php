@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pemesanan Dari Retail';
+        $pageTitle = 'Data Pemesanan Dari Bulky';
 @endphp
 @extends('layouts.dashboard.header')
 

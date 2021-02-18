@@ -41,10 +41,13 @@ class PemesananController extends Controller
      */
     public function pemesananMasukPembeli(Request $request)
     {
-        $data = PemesananPembeliItem::with('pemesananPembeli.pembeli')
-        ->orderBy('id','desc')
-        ->get();
         if($request->ajax()){
+            $data = PemesananPembeliItem::with('pemesananPembeli.pembeli')
+            ->whereHas('pemesananPembeli',function($q){
+                $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            })
+            ->orderBy('id','desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -129,14 +132,17 @@ class PemesananController extends Controller
                 ->rawColumns(['action','total_pembayaran','aksi_pemesanan','bukti_pembayaran','jumlah_barang','status_pembayaran','status_pemesanan'])
                 ->make(true);
         }
-        return view('app.transaksi.pemesanan-masuk-warung.index',compact('data'));
+        return view('app.transaksi.pemesanan-masuk-warung.index');
     }
     public function index(Request $request)
     {
-        $data = BarangPesanan::with('pesanan.storageOut', 'barang')
-        ->orderBy('id', 'desc')
-        ->get();
         if($request->ajax()){
+            $data = BarangPesanan::with('pesanan.gudang', 'barang')
+            ->whereHas('pesanan.gudang',function($q){
+                $q->where('user_id',Auth::user()->id);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -502,7 +508,7 @@ class PemesananController extends Controller
      */
     public function getPemesanan($id)
     {
-        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->where('id',$id)->get();
+        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->find($id);
         return response()->json([
             'data' => $data
         ]);

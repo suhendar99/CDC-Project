@@ -32,11 +32,13 @@ class StorageInController extends Controller
         if($request->ajax()){
             if (Auth::user()->pengurusGudang->status == 1) {
                 $data = StorageIn::with('barangBulky', 'gudang', 'satuan')
+                ->where('user_id',Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
             } else {
                 $data = StorageIn::with('barangBulky', 'gudang', 'satuan')
                 ->where('gudang_id', Auth::user()->pengurusGudang->gudang[0]->id)
+                ->where('user_id',Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
             }
@@ -126,7 +128,6 @@ class StorageInController extends Controller
         })
         ->where('status', 1)
         ->get();
-
 
         if($gudang->count() < 1){
             return back()->with('failed','Mohon Daftarkan/Aktifkan Gudang Anda Terlebih Dahulu!');

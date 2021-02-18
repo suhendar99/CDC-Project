@@ -133,6 +133,7 @@
     let hargaBeli = '{{ $base_harga->harga_beli }}';
     let jumlahBarang = '{{ $base_harga->jumlah }}';
     let satuan = '{{ $base_harga->satuan }}';
+    console.log(satuan);
     let hargaSatuan = 0;
     let untung = 0;
     let akhir = 0;

@@ -11,10 +11,12 @@ use App\Models\StorageMasukBulky;
 use App\Models\StorageBulky;
 use App\Models\GudangBulky;
 use App\Models\Barang;
+use App\Models\BarangKeluarPemesananBulky;
 use App\Models\LogTransaksi;
 use App\Models\PemesananKeluarBulky;
 use App\Models\StockBarangBulky;
 use App\Models\RekapitulasiPembelianBulky;
+use Illuminate\Support\Facades\Auth;
 
 class StorageMasukBulkyController extends Controller
 {
@@ -27,6 +29,7 @@ class StorageMasukBulkyController extends Controller
     {
         if($request->ajax()){
             $data = StorageMasukBulky::with('barang', 'bulky')
+            ->where('user_id',Auth::user()->id)
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)
@@ -86,17 +89,60 @@ class StorageMasukBulkyController extends Controller
             $pesananId = $request->query('id');
             return view('app.data-master.storageBulky.in.create', compact('gudang','pemesanan','pesananId'));
         } else {
-            // dd($pemesanan->barangKeluarPemesananBulky[0]);
             $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
                 $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
             })
             ->where('status', 1)
             ->get();
-
-            if ($gudang->count() == 0) {
+            foreach ($gudang as $key => $value) {
+                $gud = $value;
+            }
+            $barangs = PemesananKeluarBulky::with('kwitansiPemasok','suratJalanPemasok','storageKeluarPemasok','barangKeluarPemesananBulky','bulky')->whereHas('bulky',function($q)use($gud){
+                $q->where('bulky_id',$gud->id);
+            })
+            ->where('status',4)
+            ->get();
+            if ($gudang->count() < 1) {
                 return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
             }
-            return view('app.data-master.storageBulky.in.create', compact('gudang'));
+            return view('app.data-master.storageBulky.in.create', compact('gudang','barangs'));
+        }
+    }
+
+    public function findStorageKeluar($id)
+    {
+        try {
+            $pesanan = BarangKeluarPemesananBulky::with('pemesanan', 'barang')
+            ->whereHas('pemesanan', function($query)use($id){
+                $query->where([
+                    ['gudang_id', $id],
+                    ['status', 5]
+                ]);
+            })
+            ->has('pemesanan.storageKeluarPemasok')
+            ->doesntHave('pemesanan.storageMasukBulky')
+            ->get();
+
+            // dd($pesanan);
+            // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
+            // ->whereIn('id', $pesanan)
+            // ->get();
+
+            if (!$pesanan) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $pesanan
+                ], 200);
+                # code...
+            }
+
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
         }
     }
 

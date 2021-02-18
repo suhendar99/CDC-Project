@@ -90,4 +90,5 @@ Route::get('/v1/retur/kwitansi/{id}/barang', 'v1\ReturOutController@barangKwitan
 Route::get('/v1/gudang/retail/{id}/pemesanan', 'v1\StorageInController@findStorageKeluar');
 Route::get('/v1/retail/stock/{id}/foto', 'v1\StockBarangController@getFoto');
 Route::get('/v1/bulky/stock/{id}/foto', 'v1\StockBarangBulkyController@getFoto');
+Route::get('/v1/gudang/bulky/{id}/pemesanan', 'v1\StorageMasukBulkyController@findStorageKeluar');
 // Route::get('/v1/bulky/proses/pengemasan/{id}', 'v1\PemesananBulkyController@proses');

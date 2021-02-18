@@ -150,10 +150,7 @@
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
                 {data : 'kwitansi_bulky.kode', name: 'kode'},
                 {data : 'kwitansi_bulky.pemesanan_bulky.nomor_pemesanan', name: 'nomor_pemesanan'},
-                {data : 'kwitansi_bulky.pemesanan_bulky', render:function(data,a,b,c){
-                        return '( '+data.barang_pesanan_bulky.barang_kode+' ) '+data.barang_pesanan_bulky.nama_barang;
-                    }
-                },
+                {data : 'barang', name: 'barang'},
                 {data : 'keterangan', name: 'keterangan'},
                 // {data : 'action', name: 'action'}
             ]
