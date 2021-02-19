@@ -391,6 +391,7 @@ class StorageKeluarBulkyController extends Controller
             'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
         LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'Barang Keluar',

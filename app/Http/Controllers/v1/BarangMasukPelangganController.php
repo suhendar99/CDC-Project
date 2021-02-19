@@ -178,6 +178,7 @@ class BarangMasukPelangganController extends Controller
         //     'total' => $masuk->barang->harga_total
         // ]);
         LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'Barang Masuk',

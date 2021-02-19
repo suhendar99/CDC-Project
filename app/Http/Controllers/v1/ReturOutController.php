@@ -88,10 +88,12 @@ class ReturOutController extends Controller
         }
 
         ReturMasukBulky::create($request->only('kwitansi_bulky_id', 'tanggal_pengembalian', 'keterangan'));
-        $log = LogTransaksi::create([
+        LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'aktifitas_transaksi' => 'Retur Barang Keluar'
+            'aktifitas_transaksi' => 'Retur Keluar',
+            'role' => 'Retail   '
         ]);
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Created!' ));
