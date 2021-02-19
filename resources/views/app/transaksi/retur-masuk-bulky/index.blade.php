@@ -45,10 +45,13 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal Pengembalian</th>
-                                <th>Kode Kwitansi</th>
-                                <th>Nomor Pemesanan</th>
+                                <th>Nomor Kwitansi</th>
+                                <th>Kode Barang</th>
                                 <th>Barang</th>
+                                <th>Jumlah Barang</th>
+                                <th>satuan</th>
                                 <th>Keterangan</th>
+                                <th>Status</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
@@ -148,10 +151,23 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'tanggal_pengembalian', name: 'tanggal_pengembalian'},
-                {data : 'kwitansi_bulky.kode', name: 'kode'},
-                {data : 'kwitansi_bulky.pemesanan_bulky.nomor_pemesanan', name: 'nomor_pemesanan'},
-                {data : 'barang', name: 'barang'},
+                {data : 'nomor_kwitansi', name: 'kode'},
+                {data : 'barang_bulky.kode', name: 'kode_barang'},
+                {data : 'barang_bulky.nama_barang', name: 'nama_barang'},
+                {data : function(data,a,b,c){
+                    return data.jumlah;
+                }, name: 'jumlah'},
+                {data : 'satuan.satuan', name: 'satuan'},
                 {data : 'keterangan', name: 'keterangan'},
+                {data : function(data,a,b,c){
+                    if (data.status == null) {
+                      return `<a href="{{ asset('') }}v1/bulky/pengembailan/masuk/${data.id}/status/terima" class="btn btn-success btn-sm mr-1" title="Untuk menerima pengembalian">Terima</a><a href="{{ asset('') }}v1/bulky/pengembailan/masuk/${data.id}/status/tolak" class="btn btn-danger btn-sm" title="Untuk menolak pengembalian">Tolak</a>`;
+                    } else if(data.status == 1) {
+                      return "Pengembalian Ditolak";
+                    } else if(data.status == 2) {
+                      return "Pengembalian Diterima";
+                    }
+                }, name: 'status'},
                 // {data : 'action', name: 'action'}
             ]
         });

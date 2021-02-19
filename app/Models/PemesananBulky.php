@@ -90,4 +90,15 @@ class PemesananBulky extends Model
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
         return $this->hasMany('App\Models\SuratJalanBulky', 'pemesanan_bulky_id');
     }
+
+    /**
+     * PemesananBulky has many ReturMasukBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function returMasukBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
+        return $this->hasMany('App\Models\ReturMasukBulky', 'pemesanan_bulky_id');
+    }
 }

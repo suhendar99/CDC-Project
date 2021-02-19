@@ -79,7 +79,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu</th>
+                                                <th>Waktu Masuk Barang</th>
                                                 <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
@@ -113,13 +113,13 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Barang Keluar</th>
                                                                 <th>Kode Penyimpanan / Barcode</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
                                                                 <th>Satuan</th>
-                                                                <th>Pemesanan</th>
+                                                                <th>No Pemesanan</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>
@@ -130,7 +130,7 @@
                                                     <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Kwitansi DIbuat</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>Pemesanan</th>
@@ -145,7 +145,7 @@
                                                     <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu SUrat Jalan DIbuat</th>
                                                                 <th>No Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
@@ -386,15 +386,11 @@
             ajax : "{{ route('bulky.kwitansi.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', render:function(data,a,b,c){
-                        // return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
-                        return data;
-                    }
-                },
                 // {data : 'created_at', render:function(data,a,b,c){
                 //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
                 //     }
                 // },
+                {data : 'created_at', name: 'created_at'},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -417,15 +413,11 @@
             ajax : "{{ route('bulky.surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : 'created_at', render:function(data,a,b,c){
-                        // return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
-                        return data;
-                    }
-                },
                 // {data : 'created_at', render:function(data,a,b,c){
                 //         return new Date(data).toLocaleString('id-ID', { timeZone: 'UTC' });
                 //     }
                 // },
+                {data : 'created_at', name: 'created_at'},
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
