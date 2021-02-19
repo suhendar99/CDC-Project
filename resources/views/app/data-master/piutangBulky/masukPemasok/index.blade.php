@@ -1,6 +1,6 @@
 @php
         $icon = 'shopping_cart';
-        $pageTitle = 'Data Piutang Keluar';
+        $pageTitle = 'Data Piutang Dari Bulky';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Piutang Keluar</a>
+            <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
         </div>
     </div>

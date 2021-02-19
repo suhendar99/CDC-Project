@@ -390,6 +390,12 @@ class StorageKeluarBulkyController extends Controller
             'harga' => round($total, 0, PHP_ROUND_HALF_UP),
             'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Barang Keluar',
+            'role' => 'Bulky'
+        ]);
 
         return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
     }

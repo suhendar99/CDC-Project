@@ -8,7 +8,9 @@ use App\Models\PemesananBulky;
 use App\Models\GudangBulky;
 use App\Models\RekapitulasiPembelianBulky;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -48,27 +50,60 @@ class RekapitulasiPembelianBulkyController extends Controller
         return view('app.transaksi.rekapitulasi.pembelian-bulky.index', compact('total'));
     }
 
-    public function downloadRekapitulasiPembelianPdf()
+    public function downloadRekapitulasiPembelianPdf(Request $request)
     {
-        $data = RekapitulasiPembelianBulky::whereHas('storageMasukBulky.bulky.akunGudangBulky', function($query){
-                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
-            })
-            ->get();;
-        if ($data->isEmpty()) {
-            return back()->with('failed','Data Kosong !');
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
         } else {
-            $pdf = PDF::loadview('app.transaksi.rekapitulasi.pembelian-bulky.pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-            set_time_limit(300);
-            return $pdf->stream('Rekapitulasi-Pembelian-'.Carbon::now());
-            return view('app.transaksi.rekapitulasi.pembelian-bulky.pdf',compact('data'));
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = RekapitulasiPembelianBulky::whereHas('storageMasukBulky.bulky.akunGudangBulky', function($query){
+                    $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+                })
+                ->whereRaw('MONTH(tanggal_pembelian) = '.$bulan)
+                ->orderBy('id','desc')
+                ->get();
+                if ($data->isEmpty()) {
+                    return back()->with('failed','Data Kosong !');
+                } else {
+                    $pdf = PDF::loadview('app.transaksi.rekapitulasi.pembelian-bulky.pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                    set_time_limit(300);
+                    return $pdf->stream('Rekapitulasi-Pembelian-'.Carbon::now());
+                    return view('app.transaksi.rekapitulasi.pembelian-bulky.pdf',compact('data'));
+                }
+
+            }
         }
     }
 
-    public function downloadRekapitulasiPembelianExcel()
+    public function downloadRekapitulasiPembelianExcel(Request $request)
     {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
         $data = RekapitulasiPembelianBulky::whereHas('storageMasukBulky.bulky.akunGudangBulky', function($query){
                 $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
             })
+            ->whereRaw('MONTH(tanggal_pembelian) = '.$bulan)
+            ->orderBy('id','desc')
             ->get();;
         if($data->count() < 1){
             return back()->with('failed','Data Kosong!');

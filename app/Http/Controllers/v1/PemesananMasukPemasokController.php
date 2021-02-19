@@ -4,6 +4,7 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\BarangKeluarPemesananBulky;
+use App\Models\LogTransaksi;
 use App\Models\PemesananKeluarBulky;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,6 +107,12 @@ class PemesananMasukPemasokController extends Controller
     {
         $data = PemesananKeluarBulky::findOrFail($id);
         $data->update(['status'=>'2']);
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'penerimaan Pesanan',
+            'role' => 'Pemasok'
+        ]);
         // dd($data);
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }

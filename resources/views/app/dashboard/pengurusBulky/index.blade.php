@@ -42,7 +42,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-primary">work</i>
+                    <i class="ri-shopping-bag-line text-my-primary display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -60,7 +60,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-warning">archive</i>
+                    <i class="ri-inbox-archive-line text-my-warning display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -78,7 +78,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-danger">unarchive</i>
+                    <i class="ri-inbox-unarchive-line text-my-danger display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -96,7 +96,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">extension</i>
+                    <i class="ri-user-search-line text-my-success display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">

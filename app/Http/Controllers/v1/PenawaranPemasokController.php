@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\Gudang;
 use App\Models\GudangBulky;
+use App\Models\LogTransaksi;
 use App\Models\PenawaranBulky;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -183,6 +184,12 @@ class PenawaranPemasokController extends Controller
                 'pemasok_id' => Auth::user()->pemasok->id,
                 'nama_barang' => $barang->nama_barang
             ]));
+            LogTransaksi::create([
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
+                'aktifitas_transaksi' => 'Penawaran Barang',
+                'role' => 'Pemasok'
+            ]);
             return redirect(route('riwayat'))->with('success', 'Penaawaran berhasil dibuat !');
         }
     }

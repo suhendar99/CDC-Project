@@ -184,8 +184,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('piutang-bulky-pemasok', 'PiutangBulkyController');
         //Rekapitulasi
         Route::resource('rekapitulasi-penjualan-pemasok', 'RekapitulasiPenjualanPemasokController');
-        Route::get('rekapitulasi-penjualan-pemasok/print/PDF', 'RekapitulasiPenjualanPemasokController@printPdf')->name('print-rekapitulasi-penjualan-pemasok.pdf');
-        Route::get('rekapitulasi-penjualan-pemasok/print/Excel', 'RekapitulasiPenjualanPemasokController@printExcel')->name('print-rekapitulasi-penjualan-pemasok.excel');
+        Route::post('rekapitulasi-penjualan-pemasok/print/PDF', 'RekapitulasiPenjualanPemasokController@printPdf')->name('print-rekapitulasi-penjualan-pemasok.pdf');
+        Route::post('rekapitulasi-penjualan-pemasok/print/Excel', 'RekapitulasiPenjualanPemasokController@printExcel')->name('print-rekapitulasi-penjualan-pemasok.excel');
         Route::resource('laba-rugi-pemasok', 'LabaRugiPemasokController');
         // Laporan
         Route::get('laporan-penjualan-pemasok','LaporanPemasokController@showLaporanPenjualan')->name('laporan.penjualan');
@@ -419,13 +419,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rekapitulasi Pembeli Bulky
         Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
-        Route::get('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
-        Route::get('bulky/rekapitulasi/pembelian/EXCEL', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianExcel')->name('bulky.rekap.pembelian.excel');
+        Route::post('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
+        Route::post('bulky/rekapitulasi/pembelian/EXCEL', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianExcel')->name('bulky.rekap.pembelian.excel');
 
         // Rekapitulasi Penjualan Bulky
         Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
-        Route::get('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
-        Route::get('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
+        Route::post('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
+        Route::post('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
 
         // Laba Bulky
         Route::resource('bulky/laba-rugi', 'LabaRugiBulkyController', [
@@ -569,10 +569,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
 
-        Route::get('rekapPenjualan/downloadPdf', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanPdf')->name('rekapPenjualan.download.pdf');
-        Route::get('rekapPenjualan/downloadExcel', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanExcel')->name('rekapPenjualan.download.excel');
+        Route::post('rekapPenjualan/downloadPdf', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanPdf')->name('rekapPenjualan.download.pdf');
+        Route::post('rekapPenjualan/downloadExcel', 'RekapitulasiPenjualanController@downloadRekapitulasiPenjualanExcel')->name('rekapPenjualan.download.excel');
 
-        Route::get('rekapPembelian/downloadPdf', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianPdf')->name('rekapPembelian.download.pdf');
-        Route::get('rekapPembelian/downloadExcel', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianExcel')->name('rekapPembelian.download.excel');
+        Route::post('rekapPembelian/downloadPdf', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianPdf')->name('rekapPembelian.download.pdf');
+        Route::post('rekapPembelian/downloadExcel', 'RekapitulasiPembelianController@downloadRekapitulasiPembelianExcel')->name('rekapPembelian.download.excel');
     });
 });

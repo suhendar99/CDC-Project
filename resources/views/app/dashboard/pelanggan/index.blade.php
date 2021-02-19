@@ -2,11 +2,6 @@
   $icon = 'dashboard';
   $pageTitle = 'Dashboard Pelanggan Warung';
   $dashboard = true;
-  $gudang = App\Models\Gudang::all();
-  $storage = \App\Models\Storage::all();
-  $storageIn = \App\Models\StorageIn::all();
-  $storageOut = \App\Models\StorageOut::all();
-  $pmsk = \App\Models\Pemasok::all();
   $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
@@ -35,11 +30,11 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-primary">work</i>
+                    <i class="ri-shopping-bag-line text-my-primary display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-primary">20 Jenis</span><br>
+                        <span class="text-my-primary">{{$barang->count()}} Jenis</span><br>
                         <span class="text-my-subtitle">Barang</span>
                     </div>
                   </div>
@@ -53,11 +48,11 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-warning">archive</i>
+                    <i class="ri-inbox-archive-line text-my-warning display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-warning">200 Kali</span><br>
+                        <span class="text-my-warning">{{$barangMasuk->count()}} Kali</span><br>
                         <span class="text-my-subtitle">Barang Masuk</span>
                     </div>
                   </div>
@@ -71,11 +66,11 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-danger">unarchive</i>
+                    <i class="ri-inbox-unarchive-line text-my-danger display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-danger">100 Kali</span><br>
+                        <span class="text-my-danger">{{$barangKeluar->count()}} Kali</span><br>
                         <span class="text-my-subtitle">Barang Keluar</span>
                     </div>
                   </div>
@@ -89,12 +84,12 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">extension</i>
+                    <i class="ri-shopping-cart-line text-my-success display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-success">10 Orang</span><br>
-                        <span class="text-my-subtitle">Pemasok Barang</span>
+                        <span class="text-my-success">{{$jumlahPemesanan->count()}} Pemesanan</span><br>
+                        <span class="text-my-subtitle"> Barang</span>
                     </div>
                   </div>
                 </div>

@@ -177,11 +177,12 @@ class BarangMasukPelangganController extends Controller
         //     'harga' => $masuk->barang->harga_barang,
         //     'total' => $masuk->barang->harga_total
         // ]);
-        // $log = LogTransaksi::create([
-        //     'tanggal' => now(),
-        //     'jam' => now(),
-        //     'aktifitas_transaksi' => 'Penerimaan Barang'
-        // ]);
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Barang Masuk',
+            'role' => 'Warung'
+        ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));
     }

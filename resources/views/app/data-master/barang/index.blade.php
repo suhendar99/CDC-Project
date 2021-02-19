@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Penyimpanan';
+        $pageTitle = 'Data Penyimpanan (Stok)';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -55,7 +55,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu</th>
+                                                <th>Tanggal Barang Masuk</th>
                                                 <th>Kode Barang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Harga Barang</th>
@@ -85,11 +85,11 @@
                                         <div class="col-md-12 pt-4">
                                             <div class="tab-content" id="sub-tabContent">
                                                 <div class="tab-pane fade show active" id="sub-keluar" role="tabpanel" aria-labelledby="sub-home-tab">
-                                                    <h4>Barang Keluar (Barang Yang Sudah Dikirim Kepada Pembeli)</h4>
+                                                    <h4>Barang Keluar <span class="h6">(Barang Yang Sudah Dikirim Kepada Pembeli)</span></h4>
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
+                                                                <th>Tanggal Pengeluaran</th>
                                                                 <th>Kode Barang</th>
                                                                 <th>Nama Pemasok</th>
                                                                 <th>Nama Barang</th>
@@ -107,7 +107,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Tanggal Pembuatan Kwitansi</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>Pemesanan</th>
@@ -123,7 +123,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Tanggal Pembuatan Surat Jalan</th>
                                                                 <th>Kode Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>

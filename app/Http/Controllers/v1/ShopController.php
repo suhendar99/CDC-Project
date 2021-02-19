@@ -305,6 +305,12 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+            LogTransaksi::create([
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
+                'aktifitas_transaksi' => 'Pemesanan Keluar',
+                'role' => 'Warung'
+            ]);
 
             $gudang = $request->gudang_id;
 
@@ -446,7 +452,12 @@ class ShopController extends Controller
                     'tanggal_pemesanan' => now('Asia/Jakarta')
                 ]));
             }
-
+            LogTransaksi::create([
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
+                'aktifitas_transaksi' => 'Pemesanan Keluar',
+                'role' => 'Retail'
+            ]);
             $satuan = ($request->satuan == 'Ton') ? 'Kuintal' : $request->satuan;
 
             // dd($request->barang);
@@ -539,7 +550,12 @@ class ShopController extends Controller
                     'status' => 1
                 ]));
             }
-
+            LogTransaksi::create([
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
+                'aktifitas_transaksi' => 'Pemesanan Keluar',
+                'role' => 'Bulky'
+            ]);
             $satuan = ($request->satuan == 'Ton') ? 'Ton' : $request->satuan;
 
             // dd($request->barang);

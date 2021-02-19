@@ -6,8 +6,10 @@ use App\Exports\ExportRekapitulasiPenjualanPemasok;
 use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualanPemasok;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -44,22 +46,58 @@ class RekapitulasiPenjualanPemasokController extends Controller
         return view('app.transaksi.rekapitulasi.penjualan-pemasok.index',compact('total'));
     }
 
-    public function printPdf()
+    public function printPdf(Request $request)
     {
-        $data = RekapitulasiPenjualanPemasok::all();
-        if ($data->isEmpty()) {
-            return back()->with('failed','Data Kosong !');
-        } else {
-            $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-            set_time_limit(300);
-            return $pdf->stream('Rekapitulasi-Penjualan-'.Carbon::now());
-            return view('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data'));
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else{
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = RekapitulasiPenjualanPemasok::with('storageKeluar')
+                ->whereHas('storageKeluar',function($q){
+                    $q->where('pemasok_id',Auth::user()->pemasok_id);
+                })
+                ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                ->orderBy('id','desc')->get();
+
+                $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan-rekapitulasi.pdf');
+                return view('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'));
+
+            }
         }
     }
 
-    public function printExcel()
+    public function printExcel(Request $request)
     {
-        $data = RekapitulasiPenjualanPemasok::all();
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = RekapitulasiPenjualanPemasok::with('storageKeluar')
+                ->whereHas('storageKeluar',function($q){
+                    $q->where('pemasok_id',Auth::user()->pemasok_id);
+                })
+                ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                ->orderBy('id','desc')->get();
         if($data->count() < 1){
             return back()->with('failed','Data Kosong!');
         }
