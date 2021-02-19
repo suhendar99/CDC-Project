@@ -51,11 +51,11 @@
                                 @csrf
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <select name="kwitansi_bulky_id" id="kwitansi" class="form-control">
+                                        <label>Pemesanan ke Bulky <small class="text-success">*Harus diisi</small></label>
+                                        <select name="pemesanan_bulky_id" id="pemesanan" class="form-control">
                                             <option value="0">--Pilih Pesanan--</option>
-                                            @foreach ($kwitansi as $pesan)
-                                                <option value="{{$pesan->id}}" {{ old('kwitansi_bulky_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->kode}} | {{ $pesan->bulky->nama }} | {{ $pesan->pemesananBulky->barangPesananBulky->nama_barang }}</option>
+                                            @foreach ($pemesanan as $pesan)
+                                                <option value="{{$pesan->id}}" {{ old('pemesanan_bulky_id') == $pesan->id ? 'selected' : ''}}>{{$pesan->kode}} | {{ $pesan->bulky->nama }} | {{ $pesan->barangPesananBulky->nama_barang }}</option>
                                             @endforeach
                                         </select>
                                         @error('kwitansi_bulky_id')
@@ -68,6 +68,26 @@
                                         <label>Tanggal Pengembalian <small class="text-success">*Harus diisi</small></label>
                                         <input type="date" class="form-control @error('tanggal_pengembalian') is-invalid @enderror" name="tanggal_pengembalian" value="{{ old('tanggal_pengembalian') }}" placeholder="Enter tanggal_pengembalian">
                                         @error('tanggal_pengembalian')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Enter nomor_kwitansi">
+                                        @error('nomor_kwitansi')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Bukti Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <input type="file" class="form-control-file @error('bukti_kwitansi') is-invalid @enderror" name="bukti_kwitansi" value="{{ old('bukti_kwitansi') }}" placeholder="Enter bukti_kwitansi">
+                                        @error('bukti_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

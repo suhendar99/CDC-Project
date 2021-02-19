@@ -98,7 +98,7 @@ class StorageMasukBulkyController extends Controller
                 $gud = $value;
             }
             $barangs = PemesananKeluarBulky::with('kwitansiPemasok','suratJalanPemasok','storageKeluarPemasok','barangKeluarPemesananBulky','bulky')->whereHas('bulky',function($q)use($gud){
-                $q->where('bulky_id',$gud->id);
+                $q->where('bulky_id', $gud->id);
             })
             ->where('status',4)
             ->get();
