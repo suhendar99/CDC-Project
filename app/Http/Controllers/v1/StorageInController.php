@@ -241,10 +241,11 @@ class StorageInController extends Controller
             'total' => $masuk->harga_beli
         ]);
 
-        $log = LogTransaksi::create([
-            'tanggal' => now(),
-            'jam' => now(),
-            'aktifitas_transaksi' => 'Penerimaan Barang'
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Barang Masuk',
+            'role' => 'Retail'
         ]);
 
         return back()->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));

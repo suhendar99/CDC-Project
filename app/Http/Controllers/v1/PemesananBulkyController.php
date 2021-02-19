@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
+use App\Models\LogTransaksi;
 use App\Models\PemesananKeluarBulky;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -130,6 +131,12 @@ class PemesananBulkyController extends Controller
     {
         $data = PemesananBulky::findOrFail($id);
         $data->update(['status'=>'2']);
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Penerimaan Pesanan',
+            'role' => 'Warung'
+        ]);
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }
 

@@ -250,10 +250,11 @@ class StorageMasukBulkyController extends Controller
             'total' => $masuk->harga_beli
         ]);
 
-        $log = LogTransaksi::create([
+        LogTransaksi::create([
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'aktifitas_transaksi' => 'Penerimaan Barang'
+            'aktifitas_transaksi' => 'Barang Masuk',
+            'role' => 'Bulky'
         ]);
 
         return redirect('/v1/bulky/storage')->with('success', __( 'Data Barang Masuk Berhasil dibuat!' ));

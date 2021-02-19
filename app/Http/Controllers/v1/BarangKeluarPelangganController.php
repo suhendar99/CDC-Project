@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\BarangKeluarPelanggan;
 use App\Models\BarangWarung;
+use App\Models\LogTransaksi;
 use App\Models\PemesananPembeli;
 use App\Models\RekapitulasiPenjualanPelanggan;
 use Illuminate\Http\Request;
@@ -108,6 +109,12 @@ class BarangKeluarPelangganController extends Controller
                 'total' => $out->pemesanan->pemesananPembeliItem[0]->harga
             ]);
         }
+        LogTransaksi::create([
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Barang Keluar',
+            'role' => 'Warung'
+        ]);
 
         $data = PemesananPembeli::findOrFail($request->pemesanan_id);
         $data->update(['status'=>'4']);

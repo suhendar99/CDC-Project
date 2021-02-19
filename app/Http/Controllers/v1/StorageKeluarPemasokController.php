@@ -244,10 +244,11 @@ class StorageKeluarPemasokController extends Controller
             //     'satuan' => $pesan->satuan,
             //     'waktu' => Carbon::now()
             // ]);
-            $log = LogTransaksi::create([
+            LogTransaksi::create([
                 'tanggal' => now('Asia/Jakarta'),
                 'jam' => now('Asia/Jakarta'),
-                'aktifitas_transaksi' => 'Pengiriman Barang'
+                'aktifitas_transaksi' => 'Barang keluar / Dikirim',
+                'role' => 'Pemasok'
             ]);
 
         }

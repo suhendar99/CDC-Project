@@ -34,7 +34,7 @@
                                     <div class="input-group">
                                         <input type="text" name="search" class=" form-control" placeholder=" Cari gudang Bulky ..." aria-label="Cari gudang bulky..." aria-describedby="basic-addon1">
                                         <div class="input-group-append">
-                                            <button type="submit" class="btn btn-outline-secondary">search</button>
+                                            <button type="submit" class="btn btn-outline-secondary">cari</button>
                                         </div>
                                     </div>
                                 </form>

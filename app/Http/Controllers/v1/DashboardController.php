@@ -5,6 +5,9 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Bank;
 use App\Models\Barang;
+use App\Models\BarangKeluarPelanggan;
+use App\Models\BarangMasukPelanggan;
+use App\Models\BarangWarung;
 use App\models\Bulky;
 use App\Models\Desa;
 use App\Models\Kabupaten;
@@ -15,6 +18,7 @@ use App\Models\LogTransaksi;
 use App\Models\Pelanggan;
 use App\Models\Pemasok;
 use App\Models\Pembeli;
+use App\Models\Pemesanan;
 use App\Models\PengurusGudang;
 use App\Models\Provinsi;
 use App\Models\StorageKeluarPemasok;
@@ -93,7 +97,9 @@ class DashboardController extends Controller
                 $kategoris = $value;
                 $jumlahBarang[] = Barang::where('kategori_id',$kategoris->id)->count();
             }
-            $logTransaksi = LogTransaksi::where('role','pemasok')->orderBy('jam','desc')->paginate(3);
+            $logTransaksi = LogTransaksi::where('role','pemasok')
+            ->where('tanggal',now())
+            ->orderBy('jam','desc')->paginate(3);
 
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPemasok');
@@ -125,11 +131,24 @@ class DashboardController extends Controller
             // if ($auth->pelanggan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
             // }
+            $barang = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->get();
+            $barangMasuk = BarangMasukPelanggan::with('storageOut.gudang','storageOut.stockBarangRetail', 'user')
+            ->where('user_id',Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+            $barangKeluar = BarangKeluarPelanggan::with('user', 'barangWarung', 'pemesanan')
+            ->where('user_id',Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+            $jumlahPemesanan = Pemesanan::with('storageOut.user.pengurusGudang.kabupaten','pelanggan.kabupaten','barangPesanan')
+            ->where('pelanggan_id',Auth::user()->pelanggan_id)
+            ->orderBy('id','desc')
+            ->get();
             if ($auth->status == 0) {
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathPelanggan.'index');
+            return view($this->pathPelanggan.'index',compact('barang','barangMasuk','barangKeluar','jumlahPemesanan'));
     	}elseif ($auth->pembeli_id != null) {
             // if ($auth->bank->tahun_berdiri == null) {
             //     return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
