@@ -25,9 +25,9 @@ class ReturMasukBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = ReturMasukBulky::with('kwitansiBulky.pemesananBulky.barangPesananBulky','kwitansiBulky.pemesananBulky.bulky')
-            ->whereHas('kwitansiBulky.pemesananBulky.bulky',function($q){
-                $q->where('user_id',Auth::user()->id);
+            $data = ReturMasukBulky::with('pemesananBulky', 'barangBulky', 'satuan')
+            ->whereHas('pemesananBulky',function($q){
+                $q->where('bulky_id', auth()->user()->pengurusGudangBulky->bulky[0]->id);
             })
             ->orderBy('id', 'desc')
             ->get();
@@ -38,9 +38,6 @@ class ReturMasukBulkyController extends Controller
                 })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
-                })
-                ->editColumn('barang',function($data){
-                    return '('.$data->kwitansiBulky->pemesananBulky->kode.') '.$data->kwitansiBulky->pemesananBulky->barangPesananBulky->nama_barang;
                 })
                 ->make(true);
         }
@@ -114,6 +111,25 @@ class ReturMasukBulkyController extends Controller
 
 
         return redirect(route('returIn.index'))->with('success', __( 'Retur Created!' ));
+    }
+
+    public function statusReturDiterima($id)
+    {
+        ReturMasukBulky::find($id)->update([
+            'status' => 2
+        ]);
+
+        return back()->with('success', __( 'Pengembalian diterima.' ));
+    }
+
+
+    public function statusReturDitolak($id)
+    {
+        ReturMasukBulky::find($id)->update([
+            'status' => 1
+        ]);
+
+        return back()->with('success', __( 'Pengembalian ditolak.' ));
     }
 
     /**
