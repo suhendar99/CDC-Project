@@ -15,6 +15,7 @@ class CreateLogTransaksisTable extends Migration
     {
         Schema::create('log_transaksis', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->date('tanggal');
             $table->time('jam');
             $table->string('aktifitas_transaksi');

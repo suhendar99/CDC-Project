@@ -88,7 +88,6 @@ class ReturOutController extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         }
-
         $pesanan = PemesananBulky::findOrFail($request->pemesanan_bulky_id);
 
         $foto_kwitansi = $request->file('bukti_kwitansi');
@@ -116,9 +115,11 @@ class ReturOutController extends Controller
         ]);
 
         $log = LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
-            'aktifitas_transaksi' => 'Retur Barang Keluar'
+            'aktifitas_transaksi' => 'Retur Keluar',
+            'role' => 'Retail   '
         ]);
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Created!' ));
