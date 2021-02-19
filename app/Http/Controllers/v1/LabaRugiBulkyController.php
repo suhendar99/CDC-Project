@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\LabaRugiBulky;
+use Illuminate\Support\Facades\Auth;
 
 class LabaRugiBulkyController extends Controller
 {
@@ -20,6 +21,7 @@ class LabaRugiBulkyController extends Controller
     {
         if($request->ajax()){
             $data = LabaRugiBulky::orderBy('bulan', 'asc')
+            ->where('bulky_id',Auth::user()->pengurus_gudang_bulky_id)
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -69,7 +71,8 @@ class LabaRugiBulkyController extends Controller
         $laba_bersih = $request->penjualan - ($request->pembelian + $request->biaya_operasional);
 
         LabaRugiBulky::create($request->only('bulan', 'laba_kotor', 'penjualan', 'pembelian', 'biaya_operasional')+[
-            'laba_bersih' => $laba_bersih
+            'laba_bersih' => $laba_bersih,
+            'bulky_id' => Auth::user()->pengurus_gudang_bulky_id
         ]);
 
         return redirect(route('bulky.laba-rugi.index'))->with('success', __( 'Data Berhasil Dibuat' ));

@@ -6,6 +6,7 @@ use App\Exports\ExportRekapitulasiPenjualanBulky;
 use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualanBulky;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -51,30 +52,64 @@ class RekapitulasiPenjualanBulkyController extends Controller
         return view($this->path.'index', compact('total'));
     }
 
-    public function downloadRekapitulasiPenjualanPdf()
+    public function downloadRekapitulasiPenjualanPdf(Request $request)
     {
-        $data = RekapitulasiPenjualanBulky::with('storageKeluarBulky')
-            ->whereHas('storageKeluarBulky.bulky.akunGudangBulky', function($query){
-                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
-            })
-            ->get();
-        if ($data->isEmpty()) {
-            return back()->with('failed','Data Kosong !');
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
         } else {
-            $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-            set_time_limit(300);
-            return $pdf->stream('Rekapitulasi-Penjualan-'.Carbon::now());
-            return view($this->path.'pdf',compact('data'));
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = RekapitulasiPenjualanBulky::with('storageKeluarBulky')
+                        ->whereHas('storageKeluarBulky.bulky.akunGudangBulky', function($query){
+                            $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+                        })
+                        ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                        ->orderBy('id','desc')
+                        ->get();
+                if ($data->isEmpty()) {
+                    return back()->with('failed','Data Kosong !');
+                } else {
+                    $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                    set_time_limit(300);
+                    return $pdf->stream('Rekapitulasi-Penjualan-'.Carbon::now());
+                    return view($this->path.'pdf',compact('data'));
+                }
+
+            }
         }
+
     }
 
-    public function downloadRekapitulasiPenjualanExcel()
+    public function downloadRekapitulasiPenjualanExcel(Request $request)
     {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
         $data = RekapitulasiPenjualanBulky::with('storageKeluarBulky')
-            ->whereHas('storageKeluarBulky.bulky.akunGudangBulky', function($query){
-                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
-            })
-            ->get();
+                ->whereHas('storageKeluarBulky.bulky.akunGudangBulky', function($query){
+                    $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+                })
+                ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                ->orderBy('id','desc')
+                ->get();
         if($data->count() < 1){
             return back()->with('failed','Data Kosong!');
         }

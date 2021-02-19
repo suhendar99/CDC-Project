@@ -7,6 +7,7 @@
   $storageIn = \App\Models\StorageIn::all();
   $storageOut = \App\Models\StorageOut::all();
   $pmsk = \App\Models\Pemasok::all();
+  $gudangBulky = \App\Models\GudangBulky::all();
   $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
   $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
@@ -36,7 +37,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-primary">work</i>
+                    <i class="ri-shopping-bag-line text-my-primary display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -54,7 +55,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-warning">archive</i>
+                    <i class="ri-inbox-archive-line text-my-warning display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -72,7 +73,7 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-danger">unarchive</i>
+                    <i class="ri-inbox-unarchive-line text-my-danger display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
@@ -90,12 +91,12 @@
             <div class="card-body dashboard">
                 <div class="row">
                   <div class="col-4 valign-center">
-                    <i class="material-icons md-48 text-my-success">extension</i>
+                    <i class="ri-building-2-line text-my-success display-4"></i>
                   </div>
                   <div class="col-8 valign-center flex-last">
                     <div class="float-right text-right">
-                        <span class="text-my-success">{{$pmsk->count()}} Orang</span><br>
-                        <span class="text-my-subtitle">Pemasok Barang</span>
+                        <span class="text-my-success">{{$gudangBulky->count()}} Gudang</span><br>
+                        <span class="text-my-subtitle">Bulky</span>
                     </div>
                   </div>
                 </div>
@@ -141,7 +142,7 @@
                             <center>
                                 {{$logTransaksi->links()}}
                             </center>
-                            @endif 
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\LabaRugiPemasok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -19,6 +20,7 @@ class LabaRugiPemasokController extends Controller
     {
         if($request->ajax()){
             $data = LabaRugiPemasok::orderBy('bulan', 'asc')
+            ->where('pemasok_id',Auth::user()->pemasok_id)
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -110,7 +112,7 @@ class LabaRugiPemasokController extends Controller
             if ($request->bulan == 0) {
                 return back()->with('error','Mohon Pilih Bulan !');
             }
-            $laba = LabaRugiPemasok::create($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'));
+            $laba = LabaRugiPemasok::create($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih')+['pemasok_id' => Auth::user()->pemasok_id]);
         }
         return redirect()->route('laba-rugi-pemasok.index')->with('success','Data Berhasil Di Tambahkan !');
     }

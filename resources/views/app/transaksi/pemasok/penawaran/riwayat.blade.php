@@ -46,7 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Waktu</th>
+                                <th>Tanggal Penawaran</th>
                                 <th>Kode Penawaran</th>
                                 <th>Nama Barang</th>
                                 <th>Harga Barang</th>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pelanggan extends Model
 {
@@ -53,5 +54,14 @@ class Pelanggan extends Model
     public function getData()
     {
         return static::orderBy('id','desc')->get();
+    }
+    /**
+     * Get all of the comments for the Pelanggan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function labaRugiWarung(): HasMany
+    {
+        return $this->hasMany(LabaRugiPelanggan::class, 'warung_id', 'id');
     }
 }

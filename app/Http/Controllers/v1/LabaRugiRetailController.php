@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\LabaRugiRetail;
+use Illuminate\Support\Facades\Auth;
 
 class LabaRugiRetailController extends Controller
 {
@@ -25,6 +26,7 @@ class LabaRugiRetailController extends Controller
     {
         if($request->ajax()){
             $data = $this->model::orderBy('bulan', 'asc')
+            ->where('retail_id',Auth::user()->pengurus_gudang_id)
             ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -74,7 +76,8 @@ class LabaRugiRetailController extends Controller
         $laba_bersih = $request->penjualan - ($request->pembelian + $request->biaya_operasional);
 
         $this->model::create($request->only('bulan', 'laba_kotor', 'penjualan', 'pembelian', 'biaya_operasional')+[
-            'laba_bersih' => $laba_bersih
+            'laba_bersih' => $laba_bersih,
+            'retail_id' => Auth::user()->pengurus_gudang_id
         ]);
 
         return redirect(route('retail.laba-rugi.index'))->with('success', __( 'Data Berhasil Dibuat' ));

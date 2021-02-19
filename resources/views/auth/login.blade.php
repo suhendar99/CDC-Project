@@ -156,7 +156,8 @@
                 document.getElementById("form-submit").submit();
             })
             .catch(function (err) {
-                alert(err);
+                // alert(err);
+                alert("Mohon Izinkan Notifikasi Pada Browser Anda ");
                 console.log('2. User Chat Token Error'+ err);
             });
     });

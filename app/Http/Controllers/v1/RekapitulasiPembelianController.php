@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Po;
 use App\Models\RekapitulasiPembelian;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -52,22 +54,63 @@ class RekapitulasiPembelianController extends Controller
 
         return view($this->path.'index', compact('total'));
     }
-    public function downloadRekapitulasiPembelianPdf()
+    public function downloadRekapitulasiPembelianPdf(Request $request)
     {
-        $data = RekapitulasiPembelian::all();
-        if ($data->isEmpty()) {
-            return back()->with('failed','Data Kosong !');
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
         } else {
-            $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-            set_time_limit(300);
-            return $pdf->stream('Rekapitulasi-Pembelian-'.Carbon::now());
-            return view($this->path.'pdf',compact('data'));
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = RekapitulasiPembelian::with('storageIn')
+                        ->whereHas('storageIn',function($q){
+                            $q->where('user_id',Auth::user()->id);
+                        })
+                        ->whereRaw('MONTH(tanggal_pembelian) = '.$bulan)
+                        ->orderBy('id','desc')
+                        ->get();
+                if ($data->isEmpty()) {
+                    return back()->with('failed','Data Kosong !');
+                } else {
+                    $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                    set_time_limit(300);
+                    return $pdf->stream('Rekapitulasi-Pembelian-'.Carbon::now());
+                    return view($this->path.'pdf',compact('data'));
+                }
+
+            }
         }
     }
 
-    public function downloadRekapitulasiPembelianExcel()
+    public function downloadRekapitulasiPembelianExcel(Request $request)
     {
-        $data = RekapitulasiPembelian::all();
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = RekapitulasiPembelian::with('storageIn')
+                ->whereHas('storageIn',function($q){
+                    $q->where('user_id',Auth::user()->id);
+                })
+                ->whereRaw('MONTH(tanggal_pembelian) = '.$bulan)
+                ->orderBy('id','desc')
+                ->get();
         if($data->count() < 1){
             return back()->with('failed','Data Kosong!');
         }

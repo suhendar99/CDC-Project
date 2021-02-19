@@ -320,9 +320,16 @@
               fontWeight: 400,
           },
       },
-      ticks: {
-        stepSize: 1
-       }
+      labels: {
+            formatter: function(val) {
+                let vals = val.toFixed(0);
+                if (Number.isInteger(val)) {
+                    return vals;
+                } else {
+                    return "";
+                }
+            }
+        }
     },
     dataLabels: {
         enabled: false

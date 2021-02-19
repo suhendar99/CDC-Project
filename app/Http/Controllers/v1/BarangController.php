@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\FotoBarang;
 use App\Models\Kategori;
+use App\Models\LogTransaksi;
 use App\Models\Satuan;
 use App\Models\Storage;
 use App\Province;
@@ -125,6 +126,13 @@ class BarangController extends Controller
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id
             ]));
+
+            LogTransaksi::create([
+                'tanggal' => now('Asia/Jakarta'),
+                'jam' => now('Asia/Jakarta'),
+                'aktifitas_transaksi' => 'Barang Masuk',
+                'role' => 'Pemasok'
+            ]);
 
             if($request->hasfile('foto'))
             {

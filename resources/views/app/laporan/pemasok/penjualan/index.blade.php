@@ -47,19 +47,19 @@
                                 @csrf
                                 <div class="row" id="fill">
                                     <div class="col-md-12">
-                                        <h6 class="ml-3">Pilih Filter Laporan <small class="text-success">*Harus dipilih</small></h6>
+                                        <h6 class="ml-3">Pilih Laporan Berdasarkan : </h6>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="row ml-3">
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="filterBulan">
-                                                    <label class="custom-control-label mr-2" for="filterBulan">By Bulan</label>
+                                                    <label class="custom-control-label mr-2" for="filterBulan">Bulan</label>
                                                 </div>
 
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="filterTanggal">
-                                                    <label class="custom-control-label" for="filterTanggal">By Tanggal</label>
+                                                    <label class="custom-control-label" for="filterTanggal">Tanggal</label>
                                                 </div>
                                             </div>
                                         </div>

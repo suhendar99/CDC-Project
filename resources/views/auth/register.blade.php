@@ -122,9 +122,9 @@
                                     <div class="col-md-12">
                                         <div class="form-group md-form">
                                             <div class="col-md-12">
-                                                <label for="yourName" data-error="wrong" data-success="right">Role Akses</label>
+                                                <label for="yourName" data-error="wrong" data-success="right">Keanggotaan</label>
                                                 <select name="keanggotaan" id="keanggotaan" class="form-control validate @error('keanggotaan') is-invalid @enderror">
-                                                    <option value="null">--Pilih keanggotaan--</option>
+                                                    <option value="0">--Pilih keanggotaan--</option>
                                                     <option value="1">Anggota</option>
                                                     <option value="0">Bukan Anggota</option>
                                                 </select>
@@ -323,7 +323,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label for="provinsi-select">Provinsi <small class="text-success">*Boleh tidak dipilih</small></label>
+                                            <label for="provinsi-select">Provinsi <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('provinsi_id') is-invalid @enderror" id="provinsi-select" name="provinsi_id">
                                                 <option value="">-- Pilih Disini --</option>
                                                 @foreach($provinsi as $p)
@@ -342,7 +342,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label for="kabupaten-select">Kabupaten <small class="text-success">*Boleh tidak dipilih</small></label>
+                                            <label for="kabupaten-select">Kabupaten <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('kabupaten_id') is-invalid @enderror" id="kabupaten-select" name="kabupaten_id">
                                                 <option value="">-- Pilih Disini --</option>
                                             </select>
@@ -360,7 +360,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label for="kecamatan-select">Kecamatan <small class="text-success">*Boleh tidak dipilih</small></label>
+                                            <label for="kecamatan-select">Kecamatan <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('kecamatan_id') is-invalid @enderror" id="kecamatan-select" name="kecamatan_id">
                                                 <option value="">-- Pilih Disini --</option>
                                             </select>
@@ -376,7 +376,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label for="desa-select">Desa <small class="text-success">*Boleh tidak dipilih</small></label>
+                                            <label for="desa-select">Desa <small class="text-success">*Harus dipilih</small></label>
                                             <select class="form-control @error('desa_id') is-invalid @enderror" id="desa-select" name="desa_id">
                                                 <option value="">-- Pilih Disini --</option>
                                             </select>
@@ -571,8 +571,14 @@
     $('#role').on('change', function () {
         var role = $(this).val();
         if (role == 'warung') {
-            $('#anggota').show();
-            $('#anggota').removeClass('d-none');
+            // $('#anggota').show();
+            // $('#anggota').removeClass('d-none');
+            $('.d-none').removeClass('d-none');
+            $('.d-none').show();
+            $('#nameFull').removeClass('col-md-6');
+            $('#nameFull').addClass('col-md-12');
+            $('#koperasi').hide();
+            $('#anggota').addClass('d-none');
         } else {
             $('.d-none').removeClass('d-none');
             $('.d-none').show();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\LabaRugiPelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,7 +18,9 @@ class LabaRugiPelangganController extends Controller
      */
     public function index(Request $request)
     {
-        $data = LabaRugiPelanggan::orderBy('bulan','asc')->get();
+        $data = LabaRugiPelanggan::orderBy('bulan','asc')
+        ->where('warung_id',Auth::user()->pelanggan_id)
+        ->get();
         if($request->ajax()){
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -108,7 +111,7 @@ class LabaRugiPelangganController extends Controller
             if ($request->bulan == 0) {
                 return back()->with('error','Mohon Pilih Bulan !');
             }
-            $laba = LabaRugiPelanggan::create($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih'));
+            $laba = LabaRugiPelanggan::create($request->only('bulan','laba_kotor','penjualan','pembelian','biaya_operasional','laba_bersih')+['warung_id' => Auth::user()->pelanggan_id]);
         }
         return redirect()->route('labaRugiPelanggan.index')->with('success','Data Berhasil Di Tambahkan !');
     }
