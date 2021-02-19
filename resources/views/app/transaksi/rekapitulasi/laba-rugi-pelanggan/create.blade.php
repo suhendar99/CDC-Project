@@ -17,13 +17,13 @@
             ['no'=>'12','val' => 'Desember'],
         );
 
-                  
+
         $dataBulan = [];
 
         foreach ($data as $key => $value) {
             $dataBulan[] = $value->bulan;
         }
-                          
+
         // $rightbar = true;
 @endphp
 @extends('layouts.dashboard.header')
@@ -167,7 +167,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
                                                 </div>
-                                                <input type="number" min="1" name="laba_bersih" class="form-control @error('laba_bersih') is-invalid @enderror" id="laba_bersih" placeholder="Masukan Jumlah Laba Bersih" aria-describedby="inputGroupPrepend" value="{{old('laba_bersih')}}" required>
+                                                <input type="number" name="laba_bersih" class="form-control @error('laba_bersih') is-invalid @enderror" id="laba_bersih" placeholder="Masukan Jumlah Laba Bersih" aria-describedby="inputGroupPrepend" value="{{old('laba_bersih')}}" required>
                                                 @error('laba_bersih')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

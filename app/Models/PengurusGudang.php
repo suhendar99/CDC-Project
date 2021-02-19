@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PengurusGudang extends Model
 {
@@ -19,7 +20,15 @@ class PengurusGudang extends Model
         return static::orderBy('id','desc')->get();
     }
 
-
+    /**
+     * Get all of the comments for the PengurusGudang
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function labaRugiRetail(): HasMany
+    {
+        return $this->hasMany(labaRugiRetail::class, 'retail_id', 'id');
+    }
     public function desa()
     {
         return $this->belongsTo('App\Models\Desa');

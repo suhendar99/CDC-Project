@@ -22,7 +22,7 @@
                         @elseif(Auth::user()->pemasok_id != null)
                         <img src="{{asset($set->logo_pemasok)}}" height="60" width="90%" class="scale-down my-3">
                         @else
-                        <img src="{{asset($set->logo_retail)}}" height="60" width="90%" class="scale-down my-3">
+                        <img src="{{asset($set->logo_app)}}" height="60" width="90%" class="scale-down my-3">
                         @endif
                     </center>
                 </div>
