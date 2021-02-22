@@ -417,6 +417,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             ]
         ]);
 
+        Route::get('bulky/pengembailan/masuk/{id}/status/terima', 'ReturMasukBulkyController@statusReturDiterima')->name('bulky.retur.masuk.status.terima');
+        Route::get('bulky/pengembailan/masuk/{id}/status/tolak', 'ReturMasukBulkyController@statusReturDitolak')->name('bulky.retur.masuk.status.tolak');
+
         // Rekapitulasi Pembeli Bulky
         Route::get('bulky/rekapitulasi/pembelian', 'RekapitulasiPembelianBulkyController@index')->name('bulky.rekap.pembelian.index');
         Route::post('bulky/rekapitulasi/pembelian/PDF', 'RekapitulasiPembelianBulkyController@downloadRekapitulasiPembelianPdf')->name('bulky.rekap.pembelian.pdf');
