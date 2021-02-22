@@ -104,10 +104,12 @@ class ReturKeluarPelangganController extends Controller
                 'created_at' => now('Asia/Jakarta')
             ]);
         }
-        $log = LogTransaksi::create([
-            'tanggal' => now(),
-            'jam' => now(),
-            'aktifitas_transaksi' => 'Retur Barang Masuk'
+        LogTransaksi::create([
+            'user_id' => Auth::user()->id,
+            'tanggal' => now('Asia/Jakarta'),
+            'jam' => now('Asia/Jakarta'),
+            'aktifitas_transaksi' => 'Retur Keluar',
+            'role' => 'Warung'
         ]);
 
 

@@ -132,6 +132,7 @@ class PemesananBulkyController extends Controller
         $data = PemesananBulky::findOrFail($id);
         $data->update(['status'=>'2']);
         LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'Penerimaan Pesanan',

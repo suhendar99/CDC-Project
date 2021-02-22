@@ -99,8 +99,8 @@ class DashboardController extends Controller
             }
             $logTransaksi = LogTransaksi::where('role','pemasok')
             ->where('tanggal',now())
+            ->orWhere('user_id',Auth::user()->id)
             ->orderBy('jam','desc')->paginate(3);
-
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPemasok');
             }

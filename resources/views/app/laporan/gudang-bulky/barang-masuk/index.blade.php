@@ -47,7 +47,7 @@
                                 @csrf
                                 <div class="row" id="fill">
                                     <div class="col-md-12">
-                                        <h6 class="ml-3">Pilih Filter Laporan <small class="text-success">*Harus dipilih</small></h6>
+                                        <h6 class="ml-3">Pilih Laporan Berdasarkan :</h6>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -69,8 +69,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="col-md-12">
-                                                <label>Bulan <small class="text-success">*Harus dipilih</small></label>
-                                                <select name="month" id="" class="form-control">
+                                                <label class="col-md-12">Bulan <small class="text-success">*Harus dipilih</small></label>
+                                                <select name="month" id="" class="form-control col-md-12" style="width: 100% !important;">
                                                     <option value="">-- Pilih Bulan--</option>
                                                     <option value="1">Januari</option>
                                                     <option value="2">Februari</option>

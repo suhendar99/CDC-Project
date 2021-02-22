@@ -126,6 +126,7 @@ class ReturKeluarBulkyController extends Controller
         ]);
 
         LogTransaksi::create([
+            'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'Retur Keluar',
