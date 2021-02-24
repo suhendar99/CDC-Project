@@ -87,6 +87,7 @@ Route::get('/v1/getGudangBulky/{id}/user', function($id){
 	],200);
 });
 Route::get('/v1/pemasok/getPesanan/{id}', 'v1\PemesananKeluarBulkyController@getPesanan');
+Route::get('/v1/barang/pemesanan/{id}', 'v1\StorageInController@findBarang');
 Route::get('/v1/bulky/getPesanan/{id}', 'v1\PemesananBulkyController@getPesanan');
 Route::get('/v1/bulky/detail/pemesanan/{id}', 'v1\PemesananBulkyController@detail');
 Route::get('/v1/retail/pemesanan/{id}/terima', 'v1\PemesananController@terima');

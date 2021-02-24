@@ -55,4 +55,9 @@ class PengurusGudangBulky extends Model
     {
         return $this->hasMany(LabaRugiBulky::class, 'bulky_id', 'id');
     }
+
+    public function suratPiutangRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangRetailBulky::class, 'bulky_id', 'id');
+    }
 }

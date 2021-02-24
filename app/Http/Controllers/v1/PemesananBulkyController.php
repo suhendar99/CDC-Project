@@ -50,18 +50,23 @@ class PemesananBulkyController extends Controller
                             return "<span class='text-success'>Lunas</span>";
                         }
                     } else {
-                        return "Belum Terverifikasi";
+                        return "Belum Diterima";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){
-                    $uc = ucwords($data->pemesananBulky->metode_pembayaran);
-                    return $uc;
+                    if ($data->pemesananBulky->metode_pembayaran == null) {
+                        return '-';
+                    } else {
+                        $uc = ucwords($data->pemesananBulky->metode_pembayaran);
+                        return $uc;
+                    }
                 })
                 ->addColumn('bukti_pembayaran', function($data){
-                    if($data->pemesananBulky->foto_bukti != null){
-
+                    if($data->pemesananBulky->foto_bukti != null && $data->pemesananBulky->metode_pembayaran != null){
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananBulky->id.')" data-id="'.$data->pemesananBulky->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } else {
+                    } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran == null) {
+                        return '-';
+                    } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran != null) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
@@ -70,8 +75,10 @@ class PemesananBulkyController extends Controller
                         return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
                     } elseif ($data->pemesananBulky->status == 1){
                         return '&nbsp;<span class="text-danger">Pemesanan Belum Terverifikasi</span>';
-                    }elseif ($data->pemesananBulky->status == 2) {
+                    }elseif ($data->pemesananBulky->status == 2 && $data->pemesananBulky->metode_pembayaran != null) {
                         return '&nbsp;Pembayaran Terverifikasi';
+                    }elseif ($data->pemesananBulky->status == 2 && $data->pemesananBulky->metode_pembayaran == null) {
+                        return '&nbsp;Pembayaran Hutang';
                     } elseif ($data->pemesananBulky->status == 4) {
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pemesananBulky->status == 5) {

@@ -75,8 +75,15 @@
                                         </a>
                                         @endif
                                     @else
-                                        @if($d->foto_bukti == null)
+                                        @if($d->foto_bukti == null && $d->status == 1)
                                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
+                                        @elseif($d->foto_bukti == null && $d->status == 2 && $d->metode_pembayaran == null)
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 2) ? 'Pesanan Sedang Diproses ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...'))
+                                            }}
+                                        </a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
@@ -130,14 +137,17 @@
                                 <div class="col-md-4">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
                                 </div>
-                                <div class="col-md-4 border-right">
-                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
-                                </div>
                                 @if ($d->metode_pembayaran == null)
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
+                                    <div class="col-md-4">
+                                        No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                    </div>
                                 @else
+                                <div class="col-md-4 border-right">
+                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
+                                </div>
                                 <div class="col-md-4">
                                     No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
                                 </div>

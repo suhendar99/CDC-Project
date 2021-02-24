@@ -64,7 +64,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
+                                        <input type="number" id="noKwi" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
+                                        <input type="text" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" id="noSj" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6" id="fotoKwit">
                                         <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
                                         @error('foto_kwitansi')
@@ -186,9 +186,9 @@
                     console.log(response.data)
                     $('#barang').html(`<option>-- Pilih Barang --</option>`);
                     $.each(response.data, function(index, val) {
-                        
                          /* iterate through array or object */
-                         $('#barang').append(`<option value="${val.barang_bulky_id}" data-satuan="${val.satuan}" data-jumlah="${val.jumlah_barang}" data-pemesanan="${val.pemesanan_bulky_id}" data-harga="${val.harga}" data-admin="${val.biaya_admin}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
+
+                         $('#barang').append(`<option value="${val.barang_bulky_id}" data-satuan="${val.satuan}" data-id="${val.id}" data-jumlah="${val.jumlah_barang}" data-pemesanan="${val.pemesanan_bulky_id}" data-harga="${val.harga}" data-admin="${val.biaya_admin}">${val.stock_barang_bulky.barang_kode} | ${val.stock_barang_bulky.barang.nama_barang}</option>`)
                     });
                 },
                 error: (xhr)=>{
@@ -199,6 +199,42 @@
             });
     });
     $('#barang').change(function(event) {
+        let id = $('#barang option:selected').data("id")
+        console.log(id);
+        $.ajax({
+            type: "get",
+            url: "/api/v1/barang/pemesanan/"+id,
+            dataType: "json",
+            success: function (response) {
+                var data = response.data
+                $.each(data, function (a, b) {
+                    if (b.pemesanan_bulky.metode_pembayaran == null) {
+                        $('#fotoKwit').html(`
+                            <label>Foto Surat Piutang <small class="text-success">*Harus diisi</small></label>
+                            <input type="file" class="form-control-file @error('foto_surat_piutang') is-invalid @enderror" name="foto_surat_piutang" value="{{ old('foto_surat_piutang') }}" placeholder="Masukan Foto Surat Piutang">
+                            @error('foto_surat_piutang')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        `)
+                    } else {
+                        $('#fotoKwit').html(`
+                            <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
+                            <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
+                            @error('foto_kwitansi')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        `)
+
+                    }
+                    $('#noKwi').val(b.pemesanan_bulky.kwitansi_bulky[0].kode);
+                    $('#noSj').val(b.pemesanan_bulky.surat_jalan_bulky[0].kode);
+                });
+            }
+        });
         /* Act on the event */
         let satuan = $('#barang option:selected').data("satuan")
         let jumlah = $('#barang option:selected').data("jumlah")

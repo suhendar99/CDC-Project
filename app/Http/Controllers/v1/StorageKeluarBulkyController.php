@@ -33,7 +33,7 @@ class StorageKeluarBulkyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+        public function index(Request $request)
     {
         if($request->ajax()){
             $data = StorageKeluarBulky::with('barangBulky.barang', 'bulky', 'pemesananBulky')
@@ -270,11 +270,6 @@ class StorageKeluarBulkyController extends Controller
         //     'satuan' => $pesan->satuan,
         //     'waktu' => Carbon::now()
         // ]);
-        $log = LogTransaksi::create([
-            'tanggal' => now('Asia/Jakarta'),
-            'jam' => now('Asia/Jakarta'),
-            'aktifitas_transaksi' => 'Pengiriman Barang'
-        ]);
 
         $kodex = $pesanan->barangPesananBulky;
 
@@ -397,8 +392,11 @@ class StorageKeluarBulkyController extends Controller
             'aktifitas_transaksi' => 'Barang Keluar',
             'role' => 'Bulky'
         ]);
-
-        return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        if ($pesanan->metode_pembayaran == null) {
+            return redirect('/v1/surat-piutang-retail-bulky/create?id='.$out->id);
+        } else {
+            return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        }
     }
 
     /**
