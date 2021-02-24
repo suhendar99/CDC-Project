@@ -2,7 +2,6 @@
   $icon = 'dashboard';
   $pageTitle = 'Dashboard Pelanggan Warung';
   $dashboard = true;
-  $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -109,42 +108,56 @@
             </div>
         </div>
     </div>
-    {{-- <div class="col-md-4">
-        <div class="card shadow" style="height: 400px">
+    <div class="col-md-12 col-sm-12 mt-4">
+        <div class="card shadow" style="height: auto">
             <div class="line-strip bg-my-primary"></div>
             <div class="card-body">
               <div class="row">
-                <div class="col-12" style="font-size: .7rem;">
-                  <span style="font-size: 1rem">Log Transaksi </span><br><hr class="mb-2">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Jam</th>
-                        <th scope="col">Aktivitas Transaksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @forelse ($logTransaksi as $key => $value)
-                      <tr>
-                        <th scope="row">{{$key+1}}</th>
-                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
-                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
-                        <td>{{$value->Aktifitas_transaksi}}</td>
-                      </tr>
-                      @empty
-                      <tr>
-                        <td colspan="4"><center>Data Kosong !</center></td>
-                      </tr>
-                      @endforelse
-                    </tbody>
-                  </table>
-                    <div class="col-12 d-flex">
-                        <div class="ml-auto p-2">
-                            <center>
-                                {{$logTransaksi->links()}}
-                            </center>
+                <div class="col-4 border-right">
+                <i class="ri-folder-open-line text-my-primary h4"></i><span style="font-size: 14px"> Rekapitulasi Transaksi hari Ini</span><br><hr class="mb-2">
+                  <center>
+                    <div id="calendarLog"></div>
+                  </center>
+                </div>
+                <div class="col-md-8">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-12" style="font-size: .7rem;">
+                            <i class="ri-currency-line text-my-primary h4"></i><span style="font-size: 14px" class="ml-2">Log Transaksi </span><br><hr class="mb-2">
+                            <div id="table_log">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Tanggal</th>
+                                        <th scope="col">Jam</th>
+                                        <th scope="col">Aktivitas Transaksi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @forelse ($logTransaksi as $key => $value)
+                                    <tr>
+                                        <th scope="row">{{$key+1}}</th>
+                                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
+                                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
+                                        <td>{{$value->aktifitas_transaksi}}</td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4"><center>Data Kosong !</center></td>
+                                    </tr>
+                                    @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                                <div class="col-12 d-flex">
+                                    <div class="ml-auto p-2">
+                                        <center>
+                                            {{$logTransaksi->links()}}
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,54 +165,85 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8">
-        <div style="height: 400px; width: 100%;" id="mapid"></div>
-    </div> --}}
 </div>
 @endsection
 @push('script')
+{{-- Calendar Log Section --}}
 <script type="text/javascript">
-    // var group = []
-    // var gudang = JSON.parse('{! json_encode($gudang) !!}')
-    // var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //                     attribution: '&copy; <a href="">Badan Perencanaan Pembangunan Daerah Kabupaten Bekasi</a>',
-    //                     maxZoom:20, }),
-    // gstreet     = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
-    //                     subdomains:['mt0','mt1','mt2','mt3'],
-    //                     attribution: 'Google',
-    //                     maxZoom: 20, }),
-    // gterrain    = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
-    //                     subdomains:['mt0','mt1','mt2','mt3'],
-    //                     maxZoom: 20, }),
-    // gsatelite   = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-    //                     subdomains:['mt0','mt1','mt2','mt3'],
-    //                     maxZoom: 20, }),
-    // ghybrid     = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-    //                     subdomains:['mt0','mt1','mt2','mt3'],
-    //                     maxZoom: 20, });
-    // var baseLayers = {
-    //     "OSM": osm,
-    //     "Google Street"     : gstreet,
-    //     "Google Terrain"    : gterrain,
-    //     "Google Satelite"   : gsatelite,
-    //     "Google Hybrid"     : ghybrid
-    // };
-    // gudang.forEach(async function (element) {
-    //     var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
-    //             <b>Gudang : ${element.nama}</b><br />
-    //             Milik : ${element.pemilik}<br />
-    //     `))
-    // })
-    // let gudangGudang = L.layerGroup(group)
+    $('#calendarLog').datepicker({
+      format: "yyyy-mm-dd",
+      language: "de",
+      calendarWeeks: false,
+      todayHighlight: true
+    }).on('changeDate', ()=>{
+        // let value = $('#calendarLog').datepicker('getFormattedDate');
+        // updateChart(value)
+        let value = $('#calendarLog').datepicker('getFormattedDate');
+        $.ajax({
+            url: "/api/v1/logTransaksi/warung/date/"+value,
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                let value = $('#calendarLog').datepicker('getFormattedDate');
+                var data = response.data;
+                console.log(data);
+                if (data.length > 0) {
+                    $('#table_log').html(`
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Jam</th>
+                            <th scope="col">Aktivitas Transaksi</th>
+                        </tr>
+                        </thead>
+                        <tbody id="isiTable">
 
-    // var map = L.map('mapid', {
-    //     center: [-6.967647303787534, 107.65589059670471],
-    //     zoom: 10,
-    //     layers: [ghybrid, gudangGudang]
-    // });
-    // // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
-    // // markers.push(Me);
-    // L.control.layers(baseLayers).addTo(map);
+                        </tbody>
+                    </table>
+                `)
+                } else if(data.length < 1) {
+                    $('#table_log').html(`
+                        <table class="table table-striped" id="table_log">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Jam</th>
+                                <th scope="col">Aktivitas Transaksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4"><center>Data Kosong !</center></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    `)
+                }
+                $.each(data, function (a, b) {
+                    $('#isiTable').append(`
+                        <tr>
+                            <th scope="row">${a+1}</th>
+                            <td>${b.tanggal}</td>
+                            <td>${b.jam}</td>
+                            <td>${b.aktifitas_transaksi}</td>
+                        </tr>
+                    `)
+                });
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+
     var options = {
     chart: {
       type: 'bar',

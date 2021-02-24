@@ -25,6 +25,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
 });
 // get Date
 Route::get('/v1/logTransaksi/date/{date}','v1\DashboardController@getLogByDate');
+Route::get('/v1/logTransaksi/bulky/date/{date}','v1\DashboardController@getLogByDateBulky');
+Route::get('/v1/logTransaksi/retail/date/{date}','v1\DashboardController@getLogByDateRetail');
+Route::get('/v1/logTransaksi/warung/date/{date}','v1\DashboardController@getLogByDateWarung');
 // End
 Route::get('citiesLoad/{id}', function($id){
     dd($id);

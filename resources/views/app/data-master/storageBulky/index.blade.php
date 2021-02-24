@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Penyimpanan';
+        $pageTitle = 'Data Penyimpanan (Stok)';
         // $dashboard = true;
         // $admin = true;
         // $rightbar = true;
@@ -61,7 +61,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu</th>
+                                                <th>Waktu Menyimpan Barang</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang</th>
@@ -79,7 +79,7 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu Masuk Barang</th>
+                                                <th>Waktu Barang Masuk</th>
                                                 <th>Kode Penyimpanan / Barcode</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
@@ -130,7 +130,7 @@
                                                     <table id="table_kwitansi" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>Waktu Kwitansi DIbuat</th>
+                                                                <th>Waktu Kwitansi Dibuat</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>Pemesanan</th>
@@ -145,7 +145,7 @@
                                                     <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>Waktu SUrat Jalan DIbuat</th>
+                                                                <th>Waktu Surat Jalan DIbuat</th>
                                                                 <th>No Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
@@ -299,7 +299,7 @@
               <div class="col-12" id="foto">
                 <div class="row">
                     <div class="col-12" id="tempat-foto">
-                        
+
                     </div>
                     <div class="col-12 mt-3">
                         <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
@@ -314,7 +314,7 @@
         </div>
         <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
             <div class="float-left" id="foto-load">
-                
+
             </div>
           <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
         </div>
@@ -527,7 +527,11 @@
                     $('.karyawan').text(storage.user.pengurus_gudang_bulky.nama)
                     $('.waktu').text(storage.waktu)
 
-                    $('#foto-kwitansi').html(`<p>Foto Kwitansi</p><img src="{{ asset('') }}${storage.foto_kwitansi}" alt="" width="100%" class="img-bukti">`);
+                    if (storage.foto_kwitansi != null) {
+                        $('#foto-kwitansi').html(`<p>Foto Kwitansi</p><img src="{{ asset('') }}${storage.foto_kwitansi}" alt="" width="100%" class="img-bukti">`);
+                    } else {
+                        $('#foto-kwitansi').html(`<p>Foto Surat Piutang</p><img src="{{ asset('') }}${storage.foto_surat_piutang}" alt="" width="100%" class="img-bukti">`);
+                    }
                     $('#foto-sj').html(`<p>Foto Surat Jalan</p><img src="{{ asset('') }}${storage.foto_surat_jalan}" alt="" width="100%" class="img-bukti">`);
 
 
@@ -568,7 +572,7 @@
                     if (foto !== null) {
                       $('#tempat-foto').html(`<img src="{{ asset('') }}${foto}" alt="" width="100%">`);
                     } else {
-                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)     
+                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)
                     }
 
                 },

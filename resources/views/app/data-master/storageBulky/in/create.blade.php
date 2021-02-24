@@ -69,15 +69,27 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
-                                        @error('foto_kwitansi')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
+                                    @if (isset($pesananId) ? $pemesanan->metode_pembayaran == null : $barangs->metode_pembayaran == null)
+                                        <div class="form-group col-md-6">
+                                            <label>Foto Surat Piutang <small class="text-success">*Harus diisi</small></label>
+                                            <input type="file" class="form-control-file @error('foto_surat_piutang') is-invalid @enderror" name="foto_surat_piutang" value="{{ old('foto_surat_piutang') }}" placeholder="Masukan Foto Kwitansi">
+                                            @error('foto_surat_piutang')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    @else
+                                        <div class="form-group col-md-6">
+                                            <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                            <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
+                                            @error('foto_kwitansi')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    @endif
                                     <div class="form-group col-md-6">
                                         <label>Foto Surat Jalan <small class="text-success">*Harus diisi</small></label>
                                         <input type="file" class="form-control-file @error('foto_surat_jalan') is-invalid @enderror" name="foto_surat_jalan" value="{{ old('foto_surat_jalan') }}" placeholder="Masukan Foto Surat Jalan">

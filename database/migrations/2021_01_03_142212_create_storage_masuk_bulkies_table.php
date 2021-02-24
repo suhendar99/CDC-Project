@@ -26,7 +26,8 @@ class CreateStorageMasukBulkiesTable extends Migration
             $table->string('satuan');
             $table->dateTime('waktu');
             $table->string('nomor_kwitansi');
-            $table->string('foto_kwitansi');
+            $table->string('foto_kwitansi')->nullable();
+            $table->string('foto_surat_piutang')->nullable();
             $table->string('nomor_surat_jalan');
             $table->string('foto_surat_jalan');
             $table->timestamps();

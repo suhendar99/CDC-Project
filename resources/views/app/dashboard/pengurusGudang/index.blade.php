@@ -9,7 +9,6 @@
   $pmsk = \App\Models\Pemasok::all();
   $gudangBulky = \App\Models\GudangBulky::all();
   $gudang = App\Models\Gudang::with('rak')->where('user_id',Auth::user()->id)->where('status',1)->get();
-  $logTransaksi = App\Models\LogTransaksi::orderBy('jam','desc')->paginate(3);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -104,137 +103,63 @@
         </div>
     </div>
 </div>
-{{-- <div class="row my-4">
-    <div class="col-md-4 col-sm-12">
-        <div class="card shadow" style="height: 400px">
-            <div class="line-strip bg-my-primary"></div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-12" style="font-size: .7rem;">
-                  <span style="font-size: 1rem">Log Transaksi </span><br><hr class="mb-2">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Tanggal</th>
-                        <th scope="col">Jam</th>
-                        <th scope="col">Aktivitas Transaksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @forelse ($logTransaksi as $key => $value)
-                      <tr>
-                        <th scope="row">{{$key+1}}</th>
-                        <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
-                        <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
-                        <td>{{$value->Aktifitas_transaksi}}</td>
-                      </tr>
-                      @empty
-                      <tr>
-                        <td colspan="4"><center>Data Kosong !</center></td>
-                      </tr>
-                      @endforelse
-                    </tbody>
-                  </table>
-                    <div class="col-12 d-flex">
-                        <div class="ml-auto p-2">
-                            @if ($logTransaksi->count() > 1)
-                            <center>
-                                {{$logTransaksi->links()}}
-                            </center>
-                            @endif
+<div class="col-md-12 col-sm-12 mt-4">
+    <div class="card shadow" style="height: auto">
+        <div class="line-strip bg-my-primary"></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4 border-right">
+            <i class="ri-folder-open-line text-my-primary h4"></i><span style="font-size: 14px"> Rekapitulasi Transaksi hari Ini</span><br><hr class="mb-2">
+              <center>
+                <div id="calendarLog"></div>
+              </center>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-12" style="font-size: .7rem;">
+                        <i class="ri-currency-line text-my-primary h4"></i><span style="font-size: 14px" class="ml-2">Log Transaksi </span><br><hr class="mb-2">
+                        <div id="table_log">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Tanggal</th>
+                                    <th scope="col">Jam</th>
+                                    <th scope="col">Aktivitas Transaksi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse ($logTransaksi as $key => $value)
+                                <tr>
+                                    <th scope="row">{{$key+1}}</th>
+                                    <td>{{\Carbon\Carbon::parse($value->tanggal)->translatedFormat('d F Y')}}</td>
+                                    <td>{{\Carbon\Carbon::parse($value->jam)->translatedFormat('H:i:s')}}</td>
+                                    <td>{{$value->aktifitas_transaksi}}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4"><center>Data Kosong !</center></td>
+                                </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                            <div class="col-12 d-flex">
+                                <div class="ml-auto p-2">
+                                    <center>
+                                        {{$logTransaksi->links()}}
+                                    </center>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-              </div>
             </div>
+          </div>
         </div>
     </div>
-  <div class="d-none" id="show">
-    <div class="card" style="height: 400px;">
-      <div class="line-strip bg-my-warning"></div>
-      <div class="card-body">
-        <div class="valign-center">
-          <i class="material-icons md-36 text-my-warning">house_siding</i>
-          <span class="text-18" id="titleGudang"></span>
-          <a id="close" style="cursor: pointer"><i class="fas fa-times"></i></a>
-        </div>
-        <hr class="p-0">
-        <center>
-          <img src="{{asset('images/logo-cdc.png')}}" style="height: 120px;" class="scale-down pb-4">
-        </center>
-        <div class="row">
-          <div class="col-md-5">
-            No Induk Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="nig"></div>
-          </div>
-          <div class="col-md-5">
-            Status Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="status"></div>
-          </div>
-          <div class="col-md-5">
-            Ruang Penyimpanan Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="statusPenuh"></div>
-          </div>
-          <div class="col-md-5">
-            Nama Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="namaGudang"></div>
-          </div>
-          <div class="col-md-5">
-            Nama Pemilik Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="namaPemilik"></div>
-          </div>
-          <div class="col-md-5">
-            Kontak gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="telepon"></div>
-          </div>
-          <div class="col-md-5">
-            Hari Kerja
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="hariKerja"></div>
-          </div>
-          <div class="col-md-5">
-            Jam Kerja
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="jamKerja"></div>
-          </div>
-          <div class="col-md-5">
-            Alamat Gudang
-          </div>
-          <div class="col-md-7">
-            <div class="float-left">:</div>
-            <div class="float-left ml-2" id="alamat"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-8" id="mapMap">
-    <div style="height: 400px; width: 100%;" id="mapid"></div>
-  </div>
-</div> --}}
+</div>
 <div class="row my-4">
   <div class="col-md-12">
     <div class="card">
@@ -279,129 +204,80 @@
 @endsection
 @push('script')
 
-{{-- Map Section --}}
-{{-- <script>
-    var group = []
-    var gudang = JSON.parse('{!! json_encode($gudang) !!}')
-    var osm     = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="">Badan Perencanaan Pembangunan Daerah Kabupaten Bekasi</a>',
-                        maxZoom:20, }),
-    gstreet     = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        attribution: 'Google',
-                        maxZoom: 20, }),
-    gterrain    = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, }),
-    gsatelite   = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, }),
-    ghybrid     = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-                        subdomains:['mt0','mt1','mt2','mt3'],
-                        maxZoom: 20, });
-    var baseLayers = {
-        "OSM": osm,
-        "Google Street"     : gstreet,
-        "Google Terrain"    : gterrain,
-        "Google Satelite"   : gsatelite,
-        "Google Hybrid"     : ghybrid
-    };
-    gudang.forEach(async function (element) {
-        let hitungan = 0;
-
-        $.each(element.rak, function(index, val) {
-           if (val.status == 1) {
-              hitungan++
-           }
-        });
-        let rak = 'btn-primary';
-
-        if (element.rak.length == 0) {
-          rak = 'btn-dark';
-        } else if (hitungan == element.rak.length) {
-          rak = 'btn-danger';
-        }else{
-          rak = 'btn-primary';
-        }
-
-        var hehe = group.push(L.marker([element.lat, element.long]).bindPopup(`
-        <b>Gudang : ${element.nama}</b><br />
-        Milik : ${element.pemilik}<br />
-        <a href="#" class="btn ${rak} btn-sm btn-block text-white" onclick="detailGudang(${element.id})">Lihat Detail</a>
-        `))
-        // console.log(element.id);
-    })
-    let gudangGudang = L.layerGroup(group)
-
-    var map = L.map('mapid', {
-        center: [-6.967647303787534, 107.65589059670471],
-        zoom: 10,
-        layers: [ghybrid, gudangGudang]
-    });
-    // var Me = L.marker([latMe, longMe],{title:"lokasi_saya"}).addTo(map).bindPopup("Lokasi Gudang Yang Dimiliki");
-    // markers.push(Me);
-    L.control.layers(baseLayers).addTo(map);
-</script> --}}
-
-{{-- Detail Gudang Section --}}
-{{-- <script>
-    $('#close').click(function (e) {
-        e.preventDefault();
-        $('#mapMap').addClass('col-md-8');
-        $('#mapMap').removeClass('col-md-4');
-        $('#show').addClass('d-none');
-        $('#show').removeClass('col-md-4');
-    });
-    function detailGudang(id) {
-        $('#mapMap').removeClass('col-md-8');
-        $('#mapMap').addClass('col-md-4');
-        $('#show').removeClass('d-none');
-        $('#show').addClass('col-md-4');
-
-        $('#titleGudang').text(`Tunggu.......`);
-        $('#nig').text(`Tunggu.......`);
-        $('#status').text(`Tunggu.......`)
-        $('#statusPenuh').text('Tunggu.......');
-        $('#namaGudang').text(`Tunggu.......`);
-        $('#namaPemilik').text(`Tunggu.......`);
-        $('#telepon').text(`Tunggu.......`);
-        $('#hariKerja').text(`Tunggu.......`);
-        $('#jamKerja').text(`Tunggu.......`);
-        $('#alamat').text(`Tunggu.......`);
+{{-- Calendar Log Section --}}
+<script type="text/javascript">
+    $('#calendarLog').datepicker({
+      format: "yyyy-mm-dd",
+      language: "de",
+      calendarWeeks: false,
+      todayHighlight: true
+    }).on('changeDate', ()=>{
+        // let value = $('#calendarLog').datepicker('getFormattedDate');
+        // updateChart(value)
+        let value = $('#calendarLog').datepicker('getFormattedDate');
         $.ajax({
-            type: "get",
-            url: "/api/v1/getGudang/"+id,
-            dataType: "json",
-            success: function (response) {
+            url: "/api/v1/logTransaksi/retail/date/"+value,
+            method: "GET",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: (response)=>{
+                let value = $('#calendarLog').datepicker('getFormattedDate');
                 var data = response.data;
+                console.log(data);
+                if (data.length > 0) {
+                    $('#table_log').html(`
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Jam</th>
+                            <th scope="col">Aktivitas Transaksi</th>
+                        </tr>
+                        </thead>
+                        <tbody id="isiTable">
+
+                        </tbody>
+                    </table>
+                `)
+                } else if(data.length < 1) {
+                    $('#table_log').html(`
+                        <table class="table table-striped" id="table_log">
+                            <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Jam</th>
+                                <th scope="col">Aktivitas Transaksi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4"><center>Data Kosong !</center></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    `)
+                }
                 $.each(data, function (a, b) {
-                    let hitungan = 0;
-                    $('#titleGudang').text(`Detail Gudang `+b.nama);
-                    $('#nig').text(b.nomor_gudang);
-                    $('#status').text((b.status == 0) ? 'Tidak Aktif' : 'Aktif');
-                    $.each(b.rak, function(index, val) {
-                       if (val.status == 1) {
-                          hitungan++
-                       }
-                    });
-                    if (b.rak.length == 0) {
-                      $('#statusPenuh').text('Belum ada rak');
-                    } else if (hitungan == b.rak.length) {
-                      $('#statusPenuh').html('<span class="text-danger">Gudang sudah penuh</span>')
-                    }else{
-                      $('#statusPenuh').text('Masih ada ruang')
-                    }
-                    $('#namaGudang').text(b.nama);
-                    $('#namaPemilik').text(b.pemilik);
-                    $('#telepon').text(b.kontak);
-                    $('#hariKerja').text(b.hari);
-                    $('#jamKerja').text(b.jam_buka+` - `+b.jam_tutup);
-                    $('#alamat').text(b.alamat);
+                    $('#isiTable').append(`
+                        <tr>
+                            <th scope="row">${a+1}</th>
+                            <td>${b.tanggal}</td>
+                            <td>${b.jam}</td>
+                            <td>${b.aktifitas_transaksi}</td>
+                        </tr>
+                    `)
                 });
+            },
+            error: (xhr)=>{
+                let res = xhr.responseJSON;
+                console.log(res)
             }
         });
-    }
-</script> --}}
+    });
+</script>
 
 {{-- Calendar Section --}}
 <script type="text/javascript">

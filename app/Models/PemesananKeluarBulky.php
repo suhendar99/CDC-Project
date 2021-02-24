@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PemesananKeluarBulky extends Model
 {
@@ -57,8 +58,17 @@ class PemesananKeluarBulky extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function piutangBulky(): HasMany
+    public function piutangBulky(): HasOne
     {
-        return $this->hasMany(PiutangBulky::class, 'pemesanan_keluar_id', 'id');
+        return $this->hasOne(PiutangBulky::class, 'pemesanan_keluar_id', 'id');
+    }
+    /**
+     * Get all of the suratPiutangBulkyPemasok for the PemesananKeluarBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function suratPiutangBulkyPemasok(): HasMany
+    {
+        return $this->hasMany(SuratPiutangBulkyPemasok::class, 'pemesanan_keluar_bulky_id', 'id');
     }
 }

@@ -39,23 +39,28 @@ class PemesananMasukPemasokController extends Controller
                         return "<span class='text-danger'>Hutang</span>";
                     } elseif ($data->pemesanan->metode_pembayaran != null && $data->pemesanan->foto_bukti == null ) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
-                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == '2') {
+                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 2) {
                         return "<span class='text-success'>Lunas</span>";
-                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == '5') {
+                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 5) {
                         return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){
-                    $uc = ucwords($data->pemesanan->metode_pembayaran);
-                    return $uc;
+                    if ($data->pemesanan->metode_pembayaran == null) {
+                        return '-';
+                    } else {
+                        $uc = ucwords($data->pemesanan->metode_pembayaran);
+                        return $uc;
+                    }
                 })
                 ->addColumn('bukti_pembayaran', function($data){
-                    if($data->pemesanan->foto_bukti != null){
-
+                    if($data->pemesanan->foto_bukti != null && $data->pemesanan->metode_pembayaran != null){
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesanan->id.')" data-id="'.$data->pemesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } else {
+                    } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran == null) {
+                        return '-';
+                    } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran != null) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
@@ -64,8 +69,10 @@ class PemesananMasukPemasokController extends Controller
                         return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
                     } elseif ($data->pemesanan->status == 1){
                         return '&nbsp;<span class="text-danger">Pemesanan Belum Terverifikasi</span>';
-                    }elseif ($data->pemesanan->status == 2) {
+                    } elseif ($data->pemesanan->status == 2 && $data->pemesanan->metode_pembayaran != null) {
                         return '&nbsp;Pembayaran Terverifikasi';
+                    } elseif ($data->pemesanan->status == 2 && $data->pemesanan->metode_pembayaran == null) {
+                        return '&nbsp;Pembayaran Hutang';
                     } elseif ($data->pemesanan->status == 4) {
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pemesanan->status == 5) {

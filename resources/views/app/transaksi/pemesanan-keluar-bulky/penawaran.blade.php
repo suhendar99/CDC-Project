@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Data Pemesanan Keluar';
+    $pageTitle = 'Data Penawaran dari Retail';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -16,6 +16,8 @@
               <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
               <div class="valign-center breadcumb">
                 <a href="#" class="text-14">Dashboard</a>
+                <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+                <a href="#" class="text-14">Data Transaksi</a>
                 <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
                 <a href="#" class="text-14">{{$pageTitle}}</a>
               </div>

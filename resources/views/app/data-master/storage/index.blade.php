@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Penyimpanan';
+        $pageTitle = 'Data Penyimpanan (Stok)';
         // $dashboard = true;
         // $admin = true;
         // $rightbar = true;
@@ -61,7 +61,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu</th>
+                                                <th>Waktu Penyimpanan Barang</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Stok Barang</th>
@@ -78,8 +78,8 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>DateTime</th>
-                                                <th>Kode Penyimpanan / Barcode</th>
+                                                <th>Waktu Barang Masuk</th>
+                                                <th>Kode Penyimpanan</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
@@ -111,8 +111,8 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
-                                                                <th>Kode Penyimpanan / Barcode</th>
+                                                                <th>Waktu Barang Keluar</th>
+                                                                <th>Kode Penyimpanan</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
@@ -128,7 +128,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Pembuatan Kwitansi</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>No Pemesanan</th>
@@ -144,7 +144,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Pembuatan Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
                                                                 <th>Tempat</th>
@@ -255,7 +255,7 @@
                   <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>DateTime</th>
+                            <th>Waktu Penyimpanan Barang</th>
                             <th>Kode Masuk Barang</th>
                             <th>Jumlah Barang</th>
                             <th>Rak</th>
@@ -307,7 +307,7 @@
         </div>
         <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
             <div class="float-left" id="foto-load">
-                
+
             </div>
           <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
         </div>
@@ -538,7 +538,7 @@
                     if (foto !== null) {
                       $('#tempat-foto').html(`<img src="{{ asset('') }}${foto}" alt="" width="100%">`);
                     } else {
-                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)     
+                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)
                     }
 
                 },
