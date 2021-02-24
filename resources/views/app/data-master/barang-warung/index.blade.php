@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Barang';
+        $pageTitle = 'Penyimpanan Barang (Stok)';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -32,6 +32,8 @@
           <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Manajemen Barang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Barang</a>
           </div>

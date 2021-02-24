@@ -67,4 +67,8 @@ class Pemasok extends Model
     {
         return $this->hasMany(LabaRugiPemasok::class, 'pemasok_id', 'id');
     }
+    public function suratPiutangBulkyPemasok(): HasMany
+    {
+        return $this->hasMany(SuratPiutangBulkyPemasok::class, 'pemasok_id', 'id');
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\PiutangBulkyController;
+use App\Models\SuratPiutangBulkyPemasok;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -171,6 +172,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('storage-keluar-pemasok', 'StorageKeluarPemasokController');
         Route::get('pemasok/kwitansi/print', 'StorageKeluarPemasokController@printKwitansi');
         Route::get('pemasok/surat-jalan/print', 'StorageKeluarPemasokController@printSuratJalan');
+        Route::resource('surat-piutang-bulky-pemasok', 'SuratPiutangBulkyPemasokController');
+        Route::get('piutang-bulky-pemasok/print', 'SuratPiutangBulkyPemasokController@printPdf');
         // Transaksi
         Route::get('penawaran-pemasok-riwayat', 'PenawaranPemasokController@riwayat')->name('riwayat');
         Route::resource('penawaran-pemasok', 'PenawaranPemasokController');

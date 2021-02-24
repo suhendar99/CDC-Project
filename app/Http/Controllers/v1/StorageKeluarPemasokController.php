@@ -130,8 +130,7 @@ class StorageKeluarPemasokController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $v = Validator::make($request->all(),[
+         $v = Validator::make($request->all(),[
             // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
             // 'gudang_id' => 'required|exists:gudangs,id',
             'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
@@ -352,7 +351,11 @@ class StorageKeluarPemasokController extends Controller
         ]);
 
         $pesanan->update(['status'=>'4']);
-        return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        if ($pesanan->metode_pembayaran == null) {
+            return redirect('/v1/surat-piutang-bulky-pemasok/create?id='.$out->id);
+        } else {
+            return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        }
     }
 
     /**

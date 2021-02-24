@@ -31,7 +31,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Waktu</th>
+                                <th>Tanggal Pemesanan</th>
                                 <th>No Pemesanan (Invoice)</th>
                                 <th>Nama Pemesan</th>
                                 <th>Nama Barang</th>

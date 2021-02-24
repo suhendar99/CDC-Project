@@ -43,4 +43,8 @@ class StorageKeluarPemasok extends Model
     {
         return $this->hasMany(RekapitulasiPenjualanPemasok::class, 'storage_keluar_id', 'id');
     }
+    public function suratPiutangBulkyPemasok(): HasMany
+    {
+        return $this->hasMany(SuratPiutangBulkyPemasok::class, 'storage_keluar_pemasok_id', 'id');
+    }
 }

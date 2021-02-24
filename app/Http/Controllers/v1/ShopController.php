@@ -532,25 +532,48 @@ class ShopController extends Controller
 
             // $harga = $store->harga_barang * $request->jumlah;
 
-            if ($request->pengiriman == 'ambil') {
-                $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                    'bulky_id' => $request->gudang_id,
-                    'kode' => $kode_faker,
-                    'barang_kode' => $request->barangKode,
-                    'nomor_pemesanan' => $kode,
-                    'nama_pemesan' => $request->nama_pemesan,
-                    'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => '6'
-                ]));
+            if ($request->pembayaran == 'later') {
+                if ($request->pengiriman == 'ambil') {
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan'),[
+                        'bulky_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'barang_kode' => $request->barangKode,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => '6'
+                    ]));
+                } else {
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan'),[
+                        'bulky_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 2
+                    ]));
+                }
             } else {
-                $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                    'bulky_id' => $request->gudang_id,
-                    'kode' => $kode_faker,
-                    'nomor_pemesanan' => $kode,
-                    'nama_pemesan' => $request->nama_pemesan,
-                    'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => 1
-                ]));
+                if ($request->pengiriman == 'ambil') {
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                        'bulky_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'barang_kode' => $request->barangKode,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => '6'
+                    ]));
+                } else {
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                        'bulky_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 1
+                    ]));
+                }
             }
             LogTransaksi::create([
                 'user_id' => Auth::user()->id,

@@ -34,6 +34,9 @@ class PengurusGudangController extends Controller
             $data = User::with('pengurusGudang.gudang')->whereHas('pengurusGudang.gudang', function($query)use($gudang){
                 $query->whereIn('gudang_id', $gudang);
             })
+            ->whereHas('pengurusGudang',function($q){
+                $q->where('status',0);
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($data)

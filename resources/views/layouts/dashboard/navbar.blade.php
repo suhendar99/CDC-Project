@@ -70,7 +70,7 @@
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    @if(!Request::is('shop') && Auth::user()->pemasok_id == null)
+                    @if(!Request::is('shop') && Auth::user()->pemasok_id == null || Auth::user()->name != null)
                         <a class="dropdown-item" href="{{ route('shop') }}">
                             Belanja
                         </a>

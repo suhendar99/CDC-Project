@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Gudang';
+        $pageTitle = 'Data Gudang Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,7 +13,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Gudang</a>
+            <a href="#" class="text-14">Data Gudang Retail</a>
           </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                                     <div class="input-group">
                                         <input type="text" name="nama" class=" form-control" placeholder=" Cari gudang Retail..." aria-label="Cari gudang..." aria-describedby="basic-addon1">
                                         <div class="input-group-append">
-                                            <button type="submit" class="btn btn-outline-secondary">search</button>
+                                            <button type="submit" class="btn btn-outline-secondary">cari</button>
                                         </div>
                                     </div>
                                 </form>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('gudang.create')}}" class="btn btn-primary btn-sm">Tambah Data Gudang</a>
+                                <a href="{{route('gudang.create')}}" class="btn btn-primary btn-sm">Tambah Data Gudang Retail</a>
                             </div>
                         </div>
                     </div>

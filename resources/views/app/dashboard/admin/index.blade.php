@@ -150,7 +150,7 @@
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Bagaian Pengguna CDC (Consolidated Distribution Center)</span>
+            <span class="ml-2">Bagian Pengguna CDC (Consolidated Distribution Center)</span>
         </div>
         {{-- <hr> --}}
         <div id="chartPengguna"></div>
@@ -174,7 +174,7 @@
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Bagaian Pengguna CDC (Consolidated Distribution Center) per-Provinsi</span>
+            <span class="ml-2">Bagian Pengguna CDC (Consolidated Distribution Center) per-Provinsi</span>
         </div>
         <div id="chartAnggotaPerProvinsi"></div>
       </div>
