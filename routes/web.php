@@ -373,6 +373,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 'destroy' => 'bulky.storage.destroy'
             ]
         ]);
+        // Piutang
+        Route::resource('surat-piutang-retail-bulky', 'SuratPiutangRetailBulkyController');
+        Route::get('piutang-retail-bulky/print', 'SuratPiutangRetailBulkyController@printPdf');
 
         // Foto Stock Bulky
         Route::put('bulky/storage/stock/{id}/foto', 'StockBarangBulkyController@uploadFoto')->name('bulky.stock.foto');

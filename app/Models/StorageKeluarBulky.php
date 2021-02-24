@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StorageKeluarBulky extends Model
 {
@@ -67,5 +68,9 @@ class StorageKeluarBulky extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = storageKeluarBulky_id, localKey = id)
         return $this->hasMany('App\Models\RekapitulasiPenjualanBulky', 'storage_keluar_bulky_id');
+    }
+    public function suratPiutangRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangRetailBulky::class, 'storage_keluar_bulky_id', 'id');
     }
 }

@@ -27,6 +27,7 @@ use App\Models\StockBarang;
 use App\Models\StockBarangBulky;
 use App\Models\PemesananPembeliItem;
 use App\Models\PiutangBulky;
+use App\Models\PiutangRetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -414,7 +415,6 @@ class ShopController extends Controller
             return redirect('v1/transaksi/pembeli/riwayat')->with('sukses','Pesanan Telah dibuat !');
 
         } elseif (Auth::user()->pengurus_gudang_id != null){
-
             $date = date('ymd');
             $latest = PemesananBulky::orderBy('id','desc')->first();
 
@@ -435,24 +435,48 @@ class ShopController extends Controller
 
             $harga = $store->harga_barang * $request->jumlah;
 
-            if ($request->pengiriman == 'ambil') {
-                $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                    'gudang_retail_id' => $request->gudang_id,
-                    'kode' => $kode_faker,
-                    'nomor_pemesanan' => $kode,
-                    'nama_pemesan' => $request->nama_pemesan,
-                    'tanggal_pemesanan' => now('Asia/Jakarta'),
-                    'status' => '6'
-                ]));
+            if ($request->pembayaran == 'later') {
+                if ($request->pengiriman == 'ambil') {
+                    $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan'),[
+                        'gudang_retail_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 6
+                    ]));
+                } else {
+                    $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan'),[
+                        'gudang_retail_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 2
+                    ]));
+                }
             } else {
-                $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
-                    'gudang_retail_id' => $request->gudang_id,
-                    'kode' => $kode_faker,
-                    'nomor_pemesanan' => $kode,
-                    'nama_pemesan' => $request->nama_pemesan,
-                    'tanggal_pemesanan' => now('Asia/Jakarta')
-                ]));
+                if ($request->pengiriman == 'ambil') {
+                    $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                        'gudang_retail_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 6
+                    ]));
+                } else {
+                    $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                        'gudang_retail_id' => $request->gudang_id,
+                        'kode' => $kode_faker,
+                        'nomor_pemesanan' => $kode,
+                        'nama_pemesan' => $request->nama_pemesan,
+                        'tanggal_pemesanan' => now('Asia/Jakarta'),
+                        'status' => 1
+                    ]));
+                }
             }
+
             LogTransaksi::create([
                 'user_id' => Auth::user()->id,
                 'tanggal' => now('Asia/Jakarta'),
@@ -464,7 +488,7 @@ class ShopController extends Controller
 
             // dd($request->barang);
             $kodes = 'BP'.rand(10000,99999);
-            BarangPemesananBulky::create([
+            $out = BarangPemesananBulky::create([
                 'kode' => $kodes,
                 'barang_bulky_id' => $store->id,
                 'pemesanan_bulky_id' => $pemesanan->id,
@@ -476,26 +500,17 @@ class ShopController extends Controller
                 'harga' => $harga
             ]);
 
-            if ($request->pembayaran == 'later') {
-                $BarangPesanan = BarangPemesananBulky::where('pemesanan_bulky_id',$pemesanan->id)->get();
-                // dd($hutang);
-                Piutang::create([
-                    'barang_id' => $pemesanan->id,
-                    'tanggal'=> Carbon::now(),
-                    'nama_pembeli' => Auth::user()->pelanggan->nama,
-                    'hutang' => $BarangPesanan->harga * $BarangPesanan->jumlah_barang,
-                ]);
+            $day = BatasPiutang::find(1);
+            $jatuhTempo = date('Y-m-d',strtotime('+'.$day->jumlah_hari.' day'));
 
-                if ($request->pembayaran == 'later') {
-                    // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
-                    // dd($hutang);
-                    Piutang::create([
-                        'barang_id' => $pemesanan->id,
-                        'tanggal'=> Carbon::now(),
-                        'nama_pembeli' => Auth::user()->pelanggan->nama,
-                        'hutang' => $harga,
-                    ]);
-                }
+            if ($request->pembayaran == 'later') {
+                PiutangRetail::create([
+                    'pemesanan_keluar_id' => $pemesanan->id,
+                    'tanggal'=> Carbon::now(),
+                    'nama_pembeli' => Auth::user()->pengurusGudang->nama,
+                    'hutang' => $out->harga,
+                    'jatuh_tempo' => $jatuhTempo
+                ]);
             }
 
             $gudang = $request->bulky_id;

@@ -104,6 +104,9 @@
                                                 <li class="nav-item">
                                                     <a href="#sub-surat-jalan" class="nav-link rounded" id="sub-keluar-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Jalan</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-surat-piutang" class="nav-link rounded" id="sub-piutang-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Piutang</a>
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="col-md-12 pt-4">
@@ -149,6 +152,22 @@
                                                                 <th>No Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
+                                                                <th>Tempat</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-surat-piutang" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Surat Piutang</h4>
+                                                    <table id="table_surat_piutang" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Tanggal Pembuatan Surat Piutang</th>
+                                                                <th>No Pemesanan (Invoice)</th>
+                                                                <th>Pihak Pertama</th>
+                                                                <th>Pihak Kedua</th>
                                                                 <th>Tempat</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -458,6 +477,24 @@
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_surat_piutang = $('#table_surat_piutang').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('surat-piutang-retail-bulky.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
+                {data : 'invoice', name: 'invoice'},
+                {data : 'pihak_pertama', name: 'pihak_pertama'},
+                {data : 'pihak_kedua', name: 'pihak_kedua'},
+                {data : 'tempat', name: 'tempat'},
                 {data : 'action', name: 'action'}
             ]
         });

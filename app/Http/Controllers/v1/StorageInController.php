@@ -82,7 +82,7 @@ class StorageInController extends Controller
     public function findStorageKeluar($id)
     {
         try {
-            $pesanan = BarangPemesananBulky::with('pemesananBulky', 'stockBarangBulky.barang')
+            $pesanan = BarangPemesananBulky::with('pemesananBulky.kwitansiBulky','pemesananBulky.suratJalanBulky', 'stockBarangBulky.barang')
             ->whereHas('pemesananBulky', function($query)use($id){
                 $query->where([
                     ['gudang_retail_id', $id],
@@ -91,6 +91,38 @@ class StorageInController extends Controller
             })
             ->has('pemesananBulky.storageKeluarBulky')
             ->doesntHave('pemesananBulky.storageMasukRetail')
+            ->get();
+
+            // dd($pesanan);
+            // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
+            // ->whereIn('id', $pesanan)
+            // ->get();
+
+            if (!$pesanan) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $pesanan
+                ], 200);
+                # code...
+            }
+
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
+        }
+    }
+    public function findBarang($id)
+    {
+        try {
+            $pesanan = BarangPemesananBulky::with('pemesananBulky.kwitansiBulky','pemesananBulky.suratJalanBulky', 'stockBarangBulky.barang')
+            ->where('id',$id)
+            ->whereHas('pemesananBulky', function($query){
+                $query->where('status',5);
+            })
             ->get();
 
             // dd($pesanan);
@@ -128,7 +160,6 @@ class StorageInController extends Controller
         })
         ->where('status', 1)
         ->get();
-
         if($gudang->count() < 1){
             return back()->with('failed','Mohon Daftarkan/Aktifkan Gudang Anda Terlebih Dahulu!');
         }
@@ -151,8 +182,9 @@ class StorageInController extends Controller
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
             'nomor_kwitansi' => 'required|numeric',
-            'nomor_surat_jalan' => 'required|numeric',
-            'foto_kwitansi' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'nomor_surat_jalan' => 'required|string',
+            'foto_kwitansi' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'foto_surat_piutang' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'foto_surat_jalan' => 'required|image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
@@ -175,24 +207,41 @@ class StorageInController extends Controller
 
         $jumlah = $request->jumlah;
 
-        $foto_kwitansi = $request->file('foto_kwitansi');
-        $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-        $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
-
         $foto_surat_jalan = $request->file('foto_surat_jalan');
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
         $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
 
-        $masuk = StorageIn::create($request->only('barang_bulky_id', 'pemesanan_bulky_id', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
-            'kode' => $kode,
-            'nama_barang' => $barang->nama_barang,
-            'jumlah' => $jumlah,
-            'satuan_id' => $one,
-            'user_id' => auth()->user()->id,
-            'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
-            'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
-            'waktu' => now('Asia/Jakarta')
-        ]);
+        if ($request->file('foto_kwitansi') != null) {
+            $foto_kwitansi = $request->file('foto_kwitansi');
+            $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
+            $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+
+            $masuk = StorageIn::create($request->only('barang_bulky_id', 'pemesanan_bulky_id', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+                'kode' => $kode,
+                'nama_barang' => $barang->nama_barang,
+                'jumlah' => $jumlah,
+                'satuan_id' => $one,
+                'user_id' => auth()->user()->id,
+                'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
+                'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
+                'waktu' => now('Asia/Jakarta')
+            ]);
+        } else {
+            $foto_surat_piutang = $request->file('foto_surat_piutang');
+            $nama_surat_piutang = time()."_".$foto_surat_piutang->getClientOriginalName();
+            $foto_surat_piutang->move(public_path("upload/foto/surat_piutang"), $nama_surat_piutang);
+
+            $masuk = StorageIn::create($request->only('barang_bulky_id', 'pemesanan_bulky_id', 'gudang_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+                'kode' => $kode,
+                'nama_barang' => $barang->nama_barang,
+                'jumlah' => $jumlah,
+                'satuan_id' => $one,
+                'user_id' => auth()->user()->id,
+                'foto_surat_piutang' => 'upload/foto/kwitansi/'.$nama_surat_piutang,
+                'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
+                'waktu' => now('Asia/Jakarta')
+            ]);
+        }
 
         $checkStock = StockBarang::where([
             ['gudang_id', $request->gudang_id],
