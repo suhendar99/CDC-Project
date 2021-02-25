@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StorageMasukBulky extends Model
@@ -66,5 +67,14 @@ class StorageMasukBulky extends Model
     public function rekapitulasi()
     {
     	return $this->hasMany('App\Models\RekapitulasiPembelianBulky', 'storage_masuk_bulky_id');
+    }
+    /**
+     * Get the pemesanan that owns the StorageMasukBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pemesanan(): BelongsTo
+    {
+        return $this->belongsTo(PemesananKeluarBulky::class, 'pemesanan_keluar_bulky_id', 'id');
     }
 }
