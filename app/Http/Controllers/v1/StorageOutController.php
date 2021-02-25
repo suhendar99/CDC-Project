@@ -407,7 +407,11 @@ class StorageOutController extends Controller
         ]);
 
         $pesanan->update(['status'=>'4']);
-        return redirect('v1/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        if ($pesanan->metode_pembayaran == null) {
+            return redirect('/v1/surat-piutang-warung-retail/create?id='.$out->id);
+        } else {
+            return redirect('/v1/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        }
     }
 
     /**

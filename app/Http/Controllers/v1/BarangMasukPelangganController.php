@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\BarangMasukPelanggan;
 use App\Models\BarangWarung;
 use App\Models\LogTransaksi;
+use App\Models\Pemesanan;
 use App\Models\RekapitulasiPembelianPelanggan;
 use App\Models\StorageOut;
 use Illuminate\Http\Request;
@@ -67,14 +68,29 @@ class BarangMasukPelangganController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $barang = StorageOut::with('barang','barangWarung','barangMasukPelanggan','gudang','user','stockBarangRetail','pemesanan')
-        ->whereHas('pemesanan',function($q){
-            $q->where('pelanggan_id',Auth::user()->pelanggan_id);
-        })
-        ->get();
-        return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
+        if ($request->query('id') != null) {
+            $pemesananId = $request->query('id');
+            $pemesanan = Pemesanan::with('barangPesanan','kwitansi','suratJalan','storageOut','pelanggan')->find($pemesananId);
+            // $barang = StorageOut::with('barang','barangWarung','barangMasukPelanggan','gudang','user','stockBarangRetail','pemesanan')
+            // ->whereHas('pemesanan',function($q){
+            //     $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            // })
+            // ->get();
+            // dd($pemesanan->storageOut[0]->pemesanan->barangPesanan[0]->nama_barang);
+            return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('pemesanan','pemesananId'));
+        } else {
+            $pemesanan = Pemesanan::with('barangPesanan','kwitansi','suratJalan','storageOut','pelanggan')
+            ->where('pelanggan_id',Auth::user()->pelanggan_id)->where('status',4)->first();
+            // $barang = StorageOut::with('barang','barangWarung','barangMasukPelanggan','gudang','user','stockBarangRetail','pemesanan')
+            // ->whereHas('pemesanan',function($q){
+            //     $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            // })
+            // ->get();
+            // dd($pemesanan);
+            return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('pemesanan'));
+        }
     }
 
     /**

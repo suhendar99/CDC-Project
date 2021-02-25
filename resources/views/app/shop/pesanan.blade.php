@@ -277,6 +277,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+                            <div class="card-header">
+                                @if (Auth::user()->keanggotaan == 1)
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pembeli->nama}} Sebagai Anggota {{Auth::user()->koperasi->nama_koperasi}}</h4>
+                                @else
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pembeli->nama}}</h4>
+                                @endif
+                            </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->pelanggan->nama}}">
                             <input type="hidden" name="pembeli_id" value="{{Auth::user()->pembeli_id}}">
                             <input type="hidden" name="pelanggan_id" value="{{$data->pelanggan->id}}">
@@ -469,7 +476,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            {{-- {{dd($data)}} --}}
+                            <div class="card-header">
+                                @if (Auth::user()->keanggotaan == 1)
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pengurusGudang->nama}} Sebagai Anggota {{Auth::user()->koperasi->nama_koperasi}}</h4>
+                                @else
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pengurusGudang->nama}}</h4>
+                                @endif
+                            </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->bulky->pemilik}}">
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudang->nama}}">
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pengurus_gudang_id}}">
@@ -692,7 +705,13 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            {{-- {{dd($data)}} --}}
+                            <div class="card-header">
+                                @if (Auth::user()->keanggotaan == 1)
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pengurusGudangBulky->nama}} Sebagai Anggota {{Auth::user()->koperasi->nama_koperasi}}</h4>
+                                @else
+                                    <h4 class="card-title">Pemesanan Barang {{Auth::user()->pengurusGudangBulky->nama}}</h4>
+                                @endif
+                            </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->pemasok->nama}}">
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudangBulky->nama}}">
                             <input type="hidden" name="bulky_id" value="{{Auth::user()->pengurus_gudang_bulky_id}}">

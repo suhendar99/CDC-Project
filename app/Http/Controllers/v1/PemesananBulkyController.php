@@ -167,8 +167,8 @@ class PemesananBulkyController extends Controller
     }
 
     function getPesanan($id){
-        $data = PemesananBulky::with('barangPesananBulky')->first();
-        $barang = $data->barangPesananBulky;
+        $data = PemesananBulky::with('barangPesananBulky')->find($id);
+        $barang = BarangPemesananBulky::where('pemesanan_bulky_id',$data->id)->get();
         $harga = $barang->sum('harga');
         return response()->JSON([
             'data' => $data,

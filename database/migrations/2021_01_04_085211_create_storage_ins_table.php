@@ -31,7 +31,7 @@ class CreateStorageInsTable extends Migration
             $table->string('nama_barang', 50);
             $table->float('jumlah', 11, 2);
             $table->foreignId('satuan_id')->constrained('satuans')->onDelete('cascade');
-            $table->string('nomor_kwitansi', 50);
+            $table->string('nomor_kwitansi', 50)->nullable();
             $table->text('foto_kwitansi')->nullable();
             $table->text('foto_surat_piutang')->nullable();
             $table->string('nomor_surat_jalan', 50);

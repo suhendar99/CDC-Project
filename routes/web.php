@@ -464,7 +464,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Untuk Validasi Butki Pembayaran
         Route::get('validasi/bukti/warung/{id}','PemesananKeluarPembeliController@validasi')->name('validasi.bukti.warung');
 
-
+        // Surat Piutang
+        Route::resource('surat-piutang-warung-retail', 'SuratPiutangWarungRetailController');
+        Route::get('piutang-warung-retail/print', 'SuratPiutangWarungRetailController@printPdf');
 
         // Purchase Order
         Route::get('print/{id}', 'PoController@print')->name('po.print');

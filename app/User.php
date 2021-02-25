@@ -193,4 +193,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(SuratPiutangRetailBulky::class, 'user_id', 'id');
     }
+    public function suratPiutangPelangganRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangPelangganRetail::class, 'user_id', 'id');
+    }
 }
