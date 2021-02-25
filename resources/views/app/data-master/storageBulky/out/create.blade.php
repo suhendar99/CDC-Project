@@ -345,6 +345,7 @@ function fixStepIndicator(n) {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")
         let idPesanan = $('#selectSatuan').val()
+        console.log(idPesanan);
         for (var i = $('.tab').length - 1; i >= 1; i--) {
 
             let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
@@ -354,10 +355,10 @@ function fixStepIndicator(n) {
         $.ajax({
             url: "/api/v1/bulky/getPesanan/"+idPesanan,
         }).done(function(response) {
-            console.log(response);
+            console.log(response.barang);
             $('#dibayar_oleh').val(response.data.nama_pemesan);
-            $('#jumlah_uang').val(response.harga);
-            $('#word').val(inWords(response.harga));
+            $('#jumlah_uang').val(response.barang[0].harga);
+            $('#word').val(inWords(response.barang[0].harga));
         });
     });
     onScan.attachTo(document, {
@@ -427,7 +428,7 @@ function fixStepIndicator(n) {
 
     var a = ['','Satu ','Dua ','Tiga ','Empat ', 'Lima ','Enam ','Tujuh ','Delapan ','Sembilan ','Sepuluh ','Sebelas ','Dua Belas ','Tiga Belas ','Empat Belas ','Lima Belas ','Enam Belas ','Tujuh Belas ','Delapan Belas ','Sembilan Belas '];
     var b = ['', '', 'Dua Puluh','Tiga Puluh','Empat Puluh','Lima Puluh', 'Enam Puluh','Tujuh Puluh','Delapan Puluh','Sembilan Puluh'];
-    var c = ['', '', 'Dua Ratus', 'Tiga Ratus', 'Empat Ratus', 'Lima Ratus', 'Enam Ratus', 'Tujuh Ratus', 'Delapan Ratus', 'Sembilan Ratus'];
+    var c = ['', 'Seratus', 'Dua Ratus', 'Tiga Ratus', 'Empat Ratus', 'Lima Ratus', 'Enam Ratus', 'Tujuh Ratus', 'Delapan Ratus', 'Sembilan Ratus'];
 
     function inWords (num) {
         if ((num = num.toString()).length > 10) return 'overflow';

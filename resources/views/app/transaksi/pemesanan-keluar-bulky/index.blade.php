@@ -133,7 +133,7 @@
                                         <span class="badge rounded-pill bg-my-primary p-2">
                                             Pesanan Dikirim
                                         </span>
-                                        @elseif($d->status == 5)
+                                        @elseif($d->status == 5 || $d->status == 7)
                                         <span class="badge rounded-pill bg-my-success">
                                             Pesanan Diterima
                                         </span>
@@ -150,16 +150,16 @@
                                 <div class="col-md-4">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
                                 </div>
-                                <div class="col-md-4 border-right">
-                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
+                                <div class="col-md-4">
+                                    No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
                                 </div>
                                 @if ($d->metode_pembayaran == null)
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
                                 @else
-                                <div class="col-md-4">
-                                    No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                <div class="col-md-4 border-right">
+                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
                                 </div>
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br>

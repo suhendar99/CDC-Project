@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6" id="noKwitt">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <input type="number" id="noKwi" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
@@ -71,7 +71,7 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6" id="noSurJal">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" id="noSj" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
@@ -218,6 +218,9 @@
                                 </span>
                             @enderror
                         `)
+                        $('#noKwitt').addClass('d-none');
+                        $('#noSurJal').removeClass('col-md-6');
+                        $('#noSurJal').addClass('col-md-12');
                     } else {
                         $('#fotoKwit').html(`
                             <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
@@ -228,9 +231,11 @@
                                 </span>
                             @enderror
                         `)
-
+                        $('#noKwitt').removeClass('d-none');
+                        $('#noSurJal').addClass('col-md-6');
+                        $('#noSurJal').removeClass('col-md-12');
+                        $('#noKwi').val(b.pemesanan_bulky.kwitansi_bulky[0].kode);
                     }
-                    $('#noKwi').val(b.pemesanan_bulky.kwitansi_bulky[0].kode);
                     $('#noSj').val(b.pemesanan_bulky.surat_jalan_bulky[0].kode);
                 });
             }

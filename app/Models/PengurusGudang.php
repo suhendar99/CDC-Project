@@ -56,4 +56,9 @@ class PengurusGudang extends Model
         // belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
         return $this->belongsToMany('App\Models\Gudang', 'akun_gudangs', 'pengurus_id', 'gudang_id');
     }
+
+    public function suratPiutangPelangganRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangPelangganRetail::class, 'retail_id', 'id');
+    }
 }

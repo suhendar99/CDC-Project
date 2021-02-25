@@ -75,38 +75,15 @@ class StorageMasukBulkyController extends Controller
      */
     public function create(Request $request)
     {
-        if ($request->query('id') != null) {
             $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
                 $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
             })
             ->where('status', 1)
-            ->get();
-
-            if ($gudang->count() == 0) {
-                return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
-            }
-            $pemesanan = PemesananKeluarBulky::with('kwitansiPemasok','suratJalanPemasok','storageKeluarPemasok','barangKeluarPemesananBulky')->find($request->query('id'));
-            $pesananId = $request->query('id');
-            return view('app.data-master.storageBulky.in.create', compact('gudang','pemesanan','pesananId'));
-        } else {
-            $gudang = GudangBulky::whereHas('akunGudangBulky', function($query){
-                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
-            })
-            ->where('status', 1)
-            ->get();
-            foreach ($gudang as $key => $value) {
-                $gud = $value;
-            }
-            $barangs = PemesananKeluarBulky::with('kwitansiPemasok','suratJalanPemasok','storageKeluarPemasok','barangKeluarPemesananBulky','bulky')->whereHas('bulky',function($q)use($gud){
-                $q->where('bulky_id', $gud->id);
-            })
-            ->where('status',4)
             ->get();
             if ($gudang->count() < 1) {
                 return redirect('v1/gudang-bulky')->with('failed','Mohon Pastikan Gudang Anda Sudah Terdaftar dan Diaktifkan!');
             }
-            return view('app.data-master.storageBulky.in.create', compact('gudang','barangs'));
-        }
+            return view('app.data-master.storageBulky.in.create', compact('gudang'));
     }
 
     public function findStorageKeluar($id)
@@ -115,12 +92,42 @@ class StorageMasukBulkyController extends Controller
             $pesanan = BarangKeluarPemesananBulky::with('pemesanan', 'barang')
             ->whereHas('pemesanan', function($query)use($id){
                 $query->where([
-                    ['gudang_id', $id],
+                    ['bulky_id', $id],
                     ['status', 5]
                 ]);
             })
             ->has('pemesanan.storageKeluarPemasok')
-            ->doesntHave('pemesanan.storageMasukBulky')
+            // ->doesntHave('pemesanan.storageMasukBulky')
+            ->get();
+            // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
+            // ->whereIn('id', $pesanan)
+            // ->get();
+
+            if (!$pesanan) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $pesanan
+                ], 200);
+                # code...
+            }
+
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
+        }
+    }
+    public function findBarang($id)
+    {
+        try {
+            $pesanan = BarangKeluarPemesananBulky::with('pemesanan.kwitansiPemasok','pemesanan.suratJalanPemasok', 'barang')
+            ->where('id',$id)
+            ->whereHas('pemesanan', function($query){
+                $query->where('status',5);
+            })
             ->get();
 
             // dd($pesanan);
@@ -159,7 +166,7 @@ class StorageMasukBulkyController extends Controller
             'bulky_id' => 'required|exists:gudang_bulkies,id',
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
-            'nomor_kwitansi' => 'required|numeric',
+            'nomor_kwitansi' => 'nullable|numeric',
             'nomor_surat_jalan' => 'required|string',
             'foto_kwitansi' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'foto_surat_piutang' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',

@@ -31,7 +31,7 @@ class PemesananKeluarPembeliController extends Controller
         // dd($data);
         $data->update(['status'=>'5']);
 
-        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        return redirect('/v1/barangMasukPelanggan/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     public function validasi($id)

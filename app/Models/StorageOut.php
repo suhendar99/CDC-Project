@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StorageOut extends Model
 {
@@ -87,5 +88,10 @@ class StorageOut extends Model
     {
         // belongsTo(RelatedModel, foreignKey = satuan_id, keyOnRelatedModel = id)
         return $this->belongsTo('App\Models\Satuan', 'satuan_id');
+    }
+
+    public function suratPiutangPelangganRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangPelangganRetail::class, 'storage_keluar_id', 'id');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pemesanan extends Model
 {
@@ -28,7 +29,7 @@ class Pemesanan extends Model
     public function kwitansi()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->hasMany('App\Models\Kwitansi');
+    	return $this->hasOne('App\Models\Kwitansi');
     }
 
     /**
@@ -39,7 +40,7 @@ class Pemesanan extends Model
     public function suratJalan()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->hasMany('App\Models\SuratJalan');
+    	return $this->hasOne('App\Models\SuratJalan');
     }
 
     /**
@@ -50,7 +51,7 @@ class Pemesanan extends Model
     public function storageOut()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->hasOne('App\Models\StorageOut');
+    	return $this->hasMany('App\Models\StorageOut');
     }
     /**
      * Pemesanan has many Retur.
@@ -81,6 +82,15 @@ class Pemesanan extends Model
     public function piutang()
     {
     	// hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesanan_id, localKey = id)
-    	return $this->hasMany('App\Models\Piutang','barang_id','id');
+    	return $this->hasOne('App\Models\Piutang','pemesanan_id','id');
+    }
+    /**
+     * Get all of the comments for the Pemesanan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function suratPiutangPelangganRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangPelangganRetail::class, 'pemesanan_id', 'id');
     }
 }

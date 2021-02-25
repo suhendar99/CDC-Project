@@ -181,7 +181,7 @@ class StorageInController extends Controller
             'gudang_id' => 'required|exists:gudangs,id',
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
-            'nomor_kwitansi' => 'required|numeric',
+            'nomor_kwitansi' => 'nullable|numeric',
             'nomor_surat_jalan' => 'required|string',
             'foto_kwitansi' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'foto_surat_piutang' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
