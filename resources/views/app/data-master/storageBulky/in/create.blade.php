@@ -127,7 +127,7 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <input type="hidden" name="pemesanan_bulky_id" id="pemesanan_bulky_id">
+                                    <input type="hidden" name="pemesanan_keluar_bulky_id" id="pemesanan_bulky_id">
                                     <div class="form-group col-md-4">
                                         <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">

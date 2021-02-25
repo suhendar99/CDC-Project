@@ -44,7 +44,7 @@
                                     </h6>
                                 </div>
                             </div>
-                            @elseif($d->storageOut == null)
+                            @elseif($d->storageOut->count() < 1)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
@@ -120,8 +120,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageOut->user->pengurusGudang->nama}} ({{$d->storageOut->user->pengurusGudang->kabupaten->nama}})</span>
-                                    {{-- {{dd($d->storageOut)}} --}}
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageOut[0]->user->pengurusGudang->nama}} ({{$d->storageOut[0]->user->pengurusGudang->kabupaten->nama}})</span>
+                                    {{-- {{dd($d->storageOut[0])}} --}}
                                 </div>
                                 <div class="col-md-4 border-right">
                                     Ke : <br><span class="text-14 bold">{{$d->pelanggan->nama}} ({{$d->pelanggan->kabupaten->nama}})</span>

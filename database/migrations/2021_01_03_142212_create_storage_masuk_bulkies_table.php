@@ -18,6 +18,7 @@ class CreateStorageMasukBulkiesTable extends Migration
             $table->string('barang_kode');
             $table->foreign('barang_kode')->references('kode_barang')->on('barangs')->onDelete('cascade');
             // $table->foreignId('barang_kode')->nullable()->constrained('kategoris')->onDelete('cascade');
+            $table->foreignId('pemesanan_keluar_bulky_id')->constrained('pemesanan_keluar_bulky')->onDelete('cascade');
             $table->foreignId('bulky_id')->constrained('gudang_bulkies')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('kode')->unique();

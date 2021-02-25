@@ -97,8 +97,9 @@ class StorageMasukBulkyController extends Controller
                 ]);
             })
             ->has('pemesanan.storageKeluarPemasok')
-            // ->doesntHave('pemesanan.storageMasukBulky')
+            ->doesntHave('pemesanan.storageMasuk')
             ->get();
+            // dd($pesanan[1]->pemesanan);
             // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
             // ->whereIn('id', $pesanan)
             // ->get();
@@ -164,6 +165,7 @@ class StorageMasukBulkyController extends Controller
         $v = Validator::make($request->all(),[
             'barang_kode' => 'required|exists:barangs,kode_barang',
             'bulky_id' => 'required|exists:gudang_bulkies,id',
+            'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
             'jumlah' => 'required|numeric',
             'harga_beli' => 'required|numeric',
             'nomor_kwitansi' => 'nullable|numeric',
@@ -206,7 +208,7 @@ class StorageMasukBulkyController extends Controller
             $foto_kwitansi = $request->file('foto_kwitansi');
             $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
             $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
-            $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+            $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id','pemesanan_keluar_bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
                 'jumlah' => $jumlah,
                 'kode' => $kode,
                 'satuan' => $satuan,
@@ -220,7 +222,7 @@ class StorageMasukBulkyController extends Controller
             $foto_surat_piutang = $request->file('foto_surat_piutang');
             $nama_surat_piutang = time()."_".$foto_surat_piutang->getClientOriginalName();
             $foto_surat_piutang->move(public_path("upload/foto/surat_piutang"), $nama_surat_piutang);
-            $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+            $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id','pemesanan_keluar_bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
                 'jumlah' => $jumlah,
                 'kode' => $kode,
                 'satuan' => $satuan,

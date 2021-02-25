@@ -21,7 +21,7 @@ class PemesananKeluarPembeliController extends Controller
     public function index()
     {
         $data = $this->model::with('storageOut.user.pengurusGudang.kabupaten','pelanggan.kabupaten','barangPesanan')->where('pelanggan_id',Auth::user()->pelanggan_id)->orderBy('id','desc')->paginate(4);
-        // dd($data->toArray());
+        // dd($data);
         return view('app.transaksi.pemesanan-keluar-warung.index',compact('data'));
     }
 
@@ -30,8 +30,8 @@ class PemesananKeluarPembeliController extends Controller
         $data = $this->model::findOrFail($id);
         // dd($data);
         $data->update(['status'=>'5']);
-
-        return redirect('/v1/barangMasukPelanggan/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        // return redirect('/v1/barangMasukPelanggan/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     public function validasi($id)

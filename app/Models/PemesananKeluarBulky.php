@@ -71,4 +71,13 @@ class PemesananKeluarBulky extends Model
     {
         return $this->hasMany(SuratPiutangBulkyPemasok::class, 'pemesanan_keluar_bulky_id', 'id');
     }
+    /**
+     * Get the storageMasuk associated with the PemesananKeluarBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function storageMasuk(): HasOne
+    {
+        return $this->hasOne(StorageMasukBulky::class, 'pemesanan_keluar_bulky_id', 'id');
+    }
 }

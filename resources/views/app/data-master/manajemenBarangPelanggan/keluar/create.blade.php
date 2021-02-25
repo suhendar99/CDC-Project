@@ -71,10 +71,14 @@
                                     <div class="form-group col-md-6">
                                         <label>Barang Warung <small class="text-success">*Harus diisi</small></label>
                                         <select name="barang_warung_kode" id="barang" class="form-control">
-                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach ($barang as $item)
-                                                <option value="{{$item->kode}}" {{ old('barang_warung_kode') == $item->kode ? 'selected' : ''}}>{{$item->kode}} | {{$item->storageOut->stockBarangRetail->nama_barang}}</option>
-                                            @endforeach
+                                            @if ($set == true)
+                                                <option value="{{$pemesanan->pemesananPembeliItem[0]->barang_warung_kode}}" {{ old('barang_warung_kode') == $pemesanan->pemesananPembeliItem[0]->barang_warung_kode ? 'selected' : ''}}>{{$pemesanan->pemesananPembeliItem[0]->barang_warung_kode}} | {{$pemesanan->pemesananPembeliItem[0]->nama_barang}}</option>
+                                            @else
+                                                <option value="0" data-satuan="-">--Pilih Barang--</option>
+                                                @foreach ($pemesanan as $item)
+                                                    <option value="{{$item->pemesananPembeliItem[0]->barang_warung_kode}}" {{ old('barang_warung_kode') == $item->pemesananPembeliItem[0]->barang_warung_kode ? 'selected' : ''}}>{{$item->pemesananPembeliItem[0]->barang_warung_kode}} | {{$item->pemesananPembeliItem[0]->nama_barang}}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                         @error('barang_warung_kode')
                                             <span class="invalid-feedback" role="alert">
