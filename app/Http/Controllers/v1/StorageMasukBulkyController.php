@@ -190,7 +190,7 @@ class StorageMasukBulkyController extends Controller
 
         $foto_surat_jalan = $request->file('foto_surat_jalan');
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
-        $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+        $foto_surat_jalan->move("upload/foto/surat_jalan", $nama_surat_jalan);
 
 
         if ($barang->satuan == 'Ton') {
@@ -207,7 +207,7 @@ class StorageMasukBulkyController extends Controller
         if ($request->file('foto_kwitansi') != null) {
             $foto_kwitansi = $request->file('foto_kwitansi');
             $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-            $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+            $foto_kwitansi->move("upload/foto/kwitansi", $nama_kwitansi);
             $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id','pemesanan_keluar_bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
                 'jumlah' => $jumlah,
                 'kode' => $kode,
@@ -221,7 +221,7 @@ class StorageMasukBulkyController extends Controller
 
             $foto_surat_piutang = $request->file('foto_surat_piutang');
             $nama_surat_piutang = time()."_".$foto_surat_piutang->getClientOriginalName();
-            $foto_surat_piutang->move(public_path("upload/foto/surat_piutang"), $nama_surat_piutang);
+            $foto_surat_piutang->move("upload/foto/surat_piutang", $nama_surat_piutang);
             $masuk = StorageMasukBulky::create($request->only('barang_kode', 'bulky_id','pemesanan_keluar_bulky_id', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
                 'jumlah' => $jumlah,
                 'kode' => $kode,
@@ -394,7 +394,7 @@ class StorageMasukBulkyController extends Controller
 
             $foto_kwitansi = $request->file('foto_kwitansi');
             $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-            $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+            $foto_kwitansi->move("upload/foto/kwitansi", $nama_kwitansi);
 
             $storage->update([
                 'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
@@ -406,7 +406,7 @@ class StorageMasukBulkyController extends Controller
 
             $foto_surat_jalan = $request->file('foto_surat_jalan');
             $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
-            $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+            $foto_surat_jalan->move("upload/foto/surat_jalan", $nama_surat_jalan);
 
             $storage->update([
                 'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,

@@ -91,7 +91,7 @@ class PelangganController extends Controller
             if ($request->file('foto')) {
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
+                $request->foto->move("upload/foto/pelanggan", $foto);
                 if ($request->desa_id == null) {
                     $pelanggan = Pelanggan::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                         'foto' => 'upload/foto/pelanggan/'.$foto
@@ -185,7 +185,7 @@ class PelangganController extends Controller
                 File::delete($set->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
+                $request->foto->move("upload/foto/pelanggan", $foto);
                 if ($request->desa_id == null) {
                     $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                         'foto' => 'upload/foto/pelanggan/'.$foto

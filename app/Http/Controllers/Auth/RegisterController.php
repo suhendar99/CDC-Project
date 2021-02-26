@@ -119,7 +119,6 @@ class RegisterController extends Controller
                 return User::create([
                     'username' => $data['username'],
                     'email' => $data['email'],
-                    'keanggotaan' => $data['keanggotaan'],
                     'password' => Hash::make($data['password']),
                     'pelanggan_id' => $pelanggan->id,
                     'email_verified_at' => $data['email_verified_at'],
@@ -127,53 +126,111 @@ class RegisterController extends Controller
                 ]);
             }
         } elseif ($data['role'] == 'pemasok') {
-            $pin = mt_rand(100, 999)
-                    .mt_rand(100, 999);
-            $date = date("Y");
-            $kode = "SP".$date.$pin;
-            $pemasok = Pemasok::create([
-                'nama' => $data['nama'],
-                'kode_pemasok' => $kode,
-                'nik' => $data['nik'],
-                'telepon' => '62'.(int)$data['telepon'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'provinsi_id' => $data['provinsi_id'],
-                'kabupaten_id' => $data['kabupaten_id'],
-                'kecamatan_id' => $data['kecamatan_id'],
-                'desa_id' => $data['desa_id'],
-                'alamat' => $data['alamat'],
-            ]);
+            if ($data['keanggotaan'] == 1) {
+                $pin = mt_rand(100, 999)
+                        .mt_rand(100, 999);
+                $date = date("Y");
+                $kode = "SP".$date.$pin;
+                $pemasok = Pemasok::create([
+                    'nama' => $data['nama'],
+                    'kode_pemasok' => $kode,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
 
-            return User::create([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'pemasok_id' => $pemasok->id,
-                'email_verified_at' => $data['email_verified_at'],
-                'status' => 1
-            ]);
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'koperasi_id' => $data['koperasi_id'],
+                    'keanggotaan' => $data['keanggotaan'],
+                    'password' => Hash::make($data['password']),
+                    'pemasok_id' => $pemasok->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            } else {
+                $pin = mt_rand(100, 999)
+                        .mt_rand(100, 999);
+                $date = date("Y");
+                $kode = "SP".$date.$pin;
+                $pemasok = Pemasok::create([
+                    'nama' => $data['nama'],
+                    'kode_pemasok' => $kode,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
+
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'pemasok_id' => $pemasok->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            }
+
         } elseif ($data['role'] == 'bulky') {
-            $bulki = PengurusGudangBulky::create([
-                'nama' => $data['nama'],
-                'status' => 1,
-                'nik' => $data['nik'],
-                'telepon' => '62'.(int)$data['telepon'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'provinsi_id' => $data['provinsi_id'],
-                'kabupaten_id' => $data['kabupaten_id'],
-                'kecamatan_id' => $data['kecamatan_id'],
-                'desa_id' => $data['desa_id'],
-                'alamat' => $data['alamat'],
-            ]);
+            if ($data['keanggotaan'] == 1) {
+                $bulki = PengurusGudangBulky::create([
+                    'nama' => $data['nama'],
+                    'status' => 1,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
 
-            return User::create([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'pengurus_gudang_bulky_id' => $bulki->id,
-                'email_verified_at' => $data['email_verified_at'],
-                'status' => 1
-            ]);
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'keanggotaan' => $data['keanggotaan'],
+                    'koperasi_id' => $data['koperasi_id'],
+                    'pengurus_gudang_bulky_id' => $bulki->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            } else {
+                $bulki = PengurusGudangBulky::create([
+                    'nama' => $data['nama'],
+                    'status' => 1,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
+
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'pengurus_gudang_bulky_id' => $bulki->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1
+                ]);
+            }
+
         } elseif ($data['role'] == 'pembeli') {
             $pembeli = Pembeli::create([
                 'nama' => $data['nama'],
@@ -196,31 +253,59 @@ class RegisterController extends Controller
                 'status' => 1
             ]);
         } elseif ($data['role'] == 'retail') {
-            $pengurusGudang = PengurusGudang::create([
-                'nama' => $data['nama'],
-                'status' => 1,
-                'nik' => $data['nik'],
-                'telepon' => '62'.(int)$data['telepon'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'provinsi_id' => $data['provinsi_id'],
-                'kabupaten_id' => $data['kabupaten_id'],
-                'kecamatan_id' => $data['kecamatan_id'],
-                'desa_id' => $data['desa_id'],
-                'alamat' => $data['alamat'],
-            ]);
+            if ($data['keanggotaan'] == 1) {
+                $pengurusGudang = PengurusGudang::create([
+                    'nama' => $data['nama'],
+                    'status' => 1,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
 
-            return User::create([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'pengurus_gudang_id' => $pengurusGudang->id,
-                'email_verified_at' => $data['email_verified_at'],
-                'status' => 1,
-                // 'jenis' => $data['jenis']
-            ]);
-            if ($data['jenis'] == null) {
-                return back()->with('error', 'Mohon pilih Jenis Usaha !');
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'keanggotaan' => $data['keanggotaan'],
+                    'koperasi_id' => $data['koperasi_id'],
+                    'pengurus_gudang_id' => $pengurusGudang->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1,
+                    // 'jenis' => $data['jenis']
+                ]);
+            } else {
+                $pengurusGudang = PengurusGudang::create([
+                    'nama' => $data['nama'],
+                    'status' => 1,
+                    'nik' => $data['nik'],
+                    'telepon' => '62'.(int)$data['telepon'],
+                    'jenis_kelamin' => $data['jenis_kelamin'],
+                    'provinsi_id' => $data['provinsi_id'],
+                    'kabupaten_id' => $data['kabupaten_id'],
+                    'kecamatan_id' => $data['kecamatan_id'],
+                    'desa_id' => $data['desa_id'],
+                    'alamat' => $data['alamat'],
+                ]);
+
+                return User::create([
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'pengurus_gudang_id' => $pengurusGudang->id,
+                    'email_verified_at' => $data['email_verified_at'],
+                    'status' => 1,
+                    // 'jenis' => $data['jenis']
+                ]);
             }
+
+            // if ($data['jenis'] == null) {
+            //     return back()->with('error', 'Mohon pilih Jenis Usaha !');
+            // }
         } else {
             return back()->with('error', 'Mohon pilih role terlebih dahulu !');
         }

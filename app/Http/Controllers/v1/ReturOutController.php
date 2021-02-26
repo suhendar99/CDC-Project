@@ -92,7 +92,7 @@ class ReturOutController extends Controller
 
         $foto_kwitansi = $request->file('bukti_kwitansi');
         $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-        $foto_kwitansi->move(public_path("upload/foto/retur/kwitansi"), $nama_kwitansi);
+        $foto_kwitansi->move("upload/foto/retur/kwitansi", $nama_kwitansi);
 
         if($pesanan->barangPesananBulky->satuan == 'Kuintal'){
             $satuan = 2;
