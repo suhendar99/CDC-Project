@@ -1,6 +1,6 @@
 @php
         $icon = 'money_off';
-        $pageTitle = 'Data Piutang Dari Warung';
+        $pageTitle = 'Data Piutang Ke Pemasok';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Piutang Dari Warung</a>
+            <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
         </div>
     </div>
@@ -35,10 +35,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="float-right">
-                                {{-- <a href="{{route('RetailPiutangMasuk.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
-                                <a href="{{route('RetailPiutangMasuk.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a> --}}
-                            </div>
+                            {{-- <div class="float-right">
+                                <a href="{{route('kategoriBarang.create')}}" class="btn btn-primary btn-sm">Tambah Kategori Induk</a>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -75,11 +74,11 @@
             responsive: true,
             ordering : false,
             pageLength : 10,
-            ajax : "{{ route('piutangIn.index') }}",
+            ajax : "{{ route('piutang-pemasok.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'tanggal', name: 'tanggal'},
-                {data : 'pemesanan.kode', name: 'barang_id'},
+                {data : 'pemesanan_keluar_bulky.kode', name: 'kode'},
                 {data : 'hutang', name: 'hutang'},
                 {data : 'jatuh_tempo', name: 'jatuh_tempo'},
                 {data : 'nama_pembeli', name: 'nama_pembeli'},
