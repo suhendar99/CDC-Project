@@ -699,7 +699,7 @@
         }
         function storageOut() {
             table_keluar.draw();
-            $('#btn-action').html(`<a href="{{route('bulky.storage.keluar.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>`);
+            // $('#btn-action').html(`<a href="{{route('bulky.storage.keluar.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>`);
         }
         function cleanBtn() {
             table.draw();

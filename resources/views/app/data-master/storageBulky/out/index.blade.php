@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('storage-out.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a>
+                                {{-- <a href="{{route('storage-out.create')}}" class="btn btn-primary btn-sm">Buat Data Penyimpanan Keluar</a> --}}
                             </div>
                         </div>
                     </div>

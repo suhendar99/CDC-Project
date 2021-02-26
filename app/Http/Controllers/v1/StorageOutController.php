@@ -158,21 +158,32 @@ class StorageOutController extends Controller
      */
     public function store(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            // 'gudang_id' => 'required|exists:gudangs,id',
-            'pemesanan_id' => 'required|exists:pemesanans,id',
-            // 'pengirim' => 'required|string|max:50',
-            'terima_dari' => 'required|string|max:50',
-            'jumlah_uang_digits' => 'required|integer',
-            'jumlah_uang_word' => 'required|string',
-            'keterangan' => 'required|string',
-            'tempat' => 'required|string',
-            'profil_lembaga' => 'required|string|max:6|min:3',
-            'tanggal_surat' => 'required|date'
-            // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
-        ]);
+        $status_piutang = $request->status_piutang;
+        if($status_piutang == 1){
+            $v = Validator::make($request->all(),[
+                'pemesanan_id' => 'required|exists:pemesanans,id',
+                'tempat' => 'required|string',
+                'profil_lembaga' => 'required|string|max:6|min:3',
+                'tanggal_surat' => 'required|date'
+            ]);
+        } else {
+            $v = Validator::make($request->all(),[
+                // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+                // 'gudang_id' => 'required|exists:gudangs,id',
+                'pemesanan_id' => 'required|exists:pemesanans,id',
+                // 'pengirim' => 'required|string|max:50',
+                'terima_dari' => 'required|string|max:50',
+                'jumlah_uang_digits' => 'required|integer',
+                'jumlah_uang_word' => 'required|string',
+                'keterangan' => 'required|string',
+                'tempat' => 'required|string',
+                'profil_lembaga' => 'required|string|max:6|min:3',
+                'tanggal_surat' => 'required|date'
+                // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            ]);
+        }
 
+        // dd($request->all());
         if ($v->fails()) {
             // dd($v);
             return back()->withErrors($v)->withInput();
@@ -346,12 +357,14 @@ class StorageOutController extends Controller
         // $kode_surat = $faker->unique()->ean13;
         $date = date('d-m-Y');
 
-        $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'keterangan')+[
-            'user_id' => auth()->user()->id,
-            'kode' => $kode_kwi,
-            'gudang_id' => $gudang->id,
-            'tanggal' => now('Asia/Jakarta')
-        ]);
+        if($status_piutang == 0){
+            $kwitansi = Kwitansi::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_id', 'tempat', 'keterangan')+[
+                'user_id' => auth()->user()->id,
+                'kode' => $kode_kwi,
+                'gudang_id' => $gudang->id,
+                'tanggal' => now('Asia/Jakarta')
+            ]);
+        }
 
         $surat = SuratJalan::create($request->only('tempat', 'pemesanan_id')+[
             'pengirim' => auth()->user()->pengurusGudang->nama,
@@ -361,13 +374,16 @@ class StorageOutController extends Controller
             'tanggal' => now('Asia/Jakarta')
         ]);
 
-        $counterKwitansi = $kwitansi->count();
-        $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
-        $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print', [
-            'data' => $kwitansi,
-            'date' => $date,
-            'kode' => $pdfKodeKwi
-        ]);
+
+        if($status_piutang == 0){
+            $counterKwitansi = $kwitansi->count();
+            $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
+            $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print', [
+                'data' => $kwitansi,
+                'date' => $date,
+                'kode' => $pdfKodeKwi
+            ]);
+        }
 
         $counterSJ = $surat->count();
         $pdfKodeSJ = sprintf("%'.04d", (String)$counterSJ);
@@ -379,6 +395,9 @@ class StorageOutController extends Controller
         // $pesanan->retail->user->email
         $user = User::where('pelanggan_id', $pesanan->pelanggan_id)->first();
 
+        if($status_piutang == 1){
+            $pdfKwitansi = 'none';
+        }
         Mail::to($user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPesanan::where('pemesanan_id',$out->pemesanan->id)->get();
@@ -396,7 +415,7 @@ class StorageOutController extends Controller
             'storage_out_id' => $out->id,
             'tanggal_penjualan' => $out->waktu,
             'no_penjualan' => $out->kode,
-            'no_kwitansi' => $kwitansi->kode,
+            'no_kwitansi' => (isset($kwitansi->kode) ? $kwitansi->kode : null),
             'no_surat_jalan' => $surat->kode,
             'nama_pembeli' => $out->pemesanan->nama_pemesan,
             'barang' => $out->pemesanan->barangPesanan[0]->stockBarangRetail->nama_barang,
