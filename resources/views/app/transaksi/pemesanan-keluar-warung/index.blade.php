@@ -202,13 +202,13 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>Bukti Pembayaran</label><br>
-                    <input type="file" name="foto_bukti" class="">
+                    <input type="file" required name="foto_bukti" class="">
                 </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+          <button type="submit" class="btn btn-primary btn-sm disabled" id="btn-kirim">Kirim</button>
           {{-- <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button> --}}
         </div>
         </form>
@@ -220,6 +220,7 @@
 <script type="text/javascript">
     function uploadBukti(id){
         $('#form').attr('action',`/v1/upload/bukti/warung/${id}`);
+        $('#btn-kirim').removeClass('disabled')
     }
 </script>
 @endpush

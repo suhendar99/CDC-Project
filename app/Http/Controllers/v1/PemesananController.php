@@ -227,6 +227,17 @@ class PemesananController extends Controller
 
     public function buktiRetail(Request $request, $id)
     {
+
+        $v = Validator::make($request->all(),[
+            'foto_bukti' => 'required|image|max:2048',
+        ]);
+
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+        }
+
         // dd($request->file('foto_bukti'));
         set_time_limit(120);
         $data = $this->modelBulky::findOrFail($id);
@@ -498,7 +509,17 @@ class PemesananController extends Controller
 
     public function bukti(Request $request, $id)
     {
+
         // dd($request->file('foto_bukti'));
+        $v = Validator::make($request->all(),[
+            'foto_bukti' => 'required|image|max:2024',
+        ]);
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('failed','Pastikan Foto Diisi!');
+        }
+
         $data = Pemesanan::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
@@ -521,7 +542,8 @@ class PemesananController extends Controller
      */
     public function getPemesanan($id)
     {
-        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->find($id);
+        $data = BarangPesanan::with('pesanan.storageOut')->find($id);
+        // dd($data);
         return response()->json([
             'data' => $data
         ]);

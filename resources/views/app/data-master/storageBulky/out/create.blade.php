@@ -1,6 +1,12 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
+
+        if ($pemesanan->count() == 1 && $pemesanan[0]->metode_pembayaran == null) {
+          $status_piutang = 1;
+        } else {
+          $status_piutang = 0;
+        }
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -60,6 +66,9 @@
                                             <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}" @if($poci != null && $pesan->id == $poci) selected @endif>Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
                                             @endforeach
                                         </select>
+
+                                        <input type="hidden" name="status_piutang" value="{{$status_piutang}}">
+
                                         @error('pemesanan_bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -68,6 +77,7 @@
                                     </div>
                                 </div>
 
+                                @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
                                 <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -109,6 +119,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @endif
 
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     {{-- <div class="form-row">
@@ -158,6 +169,17 @@
                                             </span>
                                         @enderror --}}
                                     </div>
+                                    @if($pemesanan->count() == 1 && $pemesanan[0]->metode_pembayaran == null)
+                                    <div class="form-group">
+                                        <label>Tempat Pembuatan Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
+                                        @error('tempat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
                                 </div>
 
                                 {{-- <div class="tab" data-keterangan="Pilih Gudang Retail">
@@ -189,7 +211,9 @@
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
                                   <span class="step"></span>
+                                  @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
                                   <span class="step"></span>
+                                  @endif
                                   {{-- <span class="step"></span> --}}
                                 </div>
                             </div>
@@ -278,6 +302,7 @@ function validateForm() {
   y = x[currentTab].getElementsByTagName("input");
   let z = x[currentTab].getElementsByTagName("select");
 
+  // console.log(x.length, y.length, z.length)
   if (z.length > 0) {
     for (let j = 0; j < z.length; j++) {
         // If a field is empty...
@@ -444,10 +469,13 @@ function fixStepIndicator(n) {
         return str;
     }
 
+
+    @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
     document.getElementById('jumlah_uang').onkeyup = function () {
         // document.getElementById('word').innerHTML = inWords(document.getElementById('jumlah_uang').value);
         $('#word').val(inWords(document.getElementById('jumlah_uang').value))
     };
+    @endif
 
     // $('#gudang').change(function(event) {
     //     /* Act on the event */

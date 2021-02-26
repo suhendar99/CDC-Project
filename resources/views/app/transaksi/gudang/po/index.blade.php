@@ -211,7 +211,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <form action="" id="form" method="post" enctype="multipart/form-data">
+        <form action="" target="_blank" id="form" method="post" enctype="multipart/form-data">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Upload Bukti Pembayaran</h5>
@@ -224,7 +224,7 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>Bukti Pembayaran</label><br>
-                    <input type="file" name="foto_bukti" class="">
+                    <input required="" type="file" name="foto_bukti" class="">
                 </div>
             </div>
           </div>
