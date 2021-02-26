@@ -309,6 +309,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 ]
             ]);
         });
+        // Piutang
+        Route::resource('piutang-retail', 'PiutangRetailController');
+        Route::resource('piutang-pemasok', 'PiutangPemasokController');
+        // End Piutang
         Route::get('konfirmasi/penawaran/{id}','PenawaranPemasokController@konfirmasi')->name('konfirmasi.penawaran');
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
         Route::get('transaksi/bulky/konfirmasi/{id}','PemesananKeluarBulkyController@konfirmasi')->name('konfirmasi.terima.bulky');
