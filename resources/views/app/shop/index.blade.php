@@ -287,10 +287,10 @@
 	@forelse($barang as $b)
 	<div class="col-md-3 col-4">
 			<div class="card item-card">
-				@if(count($b->barang->foto) < 1 || $b->barang->foto == null)
+				@if($b->foto_barang == null)
 				<img src="{!! asset('/images/image-not-found.jpg') !!}">
 				@else
-				<img src="{{asset($b->barang->foto[0]->foto)}}">
+				<img src="{{asset($b->foto_barang)}}">
 				@endif
 				<div class="card-body">
 					<div class="row">

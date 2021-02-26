@@ -136,6 +136,7 @@ class ShopController extends Controller
         }else{
             return redirect('/');
         }
+        // dd($barang);
         $else = $request->search;
         //$barang = Barang::where('sarpras_id',$id)->get();
         // $data = SaranaPrasaranaUptd::find($id);

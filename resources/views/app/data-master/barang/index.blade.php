@@ -62,6 +62,7 @@
                                                 <th>Stok Barang</th>
                                                 <th>Satuan</th>
                                                 <th>Harga Jual Barang</th>
+                                                <th>Foto Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -168,6 +169,43 @@
     @csrf
     @method('DELETE')
 </form>
+<!-- Modal Penyimpanan Stok Barang -->
+<div class="modal fade" id="modalFotoBarang" tabindex="-1" aria-labelledby="fotoBarang" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fotoBarang">Foto Stock Barang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12" id="foto">
+                <div class="row">
+                    <div class="col-12" id="tempat-foto">
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
+                            @csrf
+                            @method('PUT')
+                            <input type="file" class="form-control-file" name="foto" onchange="document.querySelector('#foto-load').innerHTML = 'Loading...';this.form.submit();" id="file-foto">
+                        </form>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
+            <div class="float-left" id="foto-load">
+
+            </div>
+          <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -199,6 +237,7 @@
                         }
                     }, name: 'harga_total'
                 },
+                {data : 'foto', name: 'foto'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -285,6 +324,38 @@
             ]
         });
 
+        function foto(id){
+            $('#foto-load').html(``);
+            $('#tempat-foto').html('LOADING...')
+            $('#form-foto').attr('action', '{{ asset('') }}v1/pemasok/storage/stock/'+id+'/foto');
+
+            $.ajax({
+                url: "/api/v1/pemasok/stock/"+id+"/foto",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    console.log(response.data)
+
+                    // let foto = response.data[0].foto;
+                    let data = response.data;
+                    console.log(foto);
+
+                    if (data.length < 1) {
+                        $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)
+                    } else {
+                        $('#tempat-foto').html(`<img src="{{ asset('') }}${data[0].foto}" alt="" width="100%">`);
+                    }
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+        }
+
         function penyimpanan(id, gudangId, barangKode){
             $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
 
@@ -362,7 +433,8 @@
         function storageOut() {
             table_keluar.draw();
             table_surat_piutang.draw();
-            $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
+            $('#btn-action').html(``);
+            // $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
         }
     </script>
 @endpush

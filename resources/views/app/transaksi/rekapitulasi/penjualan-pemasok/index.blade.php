@@ -51,7 +51,7 @@
                                 <th>No</th>
                                 <th>Tanggal Penjualan</th>
                                 <th>No Penjualan</th>
-                                <th>No Kwitansi</th>
+                                <th>No Kwitansi / No Surat Piutang</th>
                                 <th>No Surat Jalan</th>
                                 <th>Nama Pembeli</th>
                                 <th>Nama Barang</th>
