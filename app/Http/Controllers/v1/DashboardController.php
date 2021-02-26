@@ -301,7 +301,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pemasok"), $foto);
+                    $request->foto->move("upload/foto/pemasok", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pemasok/'.$foto
@@ -349,7 +349,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
+                    $request->foto->move("upload/foto/pelanggan", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pelanggan/'.$foto
@@ -397,7 +397,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pembeli"), $foto);
+                    $request->foto->move("upload/foto/pembeli", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pembeli/'.$foto
@@ -445,7 +445,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/bulky"), $foto);
+                    $request->foto->move("upload/foto/bulky", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/bulky/'.$foto
@@ -493,7 +493,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pengurus_gudang"), $foto);
+                    $request->foto->move("upload/foto/pengurus_gudang", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pengurus_gudang/'.$foto
@@ -535,7 +535,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/bank"), $foto);
+                    $request->foto->move("upload/foto/bank", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/bank/'.$foto

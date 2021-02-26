@@ -130,7 +130,7 @@ class TransaksiPemasokController extends Controller
                 foreach($request->file('foto') as $image)
                 {
                     $name = rand(). '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path("upload/foto/barang"), $name);
+                    $image->move("upload/foto/barang", $name);
 
                     FotoBarang::create([
                         'barang_id' => $barang->id,

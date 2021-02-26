@@ -80,7 +80,7 @@ class BankController extends Controller
         if ($request->file('foto')) {
             $foto = $request->file('foto');
             $nama = time()."_".$foto->getClientOriginalName();
-            $foto->move(public_path("upload/foto/bank"), $nama);
+            $foto->move("upload/foto/bank", $nama);
 
             $bank->update([
                 'foto' => 'upload/foto/bank/'.$nama
@@ -146,7 +146,7 @@ class BankController extends Controller
 
             $foto = $request->file('foto');
             $nama = time()."_".$foto->getClientOriginalName();
-            $foto->move(public_path("upload/foto/bank"), $nama);
+            $foto->move("upload/foto/bank", $nama);
 
             $bank->update([
                 'foto' => 'upload/foto/bank/'.$nama

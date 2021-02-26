@@ -58,10 +58,10 @@ class StockBarangBulkyController extends Controller
 
         $foto_barang = $request->file('foto');
         $nama_barang = "BLY".time()."_".$foto_barang->getClientOriginalName();
-        $foto_barang->move(public_path("upload/foto/barang/bulky"), $nama_barang);
+        $foto_barang->move("upload/foto/barang/bulky", $nama_barang);
 
         StockBarangBulky::findOrFail($id)->update([
-            'foto_barang' => 'upload/foto/barang/bulky/'.$nama_barang 
+            'foto_barang' => 'upload/foto/barang/bulky/'.$nama_barang
         ]);
 
         return redirect(route('bulky.storage.index'))->with('success', __( 'Foto telah diunggah.' ));

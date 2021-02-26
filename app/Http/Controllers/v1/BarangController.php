@@ -91,7 +91,7 @@ class BarangController extends Controller
 
         $foto_barang = $request->file('foto');
         $nama_barang = "PMSK".time()."_".$foto_barang->getClientOriginalName();
-        $foto_barang->move(public_path("upload/foto/barang/pemasok"), $nama_barang);
+        $foto_barang->move("upload/foto/barang/pemasok", $nama_barang);
         $foto = FotoBarang::where('barang_id',$id)->get();
         if ($foto->count() < 1) {
             FotoBarang::create([
