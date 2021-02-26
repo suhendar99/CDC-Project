@@ -1,7 +1,7 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
-        // dd($setted);
+        // dd($pemesanan->metode_pembayaran);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -71,7 +71,8 @@
                                     </div>
                                 </div>
 
-                                <div class="tab" data-keterangan="Isi Form Untuk Kuitansi Pemesanan">
+                                @if ($pemesanan->metode_pembayaran != null)
+                                <div class="tab" data-keterangan="Isi Form Untuk Kuitansi Pemesanan" id="kwitansis">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label>Dibayar oleh <small class="text-success">*Harus diisi</small></label>
@@ -112,6 +113,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @endif
 
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     {{-- <div class="form-row">
@@ -134,6 +136,17 @@
                                             @enderror
                                         </div>
                                     </div> --}}
+                                    @if ($pemesanan->metode_pembayaran == null)
+                                    <div class="form-group">
+                                        <label>Tempat Pembuatan Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
+                                        @error('tempat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
                                     <div class="form-group">
                                         <label>No Surat Jalan <small class="text-success">*Harus diisi (Untuk Profil Lembaga Minimal Karakter Huruf :3 dan Maksimal Karakter Huruf : 6)</small></label>
                                         <div class="input-group">
@@ -169,7 +182,9 @@
                                 <!-- Circles which indicates the steps of the form: -->
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
+                                  @if ($pemesanan->metode_pembayaran != null)
                                   <span class="step"></span>
+                                  @endif
                                   <span class="step"></span>
                                   {{-- <span class="step"></span> --}}
                                 </div>
@@ -297,8 +312,6 @@ function fixStepIndicator(n) {
 <script>
 
     @if($setted == true)
-    // changed()
-    @endif
     function changed() {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")
@@ -312,13 +325,45 @@ function fixStepIndicator(n) {
         $.ajax({
             url: "/api/v1/pemasok/getPesanan/"+idPesanan,
         }).done(function(response) {
-            console.log(response.barang);
+            console.log(response.data);
+            // if (response.data.metode_pembayaran == null) {
+            //     $('#kwitansis').addClass('d-none');
+            // } else {
+            //     $('#kwitansis').removeClass('d-none');
+            // }
             $('#dibayar_oleh').val(response.data.nama_pemesan);
             $('#jumlah_uang').val(response.barang[0].harga);
             $('#word').val(inWords(response.barang[0].harga));
         });
     }
     $('#selectSatuan').change(changed());
+    @else
+    $('#selectSatuan').change(function () {
+        let kode = $('#selectSatuan option:selected').data("kode")
+        let idPesanan = $(this).val()
+        console.log(idPesanan);
+        for (var i = $('.tab').length - 1; i >= 1; i--) {
+            let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
+            $('.tab').get(i).attributes[0].value = keterangan
+        }
+        $.ajax({
+            type: "get",
+            url: "/api/v1/pemasok/getPesanan/"+idPesanan,
+            dataType: "json",
+            success: function (response) {
+                // if (response.data.metode_pembayaran == null) {
+                //     $('#kwitansis').addClass('d-none');
+                // } else {
+                //     $('#kwitansis').removeClass('d-none');
+                // }
+                $('#dibayar_oleh').val(response.data.nama_pemesan);
+                $('#jumlah_uang').val(response.barang[0].harga);
+                $('#word').val(inWords(response.barang[0].harga));
+            }
+        });
+
+    });
+    @endif
     onScan.attachTo(document, {
         suffixKeyCodes: [13],
         reactToPaste: true,
