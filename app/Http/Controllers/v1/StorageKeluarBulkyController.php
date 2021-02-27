@@ -116,15 +116,28 @@ class StorageKeluarBulkyController extends Controller
     public function create(Request $request)
     {
         // dd($request->query());
+        $user_id = Auth::user()->id;
         $gudang = GudangBulky::all();
-        $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')
+        $pemesanan = PemesananBulky::with('bulky.user')->doesntHave('storageKeluarBulky')
+        ->whereHas('bulky', function($q)use($user_id){
+            $q->whereHas('user', function($q)use($user_id){
+                $q->whereId($user_id);
+            });
+        })
         ->where('status', '2')
         ->orWhere('status','6')
         ->get();
+        
 
         // dd($pemesanan);
 
         $poci = $request->query('pemesanan', null);
+        
+        if($poci != null){
+            $selected = PemesananBulky::findOrFail($poci);
+        } else {
+            $selected = null;
+        }
         // dd($poci);
         $surat = SuratJalanBulky::all();
         $number = $surat->count();
@@ -132,7 +145,7 @@ class StorageKeluarBulkyController extends Controller
         $date = date("ymdHis");
         $kode_surat = sprintf("%04s",abs($number+1));
 
-        return view('app.data-master.storageBulky.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci'));
+        return view('app.data-master.storageBulky.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci','selected'));
     }
 
     /**

@@ -18,6 +18,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
+use Auth;
 
 class laporanPengurusGudangController extends Controller
 {
@@ -43,11 +44,19 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudang->gudang as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            
+            
             $awal = $request->awal;
             $akhir = $request->akhir;
             $month = $request->month;
@@ -58,7 +67,8 @@ class laporanPengurusGudangController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageIn::with('user','gudang','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageIn::whereIn('gudang_id',$gudang_saya)->with('user','gudang','barangBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->path.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -69,7 +79,8 @@ class laporanPengurusGudangController extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = StorageIn::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                $data = StorageIn::whereIn('gudang_id',$gudang_saya)->with('user','gudang','barangBulky')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->path.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -93,6 +104,8 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -127,11 +140,19 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
+            // dd(Auth::user()->pengurusGudang->gudang);
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudang->gudang as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            
             $awal = $request->awal;
             $akhir = $request->akhir;
             $month = $request->month;
@@ -142,7 +163,8 @@ class laporanPengurusGudangController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageOut::with('user','gudang','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageOut::whereIn('gudang_id',$gudang_saya)->with('user','gudang','stockBarangRetail')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                
 
                 $pdf = PDF::loadview($this->pathKeluar.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -152,7 +174,8 @@ class laporanPengurusGudangController extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = StorageOut::with('user','gudang','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                $data = StorageOut::whereIn('gudang_id',$gudang_saya)->with('user','gudang','stockBarangRetail')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                
 
                 $pdf = PDF::loadview($this->pathKeluar.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -176,6 +199,8 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -210,11 +235,18 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        }  else { 
+            return redirect()->back()->with('failed','Mohon Pilih Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudang->gudang as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            
             $awal = $request->awal;
             $akhir = $request->akhir;
             $month = $request->month;
@@ -225,7 +257,10 @@ class laporanPengurusGudangController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = Storage::with('storageIn')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
+                        $q->whereIn('gudang_id',$gudang_saya);
+                    })->with('storageIn.gudang','stockBarangRetail')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->pathStorage.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -235,7 +270,10 @@ class laporanPengurusGudangController extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = Storage::with('storageIn')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
+                        $q->whereIn('gudang_id',$gudang_saya);
+                    })->with('storageIn.gudang','stockBarangRetail')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->pathStorage.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -259,6 +297,8 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else { 
+            return redirect()->back()->with('failed','Mohon Pilih Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -293,6 +333,8 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
@@ -345,6 +387,8 @@ class laporanPengurusGudangController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {

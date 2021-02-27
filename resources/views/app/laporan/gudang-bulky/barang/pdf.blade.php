@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Barang Keluar Dari Gudang Bulky</title>
+	<title>Laporan Barang Gudang Bulky</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +107,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Barang Keluar Dari Gudang Bulky</h3>
+            <h3>Laporan Barang Gudang Bulky</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
@@ -126,6 +126,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Gudang</th>
                 <th>Waktu Barang Masuk</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
@@ -136,6 +137,7 @@
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
+                    <td>{{ $a->storageMasukBulky->bulky->nama }}</td>
                     <td>{{ date('d F Y',strtotime($a->waktu)) }}</td>
                     <td>{{ $a->storageMasukBulky->kode }}</td>
                     {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}

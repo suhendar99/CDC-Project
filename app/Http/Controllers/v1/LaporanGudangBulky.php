@@ -19,6 +19,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
+use Auth;
 
 class LaporanGudangBulky extends Controller
 {
@@ -38,6 +39,8 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -55,10 +58,11 @@ class LaporanGudangBulky extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageKeluarBulky::with('user','bulky','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageKeluarBulky::with('user','bulky','barangBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data);
 
                 if ($data->count() < 1) {
-                	return back()->with('error','Tidak ada data !');
+                    return back()->with('error','Tidak ada data !');
                 }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang-keluar.pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
@@ -70,10 +74,10 @@ class LaporanGudangBulky extends Controller
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
 
-                $data = StorageKeluarBulky::with('user','bulky','barang')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                $data = StorageKeluarBulky::with('user','bulky','barangBulky')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
 
                 if ($data->count() < 1) {
-                	return back()->with('error','Tidak ada data !');
+                    return back()->with('error','Tidak ada data !');
                 }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang-keluar.pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
@@ -99,6 +103,8 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -135,6 +141,8 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -149,7 +157,12 @@ class LaporanGudangBulky extends Controller
             // if ($null->count() < 1) {
             //     return back()->with('error','Tidak ada data !');
             // }
-
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            
+            // dd($gudang_saya);
             if ($request->month != null && $request->has('month')) {
                 if ($request->month == null) {
                     return back()->with('error','Mohon Pilih Bulan !');
@@ -158,11 +171,12 @@ class LaporanGudangBulky extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageMasukBulky::with('user','bulky','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageMasukBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data, Auth::user()->pengurusGudangBulky->bulky);
 
                 if ($data->count() < 1) {
-	                return back()->with('error','Tidak ada data !');
-	            }
+                    return back()->with('error','Tidak ada data !');
+                }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang-masuk.pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -173,11 +187,12 @@ class LaporanGudangBulky extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = StorageMasukBulky::with('user','bulky','barang')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                $data = StorageMasukBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barang')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                // dd($data, Auth::user()->pengurusGudangBulky->bulky);
 
                 if ($data->count() < 1) {
-	                return back()->with('error','Tidak ada data !');
-	            }
+                    return back()->with('error','Tidak ada data !');
+                }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang-masuk.pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -198,6 +213,8 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -237,11 +254,19 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
+            
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            
             $awal = $request->awal;
             $akhir = $request->akhir;
             $month = $request->month;
@@ -253,11 +278,14 @@ class LaporanGudangBulky extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageBulky::with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
+                        $q->whereIn('bulky_id',$gudang_saya);
+                    })->with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data);
 
                 if ($data->count() < 1) {
-	                return back()->with('error','Tidak ada data !');
-	            }
+                    return back()->with('error','Tidak ada data !');
+                }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang.pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -268,11 +296,14 @@ class LaporanGudangBulky extends Controller
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
 
-                $data = StorageBulky::with('storageMasukBulky')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
+                        $q->whereIn('bulky_id',$gudang_saya);
+                    })->with('storageMasukBulky')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                // dd($data);
 
                 if ($data->count() < 1) {
-	                return back()->with('error','Tidak ada data !');
-	            }
+                    return back()->with('error','Tidak ada data !');
+                }
 
                 $pdf = PDF::loadview('app.laporan.gudang-bulky.barang.pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -297,6 +328,8 @@ class LaporanGudangBulky extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {

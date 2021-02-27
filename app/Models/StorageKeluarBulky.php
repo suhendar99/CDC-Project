@@ -33,8 +33,8 @@ class StorageKeluarBulky extends Model
      */
     public function bulky()
     {
-    	// belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\Models\GudangBulky', 'bulky_id');
+        // belongsTo(RelatedModel, foreignKey = gudang_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\GudangBulky', 'bulky_id');
     }
 
     /**
@@ -44,8 +44,8 @@ class StorageKeluarBulky extends Model
      */
     public function user()
     {
-    	// belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
-    	return $this->belongsTo('App\User');
+        // belongsTo(RelatedModel, foreignKey = user_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\User');
     }
 
     /**

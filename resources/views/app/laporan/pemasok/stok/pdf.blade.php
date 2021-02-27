@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Stok Barang</title>
+	<title>Laporan Stok Barang</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +107,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Stok Barang</h3>
+            <h3>Laporan Stok Barang</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>

@@ -196,9 +196,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
         Route::post('laporan-penjualan-pemasok-excel','LaporanPemasokController@LaporanPenjualanExcel')->name('laporan.penjualan.excel');
 
-        Route::get('laporan-stok','laporanPemasokController@showLaporanStok')->name('laporan.stok');
-        Route::post('laporan-stok-pdf','laporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
-        Route::post('laporan-stok-excel','laporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
+        Route::get('laporan-stok','LaporanPemasokController@showLaporanStok')->name('laporan.stok');
+        Route::post('laporan-stok-pdf','LaporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
+        Route::post('laporan-stok-excel','LaporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
 
         Route::get('laporan-barang','laporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
         Route::post('laporan-barang-pdf','laporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
