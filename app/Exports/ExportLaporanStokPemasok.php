@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Auth;
 
 class ExportLaporanStokPemasok implements FromView,ShouldAutoSize
 {
@@ -30,9 +31,9 @@ class ExportLaporanStokPemasok implements FromView,ShouldAutoSize
     public function view(): View
     {
         if ($this->bulan != null && $this->month) {
-            $data = Barang::with('pemasok')->whereRaw('MONTH(created_at) = '.$this->hii)->get();
+            $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereRaw('MONTH(created_at) = '.$this->hii)->get();
         } elseif ($this->awal != null && $this->akhir != null) {
-            $data = Barang::whereBetween('created_at',[$this->awal, $this->akhir])->get();
+            $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->whereBetween('created_at',[$this->awal, $this->akhir])->get();
         }
         return view($this->path.'excel', compact('data'));
 

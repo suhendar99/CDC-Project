@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Auth;
 
 class ExportLaporanBarang implements FromView,ShouldAutoSize
 {
@@ -29,10 +30,18 @@ class ExportLaporanBarang implements FromView,ShouldAutoSize
     }
     public function view(): View
     {
+        $gudang_saya = [];
+        foreach(Auth::user()->pengurusGudang->gudang as $gudang){
+            $gudang_saya[] = $gudang->id;
+        }
         if ($this->bulan != null && $this->month) {
-            $data = Storage::with('storageIn')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
+            $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
+                $q->whereIn('gudang_id',$gudang_saya);
+            })->with('storageIn')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
         } elseif ($this->awal != null && $this->akhir != null) {
-            $data = Storage::whereBetween('waktu',[$this->awal, $this->akhir])->get();
+            $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
+                $q->whereIn('gudang_id',$gudang_saya);
+            })->whereBetween('waktu',[$this->awal, $this->akhir])->get();
         }
         return view($this->path.'excel', compact('data'));
 

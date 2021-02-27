@@ -2,11 +2,18 @@
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
 
-        if ($pemesanan->count() == 1 && $pemesanan[0]->metode_pembayaran == null) {
-          $status_piutang = 1;
+        if (isset($selected)) {
+            if($selected->metode_pembayaran == null){
+                $status_piutang = 1;
+            } else {
+                $status_piutang = 0;
+            }
         } else {
           $status_piutang = 0;
         }
+        
+        
+        
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -77,7 +84,7 @@
                                     </div>
                                 </div>
 
-                                @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
+                                @if($status_piutang == 0)
                                 <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -169,7 +176,7 @@
                                             </span>
                                         @enderror --}}
                                     </div>
-                                    @if($pemesanan->count() == 1 && $pemesanan[0]->metode_pembayaran == null)
+                                    @if($status_piutang == 1)
                                     <div class="form-group">
                                         <label>Tempat Pembuatan Surat Jalan <small class="text-success">*Harus diisi</small></label>
                                         <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
@@ -211,7 +218,7 @@
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
                                   <span class="step"></span>
-                                  @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
+                                  @if($status_piutang == 0)
                                   <span class="step"></span>
                                   @endif
                                   {{-- <span class="step"></span> --}}

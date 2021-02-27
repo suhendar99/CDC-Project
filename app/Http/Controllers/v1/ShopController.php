@@ -34,16 +34,16 @@ use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
-	public function __construct()
-	{
-		$this->category = new Kategori;
-		$this->storage = new Storage;
-		$this->province = new Province;
-		$this->city = new City;
+    public function __construct()
+    {
+        $this->category = new Kategori;
+        $this->storage = new Storage;
+        $this->province = new Province;
+        $this->city = new City;
         $this->shopPath = 'app.shop.';
-	}
-	public function index(Request $request)
-	{
+    }
+    public function index(Request $request)
+    {
         if (!Auth::guest()) {
             if (Auth::user()->pelanggan_id != null) {
                 if ($request->has('search') && $request->search !== '') {
@@ -149,7 +149,7 @@ class ShopController extends Controller
             $category = $this->category->getData();
             return view($this->shopPath.'index', compact('category','barang','else'));
         }
-	}
+    }
 
     public function showPemesanan(Request $request, $id)
     {
@@ -400,7 +400,7 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             $barangPesanan = PemesananPembeliItem::create([
                 'kode' => $kodes,
-                'barang_kode' => $request->barangKode,
+                // 'barang_kode' => $request->barangKode,
                 'pemesanan_pembeli_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
                 'barang_warung_kode' => $request->barang_warung_kode,
@@ -573,11 +573,12 @@ class ShopController extends Controller
             // $harga = $store->harga_barang * $request->jumlah;
 
             if ($request->pembayaran == 'later') {
+                // dd(PemesananKeluarBulky::all());
                 if ($request->pengiriman == 'ambil') {
                     $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
-                        'barang_kode' => $request->barangKode,
+                        // 'barang_kode' => $request->barangKode,
                         'nomor_pemesanan' => $kode,
                         'nama_pemesan' => $request->nama_pemesan,
                         'tanggal_pemesanan' => now('Asia/Jakarta'),
@@ -598,7 +599,7 @@ class ShopController extends Controller
                     $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
-                        'barang_kode' => $request->barangKode,
+                        // 'barang_kode' => $request->barangKode,
                         'nomor_pemesanan' => $kode,
                         'nama_pemesan' => $request->nama_pemesan,
                         'tanggal_pemesanan' => now('Asia/Jakarta'),
@@ -701,15 +702,15 @@ class ShopController extends Controller
     {
         return $id;
     }
-	public function detail($id)
-	{
-		$data = $this->barang->find($id);
-		$provinces = $this->province->pluck('name','province_id');
-		// dd($barang);
-		return view($this->shopPath.'detail', compact('data','provinces'));
-	}
+    public function detail($id)
+    {
+        $data = $this->barang->find($id);
+        $provinces = $this->province->pluck('name','province_id');
+        // dd($barang);
+        return view($this->shopPath.'detail', compact('data','provinces'));
+    }
 
-	public function getCities($id)
+    public function getCities($id)
     {
         $city = $this->city->where('province_id', $id)->pluck('name', 'city_id');
         return response()->json($city);
