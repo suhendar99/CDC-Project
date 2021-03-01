@@ -10,6 +10,7 @@ use App\City;
 use App\User;
 use App\Models\Barang;
 use App\Models\BarangKeluarPemesananBulky;
+use Illuminate\Support\Facades\Mail;
 use App\Models\BarangPesanan;
 use App\Models\BarangPemesananBulky;
 use App\Models\BarangWarung;
@@ -22,12 +23,16 @@ use App\Models\PemesananKeluarBulky;
 use App\Models\PemesananPembeli;
 use App\Models\PengaturanTransaksi;
 use App\Models\Piutang;
+use App\Models\Pelanggan;
 use App\Models\Storage;
 use App\Models\StockBarang;
 use App\Models\StockBarangBulky;
 use App\Models\PemesananPembeliItem;
 use App\Models\PiutangBulky;
 use App\Models\PiutangRetail;
+use App\Models\GudangBulky;
+use App\Models\Gudang;
+use App\Mail\OrderingMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -339,10 +344,15 @@ class ShopController extends Controller
                 'role' => 'Warung'
             ]);
 
-            $gudang = $request->gudang_id;
+            $retail_id = $request->gudang_id;
 
-            $firebaseToken = User::whereHas('gudang', function($query)use($gudang){
-                $query->where('id', $gudang);
+            $user_email = Gudang::find($store->gudang_id);
+
+            // (kode_pemesanan, pemesan, barang_pesanan)
+            Mail::to($user_email->user->email)->send(new OrderingMail($kode, $user_email, $out));
+
+            $firebaseToken = User::whereHas('pengurusGudang.gudang', function($query)use($retail_id){
+                $query->where('gudang_id', $retail_id);
             })
             ->whereNotNull('device_token')
             ->pluck('device_token')->all();
@@ -427,6 +437,11 @@ class ShopController extends Controller
                     'hutang' => $request->harga,
                 ]);
             }
+
+            $user_email = Pelanggan::find($request->pelanggan_id);
+
+            // (kode_pemesanan, pemesan, barang_pesanan)
+            Mail::to($user_email->email)->send(new OrderingMail($kode, $user_email, $barangPesanan));
 
             $firebaseToken = User::where('pelanggan_id', $request->pelanggan_id)
             ->whereNotNull('device_token')
@@ -538,10 +553,17 @@ class ShopController extends Controller
                 ]);
             }
 
-            $gudang = $request->bulky_id;
+            $gudang_bulky_id = $request->bulky_id;
 
-            $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($gudang){
-                $query->where('bulky_id', $gudang);
+            $user_email = $store->bulky->user;
+
+            $gudang = Gudang::find($request->gudang_id);
+
+            // (kode_pemesanan, pemesan, barang_pesanan)
+            Mail::to($user_email->email)->send(new OrderingMail($kode, $gudang, $out));
+
+            $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($gudang_bulky_id){
+                $query->where('bulky_id', $gudang_bulky_id);
             })
             ->whereNotNull('device_token')
             ->pluck('device_token')->all();
@@ -566,7 +588,7 @@ class ShopController extends Controller
             $kode_faker = $faker->unique()->regexify('[0-9]{9}');
 
             // $kode = 'PSN'.$date.sprintf("%'.02d", (String)$counter);
-            $kode = 'PEM/BKY/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
+            $kode = 'PEM/PMS/'.$tanggal.'/'.$tahunRomawi.'/'.$bulanRomawi.'/'.$kode_faker;
 
             $store = Barang::find($id);
 
@@ -575,7 +597,7 @@ class ShopController extends Controller
             if ($request->pembayaran == 'later') {
                 // dd(PemesananKeluarBulky::all());
                 if ($request->pengiriman == 'ambil') {
-                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan'),[
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('pemasok_id','penerima_po','telepon','alamat_pemesan'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
                         // 'barang_kode' => $request->barangKode,
@@ -585,7 +607,7 @@ class ShopController extends Controller
                         'status' => '6'
                     ]));
                 } else {
-                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan'),[
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('pemasok_id','penerima_po','telepon','alamat_pemesan'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
                         'nomor_pemesanan' => $kode,
@@ -596,7 +618,7 @@ class ShopController extends Controller
                 }
             } else {
                 if ($request->pengiriman == 'ambil') {
-                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
                         // 'barang_kode' => $request->barangKode,
@@ -606,7 +628,7 @@ class ShopController extends Controller
                         'status' => '6'
                     ]));
                 } else {
-                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('bulky_id','pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
+                    $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
                         'bulky_id' => $request->gudang_id,
                         'kode' => $kode_faker,
                         'nomor_pemesanan' => $kode,
@@ -616,6 +638,7 @@ class ShopController extends Controller
                     ]));
                 }
             }
+
             LogTransaksi::create([
                 'user_id' => Auth::user()->id,
                 'tanggal' => now('Asia/Jakarta'),
@@ -623,6 +646,7 @@ class ShopController extends Controller
                 'aktifitas_transaksi' => 'Pemesanan Keluar',
                 'role' => 'Bulky'
             ]);
+
             $satuan = ($request->satuan == 'Ton') ? 'Ton' : $request->satuan;
 
             // dd($request->barang);
@@ -652,7 +676,14 @@ class ShopController extends Controller
                 ]);
             }
 
-            $firebaseToken = User::where('pemasok_id', $request->pemasok_id)
+            $user_email = User::where('pemasok_id', $store->pemasok->id)->first();
+
+            $gudang = GudangBulky::find($request->gudang_id);
+
+            // (kode_pemesanan, data_pemesan, barang_pesanan)
+            Mail::to($user_email->email)->send(new OrderingMail($kode, $gudang, $out));
+
+            $firebaseToken = User::where('pemasok_id', $store->pemasok->id)
             ->whereNotNull('device_token')
             ->pluck('device_token')
             ->all();
@@ -694,6 +725,8 @@ class ShopController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
         $response = curl_exec($ch);
+
+        // dd($response);
 
         return true;
     }

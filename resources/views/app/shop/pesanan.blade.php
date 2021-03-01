@@ -714,7 +714,6 @@
                             </div>
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->pemasok->nama}}">
                             <input type="hidden" name="nama_pemesan" id="pemesan" value="{{Auth::user()->pengurusGudangBulky->nama}}">
-                            <input type="hidden" name="bulky_id" value="{{Auth::user()->pengurus_gudang_bulky_id}}">
                             <input type="hidden" name="pemasok_id" value="{{$data->pemasok->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->nama_barang}}">
