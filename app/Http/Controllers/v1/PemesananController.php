@@ -137,7 +137,7 @@ class PemesananController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = BarangPesanan::with('pesanan.gudang', 'barang')
+            $data = BarangPesanan::with('pesanan.gudang', 'stockBarangRetail')
             ->whereHas('pesanan.gudang',function($q){
                 $q->where('user_id',Auth::user()->id);
             })
@@ -162,19 +162,30 @@ class PemesananController extends Controller
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pesanan->foto_bukti != null && $data->pesanan->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pesanan->foto_bukti != null && $data->pesanan->status == '2') {
+                        if ($data->pesanan->metode_pembayaran == null) {
+                            return "<span class='text-success'>Hutang</span>";
+                        } else {
+                            return "<span class='text-success'>Lunas</span>";
+                        }
                     } else {
-                        return "Belum Terverifikasi";
+                        return "Belum Diterima";
                     }
                 })
                 ->addColumn('metode_pembayaran', function($data){
-                    $uc = ucwords($data->pesanan->metode_pembayaran);
+                    if ($data->pesanan->metode_pembayaran == null) {
+                        return '-';
+                    } else {
+                        $uc = ucwords($data->pesanan->metode_pembayaran);
                     return $uc;
+                    }
                 })
                 ->addColumn('bukti_pembayaran', function($data){
                     if($data->pesanan->foto_bukti != null){
-
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
-                    } else {
+                    } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran == null) {
+                        return '-';
+                    } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran != null) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
@@ -183,8 +194,10 @@ class PemesananController extends Controller
                         return '&nbsp;<span class="text-danger">Pesanan Ditolak</span>';
                     } elseif ($data->pesanan->status == 1){
                         return '&nbsp;<span class="text-danger">Pembayaran Belum Terverifikasi</span>';
-                    }elseif ($data->pesanan->status == 2) {
+                    } elseif ($data->pesanan->status == 2 && $data->pesanan->metode_pembayaran != null) {
                         return '&nbsp;Pembayaran Terverifikasi';
+                    } elseif ($data->pesanan->status == 2 && $data->pesanan->metode_pembayaran == null) {
+                        return '&nbsp;Pembayaran Hutang';
                     } elseif ($data->pesanan->status == 4) {
                         return '&nbsp;Pesanan Sedang Dikirim';
                     } elseif ($data->pesanan->status == 5) {
@@ -214,6 +227,17 @@ class PemesananController extends Controller
 
     public function buktiRetail(Request $request, $id)
     {
+
+        $v = Validator::make($request->all(),[
+            'foto_bukti' => 'required|image|max:2048',
+        ]);
+
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('error','Pastikan Formulir diisi dengan lengkap!');
+        }
+
         // dd($request->file('foto_bukti'));
         set_time_limit(120);
         $data = $this->modelBulky::findOrFail($id);
@@ -278,8 +302,8 @@ class PemesananController extends Controller
     }
 
     function getPesanan($id){
-        $data = $this->model::whereId($id)->with('barangPesanan')->first();
-        $barang = $data->barangPesanan;
+        $data = $this->model::with('barangPesanan')->find($id);
+        $barang = BarangPesanan::where('pemesanan_id',$data->id)->get();
         $harga = $barang->sum('harga');
         return response()->JSON([
             'data' => $data,
@@ -485,7 +509,17 @@ class PemesananController extends Controller
 
     public function bukti(Request $request, $id)
     {
+
         // dd($request->file('foto_bukti'));
+        $v = Validator::make($request->all(),[
+            'foto_bukti' => 'required|image|max:2024',
+        ]);
+        if ($v->fails()) {
+            // dd($v->errors()->all());
+            // return back()->withErrors($v)->withInput();
+            return back()->with('failed','Pastikan Foto Diisi!');
+        }
+
         $data = Pemesanan::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
@@ -508,7 +542,8 @@ class PemesananController extends Controller
      */
     public function getPemesanan($id)
     {
-        $data = BarangPesanan::with('pesanan.storageOut', 'barang')->find($id);
+        $data = BarangPesanan::with('pesanan.storageOut')->find($id);
+        // dd($data);
         return response()->json([
             'data' => $data
         ]);

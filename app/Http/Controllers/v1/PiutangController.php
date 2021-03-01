@@ -32,14 +32,17 @@ class PiutangController extends Controller
         //     }
         // }
         if($request->ajax()){
-            $data = Piutang::with('pemesanan')->where('status','=',1)->orderBy('id','desc')->get();
+            $data = Piutang::with('pemesanan')->where('status','=',0)->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('hutang', function($data){
                     return 'Rp '.number_format($data->hutang);
                 })
-                ->editColumn('created_at',function($data){
-                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                ->editColumn('tanggal',function($data){
+                    return date('d-m-Y', strtotime($data->tanggal));
+                })
+                ->editColumn('jatuh_tempo',function($data){
+                    return date('d-m-Y', strtotime($data->jatuh_tempo));
                 })
                 ->rawColumns(['hutang'])
                 ->make(true);

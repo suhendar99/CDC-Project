@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -183,5 +184,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = user_id, localKey = id)
         return $this->hasMany('App\Models\KwitansiBulky');
+    }
+    public function suratPiutangBulkyPemasok(): HasMany
+    {
+        return $this->hasMany(SuratPiutangBulkyPemasok::class, 'user_id', 'id');
+    }
+    public function suratPiutangRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangRetailBulky::class, 'user_id', 'id');
+    }
+    public function suratPiutangPelangganRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangPelangganRetail::class, 'user_id', 'id');
     }
 }

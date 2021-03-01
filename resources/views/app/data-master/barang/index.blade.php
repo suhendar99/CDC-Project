@@ -62,6 +62,7 @@
                                                 <th>Stok Barang</th>
                                                 <th>Satuan</th>
                                                 <th>Harga Jual Barang</th>
+                                                <th>Foto Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -79,6 +80,9 @@
                                                 </li>
                                                 <li class="nav-item">
                                                     <a href="#sub-surat-jalan" class="nav-link rounded" id="sub-keluar-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Jalan</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-surat-piutang" class="nav-link rounded" id="sub-piutang-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Piutang</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -133,6 +137,22 @@
                                                         </thead>
                                                     </table>
                                                 </div>
+                                                <div class="tab-pane fade" id="sub-surat-piutang" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Surat Piutang</h4>
+                                                    <table id="table_surat_piutang" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Tanggal Pembuatan Surat Piutang</th>
+                                                                <th>No Pemesanan (Invoice)</th>
+                                                                <th>Pihak Pertama</th>
+                                                                <th>Pihak Kedua</th>
+                                                                <th>Tempat</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -149,6 +169,43 @@
     @csrf
     @method('DELETE')
 </form>
+<!-- Modal Penyimpanan Stok Barang -->
+<div class="modal fade" id="modalFotoBarang" tabindex="-1" aria-labelledby="fotoBarang" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fotoBarang">Foto Stock Barang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <div class="col-12" id="foto">
+                <div class="row">
+                    <div class="col-12" id="tempat-foto">
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <form action="" method="POST" accept-charset="utf-8" enctype="multipart/form-data" id="form-foto">
+                            @csrf
+                            @method('PUT')
+                            <input type="file" class="form-control-file" name="foto" onchange="document.querySelector('#foto-load').innerHTML = 'Loading...';this.form.submit();" id="file-foto">
+                        </form>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
+            <div class="float-left" id="foto-load">
+
+            </div>
+          <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -180,6 +237,7 @@
                         }
                     }, name: 'harga_total'
                 },
+                {data : 'foto', name: 'foto'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -221,6 +279,24 @@
             ]
         });
 
+        let table_surat_piutang = $('#table_surat_piutang').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('surat-piutang-bulky-pemasok.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
+                {data : 'invoice', name: 'invoice'},
+                {data : 'pihak_pertama', name: 'pihak_pertama'},
+                {data : 'pihak_kedua', name: 'pihak_kedua'},
+                {data : 'tempat', name: 'tempat'},
+                {data : 'action', name: 'action'}
+            ]
+        });
+
         let table_keluar = $('#table_keluar').DataTable({
             processing : true,
             serverSide : true,
@@ -247,6 +323,38 @@
                 {data : 'action', name: 'action'}
             ]
         });
+
+        function foto(id){
+            $('#foto-load').html(``);
+            $('#tempat-foto').html('LOADING...')
+            $('#form-foto').attr('action', '{{ asset('') }}v1/pemasok/storage/stock/'+id+'/foto');
+
+            $.ajax({
+                url: "/api/v1/pemasok/stock/"+id+"/foto",
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    console.log(response.data)
+
+                    // let foto = response.data[0].foto;
+                    let data = response.data;
+                    console.log(foto);
+
+                    if (data.length < 1) {
+                        $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)
+                    } else {
+                        $('#tempat-foto').html(`<img src="{{ asset('') }}${data[0].foto}" alt="" width="100%">`);
+                    }
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+        }
 
         function penyimpanan(id, gudangId, barangKode){
             $('#dataPenyimpanan').html(`<tr><td colspan="5" class="text-center">LOADING</td></tr>`);
@@ -324,7 +432,9 @@
         }
         function storageOut() {
             table_keluar.draw();
-            $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
+            table_surat_piutang.draw();
+            $('#btn-action').html(``);
+            // $('#btn-action').html(`<a href="/v1/storage-keluar-pemasok/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
         }
     </script>
 @endpush

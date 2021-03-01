@@ -1,6 +1,6 @@
 @php
-        $icon = 'shopping_cart';
-        $pageTitle = 'Data Piutang Keluar';
+        $icon = 'money_off';
+        $pageTitle = 'Data Piutang Ke Bulky';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Piutang Keluar</a>
+            <a href="#" class="text-14">Data Piutang Ke Bulky</a>
           </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'tanggal', name: 'tanggal'},
-                {data : 'po.kode_po', name: 'barang_id'},
+                {data : 'pemesanan_retail.kode', name: 'kode'},
                 {data : 'hutang', name: 'hutang'},
                 {data : 'jatuh_tempo', name: 'jatuh_tempo'},
                 {data : 'nama_pembeli', name: 'nama_pembeli'},

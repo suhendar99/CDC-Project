@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\PiutangBulkyController;
+use App\Models\SuratPiutangBulkyPemasok;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -164,6 +165,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('akun-bank', 'AkunBankController');
     });
     Route::group(['middleware' => ['pemasok']], function () {
+        Route::put('pemasok/storage/stock/{id}/foto', 'BarangController@uploadFoto')->name('retail.stock.foto');
         // Pengelolaan Barang
         Route::resource('barang', 'BarangController');
         Route::resource('kwitansi-pemasok', 'KwitansiPemasokController');
@@ -171,6 +173,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('storage-keluar-pemasok', 'StorageKeluarPemasokController');
         Route::get('pemasok/kwitansi/print', 'StorageKeluarPemasokController@printKwitansi');
         Route::get('pemasok/surat-jalan/print', 'StorageKeluarPemasokController@printSuratJalan');
+        Route::resource('surat-piutang-bulky-pemasok', 'SuratPiutangBulkyPemasokController');
+        Route::get('piutang-bulky-pemasok/print', 'SuratPiutangBulkyPemasokController@printPdf');
         // Transaksi
         Route::get('penawaran-pemasok-riwayat', 'PenawaranPemasokController@riwayat')->name('riwayat');
         Route::resource('penawaran-pemasok', 'PenawaranPemasokController');
@@ -192,9 +196,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
         Route::post('laporan-penjualan-pemasok-excel','LaporanPemasokController@LaporanPenjualanExcel')->name('laporan.penjualan.excel');
 
-        Route::get('laporan-stok','laporanPemasokController@showLaporanStok')->name('laporan.stok');
-        Route::post('laporan-stok-pdf','laporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
-        Route::post('laporan-stok-excel','laporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
+        Route::get('laporan-stok','LaporanPemasokController@showLaporanStok')->name('laporan.stok');
+        Route::post('laporan-stok-pdf','LaporanPemasokController@LaporanStokPdf')->name('laporan.stok.pdf');
+        Route::post('laporan-stok-excel','LaporanPemasokController@LaporanStokExcel')->name('laporan.stok.excel');
 
         Route::get('laporan-barang','laporanPengurusGudangController@showLaporanBarang')->name('laporan.barang');
         Route::post('laporan-barang-pdf','laporanPengurusGudangController@LaporanBarangPdf')->name('laporan.barang.pdf');
@@ -306,6 +310,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 ]
             ]);
         });
+        // Piutang
+        Route::resource('piutang-retail', 'PiutangRetailController');
+        Route::resource('piutang-pemasok', 'PiutangPemasokController');
+        // End Piutang
         Route::get('konfirmasi/penawaran/{id}','PenawaranPemasokController@konfirmasi')->name('konfirmasi.penawaran');
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
         Route::get('transaksi/bulky/konfirmasi/{id}','PemesananKeluarBulkyController@konfirmasi')->name('konfirmasi.terima.bulky');
@@ -370,6 +378,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
                 'destroy' => 'bulky.storage.destroy'
             ]
         ]);
+        // Piutang
+        Route::resource('surat-piutang-retail-bulky', 'SuratPiutangRetailBulkyController');
+        Route::get('piutang-retail-bulky/print', 'SuratPiutangRetailBulkyController@printPdf');
 
         // Foto Stock Bulky
         Route::put('bulky/storage/stock/{id}/foto', 'StockBarangBulkyController@uploadFoto')->name('bulky.stock.foto');
@@ -458,7 +469,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Untuk Validasi Butki Pembayaran
         Route::get('validasi/bukti/warung/{id}','PemesananKeluarPembeliController@validasi')->name('validasi.bukti.warung');
 
-
+        // Surat Piutang
+        Route::resource('surat-piutang-warung-retail', 'SuratPiutangWarungRetailController');
+        Route::get('piutang-warung-retail/print', 'SuratPiutangWarungRetailController@printPdf');
 
         // Purchase Order
         Route::get('print/{id}', 'PoController@print')->name('po.print');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\Barang;
+use App\Models\BarangKeluarPemesananBulky;
 use App\Models\GudangBulky;
 use App\Models\BarangPemesananBulky;
 use App\Models\PemesananKeluarBulky;
@@ -38,8 +39,8 @@ class PemesananKeluarBulkyController extends Controller
         return view('app.transaksi.pemesanan-keluar-bulky.index',compact('data'));
     }
     function getPesanan($id){
-        $data = PemesananKeluarBulky::with('barangKeluarPemesananBulky')->first();
-        $barang = $data->barangKeluarPemesananBulky[0];
+        $data = PemesananKeluarBulky::with('barangKeluarPemesananBulky')->find($id);
+        $barang = BarangKeluarPemesananBulky::where('pemesanan_id',$data->id)->get();
         $harga = $barang->sum('harga');
         return response()->JSON([
             'data' => $data,
@@ -74,7 +75,8 @@ class PemesananKeluarBulkyController extends Controller
     {
         $data = PemesananKeluarBulky::find($id);
         $data->update(['status'=>'5']);
-        return redirect('/v1/bulky/storage/masuk/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        return back()->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
+        // return redirect('/v1/bulky/storage/masuk/create?id='.$data->id)->with('success','Penerimaan Pesanan Telah Dikonfirmasi!');
     }
 
     /**

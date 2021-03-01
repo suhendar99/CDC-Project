@@ -16,6 +16,8 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+            <a href="#" class="text-14">Data Transaksi</a>
+            <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">{{$pageTitle}}</a>
           </div>
         </div>
@@ -42,7 +44,7 @@
                                     </h6>
                                 </div>
                             </div>
-                            @elseif($d->storageOut == null)
+                            @elseif($d->storageOut->count() < 1)
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-between">
                                     <span>
@@ -65,8 +67,15 @@
                                         </a>
                                         @endif
                                     @else
-                                        @if($d->foto_bukti == null)
+                                        @if($d->foto_bukti == null && $d->status == 1)
                                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
+                                        @elseif($d->foto_bukti == null && $d->status == 2 && $d->metode_pembayaran == null)
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 2) ? 'Pesanan Sedang Diproses ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...'))
+                                            }}
+                                        </a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
@@ -111,8 +120,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 border-right">
-                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageOut->user->pengurusGudang->nama}} ({{$d->storageOut->user->pengurusGudang->kabupaten->nama}})</span>
-                                    {{-- {{dd($d->storageOut)}} --}}
+                                    Dikirim Dari : <br><span class="text-14 bold">{{$d->storageOut[0]->user->pengurusGudang->nama}} ({{$d->storageOut[0]->user->pengurusGudang->kabupaten->nama}})</span>
+                                    {{-- {{dd($d->storageOut[0])}} --}}
                                 </div>
                                 <div class="col-md-4 border-right">
                                     Ke : <br><span class="text-14 bold">{{$d->pelanggan->nama}} ({{$d->pelanggan->kabupaten->nama}})</span>
@@ -193,13 +202,13 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>Bukti Pembayaran</label><br>
-                    <input type="file" name="foto_bukti" class="">
+                    <input type="file" required name="foto_bukti" class="">
                 </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+          <button type="submit" class="btn btn-primary btn-sm disabled" id="btn-kirim">Kirim</button>
           {{-- <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button> --}}
         </div>
         </form>
@@ -211,6 +220,7 @@
 <script type="text/javascript">
     function uploadBukti(id){
         $('#form').attr('action',`/v1/upload/bukti/warung/${id}`);
+        $('#btn-kirim').removeClass('disabled')
     }
 </script>
 @endpush

@@ -106,7 +106,7 @@
                                                     <option value="bulky">Bulky</option>
                                                     <option value="retail">Retail</option>
                                                     <option value="warung">Warung</option>
-                                                    <option value="pembeli">pembeli</option>
+                                                    <option value="pembeli">Pembeli</option>
                                                 </select>
 
                                                 @error('role')
@@ -138,7 +138,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row d-none hide">
+                                <div class="row d-none">
                                     <div class="col-md-12" id="koperasi">
                                         <div class="form-group">
                                             <label for="name" class="col-md-12">{{ __('Pilih Koperasi') }} </label>
@@ -570,22 +570,15 @@
     $('#anggota').hide();
     $('#role').on('change', function () {
         var role = $(this).val();
-        if (role == 'warung') {
-            // $('#anggota').show();
-            // $('#anggota').removeClass('d-none');
-            $('.d-none').removeClass('d-none');
-            $('.d-none').show();
-            $('#nameFull').removeClass('col-md-6');
-            $('#nameFull').addClass('col-md-12');
-            $('#koperasi').hide();
+        if (role == 'pembeli') {
+            $('.hide').removeClass('d-none');
             $('#anggota').addClass('d-none');
+            $('#anggota').hide();
         } else {
-            $('.d-none').removeClass('d-none');
-            $('.d-none').show();
-            $('#nameFull').removeClass('col-md-6');
-            $('#nameFull').addClass('col-md-12');
+            $('.hide').removeClass('d-none');
+            $('#anggota').removeClass('d-none');
+            $('#anggota').show();
             $('#koperasi').hide();
-            $('#anggota').addClass('d-none');
         }
         if (role == "") {
             $(".hide").addClass('d-none');

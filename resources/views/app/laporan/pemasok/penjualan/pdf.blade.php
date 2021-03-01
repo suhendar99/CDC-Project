@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Penjualan Pemasok</title>
+	<title>Laporan Penjualan Pemasok</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +107,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Penjualan Pemasok</h3>
+            <h3>Laporan Penjualan Pemasok</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>

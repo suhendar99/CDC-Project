@@ -46,7 +46,29 @@ class DashboardController extends Controller
 	}
     public function getLogByDate($date)
     {
-        $data = LogTransaksi::whereDate('tanggal',$date)->get();
+        $data = LogTransaksi::whereDate('tanggal',$date)->where('role','Pemasok')->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+    public function getLogByDateBulky($date)
+    {
+        $data = LogTransaksi::whereDate('tanggal',$date)->where('role','Bulky')->get();
+        return response()->json([
+            'data' => $data
+        ]);
+        dd($data);
+    }
+    public function getLogByDateRetail($date)
+    {
+        $data = LogTransaksi::whereDate('tanggal',$date)->where('role','Retail')->get();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+    public function getLogByDateWarung($date)
+    {
+        $data = LogTransaksi::whereDate('tanggal',$date)->where('role','Warung')->get();
         return response()->json([
             'data' => $data
         ]);
@@ -116,6 +138,10 @@ class DashboardController extends Controller
             // if ($auth->karyawan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunKaryawan',compact('auth','provinsi'));
             // }
+            $logTransaksi = LogTransaksi::where('role','Bulky')
+            ->where('tanggal',now())
+            ->orWhere('user_id',Auth::user()->id)
+            ->orderBy('jam','desc')->paginate(3);
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpKaryawan');
             }
@@ -126,11 +152,15 @@ class DashboardController extends Controller
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathPengurusGudangBulky.'index');
+            return view($this->pathPengurusGudangBulky.'index',compact('logTransaksi'));
     	} elseif ($auth->pelanggan_id != null) {
             // if ($auth->pelanggan->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPelanggan',compact('auth','provinsi'));
             // }
+            $logTransaksi = LogTransaksi::where('role','Warung')
+            ->where('tanggal',now())
+            ->orWhere('user_id',Auth::user()->id)
+            ->orderBy('jam','desc')->paginate(3);
             $barang = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->with('storageOut')->orderBy('id','desc')->get();
             $barangMasuk = BarangMasukPelanggan::with('storageOut.gudang','storageOut.stockBarangRetail', 'user')
             ->where('user_id',Auth::user()->id)
@@ -148,7 +178,7 @@ class DashboardController extends Controller
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathPelanggan.'index',compact('barang','barangMasuk','barangKeluar','jumlahPemesanan'));
+            return view($this->pathPelanggan.'index',compact('barang','barangMasuk','barangKeluar','jumlahPemesanan','logTransaksi'));
     	}elseif ($auth->pembeli_id != null) {
             // if ($auth->bank->tahun_berdiri == null) {
             //     return view($this->pathCompleteAkun.'completeAkunBank',compact('auth','provinsi'));
@@ -168,6 +198,10 @@ class DashboardController extends Controller
             // if ($auth->pengurusGudang->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
             // }
+            $logTransaksi = LogTransaksi::where('role','Retail')
+            ->where('tanggal',now())
+            ->orWhere('user_id',Auth::user()->id)
+            ->orderBy('jam','desc')->paginate(3);
             if ($auth->status == 2) {
                 return view($this->pathFotoKtp.'fotoKtpPengurusGudang');
             }
@@ -178,7 +212,7 @@ class DashboardController extends Controller
                 Auth::logout();
                 return redirect('/login')->with('error','Akun Anda Sedang Ditinjau Oleh Administrator.');
             }
-            return view($this->pathPengurusGudang.'index');
+            return view($this->pathPengurusGudang.'index',compact('logTransaksi'));
     	}elseif ($auth->pengurus_gudang_bulky_id != null) {
             // if ($auth->pengurusGudang->nik == null) {
             //     return view($this->pathCompleteAkun.'completeAkunPengurusGudang',compact('auth','provinsi'));
@@ -267,7 +301,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pemasok"), $foto);
+                    $request->foto->move("upload/foto/pemasok", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pemasok/'.$foto
@@ -315,7 +349,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pelanggan"), $foto);
+                    $request->foto->move("upload/foto/pelanggan", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pelanggan/'.$foto
@@ -363,7 +397,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pembeli"), $foto);
+                    $request->foto->move("upload/foto/pembeli", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pembeli/'.$foto
@@ -411,7 +445,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/bulky"), $foto);
+                    $request->foto->move("upload/foto/bulky", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','jabatan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/bulky/'.$foto
@@ -459,7 +493,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/pengurus_gudang"), $foto);
+                    $request->foto->move("upload/foto/pengurus_gudang", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/pengurus_gudang/'.$foto
@@ -501,7 +535,7 @@ class DashboardController extends Controller
                 if ($request->file('foto')) {
                     $name = $request->file('foto');
                     $foto = time()."_".$name->getClientOriginalName();
-                    $request->foto->move(public_path("upload/foto/bank"), $foto);
+                    $request->foto->move("upload/foto/bank", $foto);
                     if ($request->desa_id == null) {
                         $set->update(array_merge($request->only('nama','alamat','telepon','tahun_berdiri','kecamatan_id','kabupaten_id','provinsi_id'),[
                             'foto' => 'upload/foto/bank/'.$foto

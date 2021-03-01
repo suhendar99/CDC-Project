@@ -13,7 +13,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Manajemen Barang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Penyimpanan Masuk</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
@@ -46,18 +46,34 @@
                             <form action="{{route('barangMasukPelanggan.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-12">
+                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="storage_out_kode" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
+                                            @foreach ($barang as $barangs)
+                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->satuan->satuan }}" data-id="{{$barangs->pemesanan->id}}">{{$barangs->stockBarangRetail->nama_barang}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('storage_out_kode')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" id="noKwitt">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
+                                        <input type="number" id="noKwi" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
                                         @error('nomor_kwitansi')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6" id="noSurjal">
                                         <label>Nomor Surat Jalan <small class="text-success">*Harus diisi</small></label>
-                                        <input type="number" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
+                                        <input type="text" id="noSj" class="form-control @error('nomor_surat_jalan') is-invalid @enderror" name="nomor_surat_jalan" value="{{ old('nomor_surat_jalan') }}" placeholder="Masukan Nomor Surat Jalan">
                                         @error('nomor_surat_jalan')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -66,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6" id="fotoKwit">
                                         <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
                                         @error('foto_kwitansi')
@@ -86,21 +102,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <select name="storage_out_kode" id="barang" class="form-control">
-                                            <option value="0" data-satuan="-">--Pilih Barang--</option>
-                                            @foreach ($barang as $barangs)
-                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->satuan->satuan }}">{{$barangs->stockBarangRetail->nama_barang}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('storage_out_kode')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
@@ -114,13 +116,13 @@
                                               </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">Rp.</span>
                                             </div>
-                                            <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
+                                            <input type="number" id="harga" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}">
                                         </div>
                                         @error('harga_beli')
                                               <span class="invalid-feedback" role="alert">
@@ -165,6 +167,50 @@
          $('#satuanAppend').text(satuan)
          $('#here').text(satuan)
 
+        let id = $('#barang option:selected').data("id")
+        console.log(id);
+        $.ajax({
+            type: "get",
+            url: "/api/v1/barang/pemesanan/warung/"+id,
+            dataType: "json",
+            success: function (response) {
+                var data = response.data
+                $.each(data, function (a, b) {
+                    if (b.pesanan.metode_pembayaran == null) {
+                        $('#fotoKwit').html(`
+                            <label>Foto Surat Piutang <small class="text-success">*Harus diisi</small></label>
+                            <input type="file" class="form-control-file @error('foto_surat_piutang') is-invalid @enderror" name="foto_surat_piutang" value="{{ old('foto_surat_piutang') }}" placeholder="Masukan Foto Surat Piutang">
+                            @error('foto_surat_piutang')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        `)
+                        $('#noKwitt').addClass('d-none');
+                        $('#noSurJal').removeClass('col-md-6');
+                        $('#noSurJal').addClass('col-md-12');
+                    } else {
+                        $('#fotoKwit').html(`
+                            <label>Foto Kwitansi <small class="text-success">*Harus diisi</small></label>
+                            <input type="file" class="form-control-file @error('foto_kwitansi') is-invalid @enderror" name="foto_kwitansi" value="{{ old('foto_kwitansi') }}" placeholder="Masukan Foto Kwitansi">
+                            @error('foto_kwitansi')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        `)
+                        $('#noKwitt').removeClass('d-none');
+                        $('#noSurJal').addClass('col-md-6');
+                        $('#noSurJal').removeClass('col-md-12');
+                        $('#noKwi').val(b.pesanan.kwitansi.kode);
+
+                    }
+                    $('#noSj').val(b.pesanan.surat_jalan.kode);
+                    $('#harga').val(b.harga);
+                    $('#jumlah').val(b.jumlah_barang);
+                });
+            }
+        });
          // for (var i = $('.tab').length - 1; i >= 1; i--) {
 
          //     let keterangan = $('#satuanAppend').get(i).attributes[0].value+' '+kode;

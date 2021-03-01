@@ -1,6 +1,6 @@
 @php
-        $icon = 'shopping_cart';
-        $pageTitle = 'Data Piutang Masuk';
+        $icon = 'money_off';
+        $pageTitle = 'Data Piutang Dari Warung';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,7 +15,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Piutang Masuk</a>
+            <a href="#" class="text-14">Data Piutang Dari Warung</a>
           </div>
         </div>
     </div>
@@ -36,8 +36,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('RetailPiutangMasuk.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
-                                <a href="{{route('RetailPiutangMasuk.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a>
+                                {{-- <a href="{{route('RetailPiutangMasuk.pdf')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-pdf"></i> Download PDF</a>
+                                <a href="{{route('RetailPiutangMasuk.excel')}}" class="btn btn-primary btn-sm" target="__blank"><i class="far fa-file-excel"></i> Download EXCEL</a> --}}
                             </div>
                         </div>
                     </div>

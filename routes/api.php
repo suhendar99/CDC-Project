@@ -25,6 +25,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
 });
 // get Date
 Route::get('/v1/logTransaksi/date/{date}','v1\DashboardController@getLogByDate');
+Route::get('/v1/logTransaksi/bulky/date/{date}','v1\DashboardController@getLogByDateBulky');
+Route::get('/v1/logTransaksi/retail/date/{date}','v1\DashboardController@getLogByDateRetail');
+Route::get('/v1/logTransaksi/warung/date/{date}','v1\DashboardController@getLogByDateWarung');
 // End
 Route::get('citiesLoad/{id}', function($id){
     dd($id);
@@ -84,13 +87,19 @@ Route::get('/v1/getGudangBulky/{id}/user', function($id){
 	],200);
 });
 Route::get('/v1/pemasok/getPesanan/{id}', 'v1\PemesananKeluarBulkyController@getPesanan');
+Route::get('/v1/barang/pemesanan/{id}', 'v1\StorageInController@findBarang');
+Route::get('/v1/barang/pemesanan/bulky/{id}', 'v1\StorageMasukBulkyController@findBarang');
+Route::get('/v1/barang/pemesanan/warung/{id}', 'v1\BarangMasukPelangganController@findBarang');
 Route::get('/v1/bulky/getPesanan/{id}', 'v1\PemesananBulkyController@getPesanan');
+Route::get('/v1/retail/getPesanan/{id}', 'v1\PemesananController@getPesanan');
 Route::get('/v1/bulky/detail/pemesanan/{id}', 'v1\PemesananBulkyController@detail');
 Route::get('/v1/retail/pemesanan/{id}/terima', 'v1\PemesananController@terima');
 Route::get('/v1/bulky/pemesanan/{id}/terima', 'v1\PemesananController@terima');
 Route::get('/v1/retur/kwitansi/{id}/barang', 'v1\ReturOutController@barangKwitansi');
 Route::get('/v1/gudang/retail/{id}/pemesanan', 'v1\StorageInController@findStorageKeluar');
+Route::get('/v1/gudang/bulky/{id}/pemesanan', 'v1\StorageMasukBulkyController@findStorageKeluar');
 Route::get('/v1/retail/stock/{id}/foto', 'v1\StockBarangController@getFoto');
+Route::get('/v1/pemasok/stock/{id}/foto', 'v1\BarangController@getFoto');
 Route::get('/v1/bulky/stock/{id}/foto', 'v1\StockBarangBulkyController@getFoto');
 Route::get('/v1/gudang/bulky/{id}/pemesanan', 'v1\StorageMasukBulkyController@findStorageKeluar');
 // Route::get('/v1/bulky/proses/pengemasan/{id}', 'v1\PemesananBulkyController@proses');

@@ -1,6 +1,6 @@
 @php
     $icon = 'receipt_long';
-    $pageTitle = 'Data Pemesanan Keluar';
+    $pageTitle = 'Data Pemesanan Ke Bulky';
 @endphp
 
 @extends('layouts.dashboard.header')
@@ -16,6 +16,8 @@
               <h4 class="mt-1 mb-0">{{$pageTitle}}</h4>
               <div class="valign-center breadcumb">
                 <a href="#" class="text-14">Dashboard</a>
+                <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
+                <a href="#" class="text-14">Data Transaksi</a>
                 <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
                 <a href="#" class="text-14">{{$pageTitle}}</a>
               </div>
@@ -73,8 +75,15 @@
                                         </a>
                                         @endif
                                     @else
-                                        @if($d->foto_bukti == null)
+                                        @if($d->foto_bukti == null && $d->status == 1)
                                         <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}"><i class="fa fa-upload"></i> Upload Bukti Pembayaran</a>
+                                        @elseif($d->foto_bukti == null && $d->status == 2 && $d->metode_pembayaran == null)
+                                        <a class="btn btn-sm btn-primary disabled" href="#">
+                                            {{
+                                                (($d->status == 2) ? 'Pesanan Sedang Diproses ' :
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...'))
+                                            }}
+                                        </a>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
@@ -128,14 +137,17 @@
                                 <div class="col-md-4">
                                     Alamat Tujuan : <br><span class="text-14 bold">{{$d->alamat_pemesan}}</span>
                                 </div>
-                                <div class="col-md-4 border-right">
-                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
-                                </div>
                                 @if ($d->metode_pembayaran == null)
                                     <div class="col-md-4 border-right">
                                         Status Pembayaran : <br><span class="text-14 bold">Berhutang</span>
                                     </div>
+                                    <div class="col-md-4">
+                                        No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
+                                    </div>
                                 @else
+                                <div class="col-md-4 border-right">
+                                    Metode Pembayaran : <br><span class="text-14 bold">{{ucwords($d->metode_pembayaran)}}</span>
+                                </div>
                                 <div class="col-md-4">
                                     No Pemesanan : <br><span class="text-14 bold">{{$d->nomor_pemesanan}}</span>
                                 </div>
@@ -199,7 +211,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <form action="" id="form" method="post" enctype="multipart/form-data">
+        <form action="" target="_blank" id="form" method="post" enctype="multipart/form-data">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Upload Bukti Pembayaran</h5>
@@ -212,7 +224,7 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>Bukti Pembayaran</label><br>
-                    <input type="file" name="foto_bukti" class="">
+                    <input required="" type="file" name="foto_bukti" class="">
                 </div>
             </div>
           </div>

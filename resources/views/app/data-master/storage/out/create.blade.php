@@ -1,6 +1,12 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
+
+        if ($setted == true && $pemesanan->metode_pembayaran == null) {
+          $status_piutang = 1;
+        } else {
+          $status_piutang = 0;
+        }
         // dd($setted);
 @endphp
 @extends('layouts.dashboard.header')
@@ -65,6 +71,7 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                        <input type="hidden" name="status_piutang" value="{{$status_piutang}}">
                                         @error('pemesanan_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -73,6 +80,7 @@
                                     </div>
                                 </div>
 
+                                @if($status_piutang == 0)
                                 <div class="tab" data-keterangan="Isi Form Untuk Kuitansi Pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -114,6 +122,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @endif
 
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     {{-- <div class="form-row">
@@ -158,6 +167,17 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    @if($status_piutang == 1)
+                                    <div class="form-group">
+                                        <label>Tempat Pembuatan Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
+                                        @error('tempat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
                                 </div>
                                 <div style="overflow:auto;">
                                   <div  style="float:right;">
@@ -172,7 +192,9 @@
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
                                   <span class="step"></span>
+                                  @if($status_piutang == 0)
                                   <span class="step"></span>
+                                  @endif
                                   {{-- <span class="step"></span> --}}
                                 </div>
                             </div>
@@ -312,7 +334,7 @@ function fixStepIndicator(n) {
         }
 
         $.ajax({
-            url: "/api/v1/getPesanan/"+idPesanan,
+            url: "/api/v1/retail/getPesanan/"+idPesanan,
         }).done(function(response) {
             console.log(response);
             $('#dibayar_oleh').val(response.data.nama_pemesan);

@@ -41,9 +41,14 @@ class BarangController extends Controller
                     // <a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;
                     return '<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
                 })
+                ->addColumn('foto', function($data){
+                    // <a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+                    return '<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>';
+                })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i', strtotime($data->created_at)).' WIB';
                 })
+                ->rawColumns(['action','foto'])
                 ->make(true);
         }
         return view($this->path.'index');
@@ -73,6 +78,49 @@ class BarangController extends Controller
         //$barang = Barang::where('sarpras_id',$id)->get();
         // $data = SaranaPrasaranaUptd::find($id);
         return view($this->path.'pelanggan.index',compact('barang','else'));
+    }
+    public function uploadFoto(Request $request, $id)
+    {
+        $v = Validator::make($request->all(),[
+            'foto' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+
+        $foto_barang = $request->file('foto');
+        $nama_barang = "PMSK".time()."_".$foto_barang->getClientOriginalName();
+        $foto_barang->move("upload/foto/barang/pemasok", $nama_barang);
+        $foto = FotoBarang::where('barang_id',$id)->get();
+        if ($foto->count() < 1) {
+            FotoBarang::create([
+                'barang_id' => $id,
+                'foto' => 'upload/foto/barang/pemasok/'.$nama_barang
+            ]);
+        } else {
+            FotoBarang::where('barang_id',$id)->update([
+                'foto' => 'upload/foto/barang/pemasok/'.$nama_barang
+            ]);
+        }
+
+
+        return back()->with('success', __( 'Foto telah diunggah.' ));
+    }
+    public function getFoto($id)
+    {
+        try {
+            $data = FotoBarang::where('barang_id',$id)
+            ->get();
+
+            return response()->json([
+                'data' => $data
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ],400);
+        }
     }
     /**
      * Show the form for creating a new resource.

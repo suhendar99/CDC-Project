@@ -22,11 +22,12 @@ class RekapitulasiPenjualanPemasokController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualanPemasok::with('storageKeluar')
+        $data = RekapitulasiPenjualanPemasok::with('storageKeluar.suratPiutangBulkyPemasok')
         ->whereHas('storageKeluar',function($q){
             $q->where('pemasok_id',Auth::user()->pemasok_id);
         })
         ->orderBy('id','desc')->get();
+        // dd($data[0]->storageKeluar->suratPiutangBulkyPemasok[0]->kode);
         $total = $data->sum('total');
         if($request->ajax()){
             return DataTables::of($data)
@@ -36,6 +37,13 @@ class RekapitulasiPenjualanPemasokController extends Controller
                 })
                 ->addColumn('jumlah', function($data){
                     return $data->jumlah.' '.$data->satuan;
+                })
+                ->addColumn('no_kwitansi', function($data){
+                    if ($data->no_kwitansi != null) {
+                        return $data->no_kwitansi;
+                    } else {
+                        return $data->storageKeluar->suratPiutangBulkyPemasok[0]->kode;
+                    }
                 })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));

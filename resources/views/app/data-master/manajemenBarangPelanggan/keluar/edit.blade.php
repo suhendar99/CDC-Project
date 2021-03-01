@@ -1,4 +1,4 @@
-p@php
+@php
         $icon = 'storage';
         $pageTitle = 'Buat Data Storage Keluar';
 @endphp
@@ -13,11 +13,11 @@ p@php
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Manajemen Barang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Storage Keluar</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Buat Data</a>
+            <a href="#" class="text-14">Edit Data</a>
           </div>
         </div>
     </div>

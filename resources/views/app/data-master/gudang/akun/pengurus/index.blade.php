@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Pengurus Gudang';
+        $pageTitle = 'Data Pengurus Gudang Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,9 +13,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Data Gudang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Pengurus Gudang</a>
+            <a href="#" class="text-14">Data Pengurus Gudang Retail</a>
           </div>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('pengurus-gudang.create')}}" class="btn btn-primary btn-sm">Tambah Pengurus</a>
+                                <a href="{{route('pengurus-gudang.create')}}" class="btn btn-primary btn-sm">Tambah Pengurus Gudang Retail</a>
                             </div>
                         </div>
                     </div>

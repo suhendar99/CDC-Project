@@ -19,6 +19,6 @@ class Piutang extends Model
     }
     public function pemesanan()
     {
-        return $this->belongsTo('App\Models\Pemesanan','barang_id','id');
+        return $this->belongsTo('App\Models\Pemesanan','pemesanan_id','id');
     }
 }

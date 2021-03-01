@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="float-right">
-                                <a href="{{route('armada.create')}}" class="btn btn-primary btn-sm">Tambah Kategori Induk</a>
+                                <a href="{{route('armada.create')}}" class="btn btn-primary btn-sm">Tambah Armada pengiriman</a>
                             </div>
                         </div>
                     </div>

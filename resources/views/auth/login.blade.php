@@ -90,7 +90,7 @@
                         <div class="form-group row mb-4">
                             <div class="col-md-8 offset-md-4 float-right">
                                 {{-- JANGAN UBAH TYPE BUTTON!!! --}}
-                                <button type="button" class="btn btn-primary btn-sm" id="btn-action">
+                                <button type="submit" class="btn btn-primary btn-sm" id="btn-action">
                                     {{ __('Login') }}
                                 </button> or
                                 {{-- END --}}

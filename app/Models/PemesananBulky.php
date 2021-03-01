@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PemesananBulky extends Model
 {
@@ -100,5 +102,23 @@ class PemesananBulky extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemesananBulky_id, localKey = id)
         return $this->hasMany('App\Models\ReturMasukBulky', 'pemesanan_bulky_id');
+    }
+    /**
+     * Get the piutangRetail associated with the PemesananBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function piutangRetail(): HasOne
+    {
+        return $this->hasOne(PiutangRetail::class, 'pemesanan_keluar_id', 'id');
+    }
+    /**
+     * Get all of the suratPiutangRetail for the PemesananBulky
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function suratPiutangRetail(): HasMany
+    {
+        return $this->hasMany(SuratPiutangRetailBulky::class, 'pemesanan_bulky_id', 'id');
     }
 }

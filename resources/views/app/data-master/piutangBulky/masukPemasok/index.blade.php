@@ -1,5 +1,5 @@
 @php
-        $icon = 'shopping_cart';
+        $icon = 'money_off';
         $pageTitle = 'Data Piutang Dari Bulky';
         $dashboard = true;
         // $rightbar = true;

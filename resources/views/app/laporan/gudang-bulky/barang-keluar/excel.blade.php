@@ -28,8 +28,8 @@
             <tr>
                 <td style="border: 1px solid black">{{ $no++ }}</td>
                 <td style="border: 1px solid black">{{ $a->waktu }}</td>
-                <td style="border: 1px solid black">{{ $a->barang->kode_barang }}</td>
-                <td style="border: 1px solid black">{{ $a->barang->nama_barang }}</td>
+                <td style="border: 1px solid black">{{ $a->barangBulky->barang_kode }}</td>
+                <td style="border: 1px solid black">{{ $a->barangBulky->nama_barang }}</td>
                 <td style="border: 1px solid black">{{ $a->bulky->nama }}</td>
                 <td style="border: 1px solid black">{{ $a->kode }}</td>
                 <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>

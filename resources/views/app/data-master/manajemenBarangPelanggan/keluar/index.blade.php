@@ -13,7 +13,7 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Master</a>
+            <a href="#" class="text-14">Manajemen Barang</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
             <a href="#" class="text-14">Data Penyimpanan Keluar</a>
           </div>
@@ -46,7 +46,7 @@
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
-                                <th>Waktu Pencatatan</th>
+                                <th>Waktu Barang Keluar</th>
                                 <th>Kode Penyimpanan / Barcode</th>
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang Keluar</th>

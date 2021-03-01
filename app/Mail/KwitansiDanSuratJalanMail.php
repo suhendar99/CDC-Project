@@ -33,12 +33,19 @@ class KwitansiDanSuratJalanMail extends Mailable
      */
     public function build()
     {
-        return $this->view('app.mail.send_sj_dan_kwitansi')
-        ->attachData($this->pdfSJ->output(), "surat-jalan.pdf", [
-            'mime' => 'application/pdf',
-        ])
-        ->attachData($this->pdfKwitansi->output(), "kwitansi.pdf", [
-            'mime' => 'application/pdf',
-        ]);;
+        if($this->pdfKwitansi == 'none'){
+            return $this->view('app.mail.send_sj')
+            ->attachData($this->pdfSJ->output(), "surat-jalan.pdf", [
+                'mime' => 'application/pdf',
+            ]);;
+        } else {
+            return $this->view('app.mail.send_sj_dan_kwitansi')
+            ->attachData($this->pdfSJ->output(), "surat-jalan.pdf", [
+                'mime' => 'application/pdf',
+            ])
+            ->attachData($this->pdfKwitansi->output(), "kwitansi.pdf", [
+                'mime' => 'application/pdf',
+            ]);;
+        }
     }
 }

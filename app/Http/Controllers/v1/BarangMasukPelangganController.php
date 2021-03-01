@@ -5,8 +5,10 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\BarangMasukPelanggan;
+use App\Models\BarangPesanan;
 use App\Models\BarangWarung;
 use App\Models\LogTransaksi;
+use App\Models\Pemesanan;
 use App\Models\RekapitulasiPembelianPelanggan;
 use App\Models\StorageOut;
 use Illuminate\Http\Request;
@@ -67,14 +69,50 @@ class BarangMasukPelangganController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $barang = StorageOut::with('barang','barangWarung','barangMasukPelanggan','gudang','user','stockBarangRetail','pemesanan')
-        ->whereHas('pemesanan',function($q){
-            $q->where('pelanggan_id',Auth::user()->pelanggan_id);
-        })
-        ->get();
-        return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
+            ->whereHas('pemesanan',function($q){
+                $q->where('pelanggan_id',Auth::user()->pelanggan_id);
+            })
+            ->whereHas('pemesanan',function($q){
+                $q->where('status',5);
+            })
+            ->doesntHave('barangMasukPelanggan')
+            ->get();
+            return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
+    }
+    public function findBarang($id)
+    {
+        try {
+            $pesanan = BarangPesanan::with('pesanan.kwitansi','pesanan.suratJalan')
+            ->where('pemesanan_id',$id)
+            ->whereHas('pesanan', function($query){
+                $query->where('status',5);
+            })
+            ->get();
+
+            // dd($pesanan);
+            // $barangBulky = StockBarangBulky::with('barangPemesananBulky.pemesananBulky')
+            // ->whereIn('id', $pesanan)
+            // ->get();
+
+            if (!$pesanan) {
+                return response()->json([
+                    'data' => 'Tidak ada barang'
+                ], 404);
+            } else {
+                return response()->json([
+                    'data' => $pesanan
+                ], 200);
+                # code...
+            }
+
+        } catch (Throwable $t) {
+            return response()->json([
+                'message' => $t->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -86,9 +124,9 @@ class BarangMasukPelangganController extends Controller
     public function store(Request $request)
     {
         $v = Validator::make($request->all(),[
-            'nomor_kwitansi' => 'required|numeric',
-            'nomor_surat_jalan' => 'required|numeric',
-            'foto_kwitansi' => 'required|image|mimes:png,jpg',
+            'nomor_kwitansi' => 'nullable|numeric',
+            'nomor_surat_jalan' => 'required|string',
+            'foto_kwitansi' => 'nullable|image|mimes:png,jpg',
             'foto_surat_jalan' => 'required|image|mimes:png,jpg',
             'storage_out_kode' => 'required|exists:storage_outs,kode',
             'jumlah' => 'required|numeric',
@@ -106,22 +144,36 @@ class BarangMasukPelangganController extends Controller
 
         $barang = StorageOut::where('kode', $request->storage_out_kode)->first();
 
-        $foto_kwitansi = $request->file('foto_kwitansi');
-        $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-        $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
-
         $foto_surat_jalan = $request->file('foto_surat_jalan');
         $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
-        $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+        $foto_surat_jalan->move("upload/foto/surat_jalan", $nama_surat_jalan);
 
-        $masuk = BarangMasukPelanggan::create($request->only('storage_out_kode', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
-            'kode' => $kode,
-            'satuan' => $barang->satuan->satuan,
-            'user_id' => auth()->user()->id,
-            'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
-            'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
-            'waktu' => now('Asia/Jakarta')
-        ]);
+        if ($request->file('foto_kwitansi') != null) {
+            $foto_kwitansi = $request->file('foto_kwitansi');
+            $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
+            $foto_kwitansi->move("upload/foto/kwitansi", $nama_kwitansi);
+            $masuk = BarangMasukPelanggan::create($request->only('storage_out_kode', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+                'kode' => $kode,
+                'satuan' => $barang->satuan->satuan,
+                'user_id' => auth()->user()->id,
+                'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
+                'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
+                'waktu' => now('Asia/Jakarta')
+            ]);
+        } else {
+            $foto_surat_piutang = $request->file('foto_surat_piutang');
+            $nama_surat_piutang = time()."_".$foto_surat_piutang->getClientOriginalName();
+            $foto_surat_piutang->move("upload/foto/surat_piutang", $nama_surat_piutang);
+            $masuk = BarangMasukPelanggan::create($request->only('storage_out_kode', 'jumlah', 'nomor_kwitansi', 'nomor_surat_jalan', 'harga_beli')+[
+                'kode' => $kode,
+                'satuan' => $barang->satuan->satuan,
+                'user_id' => auth()->user()->id,
+                'foto_surat_piutang' => 'upload/foto/surat_piutang/'.$nama_surat_piutang,
+                'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,
+                'waktu' => now('Asia/Jakarta')
+            ]);
+        }
+
 
         $barangWarung = BarangWarung::create([
             'storage_out_kode' => $masuk->storage_out_kode,
@@ -247,7 +299,7 @@ class BarangMasukPelangganController extends Controller
 
             $foto_kwitansi = $request->file('foto_kwitansi');
             $nama_kwitansi = time()."_".$foto_kwitansi->getClientOriginalName();
-            $foto_kwitansi->move(public_path("upload/foto/kwitansi"), $nama_kwitansi);
+            $foto_kwitansi->move("upload/foto/kwitansi", $nama_kwitansi);
 
             $storage->update([
                 'foto_kwitansi' => 'upload/foto/kwitansi/'.$nama_kwitansi,
@@ -259,7 +311,7 @@ class BarangMasukPelangganController extends Controller
 
             $foto_surat_jalan = $request->file('foto_surat_jalan');
             $nama_surat_jalan = time()."_".$foto_surat_jalan->getClientOriginalName();
-            $foto_surat_jalan->move(public_path("upload/foto/surat_jalan"), $nama_surat_jalan);
+            $foto_surat_jalan->move("upload/foto/surat_jalan", $nama_surat_jalan);
 
             $storage->update([
                 'foto_surat_jalan' => 'upload/foto/surat_jalan/'.$nama_surat_jalan,

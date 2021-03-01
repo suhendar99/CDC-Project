@@ -52,6 +52,7 @@ class PoController extends Controller
     {
         $gudang = Gudang::select('id')->where('user_id', auth()->user()->id)->get();
         $data = PemesananBulky::with('storageKeluarBulky.user.pengurusGudangBulky.kabupaten','retail.akunGudang.kabupaten','barangPesananBulky')->whereIn('gudang_retail_id',$gudang)->orderBy('id','desc')->paginate(4);
+        // dd($data);
         // dd($data[0]->barangPesananBulky->nama_barang);
         return view($this->indexPath.'index',compact('data'));
     }

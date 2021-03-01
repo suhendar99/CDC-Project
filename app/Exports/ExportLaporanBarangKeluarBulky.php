@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Auth;
 
 class ExportLaporanBarangKeluarBulky implements FromView,ShouldAutoSize
 {
@@ -29,10 +30,14 @@ class ExportLaporanBarangKeluarBulky implements FromView,ShouldAutoSize
     }
     public function view(): View
     {
+        $gudang_saya = [];
+        foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+            $gudang_saya[] = $gudang->id;
+        }
         if ($this->bulan != null && $this->month) {
-            $data = StorageKeluarBulky::with('user','bulky','barang')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
+            $data = StorageKeluarBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barangBulky')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
         } elseif ($this->awal != null && $this->akhir != null) {
-            $data = StorageKeluarBulky::with('user','bulky','barang')->whereBetween('waktu',[$this->awal.' 00:00:00', $this->akhir.' 23:59:59'])->get();
+            $data = StorageKeluarBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barangBulky')->whereBetween('waktu',[$this->awal.' 00:00:00', $this->akhir.' 23:59:59'])->get();
         }
         return view($this->path.'excel', compact('data'));
 

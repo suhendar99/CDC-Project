@@ -99,7 +99,7 @@ class PemasokController extends Controller
                 $kode = "PMSK".$date.$pin;
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pemasok"), $foto);
+                $request->foto->move("upload/foto/pemasok", $foto);
                 if ($request->desa_id == null) {
                     $pemasok = Pemasok::create(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                         'foto' => 'upload/foto/pemasok/'.$foto,
@@ -203,7 +203,7 @@ class PemasokController extends Controller
                 File::delete($set->foto);
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
-                $request->foto->move(public_path("upload/foto/pemasok"), $foto);
+                $request->foto->move("upload/foto/pemasok", $foto);
                 if ($request->desa_id == null) {
                     $set->update(array_merge($request->only('nama','nik','tempat_lahir','alamat','telepon','tgl_lahir','agama','pekerjaan','jenis_kelamin','status_perkawinan','kewarganegaraan','kecamatan_id','kabupaten_id','provinsi_id'),[
                         'foto' => 'upload/foto/pemasok/'.$foto

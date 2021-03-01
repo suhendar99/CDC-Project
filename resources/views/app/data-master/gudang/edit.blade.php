@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Edit Data Gudang';
+        $pageTitle = 'Edit Data Gudang Retail';
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -13,9 +13,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Gudang</a>
+            <a href="#" class="text-14">Data Gudang Retail</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Edit Data Gudang</a>
+            <a href="#" class="text-14">Edit Data Gudang Retail</a>
           </div>
         </div>
     </div>

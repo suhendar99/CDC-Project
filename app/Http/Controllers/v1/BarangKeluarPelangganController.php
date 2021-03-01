@@ -69,7 +69,11 @@ class BarangKeluarPelangganController extends Controller
             $set = false;
         }
 
-        $barang = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)->get();
+        $barang = BarangWarung::where('pelanggan_id',Auth::user()->pelanggan_id)
+        ->with('pemesananPembeliItem.pemesananPembeli')
+        // ->doesntHave('pemesananPembeliItem.pemesananPembeli.barangKeluar')
+        ->get();
+        // dd($barang);
         return view('app.data-master.manajemenBarangPelanggan.keluar.create',compact('pemesanan','barang','set'));
     }
 

@@ -1,6 +1,19 @@
 @php
         $icon = 'storage';
         $pageTitle = 'Buat Data Barang Keluar';
+
+        if (isset($selected)) {
+            if($selected->metode_pembayaran == null){
+                $status_piutang = 1;
+            } else {
+                $status_piutang = 0;
+            }
+        } else {
+          $status_piutang = 0;
+        }
+        
+        
+        
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -60,6 +73,9 @@
                                             <option value="{{ $pesan->id }}" data-kode="{{ $pesan->nomor_pemesanan }}" @if($poci != null && $pesan->id == $poci) selected @endif>Pemesan: {{ $pesan->nama_pemesan }} | Kode: {{ $pesan->nomor_pemesanan }}</option>
                                             @endforeach
                                         </select>
+
+                                        <input type="hidden" name="status_piutang" value="{{$status_piutang}}">
+
                                         @error('pemesanan_bulky_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -68,6 +84,7 @@
                                     </div>
                                 </div>
 
+                                @if($status_piutang == 0)
                                 <div class="tab" data-keterangan="Isi form untuk kwitansi pemesanan">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -109,6 +126,7 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @endif
 
                                 <div class="tab" data-keterangan="Isi Kelengkapan Surat Jalan untuk Pemesanan">
                                     {{-- <div class="form-row">
@@ -158,6 +176,17 @@
                                             </span>
                                         @enderror --}}
                                     </div>
+                                    @if($status_piutang == 1)
+                                    <div class="form-group">
+                                        <label>Tempat Pembuatan Surat Jalan <small class="text-success">*Harus diisi</small></label>
+                                        <input type="text" class="form-control @error('tempat') is-invalid @enderror" name="tempat" value="{{ old('tempat') }}" placeholder="Masukan nama tempat...">
+                                        @error('tempat')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    @endif
                                 </div>
 
                                 {{-- <div class="tab" data-keterangan="Pilih Gudang Retail">
@@ -189,7 +218,9 @@
                                 <div style="text-align:center;margin-top:40px;">
                                   <span class="step"></span>
                                   <span class="step"></span>
+                                  @if($status_piutang == 0)
                                   <span class="step"></span>
+                                  @endif
                                   {{-- <span class="step"></span> --}}
                                 </div>
                             </div>
@@ -278,6 +309,7 @@ function validateForm() {
   y = x[currentTab].getElementsByTagName("input");
   let z = x[currentTab].getElementsByTagName("select");
 
+  // console.log(x.length, y.length, z.length)
   if (z.length > 0) {
     for (let j = 0; j < z.length; j++) {
         // If a field is empty...
@@ -345,6 +377,7 @@ function fixStepIndicator(n) {
         /* Act on the event */
         let kode = $('#selectSatuan option:selected').data("kode")
         let idPesanan = $('#selectSatuan').val()
+        console.log(idPesanan);
         for (var i = $('.tab').length - 1; i >= 1; i--) {
 
             let keterangan = $('.tab').get(i).attributes[0].value+' '+kode;
@@ -354,10 +387,10 @@ function fixStepIndicator(n) {
         $.ajax({
             url: "/api/v1/bulky/getPesanan/"+idPesanan,
         }).done(function(response) {
-            console.log(response);
+            console.log(response.barang);
             $('#dibayar_oleh').val(response.data.nama_pemesan);
-            $('#jumlah_uang').val(response.harga);
-            $('#word').val(inWords(response.harga));
+            $('#jumlah_uang').val(response.barang[0].harga);
+            $('#word').val(inWords(response.barang[0].harga));
         });
     });
     onScan.attachTo(document, {
@@ -427,7 +460,7 @@ function fixStepIndicator(n) {
 
     var a = ['','Satu ','Dua ','Tiga ','Empat ', 'Lima ','Enam ','Tujuh ','Delapan ','Sembilan ','Sepuluh ','Sebelas ','Dua Belas ','Tiga Belas ','Empat Belas ','Lima Belas ','Enam Belas ','Tujuh Belas ','Delapan Belas ','Sembilan Belas '];
     var b = ['', '', 'Dua Puluh','Tiga Puluh','Empat Puluh','Lima Puluh', 'Enam Puluh','Tujuh Puluh','Delapan Puluh','Sembilan Puluh'];
-    var c = ['', '', 'Dua Ratus', 'Tiga Ratus', 'Empat Ratus', 'Lima Ratus', 'Enam Ratus', 'Tujuh Ratus', 'Delapan Ratus', 'Sembilan Ratus'];
+    var c = ['', 'Seratus', 'Dua Ratus', 'Tiga Ratus', 'Empat Ratus', 'Lima Ratus', 'Enam Ratus', 'Tujuh Ratus', 'Delapan Ratus', 'Sembilan Ratus'];
 
     function inWords (num) {
         if ((num = num.toString()).length > 10) return 'overflow';
@@ -443,10 +476,13 @@ function fixStepIndicator(n) {
         return str;
     }
 
+
+    @if($pemesanan->count() != 1 && $pemesanan[0]->metode_pembayaran != null)
     document.getElementById('jumlah_uang').onkeyup = function () {
         // document.getElementById('word').innerHTML = inWords(document.getElementById('jumlah_uang').value);
         $('#word').val(inWords(document.getElementById('jumlah_uang').value))
     };
+    @endif
 
     // $('#gudang').change(function(event) {
     //     /* Act on the event */

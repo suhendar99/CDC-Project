@@ -130,28 +130,46 @@ class StorageKeluarPemasokController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $v = Validator::make($request->all(),[
-            // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            // 'gudang_id' => 'required|exists:gudangs,id',
-            'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
-            // 'pengirim' => 'required|string|max:50',
-            'terima_dari' => 'required|string|max:50',
-            'jumlah_uang_digits' => 'required|integer',
-            'jumlah_uang_word' => 'required|string',
-            'keterangan' => 'required|string',
-            'tempat' => 'required|string',
-            'profil_lembaga' => 'required|string|max:6|min:3',
-            'tanggal_surat' => 'required|date'
-            // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
-        ]);
+        $pesanan = PemesananKeluarBulky::with('barangKeluarPemesananBulky', 'bulky')->findOrFail($request->pemesanan_keluar_bulky_id);
+
+        if ($pesanan->metode_pembayaran != null) {
+            $v = Validator::make($request->all(),[
+                // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+                // 'gudang_id' => 'required|exists:gudangs,id',
+                'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
+                // 'pengirim' => 'required|string|max:50',
+                'terima_dari' => 'required|string|max:50',
+                'jumlah_uang_digits' => 'required|integer',
+                'jumlah_uang_word' => 'required|string',
+                'keterangan' => 'required|string',
+                'tempat' => 'required|string',
+                'profil_lembaga' => 'required|string|max:6|min:3',
+                'tanggal_surat' => 'required|date'
+                // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            ]);
+        } else {
+            $v = Validator::make($request->all(),[
+                // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+                // 'gudang_id' => 'required|exists:gudangs,id',
+                'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
+                // 'pengirim' => 'required|string|max:50',
+                'terima_dari' => 'nullable|string|max:50',
+                'jumlah_uang_digits' => 'nullable|integer',
+                'jumlah_uang_word' => 'nullable|string',
+                'keterangan' => 'nullable|string',
+                'tempat' => 'nullable|string',
+                'profil_lembaga' => 'required|string|max:6|min:3',
+                'tanggal_surat' => 'required|date'
+                // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            ]);
+        }
+
 
         if ($v->fails()) {
             // dd($v);
             return back()->withErrors($v)->withInput();
         }
 
-        $pesanan = PemesananKeluarBulky::with('barangKeluarPemesananBulky', 'bulky')->findOrFail($request->pemesanan_keluar_bulky_id);
 
         $gudang = $pesanan->bulky;
         foreach ($pesanan->barangKeluarPemesananBulky as $key => $value) {
@@ -311,13 +329,15 @@ class StorageKeluarPemasokController extends Controller
         $surat_kode = (string)$kode_surat.'/'.$request->profil_lembaga.'/'.$tanggal_surat;
         // $kode_surat = $faker->unique()->ean13;
 
-        $kwitansi = KwitansiPemasok::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_keluar_bulky_id', 'tempat', 'keterangan')+[
-            'user_id' => auth()->user()->id,
-            'kode' => $kode_kwi,
-            'storage_keluar_pemasok_id' => $out->id,
-            'pemasok_id' => $pesanan->pemasok_id,
-            'tanggal' => now('Asia/Jakarta')
-        ]);
+        if ($pesanan->metode_pembayaran != null) {
+            $kwitansi = KwitansiPemasok::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_keluar_bulky_id', 'tempat', 'keterangan')+[
+                'user_id' => auth()->user()->id,
+                'kode' => $kode_kwi,
+                'storage_keluar_pemasok_id' => $out->id,
+                'pemasok_id' => $pesanan->pemasok_id,
+                'tanggal' => now('Asia/Jakarta')
+            ]);
+        }
 
         $surat = SuratJalanPemasok::create($request->only('tempat', 'pemesanan_keluar_bulky_id')+[
             'pengirim' => auth()->user()->pemasok->nama,
@@ -337,22 +357,42 @@ class StorageKeluarPemasokController extends Controller
             $satuan = $value->satuan;
         }
         $harga_total = $total / $jumlah;
-        RekapitulasiPenjualanPemasok::create([
-            'storage_keluar_id' => $out->id,
-            'tanggal_penjualan' => $out->waktu,
-            'no_penjualan' => $out->kode,
-            'no_kwitansi' => $kwitansi->kode,
-            'no_surat_jalan' => $surat->kode,
-            'nama_pembeli' => $out->pemesananKeluarBulky->nama_pemesan,
-            'barang' => $out->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->nama_barang,
-            'jumlah' => $jumlah,
-            'satuan' => $satuan,
-            'harga' => $harga_total,
-            'total' => $total
-        ]);
+        if ($pesanan->metode_pembayaran != null) {
+            RekapitulasiPenjualanPemasok::create([
+                'storage_keluar_id' => $out->id,
+                'tanggal_penjualan' => $out->waktu,
+                'no_penjualan' => $out->kode,
+                'no_kwitansi' => $kwitansi->kode,
+                'no_surat_jalan' => $surat->kode,
+                'nama_pembeli' => $out->pemesananKeluarBulky->nama_pemesan,
+                'barang' => $out->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->nama_barang,
+                'jumlah' => $jumlah,
+                'satuan' => $satuan,
+                'harga' => $harga_total,
+                'total' => $total
+            ]);
+        } else {
+            RekapitulasiPenjualanPemasok::create([
+                'storage_keluar_id' => $out->id,
+                'tanggal_penjualan' => $out->waktu,
+                'no_penjualan' => $out->kode,
+                // 'no_kwitansi' => $kwitansi->kode,
+                'no_surat_jalan' => $surat->kode,
+                'nama_pembeli' => $out->pemesananKeluarBulky->nama_pemesan,
+                'barang' => $out->pemesananKeluarBulky->barangKeluarPemesananBulky[0]->nama_barang,
+                'jumlah' => $jumlah,
+                'satuan' => $satuan,
+                'harga' => $harga_total,
+                'total' => $total
+            ]);
+        }
 
         $pesanan->update(['status'=>'4']);
-        return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        if ($pesanan->metode_pembayaran == null) {
+            return redirect('/v1/surat-piutang-bulky-pemasok/create?id='.$out->id);
+        } else {
+            return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        }
     }
 
     /**

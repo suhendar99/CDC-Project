@@ -11,6 +11,7 @@ use DateTime;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 
 class LaporanPemasokController extends Controller
 {
@@ -34,6 +35,8 @@ class LaporanPemasokController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -49,7 +52,8 @@ class LaporanPemasokController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageKeluarPemasok::with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->pathPenjualan.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -60,14 +64,15 @@ class LaporanPemasokController extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = StorageKeluarPemasok::with('user','pemasok','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->with('user','pemasok','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
+                // dd($data);
 
                 $pdf = PDF::loadview($this->pathPenjualan.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan'.$akhir.'.pdf');
                 return view($this->pathPenjualan.'pdf',compact('data','awal','akhir','month'));
             }
-            $null  = StorageKeluarPemasok::all();
+            $null  = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->get();
             if ($null == null) {
                 return back()->with('error','Tidak ada data !');
             }
@@ -84,6 +89,8 @@ class LaporanPemasokController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -94,7 +101,8 @@ class LaporanPemasokController extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = StorageKeluarPemasok::all();
+            $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->get();
+            // dd($data);
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
@@ -118,6 +126,8 @@ class LaporanPemasokController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -133,7 +143,7 @@ class LaporanPemasokController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = Barang::with('pemasok')->whereRaw('MONTH(created_at) = '.$bulan)->get();
+                $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereRaw('MONTH(created_at) = '.$bulan)->get();
 
                 $pdf = PDF::loadview($this->pathStok.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -144,14 +154,14 @@ class LaporanPemasokController extends Controller
                 if ($akhir < $awal) {
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
-                $data = Barang::with('pemasok')->whereBetween('created_at',[$awal, $akhir])->latest()->get();
+                $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereBetween('created_at',[$awal, $akhir])->latest()->get();
 
                 $pdf = PDF::loadview($this->pathStok.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan'.$akhir.'.pdf');
                 return view($this->pathStok.'pdf',compact('data','awal','akhir','month'));
             }
-            $null  = Barang::all();
+            $null  = Barang::where('pemasok_id',Auth::user()->pemasok->id)->get();
             if ($null == null) {
                 return back()->with('error','Tidak ada data !');
             }
@@ -168,6 +178,8 @@ class LaporanPemasokController extends Controller
                 'awal' => 'required',
                 'akhir' => 'required'
             ]);
+        } else {
+            return redirect()->back()->with('failed','Mohon Isi Bulan / Tanggal Terlebih Dahulu!');
         }
 
         if ($v->fails()) {
@@ -178,7 +190,7 @@ class LaporanPemasokController extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = Barang::all();
+            $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->get();
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }

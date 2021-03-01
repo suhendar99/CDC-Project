@@ -417,23 +417,23 @@
                             </li>
                         </ul>
                     </li>
-                    {{-- <li class="
-                        {{ Request::is('v1/piutangIn*') ? 'active' : false }}
-                        {{ Request::is('v1/piutangOut*') ? 'active' : false }}
+                    <li class="
+                        {{ Request::is('v1/piutang-pemasok*') ? 'active' : false }}
+                        {{ Request::is('v1/piutang-retail*') ? 'active' : false }}
                     ">
                         <a href="#piutangSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">money_off</i>Piutang</a>
                         <ul class="collapse list-unstyled
-                            {{ Request::is('v1/piutangIn*') ? 'show' : false }}
-                            {{ Request::is('v1/piutangOut*') ? 'show' : false }}
+                            {{ Request::is('v1/piutang-pemasok*') ? 'show' : false }}
+                            {{ Request::is('v1/piutang-retail*') ? 'show' : false }}
                         " id="piutangSubmenu">
-                            <li class="{{ Request::is('v1/piutangIn*') ? 'active' : false }}">
-                                <a href="{{route('piutangIn.index')}}">Piutang dari Retail</a>
+                            <li class="{{ Request::is('v1/piutang-retail*') ? 'active' : false }}">
+                                <a href="{{route('piutang-retail.index')}}">Piutang dari Retail</a>
                             </li>
-                            <li class="{{ Request::is('v1/piutangOut*') ? 'active' : false }}">
-                                <a href="{{route('piutangOut.index')}}">Piutang ke Petani</a>
+                            <li class="{{ Request::is('v1/piutang-pemasok*') ? 'active' : false }}">
+                                <a href="{{route('piutang-pemasok.index')}}">Piutang ke Pemasok</a>
                             </li>
                         </ul>
-                    </li> --}}
+                    </li>
                     <li class="
                         {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'active' : false }}

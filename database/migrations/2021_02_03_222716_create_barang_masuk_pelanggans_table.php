@@ -24,8 +24,9 @@ class CreateBarangMasukPelanggansTable extends Migration
             $table->bigInteger('jumlah');
             $table->string('satuan', 50);
             $table->dateTime('waktu');
-            $table->string('nomor_kwitansi', 50);
-            $table->text('foto_kwitansi');
+            $table->string('nomor_kwitansi', 50)->nullable();
+            $table->text('foto_kwitansi')->nullable();
+            $table->text('foto_surat_piutang')->nullable();
             $table->string('nomor_surat_jalan', 50);
             $table->text('foto_surat_jalan');
             $table->timestamps();

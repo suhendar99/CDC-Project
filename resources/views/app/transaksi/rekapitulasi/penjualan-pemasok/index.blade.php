@@ -33,7 +33,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5>Total Pembelian : Rp. {{Number_format($total,0,',','.')}}</h5>
+                                <h5>Total Penjualan : Rp. {{Number_format($total,0,',','.')}}</h5>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -51,7 +51,7 @@
                                 <th>No</th>
                                 <th>Tanggal Penjualan</th>
                                 <th>No Penjualan</th>
-                                <th>No Kwitansi</th>
+                                <th>No Kwitansi / No Surat Piutang</th>
                                 <th>No Surat Jalan</th>
                                 <th>Nama Pembeli</th>
                                 <th>Nama Barang</th>

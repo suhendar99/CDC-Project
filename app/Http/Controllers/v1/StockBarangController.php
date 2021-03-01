@@ -36,10 +36,10 @@ class StockBarangController extends Controller
             }
         }
 
-        $arr['satuan'] = $data->satuan;   
-        $arr['nama_barang'] = $data->nama_barang;   
-        $arr['jumlah'] = $standar;   
-        $arr['harga_beli'] = $total;   
+        $arr['satuan'] = $data->satuan;
+        $arr['nama_barang'] = $data->nama_barang;
+        $arr['jumlah'] = $standar;
+        $arr['harga_beli'] = $total;
 
         // dd($base_harga);
         $base_harga = (object) $arr;
@@ -80,10 +80,10 @@ class StockBarangController extends Controller
 
         $foto_barang = $request->file('foto');
         $nama_barang = "RTL".time()."_".$foto_barang->getClientOriginalName();
-        $foto_barang->move(public_path("upload/foto/barang/retail"), $nama_barang);
+        $foto_barang->move("upload/foto/barang/retail", $nama_barang);
 
         StockBarang::findOrFail($id)->update([
-            'foto_barang' => 'upload/foto/barang/retail/'.$nama_barang 
+            'foto_barang' => 'upload/foto/barang/retail/'.$nama_barang
         ]);
 
         return redirect(route('storage.index'))->with('success', __( 'Foto telah diunggah.' ));

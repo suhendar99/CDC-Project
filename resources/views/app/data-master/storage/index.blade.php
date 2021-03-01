@@ -1,6 +1,6 @@
 @php
         $icon = 'storage';
-        $pageTitle = 'Data Penyimpanan';
+        $pageTitle = 'Data Penyimpanan (Stok)';
         // $dashboard = true;
         // $admin = true;
         // $rightbar = true;
@@ -61,7 +61,7 @@
                                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Waktu</th>
+                                                <th>Waktu Penyimpanan Barang</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Stok Barang</th>
@@ -78,8 +78,8 @@
                                     <table id="table_masuk" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>DateTime</th>
-                                                <th>Kode Penyimpanan / Barcode</th>
+                                                <th>Waktu Barang Masuk</th>
+                                                <th>Kode Penyimpanan</th>
                                                 <th>Nama Gudang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Jumlah Barang Masuk</th>
@@ -102,6 +102,9 @@
                                                 <li class="nav-item">
                                                     <a href="#sub-surat-jalan" class="nav-link rounded" id="sub-keluar-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Jalan</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                    <a href="#sub-surat-piutang" class="nav-link rounded" id="sub-piutang-tab" data-toggle="pill" role="tab" aria-controls="sub-keluar" aria-selected="false" >Surat Piutang</a>
+                                                </li>
                                             </ul>
                                         </div>
                                         <div class="col-md-12 pt-4">
@@ -111,8 +114,8 @@
                                                     <table id="table_keluar" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>DateTime</th>
-                                                                <th>Kode Penyimpanan / Barcode</th>
+                                                                <th>Waktu Barang Keluar</th>
+                                                                <th>Kode Penyimpanan</th>
                                                                 <th>Nama Gudang</th>
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
@@ -128,7 +131,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Pembuatan Kwitansi</th>
                                                                 <th>Pembayar</th>
                                                                 <th>Jumlah Uang</th>
                                                                 <th>No Pemesanan</th>
@@ -143,10 +146,26 @@
                                                     <table id="table_surat_jalan" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                         <thead>
                                                             <tr>
-                                                                <th>No</th>
-                                                                <th>Waktu</th>
+                                                                <th>Waktu Pembuatan Surat Jalan</th>
+                                                                <th>Kode Surat Jalan</th>
                                                                 <th>Pengirim</th>
                                                                 <th>Penerima</th>
+                                                                <th>Tempat</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="sub-surat-piutang" role="tabpanel" aria-labelledby="sub-home-tab">
+                                                    <h4>Surat Piutang</h4>
+                                                    <table id="table_surat_piutang" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Tanggal Pembuatan Surat Piutang</th>
+                                                                <th>No Pemesanan (Invoice)</th>
+                                                                <th>Pihak Pertama</th>
+                                                                <th>Pihak Kedua</th>
                                                                 <th>Tempat</th>
                                                                 <th>Action</th>
                                                             </tr>
@@ -255,7 +274,7 @@
                   <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>DateTime</th>
+                            <th>Waktu Penyimpanan Barang</th>
                             <th>Kode Masuk Barang</th>
                             <th>Jumlah Barang</th>
                             <th>Rak</th>
@@ -307,7 +326,7 @@
         </div>
         <div class="modal-footer" style="border-bottom: 5px solid #ffa723;">
             <div class="float-left" id="foto-load">
-                
+
             </div>
           <button type="button" class="btn btn-secondary btn-sm float-rigth" data-dismiss="modal">Close</button>
         </div>
@@ -378,11 +397,7 @@
             ajax : "{{ route('kwitansi.index') }}",
             columns : [
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : function(data){
-                        let current_datetime = new Date(data.created_at);
-                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
-
-                    }, name: 'waktu'},
+                {data : 'created_at', name: 'created_at'},
                 {data : 'terima_dari', name: 'pembayar'},
                 {data : 'jumlah_uang_digits', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
@@ -405,11 +420,7 @@
             ajax : "{{ route('surat-jalan.index') }}",
             columns : [
                 // {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
-                {data : function(data){
-                        let current_datetime = new Date(data.created_at);
-                        return current_datetime.getFullYear() + "-" + (current_datetime.getMonth() + 1) + "-" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds();
-
-                    }, name: 'waktu'},
+                {data : 'created_at', name: 'created_at'},
                 {data : 'kode', name: 'kode'},
                 {data : 'pengirim', name: 'pengirim'},
                 {data : 'penerima', name: 'penerima'},
@@ -445,6 +456,24 @@
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
+                {data : 'action', name: 'action'}
+            ]
+        });
+
+        let table_surat_piutang = $('#table_surat_piutang').DataTable({
+            processing : true,
+            serverSide : true,
+            responsive: true,
+            ordering : false,
+            pageLength : 10,
+            ajax : "{{ route('surat-piutang-warung-retail.index') }}",
+            columns : [
+                {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
+                {data : 'created_at', name: 'created_at'},
+                {data : 'invoice', name: 'invoice'},
+                {data : 'pihak_pertama', name: 'pihak_pertama'},
+                {data : 'pihak_kedua', name: 'pihak_kedua'},
+                {data : 'tempat', name: 'tempat'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -538,7 +567,7 @@
                     if (foto !== null) {
                       $('#tempat-foto').html(`<img src="{{ asset('') }}${foto}" alt="" width="100%">`);
                     } else {
-                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)     
+                      $('#tempat-foto').html(`<img src="{{ asset('/images/image-not-found.jpg') }}" alt="" width="100%">`)
                     }
 
                 },
@@ -624,7 +653,7 @@
             $('#btn-action').html(`<a href="{{route('storage.in.create')}}" class="btn btn-success btn-sm">+ Data Barang Masuk</a>`);
         }
         function storageOut() {
-            $('#btn-action').html(`<a href="/v1/storage/out/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
+            // $('#btn-action').html(`<a href="/v1/storage/out/create?id=0" class="btn btn-success btn-sm">+ Data Barang Keluar</a>`);
         }
         function cleanBtn() {
             $('#btn-action').empty();

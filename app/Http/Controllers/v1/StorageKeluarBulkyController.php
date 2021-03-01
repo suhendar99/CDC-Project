@@ -33,7 +33,7 @@ class StorageKeluarBulkyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+        public function index(Request $request)
     {
         if($request->ajax()){
             $data = StorageKeluarBulky::with('barangBulky.barang', 'bulky', 'pemesananBulky')
@@ -116,15 +116,28 @@ class StorageKeluarBulkyController extends Controller
     public function create(Request $request)
     {
         // dd($request->query());
+        $user_id = Auth::user()->id;
         $gudang = GudangBulky::all();
-        $pemesanan = PemesananBulky::doesntHave('storageKeluarBulky')
+        $pemesanan = PemesananBulky::with('bulky.user')->doesntHave('storageKeluarBulky')
+        ->whereHas('bulky', function($q)use($user_id){
+            $q->whereHas('user', function($q)use($user_id){
+                $q->whereId($user_id);
+            });
+        })
         ->where('status', '2')
         ->orWhere('status','6')
         ->get();
+        
 
         // dd($pemesanan);
 
         $poci = $request->query('pemesanan', null);
+        
+        if($poci != null){
+            $selected = PemesananBulky::findOrFail($poci);
+        } else {
+            $selected = null;
+        }
         // dd($poci);
         $surat = SuratJalanBulky::all();
         $number = $surat->count();
@@ -132,7 +145,7 @@ class StorageKeluarBulkyController extends Controller
         $date = date("ymdHis");
         $kode_surat = sprintf("%04s",abs($number+1));
 
-        return view('app.data-master.storageBulky.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci'));
+        return view('app.data-master.storageBulky.out.create', compact('gudang', 'pemesanan', 'kode_surat', 'poci','selected'));
     }
 
     /**
@@ -143,21 +156,31 @@ class StorageKeluarBulkyController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         set_time_limit(120);
-        $v = Validator::make($request->all(),[
-            // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
-            // 'gudang_id' => 'required|exists:gudangs,id',
-            'pemesanan_bulky_id' => 'required|exists:pemesanan_bulkies,id',
-            // 'pengirim' => 'required|string|max:50',
-            'terima_dari' => 'required|string|max:50',
-            'jumlah_uang_digits' => 'required|integer',
-            'jumlah_uang_word' => 'required|string',
-            'keterangan' => 'required|string',
-            'tempat' => 'required|string',
-            'profil_lembaga' => 'required|string|max:6|min:3'
-            // 'tanggal_surat' => 'required|date'
-            // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
-        ]);
+
+        if($request->status_piutang == 0){
+            $v = Validator::make($request->all(),[
+                // 'barang_kode' => 'required|numeric|exists:barangs,kode_barang',
+                // 'gudang_id' => 'required|exists:gudangs,id',
+                'pemesanan_bulky_id' => 'required|exists:pemesanan_bulkies,id',
+                // 'pengirim' => 'required|string|max:50',
+                'terima_dari' => 'required|string|max:50',
+                'jumlah_uang_digits' => 'required|integer',
+                'jumlah_uang_word' => 'required|string',
+                'keterangan' => 'required|string',
+                'tempat' => 'required|string',
+                'profil_lembaga' => 'required|string|max:6|min:3'
+                // 'tanggal_surat' => 'required|date'
+                // 'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            ]);
+        } else {
+            $v = Validator::make($request->all(),[
+                'pemesanan_bulky_id' => 'required|exists:pemesanan_bulkies,id',
+                'profil_lembaga' => 'required|string|max:6|min:3',
+                'tempat' => 'required|string',
+            ]);
+        }
 
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
@@ -270,11 +293,6 @@ class StorageKeluarBulkyController extends Controller
         //     'satuan' => $pesan->satuan,
         //     'waktu' => Carbon::now()
         // ]);
-        $log = LogTransaksi::create([
-            'tanggal' => now('Asia/Jakarta'),
-            'jam' => now('Asia/Jakarta'),
-            'aktifitas_transaksi' => 'Pengiriman Barang'
-        ]);
 
         $kodex = $pesanan->barangPesananBulky;
 
@@ -336,12 +354,14 @@ class StorageKeluarBulkyController extends Controller
 
         $date = date('d-m-Y');
 
-        $kwitansi = KwitansiBulky::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_bulky_id', 'tempat', 'keterangan')+[
-            'user_id' => auth()->user()->id,
-            'kode' => $kode_kwi,
-            'bulky_id' => $gudang->id,
-            'tanggal' => now('Asia/Jakarta')
-        ]);
+        if($request->status_piutang == 0){
+            $kwitansi = KwitansiBulky::create($request->only('terima_dari', 'jumlah_uang_digits', 'jumlah_uang_word', 'pemesanan_bulky_id', 'tempat', 'keterangan')+[
+                'user_id' => auth()->user()->id,
+                'kode' => $kode_kwi,
+                'bulky_id' => $gudang->id,
+                'tanggal' => now('Asia/Jakarta')
+            ]);
+        }
 
         $surat = SuratJalanBulky::create($request->only('tempat', 'pemesanan_bulky_id')+[
             'pengirim' => auth()->user()->pengurusGudangBulky->nama,
@@ -351,13 +371,15 @@ class StorageKeluarBulkyController extends Controller
             'tanggal' => now('Asia/Jakarta')
         ]);
 
-        $counterKwitansi = $kwitansi->count();
-        $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
-        $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print_bulky', [
-            'data' => $kwitansi,
-            'date' => $date,
-            'kode' => $pdfKodeKwi
-        ]);
+        if($request->status_piutang == 0){
+            $counterKwitansi = $kwitansi->count();
+            $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
+            $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print_bulky', [
+                'data' => $kwitansi,
+                'date' => $date,
+                'kode' => $pdfKodeKwi
+            ]);
+        }
 
         $counterSJ = $surat->count();
         $pdfKodeSJ = sprintf("%'.04d", (String)$counterSJ);
@@ -367,6 +389,9 @@ class StorageKeluarBulkyController extends Controller
             'kode' => $pdfKodeSJ
         ]);
         // $pesanan->retail->user->email
+        if($request->status_piutang == 1){
+            $pdfKwitansi = 'none';
+        }
         Mail::to($pesanan->retail->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->first();
@@ -381,7 +406,7 @@ class StorageKeluarBulkyController extends Controller
             'storage_keluar_bulky_id' => $out->id,
             'tanggal_penjualan' => $out->waktu,
             'no_penjualan' => $out->kode,
-            'no_kwitansi' => $kwitansi->kode,
+            'no_kwitansi' => (isset($kwitansi->kode) ? $kwitansi->kode : null),
             'no_surat_jalan' => $surat->kode,
             'nama_pembeli' => $out->pemesananBulky->nama_pemesan,
             'barang' => $out->pemesananBulky->barangPesananBulky->nama_barang,
@@ -397,8 +422,11 @@ class StorageKeluarBulkyController extends Controller
             'aktifitas_transaksi' => 'Barang Keluar',
             'role' => 'Bulky'
         ]);
-
-        return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        if ($pesanan->metode_pembayaran == null) {
+            return redirect('/v1/surat-piutang-retail-bulky/create?id='.$out->id);
+        } else {
+            return redirect('/v1/bulky/storage')->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
+        }
     }
 
     /**

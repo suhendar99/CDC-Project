@@ -21,7 +21,7 @@ class CreateStorageInsTable extends Migration
             // $table->foreignId('storage_keluar_bulky_id')->constrained('storage_keluar_bulkies')->onDelete('cascade');
             $table->foreignId('barang_bulky_id')->constrained('stock_barang_bulkies')->onDelete('cascade');
             $table->foreignId('pemesanan_bulky_id')->constrained('pemesanan_bulkies')->onDelete('cascade');
-            // $table->foreignId('storage_bulky_id')->constrained('storage_bulkies')->onDelete('cascade'); 
+            // $table->foreignId('storage_bulky_id')->constrained('storage_bulkies')->onDelete('cascade');
             // $table->foreignId('barang_kode')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->foreignId('gudang_id')->constrained('gudangs')->onDelete('cascade');
             $table->foreignId('tingkat_id')->nullable()->constrained('tingkatan_raks')->onDelete('cascade');
@@ -31,8 +31,9 @@ class CreateStorageInsTable extends Migration
             $table->string('nama_barang', 50);
             $table->float('jumlah', 11, 2);
             $table->foreignId('satuan_id')->constrained('satuans')->onDelete('cascade');
-            $table->string('nomor_kwitansi', 50);
-            $table->text('foto_kwitansi');
+            $table->string('nomor_kwitansi', 50)->nullable();
+            $table->text('foto_kwitansi')->nullable();
+            $table->text('foto_surat_piutang')->nullable();
             $table->string('nomor_surat_jalan', 50);
             $table->text('foto_surat_jalan');
             $table->timestamps();

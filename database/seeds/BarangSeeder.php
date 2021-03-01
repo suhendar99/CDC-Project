@@ -15,7 +15,7 @@ class BarangSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create('id_ID');
-        $harga = 10000;
+        $harga = 100000000;
         $jumlah =  100;
         $data = array(
             [
@@ -37,8 +37,8 @@ class BarangSeeder extends Seeder
             'kode_barang' => $faker->unique()->ean13,
             'nama_barang' => 'Jagung Belanda',
             'jumlah' => 100,
-            'harga_barang' => 12000,
-            'harga_total' => 12000 * 100,
+            'harga_barang' => 120000000,
+            'harga_total' => 120000000 * 100,
             'satuan' => 'Ton'
         ]);
     }

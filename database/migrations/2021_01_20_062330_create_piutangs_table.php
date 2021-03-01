@@ -15,11 +15,12 @@ class CreatePiutangsTable extends Migration
     {
         Schema::create('piutangs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('barang_id')->constrained('pemesanans')->onDelete('cascade');
+            $table->foreignId('pemesanan_id')->constrained('pemesanans')->onDelete('cascade');
             $table->date('tanggal');
             $table->string('nama_pembeli', 50);
-            $table->date('jatuh_tempo')->nullable();
+            $table->date('jatuh_tempo');
             $table->integer('hutang');
+            $table->integer('jumlah_terbayar')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

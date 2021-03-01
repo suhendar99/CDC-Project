@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Barang Keluar Dari Gudang</title>
+	<title>Laporan Barang Keluar Dari Gudang</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +107,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Barang Keluar Dari Gudang</h3>
+            <h3>Laporan Barang Keluar Dari Gudang</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
@@ -139,11 +139,11 @@
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{ $a->waktu }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
-                    <td>{{ $a->barang->nama_barang }}</td>
+                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->stockBarangRetail->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->stockBarangRetail->nama_barang }}</td>
                     <td>{{ $a->gudang->nama }}</td>
                     <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
+                    <td>{{ $a->jumlah }} {{ $a->satuan->nama }}</td>
                 </tr>
             @endforeach
         </tbody>
