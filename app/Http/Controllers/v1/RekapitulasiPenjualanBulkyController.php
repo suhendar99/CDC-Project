@@ -26,14 +26,14 @@ class RekapitulasiPenjualanBulkyController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualanBulky::with('storageKeluarBulky')
+        $data = RekapitulasiPenjualanBulky::with('storageKeluarBulky.suratPiutangRetail')
         ->whereHas('storageKeluarBulky.bulky.akunGudangBulky', function($query){
             $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
         })
         ->orderBy('id','desc')
         ->get();
+        // dd($data);
         $total = $data->sum('total');
-        // dd($total);
         if($request->ajax()){
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -46,10 +46,18 @@ class RekapitulasiPenjualanBulkyController extends Controller
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->editColumn('no_kwitansi',function($data){
+                    if ($data->no_kwitansi != null) {
+                        return $data->no_kwitansi;
+                    } else {
+                        return $data->storageKeluarBulky->suratPiutangRetail[0]->kode;
+                    }
+
+                })
                 ->rawColumns(['action','jumlah'])
                 ->make(true);
         }
-        return view($this->path.'index', compact('total'));
+        return view('app.transaksi.rekapitulasi.penjualan-bulky.index', compact('total'));
     }
 
     public function downloadRekapitulasiPenjualanPdf(Request $request)

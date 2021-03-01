@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportPiutangBulky;
 use App\Http\Controllers\Controller;
 use App\Models\PiutangBulky;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class PiutangPemasokController extends Controller
 {
@@ -17,7 +23,13 @@ class PiutangPemasokController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = PiutangBulky::with('pemesananKeluarBulky')->where('status','=',0)->orderBy('id','desc')->get();
+            $data = PiutangBulky::with('pemesananKeluarBulky.bulky')
+            ->whereHas('pemesananKeluarBulky.bulky',function($q){
+                $q->where('user_id',Auth::user()->id);
+            })
+            ->where('status','=',0)
+            ->orderBy('id','desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('hutang', function($data){
@@ -33,6 +45,71 @@ class PiutangPemasokController extends Controller
                 ->make(true);
         }
         return view('app.data-master.piutang-bulky.keluar-pemasok.index');
+    }
+
+    public function printPdf(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else{
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = PiutangBulky::with('pemesananKeluarBulky.bulky')
+                ->whereHas('pemesananKeluarBulky.bulky',function($q){
+                    $q->where('user_id',Auth::user()->id);
+                })
+                ->whereRaw('MONTH(tanggal) = '.$bulan)
+                ->where('status','=',0)
+                ->orderBy('id','desc')
+                ->get();
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
+                $pdf = PDF::loadview('app.data-master.piutang-bulky.keluar-pemasok.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan-Piutang'.$dateObj->format('F').'.pdf');
+                return view('app.data-master.piutang-bulky.keluar-pemasok.pdf',compact('data','sumber','month'));
+
+            }
+        }
+    }
+
+    public function printExcel(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = PiutangBulky::with('pemesananKeluarBulky.bulky')
+        ->whereHas('pemesananKeluarBulky.bulky',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->whereRaw('MONTH(tanggal) = '.$bulan)
+        ->where('status','=',0)
+        ->orderBy('id','desc')
+        ->get();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportPiutangBulky($data))->download('Rekapitulasi-Piutang-'.Carbon::now().'.xlsx');
     }
 
     /**

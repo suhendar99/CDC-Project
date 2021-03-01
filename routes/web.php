@@ -316,8 +316,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             ]);
         });
         // Piutang
+        // Retail Ke Bulky
         Route::resource('piutang-retail', 'PiutangRetailController');
+        Route::post('print-piutang-retail-pdf', 'PiutangRetailController@printPdf')->name('print-piutang-retail-pdf');
+        Route::post('print-piutang-retail-excel', 'PiutangRetailController@printExcel')->name('print-piutang-retail-excel');
+        // Retail Ke Pemasok
         Route::resource('piutang-pemasok', 'PiutangPemasokController');
+        Route::post('print-piutang-pemasok-pdf', 'PiutangPemasokController@printPdf')->name('print-piutang-pemasok-pdf');
+        Route::post('print-piutang-pemasok-excel', 'PiutangPemasokController@printExcel')->name('print-piutang-pemasok-excel');
         // End Piutang
         Route::get('konfirmasi/penawaran/{id}','PenawaranPemasokController@konfirmasi')->name('konfirmasi.penawaran');
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
@@ -443,10 +449,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rekapitulasi Penjualan Bulky
         Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
-        Route::post('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
+        Route::post('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyCon troller@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
         Route::post('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
 
         // Laba Bulky
+        Route::post('bulky/laba-rugi-pdf','LabaRugiBulkyController@printPdf')->name('print-laba-rugi-bulky-pdf');
+        Route::post('bulky/laba-rugi-excel','LabaRugiBulkyController@printExcel')->name('print-laba-rugi-bulky-excel');
         Route::resource('bulky/laba-rugi', 'LabaRugiBulkyController', [
             'names' => [
                 'index' => 'bulky.laba-rugi.index',
