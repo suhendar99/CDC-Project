@@ -6,7 +6,10 @@ use App\Exports\ExportPiutang;
 use App\Http\Controllers\Controller;
 use App\Models\Piutang;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
 
@@ -32,7 +35,11 @@ class PiutangController extends Controller
         //     }
         // }
         if($request->ajax()){
-            $data = Piutang::with('pemesanan')->where('status','=',0)->orderBy('id','desc')->get();
+            $data = Piutang::with('pemesanan.gudang')
+            ->whereHas('pemesanan.gudang',function($q){
+                $q->where('user_id',Auth::user()->id);
+            })
+            ->where('status','=',0)->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('hutang', function($data){
@@ -50,27 +57,67 @@ class PiutangController extends Controller
         return view($this->path.'index');
     }
 
-    public function exportPdf()
+    public function printPdf(Request $request)
     {
-        $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
-        if ($data->isEmpty()) {
-            return back()->with('failed','Data Kosong !');
-        } else {
-            $pdf = PDF::loadview($this->path.'pdf',compact('data'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
-            set_time_limit(300);
-            return $pdf->stream('Data-Piutang-'.Carbon::now());
-            return view($this->path.'pdf',compact('data'));
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else{
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+
+                $data = Piutang::with('pemesanan.gudang')
+                ->whereHas('pemesanan.gudang',function($q){
+                    $q->where('user_id',Auth::user()->id);
+                })
+                ->whereRaw('MONTH(tanggal) = '.$bulan)
+                ->where('status','=',0)->orderBy('id','desc')->get();
+
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
+                $pdf = PDF::loadview('app.data-master.piutang.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan-Piutang'.$dateObj->format('F').'.pdf');
+                return view('app.data-master.piutang.pdf',compact('data','sumber','month'));
+
+            }
         }
     }
 
-    public function exportExcel()
+    public function printExcel(Request $request)
     {
-        $data = Piutang::where('status',1)->orderBy('jatuh_tempo','desc')->get();
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = Piutang::with('pemesanan.gudang')
+        ->whereHas('pemesanan.gudang',function($q){
+            $q->where('user_id',Auth::user()->id);
+        })
+        ->whereRaw('MONTH(tanggal) = '.$bulan)
+        ->where('status','=',0)->orderBy('id','desc')->get();
         if($data->count() < 1){
             return back()->with('failed','Data Kosong!');
         }
         set_time_limit(99999);
-        return (new ExportPiutang($data))->download('Data-Piutang-'.Carbon::now().'.xlsx');
+        return (new ExportPiutang($data))->download('Rekapitulasi-Piutang-'.Carbon::now().'.xlsx');
     }
     /**
      * Show the form for creating a new resource.

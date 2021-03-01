@@ -282,6 +282,8 @@ class StorageInController extends Controller
             'storage_in_id' => $masuk->id,
             'tanggal_pembelian' => $masuk->waktu,
             'no_pembelian' => $masuk->kode,
+            'no_kwitansi' => $request->nomor_kwitansi,
+            'no_surat_jalan' => $request->nomor_surat_jalan,
             'nama_penjual' => $masuk->barangBulky->barang->pemasok->nama,
             'barang' => $masuk->barangBulky->barang->nama_barang,
             'jumlah' => $masuk->jumlah,

@@ -14,11 +14,11 @@
     <thead>
     <tr>
         <th style="border: 1px solid black">No</th>
-        <th style="border: 1px solid black">Waktu Barang Masuk</th>
+        <th style="border: 1px solid black">Waktu Barang Keluar</th>
         <th style="border: 1px solid black">Kode Barang</th>
         <th style="border: 1px solid black">Nama Barang</th>
         <th style="border: 1px solid black">Nama Gudang</th>
-        <th style="border: 1px solid black">Kode Barang Masuk</th>
+        <th style="border: 1px solid black">Kode Barang Keluar</th>
         <th style="border: 1px solid black">Jumlah</th>
     </tr>
     </thead>

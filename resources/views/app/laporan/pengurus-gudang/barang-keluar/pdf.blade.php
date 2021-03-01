@@ -126,11 +126,11 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Waktu Barang Masuk</th>
+                <th>Waktu Barang Keluar</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Nama Gudang</th>
-                <th>Kode Barang Masuk</th>
+                <th>Kode Barang Keluar</th>
                 <th>Jumlah</th>
         </thead>
         <tbody>
@@ -139,10 +139,10 @@
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{ $a->waktu }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->stockBarangRetail->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->stockBarangRetail->kode }}</td>
                     <td>{{ $a->stockBarangRetail->nama_barang }}</td>
                     <td>{{ $a->gudang->nama }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->kode }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan->nama }}</td>
                 </tr>
             @endforeach

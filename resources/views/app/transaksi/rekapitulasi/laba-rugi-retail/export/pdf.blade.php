@@ -1,25 +1,12 @@
 @php
-	// $count = $data->count();
-	// $smax = $data->max('suhu');
-	// $smin = $data->min('suhu');
-	// $savg = $data->avg('suhu');
-	// $tmax = $data->max('tegangan');
-	// $tmin = $data->min('tegangan');
-	// $tavg = $data->avg('tegangan');
-	// $amax = $data->max('arus');
-	// $amin = $data->min('arus');
-	// $aavg = $data->avg('arus');
-    // $set = App\Models\PengaturanLaporan::find(1)->first();
-    // $judul = App\Models\JudulLaporan::where('id','1')->first();
-    // $date = date("d M Y");
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    // dd($data);
+    $title = 'Laporan Rekapitulasi Penjualan'
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Barang Masuk Ke Gudang</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -121,10 +108,10 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>Laporan Barang Masuk Ke Gudang</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
-		<tr>
+		{{-- <tr>
 			@if ($month != null)
             <td rowspan="2" style="text-align:left; font-size:13px;">
 				Sumber Data : {{ $sumber }}
@@ -134,39 +121,39 @@
 				Waktu : {{$awal}} s.d. {{$akhir}}
 			</td>
             @endif
-		</tr>
+		</tr> --}}
 	</table>
     <table width="100%" style="margin-bottom: -10px; " id="customers">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Waktu Barang Masuk</th>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Nama Gudang</th>
-                <th>Kode Barang Masuk</th>
-                <th>Jumlah</th>
+                <th>Waktu Pencatatan</th>
+                <th>Laba Kotor</th>
+                <th>Penjualan</th>
+                <th>Pembelian</th>
+                <th>Biaya Operasional</th>
+                <th>Laba Bersih</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $a->waktu }}</td>
-                    <td>{{ $a->barangBulky->barang_kode }}</td>
-                    <td>{{ $a->barangBulky->nama_barang }}</td>
-                    <td>{{ $a->gudang->nama }}</td>
-                    <td>{{ $a->kode }}</td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan->nama }}</td>
+                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_kotor,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->penjualan,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->pembelian,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->biaya_operasional,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_bersih,0,',','.') }}</td>
                 </tr>
             @endforeach
         </tbody>
 	</table>
 
-	<div style="float: right; margin-top:30px;">
+	{{-- <div style="float: right; margin-top:30px;">
         Bandung,  {{$date}}<br><br><br><br>
 		{{Auth::user()->pengurusGudang->nama}}
-	</div>
+	</div> --}}
 	<div id="footer">
 	  <div class="page-number"></div>
 	</div>

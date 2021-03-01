@@ -2,15 +2,13 @@
 
 namespace App\Exports;
 
-use App\Models\StorageOut;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Auth;
 
-class ExportLaporanBarangKeluar implements FromView,ShouldAutoSize
+class ExportLabaRugiRetail implements FromView,ShouldAutoSize
 {
     use Exportable;
 
@@ -18,7 +16,7 @@ class ExportLaporanBarangKeluar implements FromView,ShouldAutoSize
 
     function __construct($data){
         $this->data = $data;
-        $this->path = 'app.laporan.pengurus-gudang.barang-keluar.';
+        $this->path = 'app.transaksi.rekapitulasi.laba-rugi-retail.export.';
     }
     public function view(): View
     {

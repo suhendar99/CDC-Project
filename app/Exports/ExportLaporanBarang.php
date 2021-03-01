@@ -14,35 +14,15 @@ class ExportLaporanBarang implements FromView,ShouldAutoSize
 {
     use Exportable;
 
-    public $awal;
-    public $akhir;
-    public $bulan;
-    public $month;
-    public $hii;
+    public $data;
 
-    function __construct($awal,$akhir,$bulan,$month,$hii){
-        $this->awal = $awal;
-        $this->akhir = $akhir;
-        $this->bulan = $bulan;
-        $this->month = $month;
-        $this->hii = $hii;
+    function __construct($data){
+        $this->data = $data;
         $this->path = 'app.laporan.pengurus-gudang.barang.';
     }
     public function view(): View
     {
-        $gudang_saya = [];
-        foreach(Auth::user()->pengurusGudang->gudang as $gudang){
-            $gudang_saya[] = $gudang->id;
-        }
-        if ($this->bulan != null && $this->month) {
-            $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
-                $q->whereIn('gudang_id',$gudang_saya);
-            })->with('storageIn')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
-        } elseif ($this->awal != null && $this->akhir != null) {
-            $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
-                $q->whereIn('gudang_id',$gudang_saya);
-            })->whereBetween('waktu',[$this->awal, $this->akhir])->get();
-        }
+        $data = $this->data;
         return view($this->path.'excel', compact('data'));
 
     }

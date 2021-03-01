@@ -536,6 +536,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::put('retail/storage/stock/{id}/foto', 'StockBarangController@uploadFoto')->name('retail.stock.foto');
 
         // Laba Bulky
+        Route::post('print-laba-rugi-retail-pdf','LabaRugiRetailController@printPdf')->name('print-laba-rugi-retail-pdf');
+        Route::post('print-laba-rugi-retail-excel','LabaRugiRetailController@printExcel')->name('print-laba-rugi-retail-excel');
         Route::resource('retail/laba-rugi', 'LabaRugiRetailController', [
             'names' => [
                 'index' => 'retail.laba-rugi.index',
@@ -586,14 +588,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // End Laporan
 
         // Piutang
+        // Piutang Warung Ke Retail
         Route::resource('piutangIn', 'PiutangController');
+        Route::post('print-piutangIn-pdf', 'PiutangController@printPdf')->name('print-piutangIn-pdf');
+        Route::post('print-piutangIn-excel', 'PiutangController@printExcel')->name('print-piutangIn-excel');
+        // Piutang Retail Ke Bulky
         Route::resource('piutangOut', 'PiutangOutController');
-        // PDF & EXCEL Piutang In
-        Route::get('RetailPiutangMasuk/pdf','PiutangController@exportPdf')->name('RetailPiutangMasuk.pdf');
-        Route::get('RetailPiutangMasuk/excel','PiutangController@exportExcel')->name('RetailPiutangMasuk.excel');
-        // PDF & EXCEL Piutang Out
-        Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
-        Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');
+        Route::post('print-piutangOut-pdf', 'PiutangOutController@printPdf')->name('print-piutangOut-pdf');
+        Route::post('print-piutangOut-excel', 'PiutangOutController@printExcel')->name('print-piutangOut-excel');
         // Rekapitulasi
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');
