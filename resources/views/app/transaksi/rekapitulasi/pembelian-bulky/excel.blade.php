@@ -16,8 +16,8 @@
         <th style="border: 1px solid black">No</th>
         <th style="border: 1px solid black">Tanggal Pembelian</th>
         <th style="border: 1px solid black">No Pembelian</th>
-        <th style="border: 1px solid black">No Kwitansi</th>
-        <th style="border: 1px solid black">No Surat Jalan</th>
+        {{-- <th style="border: 1px solid black">No Kwitansi</th>
+        <th style="border: 1px solid black">No Surat Jalan</th> --}}
         <th style="border: 1px solid black">Nama Penjual</th>
         <th style="border: 1px solid black">Nama Barang</th>
         <th style="border: 1px solid black">Jumlah Barang</th>
@@ -32,8 +32,8 @@
                 <td style="border: 1px solid black">{{ $no++ }}</td>
                 <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
                 <td style="border: 1px solid black">{{ $a->no_pembelian }}</td>
-                <td style="border: 1px solid black">{{ $a->no_kwitansi }}</td>
-                <td style="border: 1px solid black">{{ $a->no_surat_jalan }}</td>
+                {{-- <td style="border: 1px solid black">{{ $a->no_kwitansi }}</td>
+                <td style="border: 1px solid black">{{ $a->no_surat_jalan }}</td> --}}
                 <td style="border: 1px solid black">{{ $a->nama_penjual }}</td>
                 <td style="border: 1px solid black">{{ $a->barang }}</td>
                 <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>

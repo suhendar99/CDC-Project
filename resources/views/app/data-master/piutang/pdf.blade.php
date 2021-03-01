@@ -1,6 +1,6 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    $title = 'PDF Data Piutang'
+    $title = 'Data Piutang Masuk'
 @endphp
 
 <!DOCTYPE html>
@@ -127,8 +127,8 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>No transaksi</th>
                 <th>Waktu Transaksi</th>
+                <th>No transaksi</th>
                 <th>Nama Pembeli</th>
                 <th>Jumlah Hutang</th>
                 <th>Jatuh Tempo</th>
@@ -138,10 +138,10 @@
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $a->pemesanan->kode }}</td>
                     <td>{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
+                    <td>{{ $a->pemesanan->kode }}</td>
                     <td>{{ $a->nama_pembeli }}</td>
-                    <td>{{ $a->hutang }}</td>
+                    <td>{{ 'Rp '.number_format($a->hutang) }}</td>
                     <td>{{ $a->jatuh_tempo }}</td>
                 </tr>
             @endforeach

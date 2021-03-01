@@ -129,8 +129,8 @@
                 <th>No</th>
                 <th>Tanggal Pembelian</th>
                 <th>No Pembelian</th>
-                <th>No Kwitansi</th>
-                <th>No Surat Jalan</th>
+                {{-- <th>No Kwitansi</th>
+                <th>No Surat Jalan</th> --}}
                 <th>Nama Penjual</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
@@ -144,8 +144,8 @@
                     <td>{{ $no++ }}</td>
                     <td>{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
                     <td>{{ $a->no_pembelian }}</td>
-                    <td>{{ $a->no_kwitansi }}</td>
-                    <td>{{ $a->no_surat_jalan }}</td>
+                    {{-- <td>{{ $a->no_kwitansi }}</td>
+                    <td>{{ $a->no_surat_jalan }}</td> --}}
                     <td>{{ $a->nama_penjual }}</td>
                     <td>{{ $a->barang }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
