@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -17,11 +18,16 @@ class ExportPiutangBulky implements FromView,ShouldAutoSize
     function __construct($data){
         $this->data = $data;
         $this->path = 'app.data-master.piutangBulky.masukPemasok.';
+        $this->pathAuthBulky = 'app.data-master.piutang-bulky.keluar-pemasok.';
     }
     public function view(): View
     {
         $data = $this->data;
-        return view($this->path.'excel', compact('data'));
+        if (Auth::user()->pemasok_id != null) {
+            return view($this->path.'excel', compact('data'));
+        } elseif(Auth::user()->pengurus_gudang_bulky_id != null) {
+            return view($this->pathAuthBulky.'excel', compact('data'));
+        }
 
     }
 }

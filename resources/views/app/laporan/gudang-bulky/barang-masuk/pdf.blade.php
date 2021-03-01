@@ -145,7 +145,7 @@
                 <th>Nama Barang</th>
                 <th>Nama Gudang</th>
                 <th>Kode Barang Masuk</th>
-                <th>Jumlah</th>
+                <th>Jumlah Barang</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
@@ -153,10 +153,10 @@
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{ $a->waktu }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->barang->kode_barang }}</td>
                     <td>{{ $a->barang->nama_barang }}</td>
                     <td>{{ $a->bulky->nama }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->kode }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
                 </tr>
             @endforeach

@@ -1,6 +1,6 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    $title = 'Laporan Rekapitulasi Pembelian'
+    $title = 'Laporan Rekapitulasi Penjualan'
 @endphp
 
 <!DOCTYPE html>
@@ -127,30 +127,24 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tanggal Pembelian</th>
-                <th>No Pembelian</th>
-                <th>No Kwitansi</th>
-                <th>No Surat Jalan</th>
-                <th>Nama Penjual</th>
-                <th>Nama Barang</th>
-                <th>Jumlah Barang</th>
-                <th>Harga Barang</th>
-                <th>Total Harga Barang</th>
+                <th>Waktu Pencatatan</th>
+                <th>Laba Kotor</th>
+                <th>Penjualan</th>
+                <th>Pembelian</th>
+                <th>Biaya Operasional</th>
+                <th>Laba Bersih</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
-                    <td>{{ $a->no_pembelian }}</td>
-                    <td>{{ $a->no_kwitansi }}</td>
-                    <td>{{ $a->no_surat_jalan }}</td>
-                    <td>{{ $a->nama_penjual }}</td>
-                    <td>{{ $a->barang }}</td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                    <td>{{ 'Rp '.number_format($a->harga) }}</td>
-                    <td>{{ 'Rp '.number_format($a->total) }}</td>
+                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_kotor,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->penjualan,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->pembelian,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->biaya_operasional,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_bersih,0,',','.') }}</td>
                 </tr>
             @endforeach
         </tbody>

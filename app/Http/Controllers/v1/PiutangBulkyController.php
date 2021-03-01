@@ -23,7 +23,13 @@ class PiutangBulkyController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = PiutangBulky::with('pemesananKeluarBulky')->where('status','=',0)->orderBy('id','desc')->get();
+            $data = PiutangBulky::with('pemesananKeluarBulky')
+            ->whereHas('pemesananKeluarBulky',function($q){
+                $q->where('pemasok_id',Auth::user()->pemasok_id);
+            })
+            ->where('status','=',0)
+            ->orderBy('id','desc')
+            ->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('hutang', function($data){
@@ -57,13 +63,15 @@ class PiutangBulkyController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = PiutangBulky::with('pemesananKeluarBulky.bulky')
-                // ->whereHas('pemesananKeluarBulky.bulky',function($q){
-                //     $q->where('user_id',Auth::user()->id);
-                // })
+                $data = PiutangBulky::with('pemesananKeluarBulky')
+                ->whereHas('pemesananKeluarBulky',function($q){
+                    $q->where('pemasok_id',Auth::user()->pemasok_id);
+                })
                 ->whereRaw('MONTH(tanggal) = '.$bulan)
                 ->orderBy('id','desc')->get();
-
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
                 $pdf = PDF::loadview('app.data-master.piutangBulky.masukPemasok.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan-Piutang'.$dateObj->format('F').'.pdf');
@@ -87,9 +95,9 @@ class PiutangBulkyController extends Controller
         }
         $bulan = $request->input('month');
         $data = PiutangBulky::with('pemesananKeluarBulky.bulky')
-                // ->whereHas('storageKeluar',function($q){
-                //     $q->where('pemasok_id',Auth::user()->pemasok_id);
-                // })
+                ->whereHas('pemesananKeluarBulky',function($q){
+                    $q->where('pemasok_id',Auth::user()->pemasok_id);
+                })
                 ->whereRaw('MONTH(tanggal) = '.$bulan)
                 ->orderBy('id','desc')->get();
         if($data->count() < 1){

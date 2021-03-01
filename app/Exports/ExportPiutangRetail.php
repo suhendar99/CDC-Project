@@ -2,15 +2,13 @@
 
 namespace App\Exports;
 
-use App\Models\StorageMasukBulky;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Auth;
 
-class ExportLaporanBarangMasukBulky implements FromView,ShouldAutoSize
+class ExportPiutangRetail implements FromView,ShouldAutoSize
 {
     use Exportable;
 
@@ -18,7 +16,7 @@ class ExportLaporanBarangMasukBulky implements FromView,ShouldAutoSize
 
     function __construct($data){
         $this->data = $data;
-        $this->path = 'app.laporan.gudang-bulky.barang-masuk.';
+        $this->path = 'app.data-master.piutang-bulky.masuk-retail.';
     }
     public function view(): View
     {
