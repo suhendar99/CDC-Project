@@ -144,7 +144,11 @@
                     <td>{{ $no++ }}</td>
                     <td>{{ date('d F Y',strtotime($a->tanggal_penjualan)) }}</td>
                     <td>{{ $a->no_penjualan }}</td>
+                    @if ($a->no_kwitansi != null)
                     <td>{{ $a->no_kwitansi }}</td>
+                    @else
+                    <td>{{ $a->storageOut->suratPiutangPelangganRetail[0]->kode }}</td>
+                    @endif
                     <td>{{ $a->no_surat_jalan }}</td>
                     <td>{{ $a->nama_pembeli }}</td>
                     <td>{{ $a->barang }}</td>

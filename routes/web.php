@@ -186,11 +186,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('retur-status-terima/{id}', 'ReturBulkyController@terima')->name('retur-status-terima');
         // Piutang
         Route::resource('piutang-bulky-pemasok', 'PiutangBulkyController');
+        Route::post('print-piutang-bulky-pemasok-pdf', 'PiutangBulkyController@printPdf')->name('print-piutang-bulky-pemasok-pdf');
+        Route::post('print-piutang-bulky-pemasok-excel', 'PiutangBulkyController@printExcel')->name('print-piutang-bulky-pemasok-excel');
         //Rekapitulasi
         Route::resource('rekapitulasi-penjualan-pemasok', 'RekapitulasiPenjualanPemasokController');
         Route::post('rekapitulasi-penjualan-pemasok/print/PDF', 'RekapitulasiPenjualanPemasokController@printPdf')->name('print-rekapitulasi-penjualan-pemasok.pdf');
         Route::post('rekapitulasi-penjualan-pemasok/print/Excel', 'RekapitulasiPenjualanPemasokController@printExcel')->name('print-rekapitulasi-penjualan-pemasok.excel');
+        // Laba Rugi
         Route::resource('laba-rugi-pemasok', 'LabaRugiPemasokController');
+        Route::post('print-laba-rugi-pemasok-pdf', 'LabaRugiPemasokController@printPdf')->name('print-laba-rugi-pemasok-pdf');
+        Route::post('print-laba-rugi-pemasok-excel', 'LabaRugiPemasokController@printExcel')->name('print-laba-rugi-pemasok-excel');
         // Laporan
         Route::get('laporan-penjualan-pemasok','LaporanPemasokController@showLaporanPenjualan')->name('laporan.penjualan');
         Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
@@ -311,8 +316,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
             ]);
         });
         // Piutang
+        // Retail Ke Bulky
         Route::resource('piutang-retail', 'PiutangRetailController');
+        Route::post('print-piutang-retail-pdf', 'PiutangRetailController@printPdf')->name('print-piutang-retail-pdf');
+        Route::post('print-piutang-retail-excel', 'PiutangRetailController@printExcel')->name('print-piutang-retail-excel');
+        // Retail Ke Pemasok
         Route::resource('piutang-pemasok', 'PiutangPemasokController');
+        Route::post('print-piutang-pemasok-pdf', 'PiutangPemasokController@printPdf')->name('print-piutang-pemasok-pdf');
+        Route::post('print-piutang-pemasok-excel', 'PiutangPemasokController@printExcel')->name('print-piutang-pemasok-excel');
         // End Piutang
         Route::get('konfirmasi/penawaran/{id}','PenawaranPemasokController@konfirmasi')->name('konfirmasi.penawaran');
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
@@ -438,10 +449,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Rekapitulasi Penjualan Bulky
         Route::get('bulky/rekapitulasi/penjualan', 'RekapitulasiPenjualanBulkyController@index')->name('bulky.rekap.penjualan.index');
-        Route::post('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
+        Route::post('bulky/rekapitulasi/penjualan/PDF', 'RekapitulasiPenjualanBulkyCon troller@downloadRekapitulasiPenjualanPdf')->name('bulky.rekap.penjualan.pdf');
         Route::post('bulky/rekapitulasi/penjualan/EXCEL', 'RekapitulasiPenjualanBulkyController@downloadRekapitulasiPenjualanExcel')->name('bulky.rekap.penjualan.excel');
 
         // Laba Bulky
+        Route::post('bulky/laba-rugi-pdf','LabaRugiBulkyController@printPdf')->name('print-laba-rugi-bulky-pdf');
+        Route::post('bulky/laba-rugi-excel','LabaRugiBulkyController@printExcel')->name('print-laba-rugi-bulky-excel');
         Route::resource('bulky/laba-rugi', 'LabaRugiBulkyController', [
             'names' => [
                 'index' => 'bulky.laba-rugi.index',
@@ -523,6 +536,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::put('retail/storage/stock/{id}/foto', 'StockBarangController@uploadFoto')->name('retail.stock.foto');
 
         // Laba Bulky
+        Route::post('print-laba-rugi-retail-pdf','LabaRugiRetailController@printPdf')->name('print-laba-rugi-retail-pdf');
+        Route::post('print-laba-rugi-retail-excel','LabaRugiRetailController@printExcel')->name('print-laba-rugi-retail-excel');
         Route::resource('retail/laba-rugi', 'LabaRugiRetailController', [
             'names' => [
                 'index' => 'retail.laba-rugi.index',
@@ -573,14 +588,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // End Laporan
 
         // Piutang
+        // Piutang Warung Ke Retail
         Route::resource('piutangIn', 'PiutangController');
+        Route::post('print-piutangIn-pdf', 'PiutangController@printPdf')->name('print-piutangIn-pdf');
+        Route::post('print-piutangIn-excel', 'PiutangController@printExcel')->name('print-piutangIn-excel');
+        // Piutang Retail Ke Bulky
         Route::resource('piutangOut', 'PiutangOutController');
-        // PDF & EXCEL Piutang In
-        Route::get('RetailPiutangMasuk/pdf','PiutangController@exportPdf')->name('RetailPiutangMasuk.pdf');
-        Route::get('RetailPiutangMasuk/excel','PiutangController@exportExcel')->name('RetailPiutangMasuk.excel');
-        // PDF & EXCEL Piutang Out
-        Route::get('piutangOut/pdf','PiutangOutController@exportPdf')->name('piutangOut.pdf');
-        Route::get('piutangOut/excel','PiutangOutController@exportExcel')->name('piutangOut.excel');
+        Route::post('print-piutangOut-pdf', 'PiutangOutController@printPdf')->name('print-piutangOut-pdf');
+        Route::post('print-piutangOut-excel', 'PiutangOutController@printExcel')->name('print-piutangOut-excel');
         // Rekapitulasi
         Route::resource('rekapitulasiPembelian', 'RekapitulasiPembelianController');
         Route::resource('rekapitulasiPenjualan', 'RekapitulasiPenjualanController');

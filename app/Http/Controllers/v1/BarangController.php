@@ -187,12 +187,12 @@ class BarangController extends Controller
             {
                 foreach($request->file('foto') as $image)
                 {
-                    $name = rand(). '.' . $image->getClientOriginalExtension();
-                    $image->move("upload/foto/barang", $name);
+                    $name = "PMSK".time()."_".$image->getClientOriginalName();
+                    $image->move("upload/foto/barang/pemasok", $name);
 
                     FotoBarang::create([
                         'barang_id' => $barang->id,
-                        'foto' => '/upload/foto/barang/'.$name,
+                        'foto' => 'upload/foto/barang/pemasok/'.$name,
                     ]);
                 }
             }

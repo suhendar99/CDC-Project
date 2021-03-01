@@ -16,7 +16,7 @@
         <th style="border: 1px solid black">No</th>
         <th style="border: 1px solid black">Tanggal Penjualan</th>
         <th style="border: 1px solid black">No Penjualan</th>
-        <th style="border: 1px solid black">No Kwitansi</th>
+        <th style="border: 1px solid black">No Kwitansi / Kode Surat Piutang</th>
         <th style="border: 1px solid black">No Surat Jalan</th>
         <th style="border: 1px solid black">Nama Pembeli</th>
         <th style="border: 1px solid black">Nama Barang</th>
@@ -32,13 +32,17 @@
                 <td style="border: 1px solid black">{{ $no++ }}</td>
                 <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->tanggal_penjualan)) }}</td>
                 <td style="border: 1px solid black">{{ $a->no_penjualan }}</td>
-                <td style="border: 1px solid black">{{ $a->no_kwitansi }}</td>
+                @if ($a->no_kwitansi != null)
+                    <td style="border: 1px solid black">{{ $a->no_kwitansi }}</td>
+                    @else
+                    <td style="border: 1px solid black">{{ $a->storageKeluarBulky->suratPiutangRetail[0]->kode }}</td>
+                    @endif
                 <td style="border: 1px solid black">{{ $a->no_surat_jalan }}</td>
                 <td style="border: 1px solid black">{{ $a->nama_pembeli }}</td>
                 <td style="border: 1px solid black">{{ $a->barang }}</td>
                 <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>
-                <td style="border: 1px solid black">{{ $a->harga }}</td>
-                <td style="border: 1px solid black">{{ $a->total }}</td>
+                <td style="border: 1px solid black">{{ 'Rp '.number_format($a->harga) }}</td>
+                <td style="border: 1px solid black">{{ 'Rp '.number_format($a->total) }}</td>
             </tr>
         @endforeach
     </tbody>

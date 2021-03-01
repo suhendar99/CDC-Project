@@ -153,10 +153,10 @@
                 <tr>
                     <td>{{ $no++ }}</td>
                     <td>{{ $a->waktu }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barangBulky->barang_kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->barangBulky->barang_kode }}</td>
                     <td>{{ $a->barangBulky->nama_barang }}</td>
                     <td>{{ $a->gudang->nama }}</td>
-                    <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td>
+                    <td>{{ $a->kode }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan->nama }}</td>
                 </tr>
             @endforeach

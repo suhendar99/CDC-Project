@@ -58,8 +58,9 @@ class LaporanGudangBulky extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageKeluarBulky::with('user','bulky','barangBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
-                // dd($data);
+                $data = StorageKeluarBulky::with('user','bulky','barangBulky')
+                ->where('user_id',Auth::user()->id)
+                ->whereRaw('MONTH(waktu) = '.$bulan)->get();
 
                 if ($data->count() < 1) {
                     return back()->with('error','Tidak ada data !');
@@ -74,7 +75,11 @@ class LaporanGudangBulky extends Controller
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
 
-                $data = StorageKeluarBulky::with('user','bulky','barangBulky')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->latest()->get();
+                $data = StorageKeluarBulky::with('user','bulky','barangBulky')
+                ->where('user_id',Auth::user()->id)
+                ->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])
+                ->latest()
+                ->get();
 
                 if ($data->count() < 1) {
                     return back()->with('error','Tidak ada data !');
@@ -115,13 +120,21 @@ class LaporanGudangBulky extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = StorageKeluarBulky::all();
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            if ($bulan != null && $month) {
+                $data = StorageKeluarBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barangBulky')->whereRaw('MONTH(waktu) = '.$hii)->get();
+            } elseif ($awal != null && $akhir != null) {
+                $data = StorageKeluarBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barangBulky')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->get();
+            }
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
                 $input = $request->all();
                 set_time_limit(99999);
-                return (new ExportLaporanBarangKeluarBulky($awal,$akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+                return (new ExportLaporanBarangKeluarBulky($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
 
@@ -161,7 +174,7 @@ class LaporanGudangBulky extends Controller
             foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
                 $gudang_saya[] = $gudang->id;
             }
-            
+
             // dd($gudang_saya);
             if ($request->month != null && $request->has('month')) {
                 if ($request->month == null) {
@@ -225,7 +238,15 @@ class LaporanGudangBulky extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = StorageMasukBulky::all();
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            if ($bulan != null && $month) {
+                $data = StorageMasukBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barang')->whereRaw('MONTH(waktu) = '.$hii)->get();
+            } elseif ($awal != null && $akhir != null) {
+                $data = StorageMasukBulky::whereIn('bulky_id',$gudang_saya)->with('user','bulky','barang')->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->get();
+            }
 
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
@@ -233,7 +254,7 @@ class LaporanGudangBulky extends Controller
 
             $input = $request->all();
             set_time_limit(99999);
-            return (new ExportLaporanBarangMasukBulky($awal, $akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+            return (new ExportLaporanBarangMasukBulky($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
 
@@ -261,12 +282,12 @@ class LaporanGudangBulky extends Controller
         if ($v->fails()) {
             return back()->withErrors($v)->withInput();
         } else {
-            
+
             $gudang_saya = [];
             foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
                 $gudang_saya[] = $gudang->id;
             }
-            
+
             $awal = $request->awal;
             $akhir = $request->akhir;
             $month = $request->month;
@@ -340,13 +361,26 @@ class LaporanGudangBulky extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = StorageBulky::all();
+            $gudang_saya = [];
+            foreach(Auth::user()->pengurusGudangBulky->bulky as $gudang){
+                $gudang_saya[] = $gudang->id;
+            }
+            if ($bulan != null && $month) {
+                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
+                        $q->whereIn('bulky_id', $gudang_saya);
+                    })->with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$hii)->get();
+            } elseif ($awal != null && $akhir != null) {
+                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
+                        $q->whereIn('bulky_id', $gudang_saya);
+                    })->whereBetween('waktu',[$awal.' 00:00:00', $akhir.' 23:59:59'])->get();
+            }
+
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
                 $input = $request->all();
                 set_time_limit(99999);
-                return (new ExportLaporanBarangBulky($awal,$akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+                return (new ExportLaporanBarangBulky($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
 }

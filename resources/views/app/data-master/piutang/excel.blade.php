@@ -14,8 +14,8 @@
     <thead>
     <tr>
         <th style="border: 1px solid black">No</th>
-        <th style="border: 1px solid black">No transaksi</th>
         <th style="border: 1px solid black">Waktu Transaksi</th>
+        <th style="border: 1px solid black">No transaksi</th>
         <th style="border: 1px solid black">Nama Pembeli</th>
         <th style="border: 1px solid black">Jumlah Hutang</th>
         <th style="border: 1px solid black">Jatuh Tempo</th>
@@ -26,10 +26,10 @@
         @foreach($data as $a)
             <tr>
                 <td style="border: 1px solid black">{{ $no++ }}</td>
-                <td style="border: 1px solid black">{{ $a->pemesanan->kode }}</td>
                 <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
+                <td style="border: 1px solid black">{{ $a->pemesananRetail->kode }}</td>
                 <td style="border: 1px solid black">{{ $a->nama_pembeli }}</td>
-                <td style="border: 1px solid black">{{ $a->hutang }}</td>
+                <td style="border: 1px solid black">{{ 'Rp '.number_format($a->hutang) }}</td>
                 <td style="border: 1px solid black">{{ $a->jatuh_tempo }}</td>
             </tr>
         @endforeach

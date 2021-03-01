@@ -20,21 +20,13 @@ class ExportLaporanPenjualanPemasok implements FromView,ShouldAutoSize
     public $month;
     public $hii;
 
-    function __construct($awal,$akhir,$bulan,$month,$hii){
-        $this->awal = $awal;
-        $this->akhir = $akhir;
-        $this->bulan = $bulan;
-        $this->month = $month;
-        $this->hii = $hii;
+    function __construct($data){
+        $this->data = $data;
         $this->path = 'app.laporan.pemasok.penjualan.';
     }
     public function view(): View
     {
-        if ($this->bulan != null && $this->month) {
-            $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$this->hii)->get();
-        } elseif ($this->awal != null && $this->akhir != null) {
-            $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->whereBetween('waktu',[$this->awal, $this->akhir])->get();
-        }
+        $data = $this->data;
         return view($this->path.'excel', compact('data'));
 
     }

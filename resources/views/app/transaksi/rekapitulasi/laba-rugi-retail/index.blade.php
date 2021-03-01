@@ -31,7 +31,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="float-left">
-                                <h5></h5>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalLaporanPdf"><i class="far fa-file-pdf"></i> Buat PDF</button>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalLaporanExcel"><i class="far fa-file-excel"></i> Buat EXCEL</button>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -67,6 +68,109 @@
     @csrf
     @method('DELETE')
 </form>
+{{-- Modal Laporan PDF --}}
+<div class="modal fade" id="modalLaporanPdf" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pilih laporan Berdasarkan Bulan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('print-laba-rugi-retail-pdf')}}" target="__blank" method="post">
+            <div class="modal-body">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-md-12">Bulan <small class="text-success" >*Harus dipilih</small></label>
+                                <select name="month" id="" class="form-control col-md-12" style="width: 100% !important;">
+                                    <option value="">-- Pilih Bulan--</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                                @error('month')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary btn-sm">Download Laporan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{{-- End Laporan PDF --}}
+{{-- Modal Laporan EXCEL --}}
+<div class="modal fade" id="modalLaporanExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pilih laporan Berdasarkan Bulan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{route('print-laba-rugi-retail-excel')}}" target="__blank" method="post">
+            <div class="modal-body">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="col-md-12">Bulan <small class="text-success">*Harus dipilih</small></label>
+                                <select name="month" id="" class="form-control col-md-12" style="width: 100% !important;">
+                                    <option value="">-- Pilih Bulan--</option>
+                                    <option value="1">Januari</option>
+                                    <option value="2">Februari</option>
+                                    <option value="3">Maret</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mei</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">Agustus</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                                @error('month')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary btn-sm">Download Laporan</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({

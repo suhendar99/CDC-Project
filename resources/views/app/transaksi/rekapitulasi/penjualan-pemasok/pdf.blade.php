@@ -129,7 +129,7 @@
                 <th>No</th>
                 <th>Tanggal Penjualan</th>
                 <th>No Penjualan</th>
-                <th>No Kwitansi</th>
+                <th>No Kwitansi / Kode Surat Piutang</th>
                 <th>No Surat Jalan</th>
                 <th>Nama Pembeli</th>
                 <th>Nama Barang</th>
@@ -144,7 +144,11 @@
                     <td>{{ $no++ }}</td>
                     <td>{{ date('d F Y',strtotime($a->tanggal_penjualan)) }}</td>
                     <td>{{ $a->no_penjualan }}</td>
-                    <td>{{ $a->no_kwitansi }}</td>
+                    @if ($a->no_kwitansi != null)
+                        <td>{{ $a->no_kwitansi }}</td>
+                    @else
+                        <td>{{ $a->storageKeluar->suratPiutangBulkyPemasok[0]->kode }}</td>
+                    @endif
                     <td>{{ $a->no_surat_jalan }}</td>
                     <td>{{ $a->nama_pembeli }}</td>
                     <td>{{ $a->barang }}</td>
