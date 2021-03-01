@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportLabaRugiPemasok;
 use App\Http\Controllers\Controller;
 use App\Models\LabaRugiPemasok;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class LabaRugiPemasokController extends Controller
 {
@@ -77,6 +81,63 @@ class LabaRugiPemasokController extends Controller
         }
 
         return view('app.transaksi.rekapitulasi.laba-rugi-pemasok.index');
+    }
+
+    public function printPdf(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else{
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = LabaRugiPemasok::where('pemasok_id',Auth::user()->pemasok_id)
+                ->where('bulan',$bulan)
+                ->orderBy('id','desc')
+                ->get();
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
+                $pdf = PDF::loadview('app.transaksi.rekapitulasi.laba-rugi-pemasok.export.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan-Piutang'.$dateObj->format('F').'.pdf');
+                return view('app.transaksi.rekapitulasi.laba-rugi-pemasok.export.pdf',compact('data','sumber','month'));
+
+            }
+        }
+    }
+
+    public function printExcel(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = LabaRugiPemasok::where('pemasok_id',Auth::user()->pemasok_id)
+        ->where('bulan',$bulan)
+        ->orderBy('id','desc')
+        ->get();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportLabaRugiPemasok($data))->download('Rekapitulasi-Piutang-'.Carbon::now().'.xlsx');
     }
 
     /**

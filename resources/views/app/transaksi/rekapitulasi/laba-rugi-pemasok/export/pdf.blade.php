@@ -127,34 +127,24 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tanggal Penjualan</th>
-                <th>No Penjualan</th>
-                <th>No Kwitansi / Kode Surat Piutang</th>
-                <th>No Surat Jalan</th>
-                <th>Nama Pembeli</th>
-                <th>Nama Barang</th>
-                <th>Jumlah Barang</th>
-                <th>Harga Barang</th>
-                <th>Total Harga Barang</th>
+                <th>Waktu Pencatatan</th>
+                <th>Laba Kotor</th>
+                <th>Penjualan</th>
+                <th>Pembelian</th>
+                <th>Biaya Operasional</th>
+                <th>Laba Bersih</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->tanggal_penjualan)) }}</td>
-                    <td>{{ $a->no_penjualan }}</td>
-                    @if ($a->no_kwitansi != null)
-                        <td>{{ $a->no_kwitansi }}</td>
-                    @else
-                        <td>{{ $a->storageKeluar->suratPiutangBulkyPemasok[0]->kode }}</td>
-                    @endif
-                    <td>{{ $a->no_surat_jalan }}</td>
-                    <td>{{ $a->nama_pembeli }}</td>
-                    <td>{{ $a->barang }}</td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                    <td>{{ $a->harga }}</td>
-                    <td>{{ $a->total }}</td>
+                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_kotor,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->penjualan,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->pembelian,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->biaya_operasional,0,',','.') }}</td>
+                    <td>{{ 'Rp. '.number_format($a->laba_bersih,0,',','.') }}</td>
                 </tr>
             @endforeach
         </tbody>

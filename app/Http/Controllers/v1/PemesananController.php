@@ -239,7 +239,7 @@ class PemesananController extends Controller
         }
 
         // dd($request->file('foto_bukti'));
-        set_time_limit(120);
+        set_time_limit(99999999);
         $data = $this->modelBulky::findOrFail($id);
         $foto_bukti = $request->file('foto_bukti');
 
@@ -252,7 +252,7 @@ class PemesananController extends Controller
         // dd(InternalStorage::disk('public')->get('/upload/foto/bukti/'.$nama_bukti));
 
         // dd($data->bulky->user->email);
-
+        set_time_limit(99999999);
         Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('/upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         // $twilio = new Client('ACc460909600bb11391c409fceac79ee00', '340f81c06b713123327f390ab7dd721f');
@@ -271,13 +271,13 @@ class PemesananController extends Controller
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
-
+        set_time_limit(99999999);
         if (Mail::failures()) {
             dd(Mail::failures());
         }
 
-        return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
-        // return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+        // return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
+        return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
 
     public function tolak($id)

@@ -186,11 +186,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('retur-status-terima/{id}', 'ReturBulkyController@terima')->name('retur-status-terima');
         // Piutang
         Route::resource('piutang-bulky-pemasok', 'PiutangBulkyController');
+        Route::post('print-piutang-bulky-pemasok-pdf', 'PiutangBulkyController@printPdf')->name('print-piutang-bulky-pemasok-pdf');
+        Route::post('print-piutang-bulky-pemasok-excel', 'PiutangBulkyController@printExcel')->name('print-piutang-bulky-pemasok-excel');
         //Rekapitulasi
         Route::resource('rekapitulasi-penjualan-pemasok', 'RekapitulasiPenjualanPemasokController');
         Route::post('rekapitulasi-penjualan-pemasok/print/PDF', 'RekapitulasiPenjualanPemasokController@printPdf')->name('print-rekapitulasi-penjualan-pemasok.pdf');
         Route::post('rekapitulasi-penjualan-pemasok/print/Excel', 'RekapitulasiPenjualanPemasokController@printExcel')->name('print-rekapitulasi-penjualan-pemasok.excel');
+        // Laba Rugi
         Route::resource('laba-rugi-pemasok', 'LabaRugiPemasokController');
+        Route::post('print-laba-rugi-pemasok-pdf', 'LabaRugiPemasokController@printPdf')->name('print-laba-rugi-pemasok-pdf');
+        Route::post('print-laba-rugi-pemasok-excel', 'LabaRugiPemasokController@printExcel')->name('print-laba-rugi-pemasok-excel');
         // Laporan
         Route::get('laporan-penjualan-pemasok','LaporanPemasokController@showLaporanPenjualan')->name('laporan.penjualan');
         Route::post('laporan-penjualan-pemasok-pdf','LaporanPemasokController@LaporanPenjualanPdf')->name('laporan.penjualan.pdf');
