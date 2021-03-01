@@ -50,8 +50,36 @@ class ShopController extends Controller
     public function index(Request $request)
     {
         if (!Auth::guest()) {
+            $search_kategori = $request->query('kategori', null);
+
             if (Auth::user()->pelanggan_id != null) {
-                if ($request->has('search') && $request->search !== '') {
+                if ($request->has('search') && $request->search !== '' && $search_kategori != null) {
+                    $search = trim($request->search);
+                    if($search == ''){
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('stockBarangBulky.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->whereHas('gudang', function($query){
+                            $query->where('status', 1);
+                        })->paginate(20);
+                    }else{
+                        $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('stockBarangBulky',function($q) use ($search){
+                            $q->where('nama_barang','LIKE',"%".$search."%")
+                            ->orWhere('harga_barang','LIKE',"%".$search."%");
+                        })
+                        ->whereHas('stockBarangBulky.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->whereHas('gudang', function($query){
+                            $query->where('status', 1);
+                        })
+                        ->paginate(20);
+                    }
+                } elseif ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
                         $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
@@ -71,18 +99,49 @@ class ShopController extends Controller
                         })
                         ->paginate(20);
                     }
-                } else {
+                } elseif($search_kategori != null) {
+                    $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('stockBarangBulky.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->whereHas('gudang', function($query){
+                            $query->where('status', 1);
+                        })
+                        ->paginate(20);
+                    // dd(Auth::user());
+                }else{
                     $barang = StockBarang::with('gudang.user', 'stockBarangBulky')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->whereHas('gudang', function($query){
                         $query->where('status', 1);
                     })
                     ->paginate(20);
-
-                    // dd(Auth::user());
                 }
             } elseif (Auth::user()->pembeli_id != null) {
-                if ($request->has('search') && $request->search !== '') {
+                if ($request->has('search') && $request->search !== '' && $search_kategori != null) {
+                    $search = trim($request->search);
+                    if($search == ''){
+                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')
+                        ->where('harga_barang','!=',null)
+                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->orderBy('id','desc')
+                        ->paginate(20);
+                    }else{
+                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('storageOut.barang',function($q) use ($search){
+                            $q->where('nama_barang','LIKE',"%".$search."%")
+                            ->orWhere('harga_barang','LIKE',"%".$search."%");
+                        })
+                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    }
+                } elseif ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
                         $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
@@ -96,13 +155,39 @@ class ShopController extends Controller
                         })
                         ->paginate(20);
                     }
+                } elseif ($search_kategori != null) {
+                    $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
+                            $q->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    // dd(Auth::user());
                 } else {
                     $barang = BarangWarung::where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->paginate(20);
                 }
             } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
-                if ($request->has('search') && $request->search !== '') {
+                if ($request->has('search') && $request->search !== '' && $search_kategori != null) {
+                    $search = trim($request->search);
+                    if($search == ''){
+                        $barang = Barang::where('harga_barang','!=',null)
+                        ->whereHas('kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->orderBy('id','desc')->paginate(20);
+                    }else{
+                        $barang = Barang::where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->orWhere('nama_barang','LIKE',"%".$search."%")
+                        ->orWhere('harga_barang','LIKE',"%".$search."%")
+                        ->whereHas('kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    }
+                } elseif ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
                         $barang = Barang::where('harga_barang','!=',null)
@@ -114,13 +199,40 @@ class ShopController extends Controller
                         ->orWhere('harga_barang','LIKE',"%".$search."%")
                         ->paginate(20);
                     }
+                } elseif($search_kategori != null) {
+                    $barang = Barang::where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    // dd(Auth::user());
                 } else {
                     $barang = Barang::where('harga_barang','!=',null)
                     ->orderBy('id','desc')
                     ->paginate(20);
                 }
             } else {
-                if ($request->has('search') && $request->search !== '') {
+                if ($request->has('search') && $request->search !== '' && $search_kategori != null) {
+                    $search = trim($request->search);
+                    if($search == ''){
+                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
+                        ->whereHas('barang.kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->orderBy('id','desc')
+                        ->paginate(20);
+                    }else{
+                        $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->where('nama_barang','LIKE',"%".$search."%")
+                        ->orWhere('harga_barang','LIKE',"%".$search."%")
+                        ->whereHas('barang.kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    }
+                } elseif ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
                         $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
@@ -132,6 +244,14 @@ class ShopController extends Controller
                         ->orWhere('harga_barang','LIKE',"%".$search."%")
                         ->paginate(20);
                     }
+                } elseif ($search_kategori != null) {
+                    $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
+                        ->orderBy('id','desc')
+                        ->whereHas('barang.kategori', function($query)use($search_kategori){
+                            $query->where('id', $search_kategori);
+                        })
+                        ->paginate(20);
+                    // dd(Auth::user());
                 } else {
                     $barang = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky.user', 'barang.foto')->where('harga_barang','!=',null)
                     ->orderBy('id','desc')
