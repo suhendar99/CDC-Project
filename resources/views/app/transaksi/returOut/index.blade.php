@@ -50,10 +50,10 @@
                                 <th>Tanggal Pengembalian</th>
                                 <th>Nomor Kwitansi</th>
                                 <th>Kode Barang</th>
-                                <th>Barang</th>
+                                <th>Nama Barang</th>
                                 <th>Jumlah Barang</th>
                                 <th>satuan</th>
-                                <th>Keterangan</th>
+                                <th>Alasan Pengembalian</th>
                                 <th>Status</th>
                                 {{-- <th>Action</th> --}}
                             </tr>

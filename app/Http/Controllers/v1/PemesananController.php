@@ -19,6 +19,7 @@ use App\Models\PemesananPembeliItem;
 use App\Models\PengurusGudang;
 use App\Models\Piutang;
 use App\Models\Storage;
+use App\Models\GudangBulky;
 use App\User;
 use Carbon\Carbon;
 use App\Mail\SendProofOfPaymentMail;
@@ -276,8 +277,56 @@ class PemesananController extends Controller
             dd(Mail::failures());
         }
 
+        $bulky_id = $data->bulky->id;
+
+        $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($bulky_id){
+                $query->where('bulky_id', $bulky_id);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Pembeli melakukan pembayaran!' );
+
+        $this->notif($judul, $firebaseToken);
+        
         // return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pembayaran' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     public function tolak($id)

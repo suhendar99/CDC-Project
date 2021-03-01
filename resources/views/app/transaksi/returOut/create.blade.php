@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Keterangan <small class="text-success">*Harus diisi</small></label>
+                                    <label>Alasan Pengembalian <small class="text-success">*Harus diisi</small></label>
                                     <textarea name="keterangan" class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
                                     @error('keterangan')
                                         <span class="invalid-feedback" role="alert">
