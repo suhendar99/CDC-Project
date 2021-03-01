@@ -163,12 +163,14 @@
                 excel.checked = false;
             }
             actionForm.action = "{{ route('laporan.penjualan.pdf') }}";
+            actionForm.setAttribute("target","__blank");
         });
         excel.addEventListener('click', e=>{
             if(pdf.checked == true){
                 pdf.checked = false;
             }
             actionForm.action = "{{ route('laporan.penjualan.excel') }}";
+            actionForm.setAttribute("target","__blank");
         });
     }
     formExcel();

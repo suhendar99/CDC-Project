@@ -2,27 +2,21 @@
 
 namespace App\Exports;
 
-use App\Models\StorageKeluarPemasok;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Auth;
 
-class ExportLaporanPenjualanPemasok implements FromView,ShouldAutoSize
+class ExportPiutangBulky implements FromView,ShouldAutoSize
 {
     use Exportable;
 
-    public $awal;
-    public $akhir;
-    public $bulan;
-    public $month;
-    public $hii;
+    public $data;
 
     function __construct($data){
         $this->data = $data;
-        $this->path = 'app.laporan.pemasok.penjualan.';
+        $this->path = 'app.data-master.piutangBulky.masukPemasok.';
     }
     public function view(): View
     {

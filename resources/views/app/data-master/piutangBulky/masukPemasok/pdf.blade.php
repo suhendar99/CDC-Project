@@ -1,6 +1,6 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    $title = 'PDF Data Rekapitulasi Penjualan'
+    $title = 'Laporan Data Piutang Bulky Ke Pemasok'
 @endphp
 
 <!DOCTYPE html>
@@ -127,30 +127,22 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Tanggal Pembelian</th>
-                <th>No Pembelian</th>
-                <th>No Kwitansi</th>
-                <th>No Surat Jalan</th>
-                <th>Nama Penjual</th>
-                <th>Nama Barang</th>
-                <th>Jumlah Barang</th>
-                <th>Harga Barang</th>
-                <th>Total Harga Barang</th>
+                <th>Tanggal Transaksi</th>
+                <th>Kode Transaksi</th>
+                <th>Nama Pembeli</th>
+                <th>Jumlah Hutang</th>
+                <th>Jatuh Tempo</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->tanggal_pembelian)) }}</td>
-                    <td>{{ $a->no_pembelian }}</td>
-                    <td>{{ $a->no_kwitansi }}</td>
-                    <td>{{ $a->no_surat_jalan }}</td>
-                    <td>{{ $a->nama_penjual }}</td>
-                    <td>{{ $a->barang }}</td>
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                    <td>{{ $a->harga }}</td>
-                    <td>{{ $a->total }}</td>
+                    <td>{{ date('d F Y',strtotime($a->tanggal)) }}</td>
+                    <td>{{ $a->pemesananKeluarBulky->kode }}</td>
+                    <td>{{ $a->nama_pembeli }}</td>
+                    <td>{{ 'Rp '.number_format($a->hutang) }}</td>
+                    <td>{{ $a->jatuh_tempo }}</td>
                 </tr>
             @endforeach
         </tbody>

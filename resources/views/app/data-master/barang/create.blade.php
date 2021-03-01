@@ -99,9 +99,10 @@
                                             <label>Satuan <small class="text-success">*Harus diisi</small></label>
                                             <select name="satuan" id="satuanOn" class="form-control @error('satuan') is-invalid @enderror">
                                                 <option value="">-- Pilih Satuan --</option>
-                                                @foreach ($satuan as $item)
+                                                <option value="Ton">Ton</option>
+                                                {{-- @foreach ($satuan as $item)
                                                     <option value="{{$item->satuan}}" {{ old('satuan') == $item->satuan ? 'selected' : ''}}>{{$item->satuan}}</option>
-                                                @endforeach
+                                                @endforeach --}}
                                             </select>
                                             @error('satuan')
                                                 <span class="invalid-feedback" role="alert">

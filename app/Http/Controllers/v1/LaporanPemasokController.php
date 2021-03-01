@@ -52,8 +52,10 @@ class LaporanPemasokController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
-                // dd($data);
+                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok_id)->with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$bulan)->get();
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
 
                 $pdf = PDF::loadview($this->pathPenjualan.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -65,7 +67,9 @@ class LaporanPemasokController extends Controller
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
                 $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->with('user','pemasok','barang')->whereBetween('waktu',[$awal, $akhir])->latest()->get();
-                // dd($data);
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
 
                 $pdf = PDF::loadview($this->pathPenjualan.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
@@ -101,14 +105,17 @@ class LaporanPemasokController extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok->id)->get();
-            // dd($data);
+            if ($bulan != null && $month) {
+                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok_id)->with('user','pemasok','barang')->whereRaw('MONTH(waktu) = '.$hii)->get();
+            } elseif ($awal != null && $akhir != null) {
+                $data = StorageKeluarPemasok::where('pemasok_id',Auth::user()->pemasok_id)->whereBetween('waktu',[$awal, $akhir])->get();
+            }
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
-                $input = $request->all();
-                set_time_limit(99999);
-                return (new ExportLaporanPenjualanPemasok($awal, $akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+            $input = $request->all();
+            set_time_limit(99999);
+            return (new ExportLaporanPenjualanPemasok($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
     public function showLaporanStok()
@@ -144,7 +151,9 @@ class LaporanPemasokController extends Controller
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
                 $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereRaw('MONTH(created_at) = '.$bulan)->get();
-
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
                 $pdf = PDF::loadview($this->pathStok.'pdf',compact('data','awal','akhir','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan'.$sumber.$akhir.'.pdf');
@@ -155,7 +164,9 @@ class LaporanPemasokController extends Controller
                     return back()->with('failed','Mohon Periksa Tanggal Anda !');
                 }
                 $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereBetween('created_at',[$awal, $akhir])->latest()->get();
-
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
                 $pdf = PDF::loadview($this->pathStok.'pdf',compact('data','awal','akhir','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan'.$akhir.'.pdf');
@@ -190,13 +201,17 @@ class LaporanPemasokController extends Controller
             $bulan = $request->month;
             $month = $request->has('month');
             $hii = $request->input('month');
-            $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->get();
+            if ($bulan != null && $month) {
+                $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->with('pemasok')->whereRaw('MONTH(created_at) = '.$hii)->get();
+            } elseif ($awal != null && $akhir != null) {
+                $data = Barang::where('pemasok_id',Auth::user()->pemasok->id)->whereBetween('created_at',[$awal, $akhir])->get();
+            }
             if($data->count() < 1){
                 return back()->with('failed','Data Kosong!');
             }
-                $input = $request->all();
-                set_time_limit(99999);
-                return (new ExportLaporanStokPemasok($awal, $akhir,$bulan,$month,$hii))->download('Laporan-'.$akhir.'.xlsx');
+            $input = $request->all();
+            set_time_limit(99999);
+            return (new ExportLaporanStokPemasok($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
 }
