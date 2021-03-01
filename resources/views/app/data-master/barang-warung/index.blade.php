@@ -52,11 +52,16 @@
                 @forelse($barangWarung as $d)
                 <div class="col-md-4 ">
                     <div class="card mb-4">
+                        @if ($d->foto_barang == null)
+                        <img class="card-img-top" style="height: 100%;" src="{{asset('images/image-not-found.jpg')}}" alt="Card image cap">
+                        @else
+                        <img class="card-img-top" style="height: 100%;" src="{{asset($d->foto_barang)}}" alt="Card image cap">
+                        @endif
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="float-left">
-                                        <h5 class="card-title">{{$d->storageOut->stockBarangRetail->nama_barang}} ({{$d->jumlah}} {{$d->satuan}})</h5>
+                                        <h5 class="card-title">{{$d->nama_barang}} ({{$d->jumlah}} {{$d->satuan}})</h5>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -68,11 +73,11 @@
                             <br>
                             <span class="card-text">Kode Barang : {{$d->storageOut->stockBarangRetail->stockBarangBulky->barang->kode_barang}}</span><br>
                             <span class="card-text">Harga Barang : Rp {{number_format($d->harga_barang,0,',','.')}}</span><br>
-                            <span class="card-text">Deskripsi Barang : {{$d->storageOut->stockBarangRetail->stockBarangBulky->barang->deskripsi}}</span>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="float-right">
-                                        <a href="{{route('barangWarung.edit',$d->id)}}" class="btn btn-sm btn-success">Atur Harga</a>
+                                        <a href="{{route('barangWarung.edit.foto',$d->id)}}" class="btn btn-sm btn-success"><i class="ri-image-edit-line"></i> Atur Foto</a>
+                                        <a href="{{route('barangWarung.edit',$d->id)}}" class="btn btn-sm btn-success"><i class="ri-money-dollar-circle-line"></i> Atur Harga</a>
                                     </div>
                                 </div>
                             </div>

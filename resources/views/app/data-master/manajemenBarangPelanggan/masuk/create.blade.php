@@ -45,13 +45,14 @@
                         <div class="col-md-12 col-sm-6">
                             <form action="{{route('barangMasukPelanggan.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="nama_barang" id="nama_barang">
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <select name="storage_out_kode" id="barang" class="form-control">
                                             <option value="0" data-satuan="-">--Pilih Barang--</option>
                                             @foreach ($barang as $barangs)
-                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->satuan->satuan }}" data-id="{{$barangs->pemesanan->id}}">{{$barangs->stockBarangRetail->nama_barang}}</option>
+                                                <option value="{{$barangs->kode}}" {{ old('storage_out_kode') == $barangs->kode ? 'selected' : ''}} data-satuan="{{ $barangs->satuan->satuan }}" data-id="{{$barangs->pemesanan->id}}" data-barang="{{$barangs->stockBarangRetail->nama_barang}}">{{$barangs->stockBarangRetail->nama_barang}}</option>
                                             @endforeach
                                         </select>
                                         @error('storage_out_kode')
@@ -168,6 +169,8 @@
          $('#here').text(satuan)
 
         let id = $('#barang option:selected').data("id")
+        let barang = $('#barang option:selected').data("barang")
+        $('#nama_barang').val(barang);
         console.log(id);
         $.ajax({
             type: "get",

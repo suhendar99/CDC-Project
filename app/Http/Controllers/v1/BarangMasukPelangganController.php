@@ -78,8 +78,9 @@ class BarangMasukPelangganController extends Controller
             ->whereHas('pemesanan',function($q){
                 $q->where('status',5);
             })
-            ->doesntHave('barangMasukPelanggan')
+            // ->doesntHave('barangMasukPelanggan')
             ->get();
+            // dd($barang);
             return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
     }
     public function findBarang($id)
@@ -173,12 +174,13 @@ class BarangMasukPelangganController extends Controller
                 'waktu' => now('Asia/Jakarta')
             ]);
         }
-
+        
 
         $barangWarung = BarangWarung::create([
             'storage_out_kode' => $masuk->storage_out_kode,
             'pelanggan_id' => Auth::user()->pelanggan_id,
             'kode' => rand(1000000,9999999),
+            'nama_barang' => $request->nama_barang,
             'jumlah' => $request->jumlah,
             'satuan' => $barang->satuan->satuan,
             'waktu' => now('Asia/Jakarta')

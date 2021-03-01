@@ -25,6 +25,31 @@ class BarangWarungController extends Controller
         return view('app.data-master.barang-warung.index',compact('barangWarung'));
     }
 
+    public function showUpdateFoto($id)
+    {
+        $data = BarangWarung::find($id);
+        return view('app.data-master.barang-warung.updateFoto',compact('data'));
+    }
+
+    public function updateFoto(Request $request ,$id)
+    {
+        $v = Validator::make($request->all(),[
+            'foto' => 'required|image|mimes:png,jpg|max:2048'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else {
+            $foto_barang = $request->file('foto');
+            $nama_barang = time()."_".$foto_barang->getClientOriginalName();
+            $foto_barang->move("upload/foto/barang/warung", $nama_barang);
+            $foto = BarangWarung::find($id)->update([
+                'foto_barang' => 'upload/foto/barang/warung/'.$nama_barang,
+            ]);
+            return redirect(route('barangWarung.index'))->with('success','Foto telah Diunggah !');
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
