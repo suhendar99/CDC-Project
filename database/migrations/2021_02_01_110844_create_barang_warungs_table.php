@@ -19,6 +19,8 @@ class CreateBarangWarungsTable extends Migration
             $table->string('storage_out_kode');
             $table->foreign('storage_out_kode')->references('kode')->on('storage_outs')->onDelete('cascade');
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('cascade');
+            $table->string('nama_barang');
+            $table->string('foto_barang')->nullable();
             $table->bigInteger('harga_barang')->nullable();
             $table->bigInteger('jumlah');
             $table->string('satuan', 20);

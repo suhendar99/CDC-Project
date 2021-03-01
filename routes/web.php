@@ -245,6 +245,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
 
         // Barang funtuk pembeli
+        Route::get('barangWarung/Foto/{id}', 'BarangWarungController@showUpdateFoto')->name('barangWarung.edit.foto');
+        Route::put('foto-barang-warung/{id}', 'BarangWarungController@updateFoto')->name('foto-barang-warung.update');
         Route::resource('barangWarung', 'BarangWarungController');
         //Retur Masuk
         Route::resource('returMasukPembeli', 'ReturMasukPembeliController');

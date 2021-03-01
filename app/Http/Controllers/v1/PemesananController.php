@@ -551,7 +551,8 @@ class PemesananController extends Controller
 
     public function getPemesananPembeli($id)
     {
-        $data = PemesananPembeliItem::with('pemesananPembeli.barangKeluar')->where('id',$id)->get();
+        $data = PemesananPembeliItem::with('pemesananPembeli.barangKeluar')->where('pemesanan_pembeli_id',$id)->get();
+        // dd($data);
         return response()->json([
             'data' => $data
         ]);

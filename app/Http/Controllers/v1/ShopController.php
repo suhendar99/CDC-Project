@@ -79,16 +79,16 @@ class ShopController extends Controller
             } elseif (Auth::user()->pembeli_id != null) {
                 if ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
+                    // $barang = BarangWarung::with('storageOut.stockBarangRetail')->orderBy('id','desc')->get();
+                    // dd($barang);
                     if($search == ''){
                         $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')->paginate(20);
                     }else{
                         $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
-                        ->whereHas('storageOut.barang',function($q) use ($search){
-                            $q->where('nama_barang','LIKE',"%".$search."%")
-                            ->orWhere('harga_barang','LIKE',"%".$search."%");
-                        })
+                        ->where('nama_barang','LIKE',"%".$search."%")
+                        ->orWhere('harga_barang','LIKE',"%".$search."%")
                         ->paginate(20);
                     }
                 } else {
@@ -400,7 +400,7 @@ class ShopController extends Controller
             $kodes = 'BP'.rand(10000,99999);
             $barangPesanan = PemesananPembeliItem::create([
                 'kode' => $kodes,
-                // 'barang_kode' => $request->barangKode,
+                'barang_kode' => $request->barangKode,
                 'pemesanan_pembeli_id' => $pemesanan->id,
                 'nama_barang' => $request->nama_barang,
                 'barang_warung_kode' => $request->barang_warung_kode,
