@@ -254,8 +254,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('returKeluarPelanggan', 'ReturKeluarPelangganController');
         // Piutang
         Route::resource('piutangPelanggan', 'PiutangPelangganController');
-        Route::get('pelangganPiutang/excel', 'PiutangPelangganController@exportExcel')->name('pelangganPiutang.excel');
-        Route::get('pelangganPiutang/pdf', 'PiutangPelangganController@exportPdf')->name('pelangganPiutang.pdf');
+        Route::post('pelangganPiutang/excel', 'PiutangPelangganController@exportExcel')->name('pelangganPiutang.excel');
+        Route::post('pelangganPiutang/pdf', 'PiutangPelangganController@exportPdf')->name('pelangganPiutang.pdf');
         // Pemesanan
         Route::get('pemesananMasukWarung','PemesananController@pemesananMasukPembeli')->name('pemesananMasukWarung.index');
         Route::resource('pemesananKeluarWarung', 'PemesananKeluarPembeliController');
@@ -269,10 +269,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('barangKeluarPelanggan', 'BarangKeluarPelangganController');
         // Rekapitulasi Penjualan
         Route::resource('rekapitulasiPenjualanPelanggan', 'RekapitulasiPenjualanPelangganController');
+        Route::post('print-rekapitulasiPenjualanPelanggan-pdf', 'RekapitulasiPenjualanPelangganController@printPdf')->name('print-rekapitulasiPenjualanPelanggan-pdf');
+        Route::post('print-rekapitulasiPenjualanPelanggan-excel', 'RekapitulasiPenjualanPelangganController@printExcel')->name('print-rekapitulasiPenjualanPelanggan-excel');
         // Rekapitulasi Pembelian
         Route::resource('rekapitulasiPembelianPelanggan', 'RekapitulasiPembelianPelangganController');
+        Route::post('print-rekapitulasiPembelianPelanggan-pdf', 'RekapitulasiPembelianPelangganController@printPdf')->name('print-rekapitulasiPembelianPelanggan-pdf');
+        Route::post('print-rekapitulasiPembelianPelanggan-excel', 'RekapitulasiPembelianPelangganController@printExcel')->name('print-rekapitulasiPembelianPelanggan-excel');
         // Laba Rugi
         Route::resource('labaRugiPelanggan', 'LabaRugiPelangganController');
+        Route::post('print-labaRugiPelanggan-pdf', 'LabaRugiPelangganController@printPdf')->name('print-labaRugiPelanggan-pdf');
+        Route::post('print-labaRugiPelanggan-excel', 'LabaRugiPelangganController@printExcel')->name('print-labaRugiPelanggan-excel');
         // // pemesanan
         // Route::get('pemesanan/{id}','pemesananController@showFormPemesanan')->name('pemesanan');
         // Route::post('pemesanan/store/{id}','pemesananController@store')->name('pemesanan.store');

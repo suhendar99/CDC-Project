@@ -106,10 +106,10 @@ class BarangKeluarPelangganController extends Controller
                 'tanggal_penjualan' => $out->waktu,
                 'no_penjualan' => $out->kode,
                 'nama_pembeli' => $out->pemesanan->nama_pemesan,
-                'barang' => $out->pemesanan->pemesananPembeliItem[0]->barang->nama_barang,
+                'barang' => $out->pemesanan->pemesananPembeliItem[0]->barangWarung->nama_barang,
                 'jumlah' => $out->jumlah,
                 'satuan' => $out->satuan,
-                'harga' => $out->pemesanan->pemesananPembeliItem[0]->barang->harga_barang,
+                'harga' => $out->pemesanan->pemesananPembeliItem[0]->barangWarung->harga_barang,
                 'total' => $out->pemesanan->pemesananPembeliItem[0]->harga
             ]);
         }
