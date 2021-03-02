@@ -10,7 +10,9 @@ use App\Models\ReturMasukPelanggan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\SendProofOfPaymentMail;
+use App\Mail\ValidatePaymentMail;
 use Illuminate\Support\Facades\Mail;
+use App\User;
 
 class TransaksiPembeliController extends Controller
 {
@@ -54,6 +56,31 @@ class TransaksiPembeliController extends Controller
         $data = $this->model::findOrFail($id);
         $data->update(['status'=>'2']);
         // dd($data);
+
+        $newData['nomor_pemesanan'] = $data->nomor_pemesanan;
+        $newData['pembeli'] = $data->pembeli->nama;
+        $newData['penjual'] = $data->pelanggan->nama;
+        $newData['waktu'] = now('Asia/Jakarta');
+
+        $pembeli = User::where('pembeli_id', $data->pembeli->id)->first();
+
+        $user_email = $pembeli->email;
+
+        set_time_limit(99999999);
+        Mail::to($user_email)->send(new ValidatePaymentMail($newData));
+
+        $retail = $data->retail->id;
+
+        $firebaseToken = User::where('pembeli_id', $data->pembeli->id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Penjual sudah memverifikasi pemesanan anda!' );
+        $title = __( 'Verifikasi Pemesanan' );
+
+        $this->notif($judul, $firebaseToken, $title);
+
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }
 
@@ -101,20 +128,21 @@ class TransaksiPembeliController extends Controller
             ->all();
 
         $judul = __( 'Pembeli melakukan pembayaran!' );
+        $title = __( 'Pembayaran' );
 
-        $this->notif($judul, $firebaseToken);
+        $this->notif($judul, $firebaseToken, $title);
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
 
-    public function notif($judul, $firebase)
+    public function notif($judul, $firebase, $title)
     {
         $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
 
         $data = [
             "registration_ids" => $firebase,
             "notification" => [
-                "title" => __( 'Pembayaran' ),
+                "title" => $title,
                 "body" => $judul,
             ]
         ];
