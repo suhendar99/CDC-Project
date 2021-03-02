@@ -78,7 +78,7 @@ class BarangMasukPelangganController extends Controller
             ->whereHas('pemesanan',function($q){
                 $q->where('status',5);
             })
-            // ->doesntHave('barangMasukPelanggan')
+            ->doesntHave('barangMasukPelanggan')
             ->get();
             // dd($barang);
             return view('app.data-master.manajemenBarangPelanggan.masuk.create', compact('barang'));
@@ -174,7 +174,7 @@ class BarangMasukPelangganController extends Controller
                 'waktu' => now('Asia/Jakarta')
             ]);
         }
-        
+
 
         $barangWarung = BarangWarung::create([
             'storage_out_kode' => $masuk->storage_out_kode,

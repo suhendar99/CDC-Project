@@ -51,10 +51,10 @@
                                 <th>No</th>
                                 <th>Waktu Pencatatan</th>
                                 <th>Bulan</th>
-                                <th>Laba Kotor</th>
-                                <th>Penjualan</th>
                                 <th>Pembelian</th>
+                                <th>Penjualan</th>
                                 <th>Biaya Operasional</th>
+                                <th>Laba Kotor</th>
                                 <th>Laba Bersih</th>
                                 <th>Action</th>
                             </tr>
@@ -187,10 +187,10 @@
                 {data : 'DT_RowIndex', name: 'DT_RowIndex', searchable:false,orderable:false},
                 {data : 'created_at', name: 'created_at'},
                 {data : 'bulan', name: 'bulan'},
-                {data : 'laba_kotor', name: 'laba_kotor'},
-                {data : 'penjualan', name: 'penjualan'},
                 {data : 'pembelian', name: 'pembelian'},
+                {data : 'penjualan', name: 'penjualan'},
                 {data : 'biaya_operasional', name: 'biaya_operasional'},
+                {data : 'laba_kotor', name: 'laba_kotor'},
                 {data : 'laba_bersih', name: 'laba_bersih'},
                 {data : 'action', name: 'action'}
             ]

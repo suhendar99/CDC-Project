@@ -27,7 +27,7 @@ class PiutangBulkyController extends Controller
             ->whereHas('pemesananKeluarBulky',function($q){
                 $q->where('pemasok_id',Auth::user()->pemasok_id);
             })
-            ->where('status','=',0)
+            // ->where('status','=',0)
             ->orderBy('id','desc')
             ->get();
             return DataTables::of($data)
@@ -35,13 +35,20 @@ class PiutangBulkyController extends Controller
                 ->addColumn('hutang', function($data){
                     return 'Rp '.number_format($data->hutang);
                 })
+                ->addColumn('status', function($data){
+                    if ($data->status == 1) {
+                        return '<span class="badge badge-success">Sudah Dibayar</span>';
+                    } else {
+                        return '<span class="badge badge-danger">Belum Dibayar</span>';
+                    }
+                })
                 ->editColumn('tanggal',function($data){
                     return date('d-m-Y', strtotime($data->tanggal));
                 })
                 ->editColumn('jatuh_tempo',function($data){
                     return date('d-m-Y', strtotime($data->jatuh_tempo));
                 })
-                ->rawColumns(['hutang'])
+                ->rawColumns(['hutang','status'])
                 ->make(true);
         }
         return view('app.data-master.piutangBulky.masukPemasok.index');

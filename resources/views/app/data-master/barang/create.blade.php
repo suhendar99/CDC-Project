@@ -111,8 +111,24 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                                            <div class="input-group mb-3">
+                                              <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                                              <div class="input-group-append">
+                                                <span class="input-group-text" id="satuanAppend"></span>
+                                              </div>
+                                              @error('jumlah')
+                                                  <span class="invalid-feedback" role="alert">
+                                                      <strong>{{ $message }}</strong>
+                                                  </span>
+                                              @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Harga Barang<small class="text-success">*Harus diisi</small></label>
@@ -161,8 +177,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
+                                </div> --}}
+                                {{-- <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Total harga <small class="text-success">*Harus diisi</small></label>
@@ -174,7 +190,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">

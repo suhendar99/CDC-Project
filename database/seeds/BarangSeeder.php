@@ -24,8 +24,8 @@ class BarangSeeder extends Seeder
                 'kode_barang' => $faker->unique()->ean13,
                 'nama_barang' => 'Beras Cianjur',
                 'jumlah' => $jumlah,
-                'harga_barang' => $harga,
-                'harga_total' => $harga * $jumlah,
+                'harga_beli' => $harga,
+                'harga_barang' => $harga * $jumlah,
                 'satuan' => 'Ton'
             ]
         );
@@ -37,8 +37,8 @@ class BarangSeeder extends Seeder
             'kode_barang' => $faker->unique()->ean13,
             'nama_barang' => 'Jagung Belanda',
             'jumlah' => 100,
-            'harga_barang' => 120000000,
-            'harga_total' => 120000000 * 100,
+            'harga_barang' => 120000000 * 100,
+            'harga_beli' => 120000000,
             'satuan' => 'Ton'
         ]);
     }

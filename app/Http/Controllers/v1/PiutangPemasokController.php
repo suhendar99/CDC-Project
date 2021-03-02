@@ -38,10 +38,17 @@ class PiutangPemasokController extends Controller
                 ->editColumn('tanggal',function($data){
                     return date('d-m-Y', strtotime($data->tanggal));
                 })
+                ->addColumn('status', function($data){
+                    if ($data->status == 1) {
+                        return '<span class="badge badge-success">Sudah Dibayar</span>';
+                    } else {
+                        return '<span class="badge badge-danger">Belum Dibayar</span>';
+                    }
+                })
                 ->editColumn('jatuh_tempo',function($data){
                     return date('d-m-Y', strtotime($data->jatuh_tempo));
                 })
-                ->rawColumns(['hutang'])
+                ->rawColumns(['hutang','status'])
                 ->make(true);
         }
         return view('app.data-master.piutang-bulky.keluar-pemasok.index');
