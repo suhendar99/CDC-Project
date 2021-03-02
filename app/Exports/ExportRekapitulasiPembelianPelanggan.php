@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ExportPiutang implements FromView,ShouldAutoSize
+class ExportRekapitulasiPembelianPelanggan implements FromView,ShouldAutoSize
 {
     use Exportable;
 
@@ -16,7 +16,7 @@ class ExportPiutang implements FromView,ShouldAutoSize
 
     function __construct($data){
         $this->data = $data;
-        $this->path = 'app.data-master.piutang-pelanggan.';
+        $this->path = 'app.transaksi.rekapitulasi.pembelianPelanggan.';
     }
     public function view(): View
     {

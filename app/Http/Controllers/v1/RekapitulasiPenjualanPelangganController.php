@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Exports\ExportRekapitulasiPenjualanPelanggan;
 use App\Http\Controllers\Controller;
 use App\Models\RekapitulasiPenjualanPelanggan;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class RekapitulasiPenjualanPelangganController extends Controller
 {
@@ -17,12 +22,13 @@ class RekapitulasiPenjualanPelangganController extends Controller
      */
     public function index(Request $request)
     {
-        $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan')
+        $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan.pemesanan.pemesananPembeliItem.barangWarung')
         ->whereHas('barangKeluarPelanggan',function($q){
             $q->where('user_id',Auth::user()->id);
         })
         ->orderBy('id','desc')
         ->get();
+        // dd($data->toArray());
         $total = $data->sum('total');
 
         if($request->ajax()){
@@ -43,10 +49,80 @@ class RekapitulasiPenjualanPelangganController extends Controller
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->editColumn('harga',function($data){
+                    return 'Rp '.number_format($data->harga);
+                })
+                ->editColumn('total',function($data){
+                    return 'Rp '.number_format($data->total);
+                })
                 ->rawColumns(['action','jumlah','nama_pembeli','no_penjualan'])
                 ->make(true);
         }
         return view('app.transaksi.rekapitulasi.penjualanPelanggan.index', compact('total'));
+    }
+
+    public function printPdf(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        } else{
+            $month = $request->month;
+            if ($request->month != null && $request->has('month')) {
+                if ($request->month == null) {
+                    return back()->with('error','Mohon Pilih Bulan !');
+                }
+                $dateObj = DateTime::createFromFormat('!m',$month);
+                $sumber = 'Bulan '.$dateObj->format('F');
+                $bulan = $request->input('month');
+                $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan')
+                ->whereHas('barangKeluarPelanggan',function($q){
+                    $q->where('user_id',Auth::user()->id);
+                })
+                ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                ->orderBy('id','desc')
+                ->get();
+                if ($data->count() < 1) {
+                    return back()->with('error','Data Kosong !');
+                }
+
+                $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualanPelanggan.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                set_time_limit('99999');
+                return $pdf->stream('Laporan-rekapitulasi.pdf');
+                return view('app.transaksi.rekapitulasi.penjualanPelanggan.pdf',compact('data','sumber','month'));
+
+            }
+        }
+    }
+
+    public function printExcel(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'month' => 'required'
+        ]);
+
+        if ($v->fails()) {
+            return back()->withErrors($v)->withInput();
+        }
+        if ($request->month == null) {
+            return back()->with('error','Mohon Pilih Bulan !');
+        }
+        $bulan = $request->input('month');
+        $data = RekapitulasiPenjualanPelanggan::with('barangKeluarPelanggan')
+                ->whereHas('barangKeluarPelanggan',function($q){
+                    $q->where('user_id',Auth::user()->id);
+                })
+                ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
+                ->orderBy('id','desc')
+                ->get();
+        if($data->count() < 1){
+            return back()->with('failed','Data Kosong!');
+        }
+        set_time_limit(99999);
+        return (new ExportRekapitulasiPenjualanPelanggan($data))->download('Rekapitulasi-Penjualan-'.Carbon::now().'.xlsx');
     }
 
     /**

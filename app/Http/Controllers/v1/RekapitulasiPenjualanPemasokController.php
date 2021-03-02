@@ -77,7 +77,9 @@ class RekapitulasiPenjualanPemasokController extends Controller
                 })
                 ->whereRaw('MONTH(tanggal_penjualan) = '.$bulan)
                 ->orderBy('id','desc')->get();
-
+                if($data->count() < 1){
+                    return back()->with('failed','Data Kosong!');
+                }
                 $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan-rekapitulasi.pdf');
