@@ -80,4 +80,15 @@ class PemesananKeluarBulky extends Model
     {
         return $this->hasOne(StorageMasukBulky::class, 'pemesanan_keluar_bulky_id', 'id');
     }
+
+    /**
+     * PemesananKeluarBulky belongs to Pemasok.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function pemasok()
+    {
+        // belongsTo(RelatedModel, foreignKey = pemasok_id, keyOnRelatedModel = id)
+        return $this->belongsTo('App\Models\Pemasok');
+    }
 }

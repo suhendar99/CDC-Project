@@ -8,6 +8,6 @@
 		<li>Nama: {{ $barang->nama_barang }}</li>
 		<li>Jumlah: {{ $barang->jumlah_barang }}</li>
 		<li>Satuan: {{ $barang->satuan }}</li>
-		<li>Harga: {{ number_format($barang->harga,0,',','.') }}</li>
+		<li>Harga: Rp. {{ number_format($barang->harga,0,',','.') }}</li>
 	</ul>
 </div>

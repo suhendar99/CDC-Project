@@ -71,4 +71,15 @@ class Pemasok extends Model
     {
         return $this->hasMany(SuratPiutangBulkyPemasok::class, 'pemasok_id', 'id');
     }
+
+    /**
+     * Pemasok has many PemesananKeluarBulky.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pemesananKeluarBulky()
+    {
+        // hasMany(RelatedModel, foreignKeyOnRelatedModel = pemasok_id, localKey = id)
+        return $this->hasMany('App\Models\PemesananKeluarBulky');
+    }
 }
