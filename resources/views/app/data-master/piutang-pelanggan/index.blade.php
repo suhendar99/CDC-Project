@@ -51,6 +51,7 @@
                                 <th>Jumlah Hutang</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Nama Pembeli</th>
+                                <th>Status Piutang</th>
                                 {{-- <th>Nama Barang</th> --}}
                             </tr>
                         </thead>
@@ -185,6 +186,7 @@
                 {data : 'hutang', name: 'hutang'},
                 {data : 'jatuh_tempo', name: 'jatuh_tempo'},
                 {data : 'nama_pembeli', name: 'nama_pembeli'},
+                {data : 'status', name: 'status'},
                 // {data : 'barang.nama', name: 'barang_id'},
             ]
         });

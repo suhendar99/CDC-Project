@@ -58,11 +58,12 @@
                                                 <th>Tanggal Barang Masuk</th>
                                                 <th>Kode Barang</th>
                                                 <th>Nama Barang</th>
-                                                <th>Harga Barang</th>
+                                                <th>Harga Beli Barang</th>
+                                                <th>Harga Jual Barang</th>
                                                 <th>Stok Barang</th>
                                                 <th>Satuan</th>
-                                                <th>Harga Jual Barang</th>
                                                 <th>Foto Barang</th>
+                                                <th>Atur Harga Barang</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -206,6 +207,92 @@
       </div>
     </div>
 </div>
+{{-- Modal Atur Harga Barang --}}
+<div class="modal fade" id="modalAturHarga" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Atur Harga Barang</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data" id="formHarga">
+        <div class="modal-body" id="loading">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label class="col-form-label" style="font-size: 13px;">Harga Beli Barang<small class="text-success">*Harus diisi</small></label>
+                <div class="input-group mb-3">
+                <div class="input-group-append">
+                    <span class="input-group-text">Rp </span>
+                </div>
+                  <input type="number" type="number" id="harga" class="form-control @error('harga_beli') is-invalid @enderror" name="harga_beli" value="{{ old('harga_beli') }}" aria-describedby="satAppend">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="satAppend">/</span>
+                  </div>
+                  @error('harga_beli')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+            </div>
+            <input type="hidden" name="jumlah" id="jumlah">
+            {{-- <div class="form-group">
+                <label class="col-form-label" style="font-size: 13px;">Jumlah Barang <small class="text-success">*Harus diisi</small></label>
+                <div class="input-group mb-3">
+                    <input type="number" type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
+                    <div class="input-group-append">
+                    <span class="input-group-text" id="satuanAppend"></span>
+                    </div>
+                    @error('jumlah')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div> --}}
+            <div class="form-group">
+                <label class="col-form-label" style="font-size: 13px;">Keuntungan <small class="text-success">*Harus diisi</small></label>
+                <div class="input-group mb-3">
+                  <input type="number" type="number" id="keuntungan" class="form-control @error('jumlah') is-invalid @enderror" name="keuntungan" value="{{ old('keuntungan') }}">
+                  <div class="input-group-append">
+                    <span class="input-group-text">%</span>
+                  </div>
+                  @error('keuntungan')
+                      <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                      </span>
+                  @enderror
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label" style="font-size: 13px;">Total Harga Jual Barang <small class="text-success">*Harus diisi</small></label>
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <span class="input-group-text">Rp </span>
+                    </div>
+                    <input type="number" min="0" id="hasil" class="form-control @error('harga_barang') is-invalid @enderror" name="harga_barang" value="{{ old('harga_barang') }}" placeholder="Total harga barang" readonly>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="satuaAppend">/</span>
+                    </div>
+                    @error('harga_barang')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary" id="saveHarga">Atur Harga</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @push('script')
     <script>
         let table = $('#data_table').DataTable({
@@ -220,6 +307,14 @@
                 {data : 'kode_barang', name: 'kode_barang'},
                 {data : 'nama_barang', name: 'nama_barang'},
                 {data : function(data,a,b,c){
+                        if (data.harga_beli !== null) {
+                            return 'Rp. '+ (data.harga_beli.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
+                        } else {
+                            return 'Harga belum diatur.';
+                        }
+                    }, name: 'harga_beli'
+                },
+                {data : function(data,a,b,c){
                         if (data.harga_barang !== null) {
                             return 'Rp. '+ (data.harga_barang.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")) + ' per ' + data.satuan;
                         } else {
@@ -229,15 +324,8 @@
                 },
                 {data : 'jumlah', name: 'jumlah'},
                 {data : 'satuan', name: 'satuan'},
-                {data : function(data,a,b,c){
-                        if (data.harga_total !== null) {
-                            return 'Rp. '+ (data.harga_total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
-                        } else {
-                            return 'Harga belum diatur.';
-                        }
-                    }, name: 'harga_total'
-                },
                 {data : 'foto', name: 'foto'},
+                {data : 'atur_harga', name: 'atur_harga'},
                 {data : 'action', name: 'action'}
             ]
         });
@@ -393,6 +481,62 @@
                 }
             });
         }
+        function aturHarga(id){
+            // $('#loading').html(`
+            //     <div class="hehe">
+            //         <center>
+            //             <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            //                 <span class="sr-only">Loading...</span>
+            //             </div>
+            //         </center>
+            //     </div>
+            // `)
+            $('#formHarga').attr('action','/v1/update-harga-barang/'+id+'/pemasok')
+            $('#saveHarga').attr('type','submit')
+            $('#hasil').val(0)
+            $('#harga').val(0)
+            $('#keuntungan').val(0)
+            $.ajax({
+                url: "/api/v1/getBarang/"+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    var data = response.data;
+                    console.log(data.harga_beli);
+                    console.log(data.jumlah);
+                    $('#jumlah').val(data.jumlah);
+                    $('#harga').val(data.harga_beli);
+                    $('#keuntungan').val(data.keuntungan);
+                    $('#hasil').val(data.harga_barang);
+                    $('#satuanAppend').text(data.satuan);
+                    $('#satAppend').text('Per-'+data.satuan);
+                    $('#satuaAppend').text('Per-'+data.satuan);
+
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
+
+        }
+        function inputed(){
+        var hasil = $('#hasil').val(Math.round($('#harga').val()) * Math.round($('#jumlah').val()) * Math.round($('#keuntungan').val())/100)
+        console.log(hasil);
+        }
+        $('#jumlah').on('keyup',(value) => {
+            $('#hasil').val(Math.round($('#harga').val()) * Math.round($('#jumlah').val()) * Math.round($('#keuntungan').val())/100)
+        })
+        $('#harga').on('keyup',(value) => {
+            console.log()
+            $('#hasil').val(Math.round($('#harga').val()) * Math.round($('#jumlah').val()) * Math.round($('#keuntungan').val())/100)
+        })
+        $('#keuntungan').on('keyup',(value) => {
+            console.log()
+            $('#hasil').val(Math.round($('#harga').val()) * Math.round($('#jumlah').val()) * Math.round($('#keuntungan').val())/100)
+        })
 
         function sweet(id){
             const formDelete = document.getElementById('formDelete')

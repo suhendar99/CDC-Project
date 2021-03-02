@@ -50,10 +50,10 @@
                                 <th>No</th>
                                 <th>Waktu Pencatatan</th>
                                 <th>Bulan</th>
-                                <th>Laba Kotor</th>
-                                <th>Penjualan</th>
                                 <th>Pembelian</th>
+                                <th>Penjualan</th>
                                 <th>Biaya Operasional</th>
+                                <th>Laba Kotor</th>
                                 <th>Laba Bersih</th>
                                 <th>Action</th>
                             </tr>
@@ -213,7 +213,7 @@
                     }
                 },
                 {
-                    data : 'laba_kotor', render:function(data,a,b,c){
+                    data : 'pembelian', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
@@ -223,12 +223,12 @@
                     }
                 },
                 {
-                    data : 'pembelian', render:function(data,a,b,c){
+                    data : 'biaya_operasional', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },
                 {
-                    data : 'biaya_operasional', render:function(data,a,b,c){
+                    data : 'laba_kotor', render:function(data,a,b,c){
                         return 'Rp. '+ (data.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"));
                     }
                 },

@@ -84,7 +84,7 @@
                                 @method('PUT')
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Harga Barang Per-{{ $satuan }} <small class="text-success">*Harus diisi</small></label>
+                                        <label>Harga Barang Per-{{ ($base_harga->satuan == 'Kuintal') ? 'Kg' : $base_harga->satuan }} <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="satuanAppend">RP.</span>

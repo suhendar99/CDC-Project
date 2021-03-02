@@ -168,6 +168,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::put('pemasok/storage/stock/{id}/foto', 'BarangController@uploadFoto')->name('retail.stock.foto');
         // Pengelolaan Barang
         Route::resource('barang', 'BarangController');
+        Route::put('update-harga-barang/{id}/pemasok', 'BarangController@updateHargaBarang');
         Route::resource('kwitansi-pemasok', 'KwitansiPemasokController');
         Route::resource('surat-jalan-pemasok', 'SuratJalanPemasokController');
         Route::resource('storage-keluar-pemasok', 'StorageKeluarPemasokController');

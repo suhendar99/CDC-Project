@@ -33,8 +33,8 @@ class BarangController extends Controller
      */
     public function index(Request $request)
     {
+        $data = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->orderBy('id','desc')->get();
         if($request->ajax()){
-            $data = Barang::where('pemasok_id',Auth::user()->pemasok_id)->with('foto')->orderBy('id','desc')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -45,13 +45,37 @@ class BarangController extends Controller
                     // <a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;
                     return '<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalFotoBarang" onclick="foto('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Foto Stock Barang">Foto Stock Barang</a>';
                 })
+                ->addColumn('atur_harga', function($data){
+                    // <a href="/v1/barang/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+                    return '<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalAturHarga" onclick="aturHarga('.$data->id.')" data-id="'.$data->id.'" style="cursor: pointer;" title="Atur Harga barang">Atur Harga Barang</a>';
+                })
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i', strtotime($data->created_at)).' WIB';
                 })
-                ->rawColumns(['action','foto'])
+                ->rawColumns(['action','foto','atur_harga'])
                 ->make(true);
         }
-        return view($this->path.'index');
+        return view($this->path.'index',compact('data'));
+    }
+    public function updateHargaBarang(Request $request, $id)
+    {
+        $v = Validator::make($request->all(),[
+            'harga_barang' => 'required|string|max:20',
+            'keuntungan' => 'required|numeric',
+            'harga_beli' => 'required|numeric'
+        ]);
+        if ($v->fails()) {
+            return back()->with('sukses','Mohon isi form dengan sesuai format !');
+        } else {
+            $data = Barang::find($id);
+
+            $data->update([
+                'harga_barang' => $request->harga_barang,
+                'harga_beli' => $request->harga_beli,
+                'keuntungan' => $request->keuntungan
+            ]);
+            return back()->with('success','Harga Berhasil Di Atur !');
+        }
     }
     public function getBarangByPelanggan(Request $request)
     {
@@ -145,13 +169,13 @@ class BarangController extends Controller
     {
         $v = Validator::make($request->all(),[
             'nama_barang' => 'required|string|max:50',
-            'harga_barang' => 'required|string|max:20',
             // 'kode_barang' => 'required|string|max:100',
             'satuan' => 'required|string|max:10',
             'deskripsi' => 'required|string',
             'jumlah' => 'required|numeric',
-            'keuntungan' => 'required|numeric',
-            'harga_total' => 'required|numeric',
+            // 'harga_barang' => 'required|string|max:20',
+            // 'keuntungan' => 'required|numeric',
+            // 'harga_total' => 'required|numeric',
             'kategori_id' => 'required|exists:kategoris,id',
             'foto.*' => 'required|mimes:png,jpg|max:2048'
         ]);
@@ -169,7 +193,7 @@ class BarangController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','keuntungan','harga_total','deskripsi'),[
+            $barang = Barang::create(array_merge($request->only('nama_barang','satuan','jumlah','deskripsi'),[
                 'kode_barang' => $kode,
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id
@@ -208,7 +232,7 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        $data = Barang::with('pemasok','kategori')->where('id',$id)->get();
+        $data = Barang::with('pemasok','kategori')->find($id);
 
         return response()->json([
             'data' => $data

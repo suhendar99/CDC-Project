@@ -119,7 +119,7 @@ class TransaksiPemasokController extends Controller
             $faker = \Faker\Factory::create('id_ID');
 
             $kode = $faker->unique()->ean13;
-            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_total','deskripsi'),[
+            $barang = Barang::create(array_merge($request->only('nama_barang','harga_barang','satuan','jumlah','harga_beli','deskripsi'),[
                 'kode_barang' => $kode,
                 'pemasok_id' => Auth::user()->pemasok_id,
                 'kategori_id' => $request->kategori_id

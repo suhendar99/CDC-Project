@@ -19,12 +19,13 @@ class CreateBarangsTable extends Migration
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->string('kode_barang')->unique();
             $table->string('nama_barang');
-            $table->string('harga_barang');
-            $table->string('harga_total');
+            $table->string('harga_barang')->nullable();
+            // $table->string('harga_total')->nullable()->comment('Harga Total Adalah Harga Beli !');
+            $table->string('harga_beli')->nullable()->comment('Harga Total Adalah Harga Beli !');
             $table->text('deskripsi');
-            $table->integer('jumlah');
+            $table->integer('jumlah')->nullable();
             $table->string('satuan');
-            $table->integer('keuntungan');
+            $table->integer('keuntungan')->nullable();
             $table->timestamps();
         });
     }

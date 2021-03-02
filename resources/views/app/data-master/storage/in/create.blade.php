@@ -62,6 +62,19 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
+                                        <select name="barang_bulky_id" id="barang" class="form-control">
+                                            <option value="0" data-satuan="-" disabled>--Pilih Gudang Dahulu--</option>
+                                        </select>
+                                        @error('barang_bulky_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row">
                                     <div class="form-group col-md-6" id="noKwitt">
                                         <label>Nomor Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <input type="number" id="noKwi" class="form-control @error('nomor_kwitansi') is-invalid @enderror" name="nomor_kwitansi" value="{{ old('nomor_kwitansi') }}" placeholder="Masukan Nomor Kwitansi">
@@ -102,18 +115,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label>Nama Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
-                                        <select name="barang_bulky_id" id="barang" class="form-control">
-                                            <option value="0" data-satuan="-" disabled>--Pilih Gudang Dahulu--</option>
-                                        </select>
-                                        @error('barang_bulky_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label style="font-size: 12px;">Jumlah Barang Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <input type="number" id="jumlah" class="form-control @error('jumlah') is-invalid @enderror" name="jumlah" value="{{ old('jumlah') }}" aria-describedby="satuanAppend">
@@ -128,7 +130,7 @@
                                         @enderror
                                     </div>
                                     <input type="hidden" name="pemesanan_bulky_id" id="pemesanan_bulky_id">
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label>Harga Beli Dari Kwitansi <small class="text-success">*Harus diisi</small></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
