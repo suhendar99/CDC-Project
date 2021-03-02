@@ -9,6 +9,8 @@ use App\Models\BarangWarung;
 use App\Models\ReturMasukPelanggan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\SendProofOfPaymentMail;
+use Illuminate\Support\Facades\Mail;
 
 class TransaksiPembeliController extends Controller
 {
@@ -88,7 +90,56 @@ class TransaksiPembeliController extends Controller
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
 
+        $pelanggan = $data->pelanggan_id;
+
+        set_time_limit(99999999);
+        Mail::to('filok5267@gmail.com')->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+
+        $firebaseToken = User::where('pelanggan_id', $pelanggan)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Pembeli melakukan pembayaran!' );
+
+        $this->notif($judul, $firebaseToken);
+
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pembayaran' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     public function create()

@@ -254,7 +254,7 @@ class PemesananController extends Controller
 
         // dd($data->bulky->user->email);
         set_time_limit(99999999);
-        Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('/upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         // $twilio = new Client('ACc460909600bb11391c409fceac79ee00', '340f81c06b713123327f390ab7dd721f');
 
@@ -574,11 +574,24 @@ class PemesananController extends Controller
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
         $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
-        Mail::to($data->gudang->user->email)->send(new SendProofOfPaymentMail('/upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to($data->gudang->user->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti
         ]);
+
+        $retail_id = $data->gudang_id;
+
+        $firebaseToken = User::whereHas('pengurusGudang.gudang', function($query)use($retail_id){
+                $query->where('gudang_id', $retail_id);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Pembeli melakukan pembayaran!' );
+
+        $this->notif($judul, $firebaseToken);
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }

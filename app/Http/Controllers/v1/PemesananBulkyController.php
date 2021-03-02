@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
 use App\Models\LogTransaksi;
+use App\User;
 use App\Models\PemesananKeluarBulky;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
+use App\Mail\SendProofOfPaymentMail;
+use App\Mail\ValidatePaymentMail;
+use Illuminate\Support\Facades\Mail;
 
 class PemesananBulkyController extends Controller
 {
@@ -120,8 +124,59 @@ class PemesananBulkyController extends Controller
             'foto_bukti' => '/upload/foto/bukti-bulky/'.$nama_bukti
         ]);
 
+        $pemasok = $data->pemasok_id;
+
+        $user_email = User::where('pemasok_id', $pemasok)->first();
+
+        set_time_limit(99999999);
+        Mail::to($user_email->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti-bulky\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+
+        $firebaseToken = User::where('pemasok_id', $pemasok)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Pembeli melakukan pembayaran!' );
+        $title = __( 'Pembayaran' );
+
+        $this->notif($judul, $firebaseToken, $title);
 
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
+    }
+
+    public function notif($judul, $firebase, $title)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => $title,
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     public function getPemesananRetail($id)
@@ -145,6 +200,31 @@ class PemesananBulkyController extends Controller
             'aktifitas_transaksi' => 'Penerimaan Pesanan',
             'role' => 'Warung'
         ]);
+
+        $newData['nomor_pemesanan'] = $data->nomor_pemesanan;
+        $newData['pembeli'] = $data->retail->nama;
+        $newData['penjual'] = $data->bulky->nama;
+        $newData['waktu'] = now('Asia/Jakarta');
+
+        $user_email = $data->retail->user->email;
+
+        set_time_limit(99999999);
+        Mail::to($user_email)->send(new ValidatePaymentMail($newData));
+
+        $retail = $data->retail->id;
+
+        $firebaseToken = User::whereHas('pengurusGudang.gudang', function($query)use($retail){
+                $query->where('gudang_id', $retail);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Penjual sudah memverifikasi pemesanan anda!' );
+        $title = __( 'Verifikasi Pemesanan' );
+
+        $this->notif($judul, $firebaseToken, $title);
+
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }
 

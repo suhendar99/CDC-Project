@@ -9,6 +9,9 @@ use App\Models\PemesananKeluarBulky;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
+use App\Mail\ValidatePaymentMail;
+use Illuminate\Support\Facades\Mail;
+use App\User;
 
 class PemesananMasukPemasokController extends Controller
 {
@@ -121,9 +124,69 @@ class PemesananMasukPemasokController extends Controller
             'aktifitas_transaksi' => 'penerimaan Pesanan',
             'role' => 'Pemasok'
         ]);
+
+        $newData['nomor_pemesanan'] = $data->nomor_pemesanan;
+        $newData['pembeli'] = $data->bulky->nama;
+        $newData['penjual'] = $data->pemasok->nama;
+        $newData['waktu'] = now('Asia/Jakarta');
+
+        $user_email = $data->bulky->user->email;
+
+        set_time_limit(99999999);
+        Mail::to($user_email)->send(new ValidatePaymentMail($newData));
+
+        $bulky_id = $data->bulky->id;
+
+        $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($bulky_id){
+                $query->where('bulky_id', $bulky_id);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Penjual sudah memverifikasi pemesanan anda!' );
+
+        $this->notif($judul, $firebaseToken);
+
         // dd($data);
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
     }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Verifikasi Pemesanan' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
