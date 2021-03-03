@@ -64,7 +64,9 @@
                                     </span>
                                     @if ($d->status == 6)
                                         @if($d->foto_bukti == null)
-                                        <a class="btn btn-sm btn-primary"><i class="fas fa-shopping-bag"></i> Mohon Ambil Barang</a>
+                                        <span class="badge rounded-pill bg-my-success text-dark p-2" >
+                                            <i class="fas fa-shopping-bag"></i> Mohon Ambil Barang
+                                        </span>
                                         @else
                                         <a class="btn btn-sm btn-primary disabled" href="#">
                                             {{
