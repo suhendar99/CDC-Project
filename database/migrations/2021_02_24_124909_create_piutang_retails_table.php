@@ -19,7 +19,7 @@ class CreatePiutangRetailsTable extends Migration
             $table->date('tanggal');
             $table->string('nama_pembeli', 50);
             $table->date('jatuh_tempo');
-            $table->integer('hutang');
+            $table->bigInteger('hutang');
             $table->integer('jumlah_terbayar')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();

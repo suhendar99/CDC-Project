@@ -45,7 +45,9 @@ class PemesananBulkyController extends Controller
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pemesananBulky->metode_pembayaran == null && $data->pemesananBulky->foto_bukti == null) {
                         return "<span class='text-danger'>Hutang</span>";
-                    } elseif ($data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->foto_bukti == null ) {
+                    } elseif ($data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->status == 6 ) {
+                        return "<span class='text-success'>Barang Diambil & Lunas</span>";
+                    } elseif ($data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->foto_bukti == null  && $data->pemesananBulky->status != 6) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesananBulky->foto_bukti != null && $data->pemesananBulky->status == '2') {
                         if ($data->pemesananBulky->metode_pembayaran == null) {
@@ -70,7 +72,9 @@ class PemesananBulkyController extends Controller
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananBulky->id.')" data-id="'.$data->pemesananBulky->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
                     } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran == null) {
                         return '-';
-                    } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran != null) {
+                    } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->status == 6) {
+                        return '&nbsp; <span class="text-danger">-</span>';
+                    } elseif($data->pemesananBulky->foto_bukti == null && $data->pemesananBulky->metode_pembayaran != null && $data->pemesananBulky->status != 6) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
