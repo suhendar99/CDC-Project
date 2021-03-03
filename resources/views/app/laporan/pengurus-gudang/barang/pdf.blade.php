@@ -126,24 +126,24 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Gudang</th>
                 <th>Waktu Barang Masuk</th>
+                <th>Nama Gudang</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
+                <th>Satuan</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $a->storageIn->gudang->nama}}</td>
-                    <td>{{ date('d F Y',strtotime($a->waktu)) }}</td>
-                    <td>{{ $a->storageIn->kode }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->stockBarangRetail->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->stockBarangRetail->nama_barang }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
+                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ $a->gudang->nama }}</td>
+                    <td>{{ $a->stockBarangBulky->barang_kode }}</td>
+                    <td>{{ $a->nama_barang }}</td>
+                    <td>{{ $a->jumlah }}</td>
+                    <td>{{ $a->satuan }}</td>
                 </tr>
             @endforeach
         </tbody>

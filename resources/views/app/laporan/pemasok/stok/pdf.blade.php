@@ -130,18 +130,20 @@
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
+                <th>Satuan</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ date('d-m-Y',strtotime($a->created_at)) }}</td>
                     <td>{{ $a->kode_barang }}</td>
                     {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
                     <td>{{ $a->nama_barang }}</td>
                     {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
+                    <td>{{ $a->jumlah }}</td>
+                    <td>{{ $a->satuan }}</td>
                 </tr>
             @endforeach
         </tbody>

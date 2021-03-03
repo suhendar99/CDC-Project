@@ -22,6 +22,5 @@ class ExportPiutang implements FromView,ShouldAutoSize
     {
         $data = $this->data;
         return view($this->path.'excel', compact('data'));
-
     }
 }

@@ -1,11 +1,12 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
+    $title = 'Laporan Penjualan Bulky';
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Barang Keluar Dari Gudang</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +108,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>Laporan Barang Keluar Dari Gudang</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>

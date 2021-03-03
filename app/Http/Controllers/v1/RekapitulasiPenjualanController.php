@@ -47,6 +47,12 @@ class RekapitulasiPenjualanController extends Controller
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->editColumn('harga',function($data){
+                    return 'Rp. '.number_format($data->harga);
+                })
+                ->editColumn('total',function($data){
+                    return 'Rp. '.number_format($data->total);
+                })
                 ->editColumn('no_kwitansi',function($data){
                     if ($data->no_kwitansi != null) {
                         return $data->no_kwitansi;

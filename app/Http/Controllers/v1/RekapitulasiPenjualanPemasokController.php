@@ -80,7 +80,7 @@ class RekapitulasiPenjualanPemasokController extends Controller
                 if($data->count() < 1){
                     return back()->with('failed','Data Kosong!');
                 }
-                $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'))->setPaper('DEFAULT_PDF_PAPER_SIZE', 'landscape')->setWarnings(false);
+                $pdf = PDF::loadview('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'))->setPaper('a4', 'landscape')->setWarnings(false);
                 set_time_limit('99999');
                 return $pdf->stream('Laporan-rekapitulasi.pdf');
                 return view('app.transaksi.rekapitulasi.penjualan-pemasok.pdf',compact('data','sumber','month'));

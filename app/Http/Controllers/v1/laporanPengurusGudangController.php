@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Gudang;
 use App\Models\Po;
 use App\Models\PoItem;
+use App\Models\StockBarang;
 use App\Models\Storage;
 use App\Models\StorageIn;
 use App\Models\StorageOut;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 use Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class laporanPengurusGudangController extends Controller
 {
@@ -244,8 +246,28 @@ class laporanPengurusGudangController extends Controller
             return (new ExportLaporanBarangKeluar($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
-    public function showLaporanBarang()
+    public function showLaporanBarang(Request $request)
     {
+        if($request->ajax()){
+            $data = StockBarang::with('stockBarangBulky','storage.tingkat.rak', 'gudang', 'storage.storageIn')
+            ->whereHas('gudang.akunGudang', function($query){
+                $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+            return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('created_at',function($data){
+                return date('d-m-Y H:i:s', strtotime($data->created_at));
+            })
+            ->editColumn('gudang',function($data){
+                return $data->gudang->nama;
+            })
+            ->editColumn('nama',function($data){
+                return $data->nama_barang;
+            })
+            ->make(true);
+        }
         return view($this->pathStorage.'index');
     }
     public function LaporanBarangPdf(Request $request)
@@ -281,10 +303,13 @@ class laporanPengurusGudangController extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
-                        $q->whereIn('gudang_id',$gudang_saya);
-                    })->with('storageIn.gudang','stockBarangRetail')->whereRaw('MONTH(waktu) = '.$bulan)->get();
-                // dd($data);
+                $data = StockBarang::with('stockBarangBulky','storage.tingkat.rak', 'gudang', 'storage.storageIn')
+                ->whereHas('gudang.akunGudang', function($query){
+                    $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+                })
+                ->whereRaw('MONTH(created_at) = '.$bulan)
+                ->orderBy('id', 'desc')
+                ->get();
                 if ($data->count() < 1) {
                     return back()->with('error','Data Kosong !');
                 }
@@ -342,9 +367,13 @@ class laporanPengurusGudangController extends Controller
                 $gudang_saya[] = $gudang->id;
             }
             if ($bulan != null && $month) {
-                $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
-                    $q->whereIn('gudang_id',$gudang_saya);
-                })->with('storageIn')->whereRaw('MONTH(waktu) = '.$hii)->get();
+                $data = StockBarang::with('stockBarangBulky','storage.tingkat.rak', 'gudang', 'storage.storageIn')
+                ->whereHas('gudang.akunGudang', function($query){
+                    $query->where('pengurus_id', auth()->user()->pengurus_gudang_id);
+                })
+                ->whereRaw('MONTH(created_at) = '.$bulan)
+                ->orderBy('id', 'desc')
+                ->get();
             } elseif ($awal != null && $akhir != null) {
                 $data = Storage::whereHas('storageIn', function($q)use($gudang_saya){
                     $q->whereIn('gudang_id',$gudang_saya);

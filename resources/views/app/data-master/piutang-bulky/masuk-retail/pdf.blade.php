@@ -1,6 +1,6 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    $title = 'Laporan Data Piutang Bulky Ke Pemasok'
+    $title = 'Laporan Data Piutang Retail Ke Bulky'
 @endphp
 
 <!DOCTYPE html>
