@@ -93,7 +93,7 @@
                         {{ Request::is('v1/laba-rugi-pemasok*') ? 'active' : false }}
                         {{ Request::is('v1/laporan-stok*') ? 'active' : false }}
                     ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Laporan</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/rekapitulasi-penjualan-pemasok*') ? 'show' : false }}
                             {{ Request::is('v1/laba-rugi-pemasok*') ? 'show' : false }}
@@ -347,7 +347,7 @@
                         {{ Request::is('v1/retail/laba-rugi*') ? 'active' : false }}
                         {{ Request::is('v1/laporan-barang*') ? 'active' : false }}
                     ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Laporan</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/rekapitulasiPembelian*') ? 'show' : false }}
                             {{ Request::is('v1/rekapitulasiPenjualan*') ? 'show' : false }}
@@ -448,7 +448,7 @@
                         {{ Request::is('v1/bulky/laba-rugi*') ? 'active' : false }}
                         {{ Request::is('v1/bulky/laporan/barang*') ? 'active' : false }}
                     ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Laporan</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/bulky/rekapitulasi/pembelian*') ? 'show' : false }}
                             {{ Request::is('v1/bulky/rekapitulasi/penjualan*') ? 'show' : false }}
@@ -539,12 +539,14 @@
                         {{ Request::is('v1/rekapitulasiPembelianPelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}
                         {{ Request::is('v1/labaRugiPelanggan*') ? 'active' : false }}
+                        {{ Request::is('v1/stok-barang-warung*') ? 'active' : false }}
                     ">
-                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Rekapitulasi</a>
+                        <a href="#rekapitulasiSubmenu" data-toggle="collapse" aria-expanded="false" class="valign-center dropdown-toggle"><i class="material-icons">book</i>Laporan</a>
                         <ul class="collapse list-unstyled
                             {{ Request::is('v1/rekapitulasiPembelianPelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'show' : false }}
                             {{ Request::is('v1/labaRugiPelanggan*') ? 'show' : false }}
+                            {{ Request::is('v1/stok-barang-warung*') ? 'show' : false }}
                         " id="rekapitulasiSubmenu">
                             <li class="{{ Request::is('v1/rekapitulasiPenjualanPelanggan*') ? 'active' : false }}">
                                 <a href="{{route('rekapitulasiPenjualanPelanggan.index')}}">Penjualan</a>

@@ -1,6 +1,6 @@
 @php
         $icon = 'book';
-        $pageTitle = 'Rekapitulasi Pembelian Barang Bulky';
+        $pageTitle = 'Laporan Pembelian Barang Bulky';
         $dashboard = true;
         // $rightbar = true;
 @endphp
@@ -15,9 +15,9 @@
           <div class="valign-center breadcumb">
             <a href="#" class="text-14">Dashboard</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Transaksi</a>
+            <a href="#" class="text-14">Laporan</a>
             <i class="material-icons md-14 px-2">keyboard_arrow_right</i>
-            <a href="#" class="text-14">Data Rekapitulasi Pembelian Barang Bulky</a>
+            <a href="#" class="text-14"> Laporan Pembelian Barang Bulky</a>
           </div>
         </div>
     </div>
