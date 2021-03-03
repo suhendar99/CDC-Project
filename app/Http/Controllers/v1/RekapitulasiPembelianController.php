@@ -48,6 +48,12 @@ class RekapitulasiPembelianController extends Controller
                 ->editColumn('created_at',function($data){
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
+                ->editColumn('harga',function($data){
+                    return 'Rp. '.number_format($data->harga);
+                })
+                ->editColumn('total',function($data){
+                    return 'Rp. '.number_format($data->total);
+                })
                 ->rawColumns(['action','jumlah'])
                 ->make(true);
         }

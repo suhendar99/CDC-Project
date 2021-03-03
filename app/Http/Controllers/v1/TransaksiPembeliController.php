@@ -68,8 +68,8 @@ class TransaksiPembeliController extends Controller
 
         set_time_limit(99999999);
         Mail::to($user_email)->send(new ValidatePaymentMail($newData));
-
-        $retail = $data->retail->id;
+        // dd($data);
+        // $retail = $data->retail->id;
 
         $firebaseToken = User::where('pembeli_id', $data->pembeli->id)
             ->whereNotNull('device_token')

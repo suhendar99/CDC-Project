@@ -153,8 +153,8 @@
                     <td>{{ $a->nama_pembeli }}</td>
                     <td>{{ $a->barang }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                    <td>{{ $a->harga }}</td>
-                    <td>{{ $a->total }}</td>
+                    <td>{{ 'Rp. '.number_format($a->harga) }}</td>
+                    <td>{{ 'Rp. '.number_format($a->total) }}</td>
                 </tr>
             @endforeach
         </tbody>

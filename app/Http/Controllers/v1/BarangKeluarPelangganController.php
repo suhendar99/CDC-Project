@@ -92,6 +92,7 @@ class BarangKeluarPelangganController extends Controller
         if ($v->fails()) {
             // return back()->withErrors($v)->withInput();
         } else {
+
             $out = BarangKeluarPelanggan::create([
                 'pemesanan_id' => $request->pemesanan_id,
                 'barang_warung_kode' => $request->barang_warung_kode,
@@ -100,6 +101,16 @@ class BarangKeluarPelangganController extends Controller
                 'jumlah' => $request->jumlah,
                 'satuan' => $request->satuan,
                 'waktu' => now()
+            ]);
+            $data = BarangWarung::with('barangKeluar')
+            ->where('kode',$out->barang_warung_kode)
+            ->first();
+            // if ($data->jumlah < $out->jumlah) {
+            //     return back()->with('error','Stok anda tinggal '.$data->jumlah.' '.$data->satuan);
+            // }
+            $jumlah = $data->jumlah - $out->jumlah;
+            $data->update([
+                'jumlah' => $jumlah,
             ]);
             RekapitulasiPenjualanPelanggan::create([
                 'barang_keluar_id' => $out->id,

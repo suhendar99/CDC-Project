@@ -41,8 +41,8 @@
                 <td style="border: 1px solid black">{{ $a->nama_pembeli }}</td>
                 <td style="border: 1px solid black">{{ $a->barang }}</td>
                 <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>
-                <td style="border: 1px solid black">{{ $a->harga }}</td>
-                <td style="border: 1px solid black">{{ $a->total }}</td>
+                <td style="border: 1px solid black">{{ 'Rp. '.number_format($a->harga) }}</td>
+                <td style="border: 1px solid black">{{ 'Rp. '.number_format($a->total) }}</td>
             </tr>
         @endforeach
     </tbody>

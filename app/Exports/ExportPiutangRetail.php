@@ -28,7 +28,5 @@ class ExportPiutangRetail implements FromView,ShouldAutoSize
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
             return view($this->pathAuthRetail.'excel', compact('data'));
         }
-
-
     }
 }

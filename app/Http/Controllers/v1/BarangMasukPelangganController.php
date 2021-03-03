@@ -174,17 +174,28 @@ class BarangMasukPelangganController extends Controller
                 'waktu' => now('Asia/Jakarta')
             ]);
         }
+        $checkStock = BarangWarung::where([
+            ['nama_barang',$masuk->storageOut->stockBarangRetail->nama_barang],
+            ['pelanggan_id',Auth::user()->pelanggan_id]
+        ])->first();
 
-
-        $barangWarung = BarangWarung::create([
-            'storage_out_kode' => $masuk->storage_out_kode,
-            'pelanggan_id' => Auth::user()->pelanggan_id,
-            'kode' => rand(1000000,9999999),
-            'nama_barang' => $request->nama_barang,
-            'jumlah' => $request->jumlah,
-            'satuan' => $barang->satuan->satuan,
-            'waktu' => now('Asia/Jakarta')
-        ]);
+        if ($checkStock !== null) {
+            $jumlah = $checkStock->jumlah + $masuk->jumlah;
+            $checkStock->update([
+                'jumlah' => $jumlah,
+                'satuan' => $masuk->satuan
+            ]);
+        } else {
+            BarangWarung::create([
+                'storage_out_kode' => $masuk->storage_out_kode,
+                'pelanggan_id' => Auth::user()->pelanggan_id,
+                'kode' => rand(1000000,9999999),
+                'nama_barang' => $request->nama_barang,
+                'jumlah' => $request->jumlah,
+                'satuan' => $barang->satuan->satuan,
+                'waktu' => now('Asia/Jakarta')
+            ]);
+        }
 
         $rekapitulasi = RekapitulasiPembelianPelanggan::create([
             'barang_masuk_id' => $masuk->id,

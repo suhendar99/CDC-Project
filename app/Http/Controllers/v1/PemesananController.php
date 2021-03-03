@@ -230,7 +230,7 @@ class PemesananController extends Controller
     {
 
         $v = Validator::make($request->all(),[
-            'foto_bukti' => 'required|image|max:2048',
+            'foto_bukti' => 'required|image|mimes:png,jpg|max:2048',
         ]);
 
         if ($v->fails()) {
@@ -289,7 +289,7 @@ class PemesananController extends Controller
         $judul = __( 'Pembeli melakukan pembayaran!' );
 
         $this->notif($judul, $firebaseToken);
-        
+
         // return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
@@ -561,7 +561,7 @@ class PemesananController extends Controller
 
         // dd($request->file('foto_bukti'));
         $v = Validator::make($request->all(),[
-            'foto_bukti' => 'required|image|max:2024',
+            'foto_bukti' => 'required|image|mimes:png,jpg|max:2048',
         ]);
         if ($v->fails()) {
             // dd($v->errors()->all());
