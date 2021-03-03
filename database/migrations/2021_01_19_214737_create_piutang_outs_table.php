@@ -19,7 +19,7 @@ class CreatePiutangOutsTable extends Migration
             $table->date('tanggal');
             $table->string('nama_pembeli', 50);
             $table->date('jatuh_tempo')->nullable();
-            $table->integer('hutang');
+            $table->bigInteger('hutang');
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
