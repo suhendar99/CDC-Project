@@ -15,6 +15,10 @@ use App\Models\ReturKeluarBulky;
 use App\Models\StorageMasukBulky;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PengembalianBarangMail;
+Use App\Models\PengurusGudangBulky;
+use App\User;
 
 class ReturKeluarBulkyController extends Controller
 {
@@ -128,6 +132,33 @@ class ReturKeluarBulkyController extends Controller
             'satuan' => $satuan
         ]);
 
+        $storage = StorageMasukBulky::where('nomor_kwitansi', $request->nomor_kwitansi)->first();
+        $pemasok = $storage->pemesanan->pemasok->nama;
+
+        $kwitansi = $request->nomor_kwitansi;
+        $nama_barang = $barang->nama_barang;
+
+        $pembeli = Auth::user()->pengurusGudangBulky->nama;
+
+        $waktu = $request->tanggal_pengembalian;
+
+        $keterangan = $request->keterangan;
+
+        $user_mail = User::where('pemasok_id', $storage->pemesanan->pemasok->id)->first();
+
+        // (No kwitansi, nama barang, jumlah, satuan, penjual, pembeli, waktu, keterangan);
+        set_time_limit(99999999);
+        Mail::to($user_mail->email)->send(new PengembalianBarangMail($kwitansi, $nama_barang, $jumlah, $satuan, $pemasok, $pembeli, $waktu, $keterangan));
+
+        $firebaseToken = User::where('pemasok_id', $storage->pemesanan->pemasok->id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Bulky meminta melakukan pengembalian barang!' );
+
+        $this->notif($judul, $firebaseToken);
+
         LogTransaksi::create([
             'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
@@ -138,6 +169,41 @@ class ReturKeluarBulkyController extends Controller
 
 
         return redirect(route('bulky.retur.keluar.index'))->with('success', __( 'Retur berhasil dibuat!' ));
+    }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pengembalian Barang' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     /**

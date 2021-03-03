@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PengembalianBarangMail;
+Use App\Models\PengurusGudangBulky;
+use App\User;
 
 class ReturOutController extends Controller
 {
@@ -114,6 +118,24 @@ class ReturOutController extends Controller
             'satuan_id' => $satuan
         ]);
 
+        // (No kwitansi, nama barang, jumlah, satuan, penjual, pembeli, waktu, keterangan);
+
+        $pembeli = auth()->user()->pengurusGudang->nama;
+
+        $user_mail = $pesanan->bulky->user->email;
+
+        set_time_limit(99999999);
+        Mail::to($user_mail)->send(new PengembalianBarangMail($request->nomor_kwitansi, $pesanan->barangPesananBulky->nama_barang, $pesanan->barangPesananBulky->jumlah_barang, $satuan, $pesanan->bulky->nama, $pembeli, $request->tanggal_pengembalian, $request->keterangan));
+
+        $firebaseToken = User::where('id', auth()->user()->id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Retail meminta melakukan pengembalian barang!' );
+
+        $this->notif($judul, $firebaseToken);
+
         $log = LogTransaksi::create([
             'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
@@ -123,6 +145,41 @@ class ReturOutController extends Controller
         ]);
 
         return redirect(route('returOut.index'))->with('success', __( 'Retur Created!' ));
+    }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pengembalian Barang' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     /**

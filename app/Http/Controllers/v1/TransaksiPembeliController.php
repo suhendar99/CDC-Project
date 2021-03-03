@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\SendProofOfPaymentMail;
 use App\Mail\ValidatePaymentMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\PengembalianBarangMail;
 use App\User;
 
 class TransaksiPembeliController extends Controller
@@ -195,7 +196,29 @@ class TransaksiPembeliController extends Controller
             return back()->withErrors($v)->withInput();
         }
 
-        ReturMasukPelanggan::create($request->only('barang_warung_kode', 'pemesanan_pembeli_id', 'tanggal_pengembalian', 'keterangan'));
+        $retur = ReturMasukPelanggan::create($request->only('barang_warung_kode', 'pemesanan_pembeli_id', 'tanggal_pengembalian', 'keterangan'));
+
+        $nama_barang = $retur->kode->nama_barang;
+
+        $jumlah = $retur->pemesanan->pemesananPembeliItem[0]->jumlah_barang;
+        $satuan = $retur->pemesanan->pemesananPembeliItem[0]->satuan;
+        $penjual = $retur->pemesanan->pelanggan->nama;
+        $pembeli = $retur->pemesanan->pembeli->nama;
+
+        // (No kwitansi, nama barang, jumlah, satuan, penjual, pembeli, waktu, keterangan);
+        set_time_limit(99999999);
+        Mail::to($user_mail)->send(new PengembalianBarangMail(null, $nama_barang, $jumlah, $satuan, $penjual, $pembeli, $request->tanggal_pengembalian, $request->keterangan));
+
+        $firebaseToken = User::where('id', auth()->user()->id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Pembeli meminta melakukan pengembalian barang!' );
+        $title = __( 'Pengembalian Barang' );
+
+        $this->notif($judul, $firebaseToken, $title);
+
         // $log = LogTransaksi::create([
         //     'tanggal' => now(),
         //     'jam' => now(),
