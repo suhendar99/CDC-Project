@@ -392,6 +392,7 @@ class StorageKeluarBulkyController extends Controller
         if($request->status_piutang == 1){
             $pdfKwitansi = 'none';
         }
+        
         Mail::to($pesanan->retail->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 
         $bp = BarangPemesananBulky::where('pemesanan_bulky_id',$out->pemesananBulky->id)->first();
@@ -415,6 +416,7 @@ class StorageKeluarBulkyController extends Controller
             'harga' => round($total, 0, PHP_ROUND_HALF_UP),
             'total' => $out->pemesananBulky->barangPesananBulky->harga
         ]);
+
         LogTransaksi::create([
             'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
@@ -422,6 +424,7 @@ class StorageKeluarBulkyController extends Controller
             'aktifitas_transaksi' => 'Barang Keluar',
             'role' => 'Bulky'
         ]);
+
         if ($pesanan->metode_pembayaran == null) {
             return redirect('/v1/surat-piutang-retail-bulky/create?id='.$out->id);
         } else {

@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PDF;
+use App\User;
+use App\Mail\KwitansiDanSuratJalanMail;
+use Illuminate\Support\Facades\Mail;
 
 class StorageKeluarPemasokController extends Controller
 {
@@ -139,7 +142,7 @@ class StorageKeluarPemasokController extends Controller
                 'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
                 // 'pengirim' => 'required|string|max:50',
                 'terima_dari' => 'required|string|max:50',
-                'jumlah_uang_digits' => 'required|integer',
+                'jumlah_uang_digits' => 'required|numeric',
                 'jumlah_uang_word' => 'required|string',
                 'keterangan' => 'required|string',
                 'tempat' => 'required|string',
@@ -154,7 +157,7 @@ class StorageKeluarPemasokController extends Controller
                 'pemesanan_keluar_bulky_id' => 'required|exists:pemesanan_keluar_bulky,id',
                 // 'pengirim' => 'required|string|max:50',
                 'terima_dari' => 'nullable|string|max:50',
-                'jumlah_uang_digits' => 'nullable|integer',
+                'jumlah_uang_digits' => 'nullable|numeric',
                 'jumlah_uang_word' => 'nullable|string',
                 'keterangan' => 'nullable|string',
                 'tempat' => 'nullable|string',
@@ -166,7 +169,7 @@ class StorageKeluarPemasokController extends Controller
 
 
         if ($v->fails()) {
-            // dd($v);
+            dd($v);
             return back()->withErrors($v)->withInput();
         }
 
@@ -347,6 +350,44 @@ class StorageKeluarPemasokController extends Controller
             'tanggal' => now('Asia/Jakarta')
         ]);
 
+        $pdfKwitansi = 'none';
+
+        if($pesanan->metode_pembayaran != null){
+            $dataKwitansi = KwitansiPemasok::all();
+            $counterKwitansi = $dataKwitansi->count();
+            $pdfKodeKwi = sprintf("%'.04d", (String)$counterKwitansi);
+            $pdfKwitansi = PDF::loadview('app.transaksi.kwitansi.print_pemasok', [
+                'data' => $kwitansi,
+                'date' => $date,
+                'kode' => $pdfKodeKwi
+            ]);
+        }
+
+        $dataSurat = SuratJalanPemasok::all();
+        $counterSJ = $dataSurat->count();
+        $pdfKodeSJ = sprintf("%'.04d", (String)$counterSJ);
+        $pdfSJ = PDF::loadview('app.transaksi.surat-jalan.print_pemasok', [
+            'data' => $surat,
+            'date' => $date,
+            'kode' => $pdfKodeSJ
+        ]);
+        
+        // $pesanan->bulky->user->email
+        Mail::to($pesanan->bulky->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
+
+        $user_bulky = $pesanan->bulky->id;
+
+        $firebaseToken = User::whereHas('pengurusGudangBulky.bulky', function($query)use($user_bulky){
+                $query->where('bulky_id', $user_bulky);
+            })
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Barang yang dipesan sedang dikirim!' );
+
+        $this->notif($judul, $firebaseToken);
+
         $bp = BarangKeluarPemesananBulky::where('pemesanan_id',$out->pemesananKeluarBulky->id)->get();
         $jumlah = 0;
         $total = 0;
@@ -356,6 +397,7 @@ class StorageKeluarPemasokController extends Controller
             $total += $value->harga;
             $satuan = $value->satuan;
         }
+
         $harga_total = $total / $jumlah;
         if ($pesanan->metode_pembayaran != null) {
             RekapitulasiPenjualanPemasok::create([
@@ -393,6 +435,41 @@ class StorageKeluarPemasokController extends Controller
         } else {
             return redirect(route('storage-keluar-pemasok.index'))->with('success', __( 'Penyimpanan Keluar Telah Berhasil !' ));
         }
+    }
+
+    public function notif($judul, $firebase)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => __( 'Pengiriman' ),
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     /**
