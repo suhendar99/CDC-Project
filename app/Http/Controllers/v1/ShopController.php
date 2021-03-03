@@ -33,6 +33,7 @@ use App\Models\PiutangRetail;
 use App\Models\GudangBulky;
 use App\Models\Gudang;
 use App\Mail\OrderingMail;
+use App\Mail\PayLaterMail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -410,6 +411,10 @@ class ShopController extends Controller
                         'status' => 2
                     ]));
                 }
+                $user_email = Gudang::find($store->gudang_id);
+
+                // (nomor_pemesanan)
+                Mail::to($user_email->user->email)->send(new PayLaterMail($kode));
             } else {
                 if ($request->pengiriman == 'ambil') {
                     $pemesanan = Pemesanan::create(array_merge($request->only('pelanggan_id','gudang_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -616,6 +621,9 @@ class ShopController extends Controller
                         'status' => 2
                     ]));
                 }
+
+                // (nomor_pemesanan)
+                Mail::to($store->bulky->user->email)->send(new PayLaterMail($kode));
             } else {
                 if ($request->pengiriman == 'ambil') {
                     $pemesanan = PemesananBulky::create(array_merge($request->only('bulky_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
@@ -737,6 +745,10 @@ class ShopController extends Controller
                         'status' => 2
                     ]));
                 }
+                $user_email = User::where('pemasok_id', $store->pemasok->id)->first();
+
+                // (nomor_pemesanan)
+                Mail::to($user_email->email)->send(new PayLaterMail($kode));
             } else {
                 if ($request->pengiriman == 'ambil') {
                     $pemesanan = PemesananKeluarBulky::create(array_merge($request->only('pemasok_id','penerima_po','telepon','alamat_pemesan','metode_pembayaran'),[
