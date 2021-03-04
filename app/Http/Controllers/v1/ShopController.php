@@ -32,6 +32,7 @@ use App\Models\PiutangBulky;
 use App\Models\PiutangRetail;
 use App\Models\GudangBulky;
 use App\Models\Gudang;
+use App\Models\LogTransaksiAdmin;
 use App\Mail\OrderingMail;
 use App\Mail\PayLaterMail;
 use Carbon\Carbon;

@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Mail\ValidatePaymentMail;
 use Illuminate\Support\Facades\Mail;
 use App\User;
+use App\Models\LogTransaksiAdmin;
 
 class PemesananMasukPemasokController extends Controller
 {
@@ -130,12 +131,24 @@ class PemesananMasukPemasokController extends Controller
     {
         $data = PemesananKeluarBulky::findOrFail($id);
         $data->update(['status'=>'2']);
+
         LogTransaksi::create([
             'user_id' => Auth::user()->id,
             'tanggal' => now('Asia/Jakarta'),
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'penerimaan Pesanan',
             'role' => 'Pemasok'
+        ]);
+
+        LogTransaksiAdmin::create([
+            'time' => now('Asia/Jakarta'),
+            'transaksi' => "Pemesanan Bulky ke Pemasok",
+            'penjual' => $data->pemasok->nama,
+            'pembeli' => $data->bulky->nama,
+            'barang' => $data->barangKeluarPemesananBulky[0]->nama_barang,
+            'jumlah' => $data->barangKeluarPemesananBulky[0]->jumlah_barang,
+            'satuan' => $data->barangKeluarPemesananBulky[0]->satuan,
+            'harga' => $data->barangKeluarPemesananBulky[0]->harga
         ]);
 
         $newData['nomor_pemesanan'] = $data->nomor_pemesanan;

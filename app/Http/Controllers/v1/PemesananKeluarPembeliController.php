@@ -7,6 +7,9 @@ use App\Models\Pemesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Models\LogTransaksiAdmin;
+use App\Mail\ValidatePaymentMail;
+use Illuminate\Support\Facades\Mail;
 
 class PemesananKeluarPembeliController extends Controller
 {
@@ -39,7 +42,76 @@ class PemesananKeluarPembeliController extends Controller
     {
         $data = $this->model::findOrFail($id);
         $data->update(['status'=>'2']);
+
+        LogTransaksiAdmin::create([
+            'time' => now('Asia/Jakarta'),
+            'transaksi' => "Pemesanan Warung ke Retail",
+            'penjual' => $data->gudang->nama,
+            'pembeli' => $data->pelanggan->nama,
+            'barang' => $data->barangPesanan[0]->nama_barang,
+            'jumlah' => $data->barangPesanan[0]->jumlah_barang,
+            'satuan' => $data->barangPesanan[0]->satuan,
+            'harga' => $data->barangPesanan[0]->harga
+        ]);
+
+        $user_email = User::where('pelanggan_id', $data->pelanggan->id)->first();
+
+        $newData['nomor_pemesanan'] = $data->nomor_pemesanan;
+        $newData['pembeli'] = $data->gudang->nama;
+        $newData['penjual'] = $data->pelanggan->nama;
+        $newData['waktu'] = now('Asia/Jakarta');
+
+        set_time_limit(99999999);
+        Mail::to($user_email->email)->send(new ValidatePaymentMail($newData));
+
+        $retail = $data->retail->id;
+
+        $firebaseToken = User::where('pelanggan_id', $data->pelanggan->id)
+            ->whereNotNull('device_token')
+            ->pluck('device_token')
+            ->all();
+
+        $judul = __( 'Penjual sudah memverifikasi pemesanan anda!' );
+        $title = __( 'Verifikasi Pemesanan' );
+
+        $this->notif($judul, $firebaseToken, $title);
+
         return back()->with('success','Pembayaran Pesanan Telah Divalidasi!');
+    }
+
+    public function notif($judul, $firebase, $title)
+    {
+        $SERVER_API_KEY = 'AAAAK3EE3yQ:APA91bEbilWopL1DWWDejff_25XMW2tiFtLoMl__a48yB2kSP7uWDHBo89-WxZ8YdazpFrmR7NgPFXeLrS_MrmMBq4wyr6KiOwy0WQ6YaHBvQAXlYSQSmMBrMVBFAlOe9pUYCGH-pp6j';
+
+        $data = [
+            "registration_ids" => $firebase,
+            "notification" => [
+                "title" => $title,
+                "body" => $judul,
+            ]
+        ];
+
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+
+        // dd($response);
+
+        return true;
     }
 
     /**
