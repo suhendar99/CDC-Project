@@ -190,7 +190,7 @@
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center mb-3">
-            <span>Log Pemesanan || Total Pemesanan : {{ $countLog }} || Total Harga : {{ number_format($sumHargaLog,0,',','.') }}</span>
+            <span>Log Transaksi || Total Pemesanan : {{ $countLog }} || Total Harga : Rp. {{ number_format($sumHargaLog,0,',','.') }}</span>
         </div>
         <div>
           <div class="row">
@@ -246,7 +246,7 @@
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
         <div class="valign-center mb-3">
-            <span class="ml-2">10 Pemesanan Terbesar</span>
+            <span class="ml-2">10 Transaksi Terbesar</span>
         </div>
         <div>
           <table class="table table-bordered">
