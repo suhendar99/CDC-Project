@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\PemesananBulky;
 use App\Models\BarangPemesananBulky;
 use App\Models\LogTransaksi;
+use App\Models\LogTransaksiAdmin;
 use App\User;
 use App\Models\PemesananKeluarBulky;
 use Illuminate\Support\Facades\Auth;
@@ -203,6 +204,17 @@ class PemesananBulkyController extends Controller
             'jam' => now('Asia/Jakarta'),
             'aktifitas_transaksi' => 'Penerimaan Pesanan',
             'role' => 'Warung'
+        ]);
+
+        LogTransaksiAdmin::create([
+            'time' => now('Asia/Jakarta'),
+            'transaksi' => "Pemesanan Retail ke Bulky",
+            'penjual' => $data->bulky->nama,
+            'pembeli' => $data->retail->nama,
+            'barang' => $data->barangPesananBulky->nama_barang,
+            'jumlah' => $data->barangPesananBulky->jumlah_barang,
+            'satuan' => $data->barangPesananBulky->satuan,
+            'harga' => $data->barangPesananBulky->harga
         ]);
 
         $newData['nomor_pemesanan'] = $data->nomor_pemesanan;

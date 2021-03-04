@@ -12,6 +12,8 @@
         $anggotaKoperasi = App\User::where('keanggotaan',1)->get();
         $bukanAnggotaKoperasi = App\User::where('keanggotaan',0)->get();
         $log = App\Models\LogTransaksiAdmin::latest()->paginate(20);
+        $countLog = App\Models\LogTransaksiAdmin::count();
+        $sumHargaLog = App\Models\LogTransaksiAdmin::sum('harga');
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -186,7 +188,7 @@
       <div class="card-body">
         <div class="valign-center">
             <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Log Pemesanan <span style="color: blue;">(20 pemesanan terakhir)</span></span>
+            <span class="ml-2">Log Pemesanan <span style="color: blue;">(20 pemesanan terakhir)</span> || Total Pemesanan : {{ $countLog }} || Total Harga : {{ $sumHargaLog }}</span>
         </div>
         <div>
           <table class="table table-bordered">
