@@ -50,7 +50,7 @@ class PemesananMasukPemasokController extends Controller
                         return "<span class='text-success'>Lunas</span>";
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 7) {
                         return "<span class='text-success'>Lunas</span>";
-                    } elseif ($data->pemesanan->status == 7 && $data->pemesanan->status == 5 && $data->pemesanan->status == 2) {
+                    } elseif ($data->pemesanan->status == 7 || $data->pemesanan->status == 5 || $data->pemesanan->status == 2) {
                         return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
