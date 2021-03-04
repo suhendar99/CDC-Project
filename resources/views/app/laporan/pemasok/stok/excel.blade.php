@@ -19,6 +19,7 @@
         <th style="border: 1px solid black">Kode Barang</th>
         <th style="border: 1px solid black">Nama Barang</th>
         <th style="border: 1px solid black">Jumlah Barang</th>
+        <th style="border: 1px solid black">Satuan</th>
     </tr>
     </thead>
     <tbody>
@@ -26,10 +27,11 @@
         @foreach($data as $a)
             <tr>
                 <td style="border: 1px solid black">{{ $no++ }}</td>
-                <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                <td style="border: 1px solid black">{{ date('d-m-Y',strtotime($a->created_at)) }}</td>
                 <td style="border: 1px solid black">{{ $a->kode_barang }}</td>
                 <td style="border: 1px solid black">{{ $a->nama_barang }}</td>
-                <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>
+                <td style="border: 1px solid black">{{ $a->jumlah }}</td>
+                <td style="border: 1px solid black">{{ $a->satuan }}</td>
             </tr>
         @endforeach
     </tbody>

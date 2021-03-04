@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\GudangBulky;
 use App\Models\Po;
 use App\Models\PoItem;
+use App\Models\StockBarangBulky;
 use App\Models\StorageBulky;
 use App\Models\StorageMasukBulky;
 use App\Models\StorageKeluarBulky;
@@ -20,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 use Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class LaporanGudangBulky extends Controller
 {
@@ -259,8 +261,28 @@ class LaporanGudangBulky extends Controller
     }
 
     // Laporan Barang
-    public function showLaporanBarang()
+    public function showLaporanBarang(Request $request)
     {
+        if($request->ajax()){
+            $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky')
+            ->whereHas('bulky.akunGudangBulky', function($query){
+                $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+            return DataTables::of($data)
+            ->addIndexColumn()
+            ->editColumn('created_at',function($data){
+                return date('d-m-Y H:i:s', strtotime($data->created_at));
+            })
+            ->editColumn('gudang',function($data){
+                return $data->bulky->nama;
+            })
+            ->editColumn('nama',function($data){
+                return $data->barang->nama_barang;
+            })
+            ->make(true);
+        }
         return view('app.laporan.gudang-bulky.barang.index');
     }
 
@@ -299,10 +321,13 @@ class LaporanGudangBulky extends Controller
                 $dateObj = DateTime::createFromFormat('!m',$month);
                 $sumber = 'Bulan '.$dateObj->format('F');
                 $bulan = $request->input('month');
-                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
-                        $q->whereIn('bulky_id',$gudang_saya);
-                    })->with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$bulan)->get();
-                // dd($data);
+                $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky')
+                ->whereHas('bulky.akunGudangBulky', function($query){
+                    $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+                })
+                ->whereRaw('MONTH(created_at) = '.$bulan)
+                ->orderBy('id', 'desc')
+                ->get();
 
                 if ($data->count() < 1) {
                     return back()->with('error','Tidak ada data !');
@@ -366,9 +391,13 @@ class LaporanGudangBulky extends Controller
                 $gudang_saya[] = $gudang->id;
             }
             if ($bulan != null && $month) {
-                $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
-                        $q->whereIn('bulky_id', $gudang_saya);
-                    })->with('storageMasukBulky')->whereRaw('MONTH(waktu) = '.$hii)->get();
+                $data = StockBarangBulky::with('barang.storageMasukBulky.storageBulky.tingkat.rak', 'bulky')
+                ->whereHas('bulky.akunGudangBulky', function($query){
+                    $query->where('pengurus_bulky_id', auth()->user()->pengurus_gudang_bulky_id);
+                })
+                ->whereRaw('MONTH(created_at) = '.$bulan)
+                ->orderBy('id', 'desc')
+                ->get();
             } elseif ($awal != null && $akhir != null) {
                 $data = StorageBulky::whereHas('storageMasukBulky', function($q)use($gudang_saya){
                         $q->whereIn('bulky_id', $gudang_saya);

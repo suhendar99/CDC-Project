@@ -1,11 +1,12 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
+    $title = 'Laporan Stok Bulky';
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Barang Gudang Bulky</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -107,7 +108,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>Laporan Barang Gudang Bulky</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>
@@ -126,24 +127,24 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Gudang</th>
                 <th>Waktu Barang Masuk</th>
+                <th>Nama Gudang</th>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
+                <th>Satuan</th>
         </thead>
         <tbody>
             @php $no = 1 @endphp
             @foreach($data as $a)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $a->storageMasukBulky->bulky->nama }}</td>
-                    <td>{{ date('d F Y',strtotime($a->waktu)) }}</td>
-                    <td>{{ $a->storageMasukBulky->kode }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->barang->kode_barang, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->storageMasukBulky->barang->nama_barang }}</td>
-                    {{-- <td><img src="data:image/png;base64,{{\DNS1D::getBarcodePNG($a->kode, 'C39E',1,50,array(0,0,0), true)}}" alt="barcode" /></td> --}}
-                    <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
+                    <td>{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                    <td>{{ $a->bulky->nama }}</td>
+                    <td>{{ $a->barang_kode }}</td>
+                    <td>{{ $a->barang->nama_barang }}</td>
+                    <td>{{ $a->jumlah }}</td>
+                    <td>{{ $a->satuan }}</td>
                 </tr>
             @endforeach
         </tbody>

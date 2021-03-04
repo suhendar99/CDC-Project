@@ -1,6 +1,6 @@
 @php
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
-    $title = 'Laporan Rekapitulasi Pembelian'
+    $title = 'Laporan Pembelian'
 @endphp
 
 <!DOCTYPE html>
@@ -149,8 +149,8 @@
                     <td>{{ $a->nama_penjual }}</td>
                     <td>{{ $a->barang }}</td>
                     <td>{{ $a->jumlah }} {{ $a->satuan }}</td>
-                    <td>{{ $a->harga }}</td>
-                    <td>{{ $a->total }}</td>
+                    <td>{{ 'Rp. '.number_format($a->harga) }}</td>
+                    <td>{{ 'Rp. '.number_format($a->total) }}</td>
                 </tr>
             @endforeach
         </tbody>

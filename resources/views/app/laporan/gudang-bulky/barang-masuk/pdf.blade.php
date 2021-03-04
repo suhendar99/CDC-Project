@@ -13,13 +13,14 @@
     // $judul = App\Models\JudulLaporan::where('id','1')->first();
     // $date = date("d M Y");
     $date = Carbon\Carbon::now()->translatedFormat(' d F Y');
+    $title = 'Laporan Pembelian Bulky';
     // dd($data);
 @endphp
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>laporan Barang Masuk Ke Gudang</title>
+	<title>{{$title}}</title>
 	<style>
 		#customers {
 		font-family: 'Poppins', sans-serif;
@@ -121,7 +122,7 @@
 		tr:nth-child(even) {background-color: #f2f2f2;}
 	</style>
         <center>
-            <h3>laporan Barang Masuk Ke Gudang</h3>
+            <h3>{{$title}}</h3>
         </center>
 	<table style="margin-bottom:-10px;">
 		<tr>

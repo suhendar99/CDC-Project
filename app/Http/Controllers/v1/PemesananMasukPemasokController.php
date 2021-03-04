@@ -40,7 +40,9 @@ class PemesananMasukPemasokController extends Controller
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pemesanan->metode_pembayaran == null && $data->pemesanan->foto_bukti == null) {
                         return "<span class='text-danger'>Hutang</span>";
-                    } elseif ($data->pemesanan->metode_pembayaran != null && $data->pemesanan->foto_bukti == null ) {
+                    } elseif ($data->pemesanan->metode_pembayaran != null && $data->pemesanan->foto_bukti == null && $data->pemesanan->status == 6) {
+                        return "<span class='text-success'>Barang Diambil & Lunas</span>";
+                    }  elseif ($data->pemesanan->metode_pembayaran != null && $data->pemesanan->foto_bukti == null && $data->pemesanan->status != 6) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 2) {
                         return "<span class='text-success'>Lunas</span>";
@@ -63,8 +65,10 @@ class PemesananMasukPemasokController extends Controller
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesanan->id.')" data-id="'.$data->pemesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
                     } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran == null) {
                         return '-';
-                    } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran != null) {
+                    } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran != null && $data->pemesanan->status != 6) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
+                    } elseif($data->pemesanan->foto_bukti == null && $data->pemesanan->metode_pembayaran != null && $data->pemesanan->status == 6) {
+                        return '&nbsp; <span class="text-success">-</span>';
                     }
                 })
                 ->addColumn('status_pemesanan',function($data){

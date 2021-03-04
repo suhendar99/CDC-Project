@@ -92,8 +92,11 @@ class BarangWarungController extends Controller
     {
         $data = BarangWarung::with('stok')->findOrFail($id);
 
-        $base_harga = BarangMasukPelanggan::with('storageOut.barang')->first();
-        // dd($base_harga);
+        $base_harga = BarangMasukPelanggan::with('storageOut.barang','storageOut.barangWarung')
+        ->whereHas('storageOut.barangWarung',function($q)use($data){
+            $q->where('id',$data->id);
+        })
+        ->first();
         $harga = ($data->harga_barang === null) ? null : $data->harga_barang ;
         $diskon = ($data->diskon === null) ? null : $data->diskon ;
         $satuan = $data->satuan;

@@ -12,6 +12,7 @@ use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class LaporanPemasokController extends Controller
 {
@@ -118,8 +119,22 @@ class LaporanPemasokController extends Controller
             return (new ExportLaporanPenjualanPemasok($data))->download('Laporan-'.$akhir.'.xlsx');
         }
     }
-    public function showLaporanStok()
+    public function showLaporanStok(Request $request)
     {
+        if($request->ajax()){
+            $data = Barang::orderBy('id', 'desc')
+            ->where('pemasok_id',Auth::user()->pemasok_id)
+            ->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    return '<a href="/v1/bulky/laba-rugi/'.$data->id.'/edit" class="btn btn-primary btn-sm">Edit</a>&nbsp;<a href="#" class="btn btn-danger btn-sm" onclick="sweet('.$data->id.')">Hapus</a>';
+                })
+                ->editColumn('created_at',function($data){
+                    return date('d-m-Y H:i:s', strtotime($data->created_at));
+                })
+                ->make(true);
+        }
         return view($this->pathStok.'index');
     }
     public function LaporanStokPdf(Request $request)

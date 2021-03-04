@@ -81,7 +81,9 @@ class PemesananController extends Controller
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pemesananPembeli->metode_pembayaran == null && $data->pemesananPembeli->foto_bukti == null) {
                         return "<span class='text-danger'>Hutang</span>";
-                    } elseif ($data->pemesananPembeli->metode_pembayaran != null && $data->pemesananPembeli->foto_bukti == null ) {
+                    } elseif ($data->pemesananPembeli->metode_pembayaran != null && $data->pemesananPembeli->foto_bukti == null && $data->pemesananPembeli->status == 6) {
+                        return "<span class='text-success'>Barang Diambil & Lunas</span>";
+                    } elseif ($data->pemesananPembeli->metode_pembayaran != null && $data->pemesananPembeli->foto_bukti == null && $data->pemesananPembeli->status != 6) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesananPembeli->foto_bukti != null && $data->pemesananPembeli->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
@@ -95,8 +97,9 @@ class PemesananController extends Controller
                 })
                 ->addColumn('bukti_pembayaran', function($data){
                     if($data->pemesananPembeli->foto_bukti != null){
-
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pemesananPembeli->id.')" data-id="'.$data->pemesananPembeli->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
+                    }elseif ($data->pemesananPembeli->foto_bukti == null && $data->pemesananPembeli->metode_pembayaran != null && $data->pemesananPembeli->status == 6 ) {
+                        return '&nbsp; <span class="text-danger">-</span>';
                     } else {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
@@ -159,7 +162,9 @@ class PemesananController extends Controller
                 ->addColumn('status_pembayaran', function($data){
                     if ($data->pesanan->metode_pembayaran == null && $data->pesanan->foto_bukti == null) {
                         return "<span class='text-danger'>Hutang</span>";
-                    } elseif ($data->pesanan->metode_pembayaran != null && $data->pesanan->foto_bukti == null ) {
+                    } elseif ($data->pesanan->metode_pembayaran != null && $data->pesanan->foto_bukti == null && $data->pesanan->status == 6 ) {
+                        return "<span class='text-success'>Barang Diambil & Lunas</span>";
+                    } elseif ($data->pesanan->metode_pembayaran != null && $data->pesanan->foto_bukti == null && $data->pesanan->status != 6) {
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pesanan->foto_bukti != null && $data->pesanan->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
@@ -186,7 +191,9 @@ class PemesananController extends Controller
                         return '&nbsp;<a class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBukti" onclick="bukti('.$data->pesanan->id.')" data-id="'.$data->pesanan->id.'" style="cursor: pointer;" title="Lihat Bukti Pembayaran">Lihat Bukti Pembayaran</a>';
                     } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran == null) {
                         return '-';
-                    } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran != null) {
+                    } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran != null && $data->pesanan->status == 6 ) {
+                        return '&nbsp; <span class="text-danger">-</span>';
+                    } elseif ($data->pesanan->foto_bukti == null && $data->pesanan->metode_pembayaran != null && $data->pesanan->status != 6 ) {
                         return '&nbsp; <span class="text-danger">Bukti Pembayaran Belum Diupload</span>';
                     }
                 })
@@ -230,7 +237,7 @@ class PemesananController extends Controller
     {
 
         $v = Validator::make($request->all(),[
-            'foto_bukti' => 'required|image|max:2048',
+            'foto_bukti' => 'required|image|mimes:png,jpg|max:2048',
         ]);
 
         if ($v->fails()) {
@@ -289,7 +296,7 @@ class PemesananController extends Controller
         $judul = __( 'Pembeli melakukan pembayaran!' );
 
         $this->notif($judul, $firebaseToken);
-        
+
         // return redirect("https://api.whatsapp.com/send?phone=6285559396827&text=Hai%20,Saya%20sudah%20kirim%20bukti%20pembayarannya%20silahkan%20cek%20email%20anda");
         return back()->with('success','Bukti Pembayaran Berhasil Diupload!');
     }
@@ -561,7 +568,7 @@ class PemesananController extends Controller
 
         // dd($request->file('foto_bukti'));
         $v = Validator::make($request->all(),[
-            'foto_bukti' => 'required|image|max:2024',
+            'foto_bukti' => 'required|image|mimes:png,jpg|max:2048',
         ]);
         if ($v->fails()) {
             // dd($v->errors()->all());

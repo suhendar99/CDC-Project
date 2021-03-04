@@ -559,12 +559,6 @@ class ShopController extends Controller
                 'harga' => $request->harga
             ]);
 
-            $stok = $store->jumlah - $barangPesanan->jumlah_barang;
-
-            $store->update([
-                'jumlah' => $stok
-            ]);
-
             if ($request->pembayaran == 'later') {
                 // $BarangPesanan = BarangPesanan::where('pemesanan_id',$pemesanan->id)->get();
                 // dd($hutang);

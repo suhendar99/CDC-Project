@@ -14,11 +14,12 @@
     <thead>
     <tr>
         <th style="border: 1px solid black">No</th>
-        <th style="border: 1px solid black">Gudang</th>
         <th style="border: 1px solid black">Waktu Barang Masuk</th>
+        <th style="border: 1px solid black">Nama Gudang</th>
         <th style="border: 1px solid black">Kode Barang</th>
         <th style="border: 1px solid black">Nama Barang</th>
         <th style="border: 1px solid black">Jumlah Barang</th>
+        <th style="border: 1px solid black">Satuan</th>
     </tr>
     </thead>
     <tbody>
@@ -26,11 +27,12 @@
         @foreach($data as $a)
             <tr>
                 <td style="border: 1px solid black">{{ $no++ }}</td>
-                <td style="border: 1px solid black">{{ $a->storageIn->gudang->nama }}</td>
-                <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->waktu)) }}</td>
-                <td style="border: 1px solid black">{{ $a->stockBarangRetail->kode }}</td>
-                <td style="border: 1px solid black">{{ $a->stockBarangRetail->nama_barang }}</td>
-                <td style="border: 1px solid black">{{ $a->jumlah }} {{ $a->satuan }}</td>
+                <td style="border: 1px solid black">{{ date('d F Y',strtotime($a->created_at)) }}</td>
+                <td style="border: 1px solid black">{{ $a->gudang->nama }}</td>
+                <td style="border: 1px solid black">{{ $a->stockBarangBulky->barang_kode }}</td>
+                <td style="border: 1px solid black">{{ $a->nama_barang }}</td>
+                <td style="border: 1px solid black">{{ $a->jumlah }}</td>
+                <td style="border: 1px solid black">{{ $a->satuan }}</td>
             </tr>
         @endforeach
     </tbody>
