@@ -470,17 +470,6 @@ class ShopController extends Controller
                 'role' => 'Warung'
             ]);
 
-            LogTransaksiAdmin::create([
-                'time' => now('Asia/Jakarta'),
-                'transaksi' => "Pemesanan Warung ke Retail",
-                'penjual' => $store->gudang->nama,
-                'pembeli' => auth()->user()->pelanggan->nama,
-                'barang' => $store->nama_barang,
-                'jumlah' => $request->jumlah,
-                'satuan' => $satuan,
-                'harga' => $request->harga
-            ]);
-
             $retail_id = $request->gudang_id;
 
             $user_email = Gudang::find($store->gudang_id);
@@ -688,17 +677,6 @@ class ShopController extends Controller
                 ]);
             }
 
-            LogTransaksiAdmin::create([
-                'time' => now('Asia/Jakarta'),
-                'transaksi' => "Pemesanan Retail ke Bulky",
-                'penjual' => $store->bulky->nama,
-                'pembeli' => auth()->user()->pengurusGudang->nama,
-                'barang' => $store->nama_barang,
-                'jumlah' => $request->jumlah,
-                'satuan' => $satuan,
-                'harga' => $harga
-            ]);
-
             $gudang_bulky_id = $request->bulky_id;
 
             $user_email = $store->bulky->user;
@@ -825,17 +803,6 @@ class ShopController extends Controller
                     'jatuh_tempo' => $jatuhTempo
                 ]);
             }
-
-            LogTransaksiAdmin::create([
-                'time' => now('Asia/Jakarta'),
-                'transaksi' => "Pemesanan Bulky ke Pemasok",
-                'penjual' => $store->pemasok->nama,
-                'pembeli' => auth()->user()->pengurusGudangBulky->nama,
-                'barang' => $store->nama_barang,
-                'jumlah' => $request->jumlah,
-                'satuan' => $satuan,
-                'harga' => $request->harga
-            ]);
 
             $user_email = User::where('pemasok_id', $store->pemasok->id)->first();
 
