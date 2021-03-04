@@ -190,6 +190,7 @@
 <div class="modal fade" id="modalBukti" tabindex="-1" aria-labelledby="modalBukti" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
+        <form action="" id="verifikasi" method="get" enctype="multipart/form-data">
         <div class="modal-header">
           <h5 class="modal-title" id="modalBukti">Bukti Pembayaran</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -198,8 +199,24 @@
         </div>
         <div class="modal-body">
             <h5 id="loader" class="text-center"></h5>
+                <div class="row p-2">
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" class="form-control" id="selisih" placeholder="Selisih">
+                  </div>
+                </div>
             <img src="" class="w-100" id="foto_bukti">
         </div>
+        <div class="modal-footer">
+            <button type="submit" id="terima" class="btn btn-sm btn-primary">Sesuai</button>
+            <a href="" id="tidakSesuai" class="btn btn-sm btn-warning">Tidak Sesuai</a>
+        </div>
+        </form>
         {{-- <div class="modal-footer">
 
           Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
@@ -304,6 +321,47 @@
 
         function proses(id) {
             window.location.replace('/v1/bulky/storage/keluar/create?pemesanan='+id);
+        }
+
+        $('#jumlah_dalam_foto').on('input', function () {
+            $('#selisih').val(parseInt($('#jumlah_uang').val()) - parseInt($('#jumlah_dalam_foto').val()))
+        });
+
+        function bukti(id){
+            $('#loader').text('Loading ...');
+            $.ajax({
+                url: "/api/v1/getDataPemesanan/retail/"+id,
+                method: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: (response)=>{
+                    console.log(response.data);
+                    $('#loader').text('');
+                    $('#foto_bukti').attr('src',`${response.data.pemesanan_bulky.foto_bukti}`);
+                    $('#jumlah_uang').val(response.data.harga);
+                    $('#verifikasi').attr('action','/v1/validasi/bukti/retail/'+id)
+                    $('#tidakSesuai').attr('href','/v1/tidak-sesuai/pesanan/retail/'+id)
+                    $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
+                    if (response.data.pemesanan_bulky.status == 2 || response.data.pemesanan_bulky.status == 0 ) {
+                      $('#tidakSesuai').addClass('d-none')
+                      $('#jumlah_uang').addClass('d-none');
+                      $('#jumlah_dalam_foto').addClass('d-none');
+                      $('#selisih').addClass('d-none');
+                      $('#terima').addClass('d-none');
+                    } else if (response.data.pemesanan_bulky.status == 1 || response.data.pemesanan_bulky.status == 7) {
+                      $('#tidakSesuai').removeClass('d-none')
+                      $('#jumlah_uang').removeClass('d-none');
+                      $('#jumlah_dalam_foto').removeClass('d-none');
+                      $('#selisih').removeClass('d-none');
+                      $('#terima').removeClass('d-none');
+                    }
+                },
+                error: (xhr)=>{
+                    let res = xhr.responseJSON;
+                    console.log(res)
+                }
+            });
         }
 
         function detail(id){

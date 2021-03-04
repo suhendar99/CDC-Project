@@ -104,7 +104,7 @@ class PemesananMasukPemasokController extends Controller
                     } elseif ($data->pemesanan->status == 2) {
                         return '&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
                     } elseif ($data->pemesanan->status == 7) {
-                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a>&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }

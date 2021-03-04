@@ -300,6 +300,7 @@
         $('#jumlah_dalam_foto').on('input', function () {
             $('#selisih').val(parseInt($('#jumlah_uang').val()) - parseInt($('#jumlah_dalam_foto').val()))
         });
+        
         function bukti(id){
             $('#loader').text('Loading ...');
             $.ajax({
@@ -316,20 +317,20 @@
                     $('#verifikasi').attr('action','/v1/validasi/bukti/bulky/'+id)
                     $('#tidakSesuai').attr('href','/v1/tidakSesuai/pesanan/bulky/'+id)
                     $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
-                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 7 || response.data.pemesanan.status == 0 || response.data.pemesanan.status == 5 || response.data.pemesanan.status == 4 || response.data.pemesanan.status == 3 ) {
-                    $('#tolak').addClass('d-none')
-                    $('#tidakSesuai').addClass('d-none')
-                    $('#jumlah_uang').addClass('d-none');
-                    $('#jumlah_dalam_foto').addClass('d-none');
-                    $('#selisih').addClass('d-none');
-                    $('#terima').addClass('d-none');
+                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 7 || response.data.pemesanan.status == 0 ) {
+                      $('#tolak').addClass('d-none')
+                      $('#tidakSesuai').addClass('d-none')
+                      $('#jumlah_uang').addClass('d-none');
+                      $('#jumlah_dalam_foto').addClass('d-none');
+                      $('#selisih').addClass('d-none');
+                      $('#terima').addClass('d-none');
                     } else if (response.data.pemesanan.status == 1 ) {
-                    $('#tolak').removeClass('d-none')
-                    $('#tidakSesuai').removeClass('d-none')
-                    $('#jumlah_uang').removeClass('d-none');
-                    $('#jumlah_dalam_foto').removeClass('d-none');
-                    $('#selisih').removeClass('d-none');
-                    $('#terima').removeClass('d-none');
+                      $('#tolak').removeClass('d-none')
+                      $('#tidakSesuai').removeClass('d-none')
+                      $('#jumlah_uang').removeClass('d-none');
+                      $('#jumlah_dalam_foto').removeClass('d-none');
+                      $('#selisih').removeClass('d-none');
+                      $('#terima').removeClass('d-none');
                     }
                 },
                 error: (xhr)=>{
