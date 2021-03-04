@@ -24,6 +24,9 @@ class ReturMasukBulkyController extends Controller
      */
     public function index(Request $request)
     {
+        if(Auth::user()->pengurusGudangBulky->bulky->count() < 1){
+            return back()->with('error','Anda BelumMempunyai Gudang !');
+        }
         if($request->ajax()){
             $data = ReturMasukBulky::with('pemesananBulky', 'barangBulky', 'satuan')
             ->whereHas('pemesananBulky',function($q){

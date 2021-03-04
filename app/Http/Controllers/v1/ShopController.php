@@ -123,21 +123,21 @@ class ShopController extends Controller
                 if ($request->has('search') && $request->search !== '' && $search_kategori != null) {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')
+                        $barang = BarangWarung::with('storageOut.stockBarangRetail.stockBarangBulky.barang', 'storageOut.stockBarangRetail.stockBarangBulky.barang.foto')
                         ->where('harga_barang','!=',null)
-                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
-                            $q->where('id', $search_kategori);
+                        ->whereHas('storageOut.stockBarangRetail.stockBarangBulky.barang',function($q) use ($search_kategori){
+                            $q->where('kategori_id', $search_kategori);
                         })
                         ->orderBy('id','desc')
                         ->paginate(20);
                     }else{
-                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                        $barang = BarangWarung::with('storageOut.stockBarangRetail.stockBarangBulky.barang', 'storageOut.stockBarangRetail.stockBarangBulky.barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
-                        ->whereHas('storageOut.barang',function($q) use ($search){
+                        ->whereHas('storageOut.stockBarangRetail.stockBarangBulky.barang',function($q) use ($search){
                             $q->where('nama_barang','LIKE',"%".$search."%")
                             ->orWhere('harga_barang','LIKE',"%".$search."%");
                         })
-                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
+                        ->whereHas('storageOut.stockBarangRetail.stockBarangBulky.barang.kategori',function($q) use ($search_kategori){
                             $q->where('id', $search_kategori);
                         })
                         ->paginate(20);
@@ -145,19 +145,19 @@ class ShopController extends Controller
                 } elseif ($request->has('search') && $request->search !== '') {
                     $search = trim($request->search);
                     if($search == ''){
-                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                        $barang = BarangWarung::with('storageOut.stockBarangRetail.stockBarangBulky.barang', 'storageOut.stockBarangRetail.stockBarangBulky.barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')->paginate(20);
                     }else{
-                        $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                        $barang = BarangWarung::with('storageOut.stockBarangRetail.stockBarangBulky.barang', 'storageOut.stockBarangRetail.stockBarangBulky.barang.foto')->where('harga_barang','!=',null)
                         ->where('nama_barang','LIKE',"%".$search."%")
                         ->orWhere('harga_barang','LIKE',"%".$search."%")
                         ->orderBy('id','desc')
                         ->paginate(20);
                     }
                 } elseif ($search_kategori != null) {
-                    $barang = BarangWarung::with('storageOut.barang', 'storageOut.barang.foto')->where('harga_barang','!=',null)
+                    $barang = BarangWarung::with('storageOut.stockBarangRetail.stockBarangBulky.barang', 'storageOut.stockBarangRetail.stockBarangBulky.barang.foto')->where('harga_barang','!=',null)
                         ->orderBy('id','desc')
-                        ->whereHas('storageOut.barang.kategori',function($q) use ($search_kategori){
+                        ->whereHas('storageOut.stockBarangRetail.stockBarangBulky.barang.kategori',function($q) use ($search_kategori){
                             $q->where('id', $search_kategori);
                         })
                         ->paginate(20);

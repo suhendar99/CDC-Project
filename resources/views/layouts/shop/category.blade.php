@@ -3,7 +3,7 @@
     <div class="row">
         @forelse($category as $c)
         <div class="col-6 pl-2 pr-2 pb-4">
-            <div class="card" style="height: auto;">
+            <div class="card" style="height: auto;border-radius: 20px;">
                 <div class="card-body d-flex justify-content-center">
                     <a href="{{route('shop', ['kategori' => $c->id])}}">
                     <center>

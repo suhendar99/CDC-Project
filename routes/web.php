@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\v1\PiutangBulkyController;
 use App\Models\SuratPiutangBulkyPemasok;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use phpDocumentor\Reflection\Types\Resource_;
 
 /*
@@ -25,10 +27,10 @@ Web Routes
         Artisan::call('config:cache');
         return "Berhasil Cache";
     });
-    // Route::get('/down', function () {
-    //     Artisan::call('down');
-    //     return redirect('/');
-    // });
+    Route::get('/down', function () {
+        Artisan::call('down',['--message'=> 'Mohon Maaf Website Sedang Dalam Perbaikan !']);
+        return redirect('/');
+    });
 // End Call
 
 Route::group(['namespace' => 'v1'], function () {
@@ -182,6 +184,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::resource('pemesanan-masuk-pemasok', 'PemesananMasukPemasokController');
         Route::get('validasi/bukti/bulky/{id}','PemesananMasukPemasokController@validasi')->name('validasi.bukti.bulky');
         Route::get('tolak/pesanan/bulky/{id}','PemesananKeluarBulkyController@tolak');
+        Route::get('tidakSesuai/pesanan/bulky/{id}','PemesananKeluarBulkyController@tidakSesuai');
         Route::resource('retur-bulky-pemasok', 'ReturBulkyController');
         Route::get('retur-status-tolak/{id}', 'ReturBulkyController@tolak')->name('retur-status-tolak');
         Route::get('retur-status-terima/{id}', 'ReturBulkyController@terima')->name('retur-status-terima');

@@ -55,6 +55,8 @@ class PemesananBulkyController extends Controller
                         } else {
                             return "<span class='text-success'>Lunas</span>";
                         }
+                    } elseif($data->pemesananBulky->status == 5){
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
@@ -133,7 +135,7 @@ class PemesananBulkyController extends Controller
         $user_email = User::where('pemasok_id', $pemasok)->first();
 
         set_time_limit(99999999);
-        Mail::to($user_email->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti-bulky\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to($user_email->email)->send(new SendProofOfPaymentMail('upload/foto/bukti-bulky/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         $firebaseToken = User::where('pemasok_id', $pemasok)
             ->whereNotNull('device_token')

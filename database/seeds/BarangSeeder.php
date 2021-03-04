@@ -15,30 +15,29 @@ class BarangSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create('id_ID');
-        $harga = 100000000;
+        $harga = 14000000;
         $jumlah =  100;
         $data = array(
             [
                 'pemasok_id' => 1,
                 'kategori_id' => 1,
                 'kode_barang' => $faker->unique()->ean13,
-                'nama_barang' => 'Beras Cianjur',
+                'nama_barang' => 'Kopi Luwak',
                 'jumlah' => $jumlah,
                 'harga_beli' => $harga,
                 'harga_barang' => $harga * $jumlah,
                 'satuan' => 'Ton'
             ]
         );
-    	// dd($harga);
         DB::table('barangs')->insert($data);
         DB::table('barangs')->insert([
             'pemasok_id' => 1,
-            'kategori_id' => 7,
+            'kategori_id' => 18,
             'kode_barang' => $faker->unique()->ean13,
-            'nama_barang' => 'Jagung Belanda',
+            'nama_barang' => 'Ayam Beku',
             'jumlah' => 100,
-            'harga_barang' => 120000000 * 100,
-            'harga_beli' => 120000000,
+            'harga_barang' => 25000000 * 100,
+            'harga_beli' => 25000000,
             'satuan' => 'Ton'
         ]);
     }

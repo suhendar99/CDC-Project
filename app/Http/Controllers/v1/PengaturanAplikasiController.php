@@ -48,7 +48,7 @@ class PengaturanAplikasiController extends Controller
             'logo_pembeli' => 'nullable|image|mimes:png,jpg,jpeg,svg',
             'logo_tab' => 'nullable|image|mimes:jpg,png,jpeg,svg',
             'nama_app' => 'nullable|string|max:50',
-            'nama_tab' => 'required|string|max:20',
+            'nama_tab' => 'required|string|max:90',
             'copyright_text' => 'required',
             'copyright_link' => 'nullable',
         ]);
