@@ -49,6 +49,10 @@ class PemesananMasukPemasokController extends Controller
                         return "<span class='text-success'>Lunas</span>";
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 5) {
                         return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 7) {
+                        return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pemesanan->status == 7 && $data->pemesanan->status == 5 && $data->pemesanan->status == 2) {
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
@@ -87,15 +91,20 @@ class PemesananMasukPemasokController extends Controller
                         return '&nbsp;Pesanan Sudah Diterima';
                     } elseif ($data->pemesanan->status == 6) {
                         return '&nbsp;Pesanan Diambil';
+                    } elseif ($data->pemesanan->status == 7) {
+                        return '&nbsp;Pesanan Terverifikasi & Jumlah Uang tidak Sesuai';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
                     if ($data->pemesanan->status == 1 && $data->pemesanan->foto_bukti != null) {
-                        return '&nbsp;<a href="/v1/validasi/bukti/bulky/'.$data->pemesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/bulky/'.$data->pemesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                        return '-';
+                        // return '&nbsp;<a href="/v1/validasi/bukti/bulky/'.$data->pemesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/bulky/'.$data->pemesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pemesanan->status == 1){
                         return '&nbsp;<a href="/v1/tolak/pesanan/retail/'.$data->pemesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pemesanan->status == 2) {
                         return '&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                    } elseif ($data->pemesanan->status == 7) {
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a>&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }
