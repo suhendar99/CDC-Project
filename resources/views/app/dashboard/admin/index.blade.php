@@ -11,9 +11,12 @@
         $pmsk = App\Models\Pemasok::all();
         $anggotaKoperasi = App\User::where('keanggotaan',1)->get();
         $bukanAnggotaKoperasi = App\User::where('keanggotaan',0)->get();
-        $log = App\Models\LogTransaksiAdmin::latest()->paginate(20);
+        $log = App\Models\LogTransaksiAdmin::latest()->paginate(10);
         $countLog = App\Models\LogTransaksiAdmin::count();
         $sumHargaLog = App\Models\LogTransaksiAdmin::sum('harga');
+        // $topTen = App\Models\LogTransaksiAdmin::select('transaksi', DB::raw('count(*) as total'))->groupBy('transaksi')->take(10)->get();
+        $topTen = App\Models\LogTransaksiAdmin::orderBy('harga', 'desc')->orderBy('jumlah', 'desc')->take(10)->get();
+        // dd($topTen);
 @endphp
 @extends('layouts.dashboard.header')
 
@@ -186,9 +189,64 @@
   <div class="col-md-12 my-2">
     <div class="card shadow" style="height: 350px;">
       <div class="card-body">
-        <div class="valign-center">
-            <i class="material-icons md-36 pointer text-my-warning">people</i>
-            <span class="ml-2">Log Pemesanan <span style="color: blue;">(20 pemesanan terakhir)</span> || Total Pemesanan : {{ $countLog }} || Total Harga : {{ $sumHargaLog }}</span>
+        <div class="valign-center mb-3">
+            <span>Log Pemesanan || Total Pemesanan : {{ $countLog }} || Total Harga : {{ number_format($sumHargaLog,0,',','.') }}</span>
+        </div>
+        <div>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Timestamp</th>
+                    <th scope="col">Transaksi</th>
+                    <th scope="col">Penjual</th>
+                    <th scope="col">Pembeli</th>
+                    <th scope="col">Barang</th>
+                    <th scope="col">Jumlah</th>
+                    <th scope="col">Satuan</th>
+                    <th scope="col">Harga</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @php
+                    $no = 1;
+                  @endphp
+                  @forelse($log as $l)
+                  <tr>
+                    <th scope="row">{{ $no }}</th>
+                    <td>{{ $l->time }}</td>
+                    <td>{{ $l->transaksi }}</td>
+                    <td>{{ $l->penjual }}</td>
+                    <td>{{ $l->pembeli }}</td>
+                    <td>{{ $l->barang }}</td>
+                    <td>{{ $l->jumlah }}</td>
+                    <td>{{ $l->satuan }}</td>
+                    <td>Rp. {{ number_format($l->harga,0,',','.') }}</td>
+                  </tr>
+                  @php $no++ @endphp
+                  @empty
+                  <tr>
+                    <td colspan="9">Tidak Ada Data</td>
+                  </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+            <div class="col-12">
+              {{ $log->links() }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 my-2">
+    <div class="card shadow" style="height: 350px;">
+      <div class="card-body">
+        <div class="valign-center mb-3">
+            <span class="ml-2">10 Pemesanan Terbesar</span>
         </div>
         <div>
           <table class="table table-bordered">
@@ -209,17 +267,17 @@
               @php
                 $no = 1;
               @endphp
-              @forelse($log as $l)
+              @forelse($topTen as $top)
               <tr>
                 <th scope="row">{{ $no }}</th>
-                <td>{{ $l->time }}</td>
-                <td>{{ $l->transaksi }}</td>
-                <td>{{ $l->penjual }}</td>
-                <td>{{ $l->pembeli }}</td>
-                <td>{{ $l->barang }}</td>
-                <td>{{ $l->jumlah }}</td>
-                <td>{{ $l->satuan }}</td>
-                <td>Rp. {{ number_format($l->harga,0,',','.') }}</td>
+                <td>{{ $top->time }}</td>
+                <td>{{ $top->transaksi }}</td>
+                <td>{{ $top->penjual }}</td>
+                <td>{{ $top->pembeli }}</td>
+                <td>{{ $top->barang }}</td>
+                <td>{{ $top->jumlah }}</td>
+                <td>{{ $top->satuan }}</td>
+                <td>Rp. {{ number_format($top->harga,0,',','.') }}</td>
               </tr>
               @php $no++ @endphp
               @empty
