@@ -70,6 +70,13 @@ class PemesananKeluarBulkyController extends Controller
 
         return back()->with('success','Pesanan Berhasil Ditolak!');
     }
+    public function tidakSesuai($id)
+    {
+        $data = PemesananKeluarBulky::findOrFail($id);
+        $data->update(['status'=>'7']);
+
+        return back()->with('success','Jumlah Uang Tidak sesuai !');
+    }
 
     public function konfirmasi($id)
     {

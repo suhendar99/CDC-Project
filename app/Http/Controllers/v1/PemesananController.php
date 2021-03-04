@@ -87,6 +87,8 @@ class PemesananController extends Controller
                         return "<span class='text-danger'>Belum Ada Bukti Pembayaran</span>";
                     } elseif ($data->pemesananPembeli->foto_bukti != null && $data->pemesananPembeli->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
+                    }elseif($data->pemesananPembeli->status == 5){
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Terverifikasi";
                     }
@@ -174,6 +176,8 @@ class PemesananController extends Controller
                         } else {
                             return "<span class='text-success'>Lunas</span>";
                         }
+                    } elseif($data->pesanan->status == 5){
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
@@ -261,7 +265,7 @@ class PemesananController extends Controller
 
         // dd($data->bulky->user->email);
         set_time_limit(99999999);
-        Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to($data->bulky->user->email)->send(new SendProofOfPaymentMail('upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         // $twilio = new Client('ACc460909600bb11391c409fceac79ee00', '340f81c06b713123327f390ab7dd721f');
 
@@ -581,7 +585,7 @@ class PemesananController extends Controller
         $nama_bukti = time()."_".$foto_bukti->getClientOriginalName();
         $foto_bukti->move("upload/foto/bukti", $nama_bukti);
 
-        Mail::to($data->gudang->user->email)->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to($data->gudang->user->email)->send(new SendProofOfPaymentMail('upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         $data->update([
             'foto_bukti' => '/upload/foto/bukti/'.$nama_bukti

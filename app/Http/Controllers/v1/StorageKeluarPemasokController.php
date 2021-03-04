@@ -169,7 +169,6 @@ class StorageKeluarPemasokController extends Controller
 
 
         if ($v->fails()) {
-            dd($v);
             return back()->withErrors($v)->withInput();
         }
 
@@ -371,7 +370,7 @@ class StorageKeluarPemasokController extends Controller
             'date' => $date,
             'kode' => $pdfKodeSJ
         ]);
-        
+
         // $pesanan->bulky->user->email
         Mail::to($pesanan->bulky->user->email)->send(new KwitansiDanSuratJalanMail($pdfSJ, $pdfKwitansi));
 

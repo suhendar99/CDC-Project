@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label>Password Baru <small class="text-success">*Harus diisi</small></label>
+                                        <label>Konfirmasi Password Baru <small class="text-success">*Harus diisi</small></label>
                                         <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" name="new_password_confirmation">
                                         @error('new_password_confirmation')
                                             <span class="invalid-feedback" role="alert">

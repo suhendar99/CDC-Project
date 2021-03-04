@@ -121,7 +121,7 @@ class TransaksiPembeliController extends Controller
         $pelanggan = $data->pelanggan_id;
 
         set_time_limit(99999999);
-        Mail::to('filok5267@gmail.com')->send(new SendProofOfPaymentMail('\upload\foto\bukti\\'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
+        Mail::to('filok5267@gmail.com')->send(new SendProofOfPaymentMail('upload/foto/bukti/'.$nama_bukti, $foto_bukti->getClientMimeType(), now('Asia/Jakarta'), $data));
 
         $firebaseToken = User::where('pelanggan_id', $pelanggan)
             ->whereNotNull('device_token')

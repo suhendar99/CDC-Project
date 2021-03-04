@@ -72,7 +72,8 @@
                                             {{
                                                 (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' :
                                                 (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' :
-                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' :
+                                                (($d->status == 7) ? 'Pemesanan Telah Diproses & Jumlah Nominal Tidak Sesuai' : 'Pesanan Diproses ...'))))
                                             }}
                                         </a>
                                         @endif
@@ -104,7 +105,8 @@
                                             {{
                                                 (($d->status == 1) ? 'Mohon Tunggu Validasi Penjual ...' :
                                                 (($d->status == 2) ? 'Pembayaran Sudah Diverifikasi, Pesanan Akan Segera Dikirim ... ' :
-                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' : 'Pesanan Diproses ...')))
+                                                (($d->status == 4) ? 'Pesanan Sedang Dikirim ... ' :
+                                                (($d->status == 7) ? 'Pemesanan Telah Diproses & Jumlah Nominal Tidak Sesuai' : 'Pesanan Diproses ...'))))
                                             }}
                                         </a>
                                         @endif
