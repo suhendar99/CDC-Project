@@ -316,7 +316,7 @@
                     $('#verifikasi').attr('action','/v1/validasi/bukti/bulky/'+id)
                     $('#tidakSesuai').attr('href','/v1/tidakSesuai/pesanan/bulky/'+id)
                     $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
-                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 7 || response.data.pemesanan.status == 0 ) {
+                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 7 || response.data.pemesanan.status == 0 || response.data.pemesanan.status == 5 || response.data.pemesanan.status == 4 || response.data.pemesanan.status == 3 ) {
                     $('#tolak').addClass('d-none')
                     $('#tidakSesuai').addClass('d-none')
                     $('#jumlah_uang').addClass('d-none');
