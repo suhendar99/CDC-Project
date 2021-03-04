@@ -22,7 +22,7 @@ class CreateLogTransaksiAdminsTable extends Migration
             $table->string('barang');
             $table->bigInteger('jumlah');
             $table->string('satuan');
-            $table->string('harga');
+            $table->bigInteger('harga');
             $table->timestamps();
         });
     }
