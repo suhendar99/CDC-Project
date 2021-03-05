@@ -343,6 +343,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
         Route::get('transaksi/bulky/konfirmasi/{id}','PemesananKeluarBulkyController@konfirmasi')->name('konfirmasi.terima.bulky');
 
+
+        Route::get('tidak-sesuai/pesanan/retail/{id}','PemesananBulkyController@tidakSesuai');
+
         // Laporan Bulky
         Route::get('bulky/laporan/penjualan','LaporanGudangBulky@showLaporanBarangKeluar')->name('bulky.laporan.barang.keluar.index');
         Route::post('bulky/laporan/penjualan/PDF','LaporanGudangBulky@LaporanBarangKeluarPdf')->name('bulky.laporan.barang.keluar.pdf');

@@ -315,6 +315,7 @@
         $('#jumlah_dalam_foto').on('input', function () {
             $('#selisih').val(parseInt($('#jumlah_uang').val()) - parseInt($('#jumlah_dalam_foto').val()))
         });
+        
         function bukti(id){
             $('#loader').text('Loading ...');
             $.ajax({
