@@ -131,6 +131,8 @@
                                 @else
                                     @if($d->foto_bukti == null && $d->status == 1 ||$d->status == 7)
                                     <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran</a>
+                                    @elseif($d->status == 7)
+                                    <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#exampleModal" onclick="uploadBukti({{ $d->id }})" data-id="{{ $d->id }}">Kirim Bukti Pembayaran yang Sesuai</a>
                                     @else
                                     <a class="btn btn-sm btn-primary disabled" href="#">Mohon Tunggu Validasi Penjual ...</a>
                                     @endif

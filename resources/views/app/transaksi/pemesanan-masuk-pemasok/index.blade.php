@@ -225,7 +225,7 @@
                       <input type="text" class="form-control" id="selisih" placeholder="Selisih">
                   </div>
                 </div>
-              </div>
+            </div>
             <img src="" class="w-100" id="foto_bukti">
         </div>
         <div class="modal-footer">
@@ -315,7 +315,7 @@
         $('#jumlah_dalam_foto').on('input', function () {
             $('#selisih').val(parseInt($('#jumlah_uang').val()) - parseInt($('#jumlah_dalam_foto').val()))
         });
-        
+
         function bukti(id){
             $('#loader').text('Loading ...');
             $.ajax({

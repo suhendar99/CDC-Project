@@ -200,15 +200,30 @@
         <div class="modal-body">
             <h5 id="loader" class="text-center"></h5>
                 <div class="row p-2">
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
-                  </div>
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
-                  </div>
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="selisih" placeholder="Selisih">
-                  </div>
+                    <div class="col-md-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend rp">
+                              <div class="input-group-text">Rp.</div>
+                            </div>
+                            <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend rp">
+                              <div class="input-group-text">Rp.</div>
+                            </div>
+                            <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend rp">
+                              <div class="input-group-text">Rp.</div>
+                            </div>
+                            <input type="text" class="form-control" id="selisih" placeholder="Selisih">
+                        </div>
+                      </div>
                 </div>
             <img src="" class="w-100" id="foto_bukti">
         </div>
@@ -343,18 +358,20 @@
                     $('#verifikasi').attr('action','/v1/validasi/bukti/retail/'+id)
                     $('#tidakSesuai').attr('href','/v1/tidak-sesuai/pesanan/retail/'+id)
                     $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
-                    if (response.data.pemesanan_bulky.status == 2 || response.data.pemesanan_bulky.status == 0 ) {
+                    if (response.data.pemesanan_bulky.status == 2 || response.data.pemesanan_bulky.status == 0 || response.data.pemesanan_bulky.status == 5 || response.data.pemesanan_bulky.status == 4 || response.data.pemesanan_bulky.status == 3) {
                       $('#tidakSesuai').addClass('d-none')
                       $('#jumlah_uang').addClass('d-none');
                       $('#jumlah_dalam_foto').addClass('d-none');
                       $('#selisih').addClass('d-none');
                       $('#terima').addClass('d-none');
+                      $('.rp').addClass('d-none');
                     } else if (response.data.pemesanan_bulky.status == 1 || response.data.pemesanan_bulky.status == 7) {
                       $('#tidakSesuai').removeClass('d-none')
                       $('#jumlah_uang').removeClass('d-none');
                       $('#jumlah_dalam_foto').removeClass('d-none');
                       $('#selisih').removeClass('d-none');
                       $('#terima').removeClass('d-none');
+                      $('.rp').removeClass('d-none');
                     }
                 },
                 error: (xhr)=>{

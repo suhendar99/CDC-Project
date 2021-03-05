@@ -78,6 +78,10 @@ Route::get('/home', function (){
 })->name('home');
 
 Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], function () {
+    // Cek Ongkir use Onkir
+    Route::get('ongkir','ShopController@ongkir');
+    Route::post('cek-ongkir', ['uses'=>'ShopController@cek_ongkir', 'as'=>'cek.ongkir']);
+    Route::get('get-kota/{q?}', ['uses'=>'ShopController@get_kota', 'as'=>'get.kota']);
     // Keranjang
     Route::post('keranjang/{id}','KeranjangController@saveKeranjang')->name('keranjang.store');
     // Complete Foto KTP
@@ -343,13 +347,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         Route::get('tolak/penawaran/{id}','PenawaranPemasokController@tolak')->name('tolak.penawaran');
         Route::get('transaksi/bulky/konfirmasi/{id}','PemesananKeluarBulkyController@konfirmasi')->name('konfirmasi.terima.bulky');
 
-
-        Route::get('tidak-sesuai/pesanan/retail/{id}','PemesananBulkyController@tidakSesuai');
-
-        // Laporan Bulky
-        Route::get('bulky/laporan/penjualan','LaporanGudangBulky@showLaporanBarangKeluar')->name('bulky.laporan.barang.keluar.index');
+// anBarangKeluar')->name('bulky.laporan.barang.keluar.index');
         Route::post('bulky/laporan/penjualan/PDF','LaporanGudangBulky@LaporanBarangKeluarPdf')->name('bulky.laporan.barang.keluar.pdf');
         Route::post('bulky/laporan/penjualan/EXCEL','LaporanGudangBulky@LaporanBarangKeluarExcel')->name('bulky.laporan.barang.keluar.excel');
+        Route::get('tidak-sesuai/pesanan/retail/{id}','PemesananBulkyController@tidakSesuai');
 
         Route::get('bulky/laporan/pembelian','LaporanGudangBulky@showLaporanBarangMasuk')->name('bulky.laporan.barang.masuk.index');
         Route::post('bulky/laporan/pembelian/PDF','LaporanGudangBulky@LaporanBarangMasukPdf')->name('bulky.laporan.barang.masuk.pdf');

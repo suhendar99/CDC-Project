@@ -58,6 +58,10 @@ class PemesananBulkyController extends Controller
                         }
                     } elseif($data->pemesananBulky->status == 5){
                         return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pemesananBulky->foto_bukti != null && $data->pemesananBulky->status == 7) {
+                        return "<span class='text-success'>Lunas & Jumlah uang Tidak Sesuai</span>";
+                    } elseif ($data->pemesananBulky->status == 7 || $data->pemesananBulky->status == 5 || $data->pemesananBulky->status == 2 || $data->pemesananBulky->status == 3 || $data->pemesananBulky->status == 4) {
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
@@ -96,18 +100,18 @@ class PemesananBulkyController extends Controller
                         return '&nbsp;Pesanan Sudah Diterima';
                     } elseif ($data->pemesananBulky->status == 6) {
                         return '&nbsp;Pesanan Diambil';
+                    } elseif ($data->pemesananBulky->status == 7) {
+                        return '&nbsp;Pesanan Terverifikasi & Jumlah Uang tidak Sesuai';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
                     if ($data->pemesananBulky->status == 1 && $data->pemesananBulky->foto_bukti != null) {
                         return "-";
                         // return '&nbsp;<a href="/v1/validasi/bukti/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
-                    } elseif ($data->pemesananBulky->status == 1){
-                        return '&nbsp;<a href="/v1/tolak/pesanan/retail/'.$data->pemesananBulky->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pemesananBulky->status == 2) {
-                        return '&nbsp;<a href="/v1/bulky/storage/keluar/create?pemesanan='.$data->pemesananBulky->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                        return '&nbsp;<a href="/v1/bulky/storage/keluar/create?pemesanan='.$data->pemesananBulky->id.'" class="btn btn-outline-success btn-sm">Kirim</a> <small>Klik tombol untuk proses pengiriman barang</small>';
                     } elseif ($data->pemesananBulky->status == 7) {
-                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesananBulky->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a>';
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesananBulky->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a> <small>Klik tombol untuk kontak pembeli jika jumlah nominal tidak sesuai</small>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }
