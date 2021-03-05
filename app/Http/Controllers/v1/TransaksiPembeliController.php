@@ -90,15 +90,15 @@ class TransaksiPembeliController extends Controller
     {
         $data = $this->model::with('pemesananPembeliItem','barangKeluar')->findOrFail($id);
         $data->update(['status'=>'0']);
-        // dd($data);
 
-        $kode = $data->pemesananPembeliItem[0]->barang;
-        $jumlah = $data->pemesananPembeliItem[0]->jumlah_barang;
-        // $d = BarangWarung::where('kode',$kode)->first();
-
-
-        dd($jumlah, $kode);
         return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+    public function tidakSesuai($id)
+    {
+        $data = $this->model::with('pemesananPembeliItem','barangKeluar')->findOrFail($id);
+        $data->update(['status'=>7]);
+
+        return back()->with('success','Pesanan Jumlah Nominal Tidak Sesuai !');
     }
 
     public function kirim($id)

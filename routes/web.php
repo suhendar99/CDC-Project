@@ -244,6 +244,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
 
         // Untuk Memvalidasi Bukti Pemayaran
         Route::get('validasi/bukti/pembeli/{id}','TransaksiPembeliController@validasi')->name('validasi.bukti.pembeli');
+        Route::get('tidakSesuai/pesanan/pembeli/{id}','TransaksiPembeliController@tidakSesuai');
 
         Route::delete('pemesananPembeli/{id}', 'PemesananController@destroyPembeli')->name('pemesananPembeli.destroy');
 
@@ -494,6 +495,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Route::get('kirim/pesanan/warung','StorageOutController@create');
         // Untuk Validasi Butki Pembayaran
         Route::get('validasi/bukti/warung/{id}','PemesananKeluarPembeliController@validasi')->name('validasi.bukti.warung');
+        Route::get('tidakSesuai/pesanan/warung/{id}','PemesananController@tidakSesuai');
 
         // Surat Piutang
         Route::resource('surat-piutang-warung-retail', 'SuratPiutangWarungRetailController');

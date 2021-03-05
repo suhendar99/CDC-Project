@@ -144,6 +144,8 @@
 <div class="modal fade" id="modalBukti" tabindex="-1" aria-labelledby="modalBukti" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
+    <form action="" id="verifikasi" method="get" enctype="multipart/form-data">
+        {{-- @csrf --}}
         <div class="modal-header">
           <h5 class="modal-title" id="modalBukti">Bukti Pembayaran</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -151,12 +153,42 @@
           </button>
         </div>
         <div class="modal-body">
+            <h5 id="loader" class="text-center"></h5>
+                <div class="row p-2">
+                  <div class="col-md-4">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend rp">
+                          <div class="input-group-text">Rp.</div>
+                        </div>
+                        <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend rp">
+                          <div class="input-group-text">Rp.</div>
+                        </div>
+                        <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend rp">
+                          <div class="input-group-text">Rp.</div>
+                        </div>
+                        <input type="text" class="form-control" id="selisih" placeholder="Selisih">
+                    </div>
+                  </div>
+                </div>
             <img src="" class="w-100" id="foto_bukti">
         </div>
-        {{-- <div class="modal-footer">
-
-          Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button>
-        </div> --}}
+        <div class="modal-footer">
+            <button type="submit" id="terima" class="btn btn-sm btn-primary">Sesuai</button>
+            <a href="" id="tidakSesuai" class="btn btn-sm btn-warning">Tidak Sesuai</a>
+            {{-- <a href="" id="tolak" class="btn btn-sm btn-danger">Tolak Pesanan</a> --}}
+          {{-- Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button> --}}
+        </div>
+    </form>
       </div>
     </div>
 </div>
@@ -264,6 +296,9 @@
             })
         }
 
+        $('#jumlah_dalam_foto').on('input', function () {
+            $('#selisih').val(parseInt($('#jumlah_uang').val()) - parseInt($('#jumlah_dalam_foto').val()))
+        });
         function bukti(id){
             console.log(id);
             $.ajax({
@@ -276,7 +311,27 @@
                     console.log(response);
                     $('#foto_bukti').attr('src',`${response.data.pesanan.foto_bukti}`);
                     $('#button_accept').attr('href','/v1/validasi/bukti/warung/'+response.data.pesanan.id);
-
+                    $('#jumlah_uang').val(response.data.harga);
+                    $('#verifikasi').attr('action','/v1/validasi/bukti/warung/'+id)
+                    $('#tidakSesuai').attr('href','/v1/tidakSesuai/pesanan/warung/'+id)
+                    // $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
+                    if (response.data.pesanan.status == 2 || response.data.pesanan.status == 0 || response.data.pesanan.status == 5 || response.data.pesanan.status == 4 || response.data.pesanan.status == 3 ) {
+                    $('#tolak').addClass('d-none')
+                    $('#tidakSesuai').addClass('d-none')
+                    $('#jumlah_uang').addClass('d-none');
+                    $('#jumlah_dalam_foto').addClass('d-none');
+                    $('#selisih').addClass('d-none');
+                    $('#terima').addClass('d-none');
+                    $('.rp').addClass('d-none');
+                    } else if (response.data.pesanan.status == 1 || response.data.pesanan.status == 7) {
+                    $('#tolak').removeClass('d-none')
+                    $('#tidakSesuai').removeClass('d-none')
+                    $('#jumlah_uang').removeClass('d-none');
+                    $('#jumlah_dalam_foto').removeClass('d-none');
+                    $('#selisih').removeClass('d-none');
+                    $('#terima').removeClass('d-none');
+                    $('.rp').removeClass('d-none');
+                    }
                 },
                 error: (xhr)=>{
                     let res = xhr.responseJSON;

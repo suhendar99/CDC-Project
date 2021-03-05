@@ -73,6 +73,8 @@ class PemesananController extends Controller
                         return '&nbsp;Sudah Diterima';
                     } elseif ($data->pemesananPembeli->status == 6) {
                         return '&nbsp;Pesanan Diambil';
+                    } elseif ($data->pemesananPembeli->status == 7) {
+                        return '&nbsp;Pesanan Terverifikasi & Jumlah Uang tidak Sesuai';
                     }
                 })
                 ->addColumn('jumlah_barang', function($data){
@@ -88,6 +90,10 @@ class PemesananController extends Controller
                     } elseif ($data->pemesananPembeli->foto_bukti != null && $data->pemesananPembeli->status == '2') {
                         return "<span class='text-success'>Lunas</span>";
                     }elseif($data->pemesananPembeli->status == 5){
+                        return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pemesananPembeli->foto_bukti != null && $data->pemesananPembeli->status == 7) {
+                        return "<span class='text-success'>Lunas & Jumlah uang Tidak Sesuai</span>";
+                    } elseif ($data->pemesananPembeli->status == 7 || $data->pemesananPembeli->status == 5 || $data->pemesananPembeli->status == 2 || $data->pemesananPembeli->status == 3 || $data->pemesananPembeli->status == 4) {
                         return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Terverifikasi";
@@ -119,15 +125,18 @@ class PemesananController extends Controller
                         return '&nbsp;Pesanan Sudah Diterima';
                     } elseif ($data->pemesananPembeli->status == 6) {
                         return '&nbsp;Pesanan Diambil';
+                    } elseif ($data->pemesananPembeli->status == 7) {
+                        return '&nbsp;Pesanan Terverifikasi & Jumlah Uang tidak Sesuai';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
                     if ($data->pemesananPembeli->status == 1 && $data->pemesananPembeli->foto_bukti != null) {
-                        return '&nbsp;<a href="/v1/validasi/bukti/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pemesananPembeli/warung/'.$data->pemesananPembeli->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
-                    } elseif ($data->pemesananPembeli->status == 1){
-                        return '&nbsp;<a href="/v1/tolak/pemesananPembeli/warung/'.$data->pemesananPembeli->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                        return '-';
+                        // return '&nbsp;<a href="/v1/validasi/bukti/pembeli/'.$data->pemesananPembeli->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pemesananPembeli/warung/'.$data->pemesananPembeli->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pemesananPembeli->status == 2) {
                         return '&nbsp;<a href="/v1/barangKeluarPelanggan/create?id='.$data->pemesananPembeli->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                    } elseif ($data->pemesananPembeli->status == 7) {
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesananPembeli->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Pembeli</a> <small>Klik tombol untuk kontak pembeli jika jumlah nominal tidak sesuai</small>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }
@@ -178,6 +187,10 @@ class PemesananController extends Controller
                         }
                     } elseif($data->pesanan->status == 5){
                         return "<span class='text-success'>Lunas</span>";
+                    } elseif ($data->pesanan->foto_bukti != null && $data->pesanan->status == 7) {
+                        return "<span class='text-success'>Lunas & Jumlah uang Tidak Sesuai</span>";
+                    } elseif ($data->pesanan->status == 7 || $data->pesanan->status == 5 || $data->pesanan->status == 2 || $data->pesanan->status == 3 || $data->pesanan->status == 4) {
+                        return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
                     }
@@ -216,15 +229,18 @@ class PemesananController extends Controller
                         return '&nbsp;Pesanan Sudah Diterima';
                     } elseif ($data->pesanan->status == 6) {
                         return '&nbsp;Pesanan Diambil';
+                    } elseif ($data->pesanan->status == 7) {
+                        return '&nbsp;Pesanan Terverifikasi & Jumlah Uang tidak Sesuai';
                     }
                 })
                 ->addColumn('aksi_pemesanan',function($data){
                     if ($data->pesanan->status == 1 && $data->pesanan->foto_bukti != null) {
-                        return '&nbsp;<a href="/v1/validasi/bukti/warung/'.$data->pesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
-                    } elseif ($data->pesanan->status == 1){
-                        return '&nbsp;<a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
+                        return '-';
+                        // return '&nbsp;<a href="/v1/validasi/bukti/warung/'.$data->pesanan->id.'" class="btn btn-outline-primary btn-sm">Verifikasi</a> <a href="/v1/tolak/pesanan/warung/'.$data->pesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pesanan->status == 2) {
-                        return '&nbsp;<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                        return '&nbsp;<a href="/v1/storage/out/create?id='.$data->pesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a> <small>Klik tombol untuk proses pengiriman barang</small>';
+                    } elseif ($data->pesanan->status == 7) {
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Pembeli</a> <small>Klik tombol untuk kontak pembeli jika jumlah nominal tidak sesuai</small>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }
@@ -346,6 +362,13 @@ class PemesananController extends Controller
         $data->update(['status'=>'0']);
 
         return back()->with('success','Pesanan Berhasil Ditolak!');
+    }
+    public function tidakSesuai($id)
+    {
+        $data = $this->model::findOrFail($id);
+        $data->update(['status'=> 7]);
+
+        return back()->with('success','Pesanan Jumlah Nominal Tidak Sesuai !');
     }
 
     public function konfirmasi($id)
