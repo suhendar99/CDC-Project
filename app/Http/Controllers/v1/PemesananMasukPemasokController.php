@@ -50,8 +50,8 @@ class PemesananMasukPemasokController extends Controller
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 5) {
                         return "<span class='text-success'>Lunas</span>";
                     } elseif ($data->pemesanan->foto_bukti != null && $data->pemesanan->status == 7) {
-                        return "<span class='text-success'>Lunas</span>";
-                    } elseif ($data->pemesanan->status == 7 || $data->pemesanan->status == 5 || $data->pemesanan->status == 2 || $data->pemesanan->status == 5 || $data->pemesanan->status == 4) {
+                        return "<span class='text-success'>Lunas & Jumlah uang Tidak Sesuai</span>";
+                    } elseif ($data->pemesanan->status == 7 || $data->pemesanan->status == 5 || $data->pemesanan->status == 2 || $data->pemesanan->status == 3 || $data->pemesanan->status == 4) {
                         return "<span class='text-success'>Lunas</span>";
                     } else {
                         return "Belum Diterima";
@@ -102,9 +102,9 @@ class PemesananMasukPemasokController extends Controller
                     } elseif ($data->pemesanan->status == 1){
                         return '&nbsp;<a href="/v1/tolak/pesanan/retail/'.$data->pemesanan->id.'" class="btn btn-outline-danger btn-sm" >Tolak Pesanan</a>';
                     } elseif ($data->pemesanan->status == 2) {
-                        return '&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a>';
+                        return '&nbsp;<a href="/v1/storage-keluar-pemasok/create?id='.$data->pemesanan->id.'" class="btn btn-outline-success btn-sm">Kirim</a> <small>Klik tombol untuk proses pengiriman barang</small>';
                     } elseif ($data->pemesanan->status == 7) {
-                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Penjual</a>';
+                        return '&nbsp;<a href="https://api.whatsapp.com/send?phone=62'.(int)$data->pemesanan->telepon.'&text=%2A%2A%20Jumlah%20Nominal%20Yang%20Anda%20Kirim%20Tidak%20Sesuai" target="__blank" class="btn btn-outline-warning btn-sm">Kontak Pembeli</a> <small>Klik tombol untuk kontak pembeli jika jumlah nominal tidak sesuai</small>';
                     } else {
                         return '&nbsp;-&nbsp;';
                     }

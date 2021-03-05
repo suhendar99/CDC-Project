@@ -38,7 +38,7 @@
                     <div class="col-12">
                         <div class="form-group">
                         <label for="first-name-vertical">Jumlah Pajak (%)</label>
-                        <input type="number" min="1" id="first-name-vertical" class="form-control @error('pajak') is-invalid @enderror" name="pajak" placeholder="Nama Tab" value="{{ $data->pajak }}">
+                        <input type="number" min="1" max="100" id="first-name-vertical" class="form-control @error('pajak') is-invalid @enderror" name="pajak" placeholder="Nama Tab" value="{{ $data->pajak }}">
                         @error('pajak')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -59,8 +59,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                        <label for="first-name-vertical">Biaya Merchant (Rp)</label>
-                        <input type="number" min="1" id="first-name-vertical" class="form-control @error('biaya_merchant') is-invalid @enderror" name="biaya_merchant" placeholder="Nama Aplikasi" value="{{ $data->biaya_merchant }}">
+                        <label for="first-name-vertical">Biaya Merchant (%)</label>
+                        <input type="number" min="1" max="100" id="first-name-vertical" class="form-control @error('biaya_merchant') is-invalid @enderror" name="biaya_merchant" placeholder="Nama Aplikasi" value="{{ $data->biaya_merchant }}">
                         @error('biaya_merchant')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

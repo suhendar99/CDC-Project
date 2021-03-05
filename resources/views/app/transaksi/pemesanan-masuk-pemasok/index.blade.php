@@ -200,23 +200,38 @@
         </div>
         <div class="modal-body">
             <h5 id="loader" class="text-center"></h5>
-                <div class="row p-2">
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
-                  </div>
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
-                  </div>
-                  <div class="col-md-4">
-                    <input type="text" class="form-control" id="selisih" placeholder="Selisih">
+            <div class="row p-2">
+                <div class="col-md-4">
+                  <div class="input-group mb-2">
+                      <div class="input-group-prepend rp">
+                        <div class="input-group-text">Rp.</div>
+                      </div>
+                      <input type="text" class="form-control" id="jumlah_uang" placeholder="Jumlah Uang yang Dibayar">
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="input-group mb-2">
+                      <div class="input-group-prepend rp">
+                        <div class="input-group-text">Rp.</div>
+                      </div>
+                      <input type="text" class="form-control" id="jumlah_dalam_foto" placeholder="Jumlah Uang Dalam Foto">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="input-group mb-2">
+                      <div class="input-group-prepend rp">
+                        <div class="input-group-text">Rp.</div>
+                      </div>
+                      <input type="text" class="form-control" id="selisih" placeholder="Selisih">
+                  </div>
+                </div>
+              </div>
             <img src="" class="w-100" id="foto_bukti">
         </div>
         <div class="modal-footer">
             <button type="submit" id="terima" class="btn btn-sm btn-primary">Sesuai</button>
             <a href="" id="tidakSesuai" class="btn btn-sm btn-warning">Tidak Sesuai</a>
-            <a href="" id="tolak" class="btn btn-sm btn-danger">Tolak Pesanan</a>
+            {{-- <a href="" id="tolak" class="btn btn-sm btn-danger">Tolak Pesanan</a> --}}
           {{-- Apakah Sudah Sesuai ? <a id="button_accept" href="" class="btn btn-primary btn-sm">Ya</a> <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Tidak</button> --}}
         </div>
     </form>
@@ -317,20 +332,22 @@
                     $('#verifikasi').attr('action','/v1/validasi/bukti/bulky/'+id)
                     $('#tidakSesuai').attr('href','/v1/tidakSesuai/pesanan/bulky/'+id)
                     $('#tolak').attr('href','/v1/tolak/pesanan/bulky/'+id)
-                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 7 || response.data.pemesanan.status == 0 ) {
-                      $('#tolak').addClass('d-none')
-                      $('#tidakSesuai').addClass('d-none')
-                      $('#jumlah_uang').addClass('d-none');
-                      $('#jumlah_dalam_foto').addClass('d-none');
-                      $('#selisih').addClass('d-none');
-                      $('#terima').addClass('d-none');
-                    } else if (response.data.pemesanan.status == 1 ) {
-                      $('#tolak').removeClass('d-none')
-                      $('#tidakSesuai').removeClass('d-none')
-                      $('#jumlah_uang').removeClass('d-none');
-                      $('#jumlah_dalam_foto').removeClass('d-none');
-                      $('#selisih').removeClass('d-none');
-                      $('#terima').removeClass('d-none');
+                    if (response.data.pemesanan.status == 2 || response.data.pemesanan.status == 0 || response.data.pemesanan.status == 5 || response.data.pemesanan.status == 4 || response.data.pemesanan.status == 3 ) {
+                    $('#tolak').addClass('d-none')
+                    $('#tidakSesuai').addClass('d-none')
+                    $('#jumlah_uang').addClass('d-none');
+                    $('#jumlah_dalam_foto').addClass('d-none');
+                    $('#selisih').addClass('d-none');
+                    $('#terima').addClass('d-none');
+                    $('.rp').addClass('d-none');
+                    } else if (response.data.pemesanan.status == 1 || response.data.pemesanan.status == 7) {
+                    $('#tolak').removeClass('d-none')
+                    $('#tidakSesuai').removeClass('d-none')
+                    $('#jumlah_uang').removeClass('d-none');
+                    $('#jumlah_dalam_foto').removeClass('d-none');
+                    $('#selisih').removeClass('d-none');
+                    $('#terima').removeClass('d-none');
+                    $('.rp').removeClass('d-none');
                     }
                 },
                 error: (xhr)=>{

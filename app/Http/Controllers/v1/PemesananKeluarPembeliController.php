@@ -64,7 +64,7 @@ class PemesananKeluarPembeliController extends Controller
         set_time_limit(99999999);
         Mail::to($user_email->email)->send(new ValidatePaymentMail($newData));
 
-        $retail = $data->retail->id;
+        // $retail = $data->retail->id;
 
         $firebaseToken = User::where('pelanggan_id', $data->pelanggan->id)
             ->whereNotNull('device_token')
