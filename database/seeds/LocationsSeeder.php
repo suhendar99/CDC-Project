@@ -14,20 +14,14 @@ class LocationsSeeder extends Seeder
      */
     public function run()
     {
-        $daftarProvinsi = RajaOngkir::provinsi()->all();
-        foreach ($daftarProvinsi as $provinceRow) {
-            Province::create([
-                'province_id' => $provinceRow['province_id'],
-                'name'        => $provinceRow['province'],
+        $kota = RajaOngkir::kota()->all();
+        // dd($kota->toArray());
+        foreach ($kota as $key => $value) {
+            City::create([
+                'province_id'   => $value['province_id'],
+                'city_id'       => $value['city_id'],
+                'name'          => $value['city_name'],
             ]);
-            $daftarKota = RajaOngkir::kota()->dariProvinsi($provinceRow['province_id'])->get();
-            foreach ($daftarKota as $cityRow) {
-                City::create([
-                    'province_id'   => $provinceRow['province_id'],
-                    'city_id'       => $cityRow['city_id'],
-                    'name'          => $cityRow['city_name'],
-                ]);
-            }
         }
     }
 }

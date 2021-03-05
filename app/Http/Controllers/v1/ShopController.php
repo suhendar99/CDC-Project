@@ -283,7 +283,8 @@ class ShopController extends Controller
         $biaya = PengaturanTransaksi::find(1);
 
         if (Auth::user()->pelanggan_id!= null) {
-            $data = StockBarang::find($id);
+            $data = StockBarang::with('gudang')->find($id);
+            dd($data);
             $user = 'pelanggan';
         } elseif (Auth::user()->pembeli_id!= null) {
             $data = BarangWarung::find($id);
@@ -879,7 +880,9 @@ class ShopController extends Controller
     // Untuk ongkir
 
     public function ongkir() {
-        return view('ongkir');
+        $city = City::all();
+        // dd($city[0]);
+        return view('ongkir',compact('city'));
     }
 
     /**
@@ -894,8 +897,6 @@ class ShopController extends Controller
         $kota_tujuan = $_POST['kota_tujuan'];
         $kurir = $_POST['kurir'];
         $berat = $_POST['berat'] * 1000;
-        $hasil = "origin=". $kota_asal ."&destination=". $kota_tujuan ."&weight=". $berat ."&courier=". $kurir. "";
-        dd($hasil);
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -917,9 +918,8 @@ class ShopController extends Controller
         curl_close($curl);
         $data = json_decode($response, true);
         //echo json_encode($data);
-
+        // dd($data);
         $kurir = $data['rajaongkir']['results'][0]['name'];
-        dd($kurir);
         $kotaasal = $data['rajaongkir']['origin_details']['city_name'];
         $provinsiasal = $data['rajaongkir']['origin_details']['province'];
         $kotatujuan = $data['rajaongkir']['destination_details']['city_name'];

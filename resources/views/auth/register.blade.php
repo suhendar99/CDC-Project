@@ -2,6 +2,7 @@
     $koperasi = App\Models\Koperasi::all();
     $set = App\Models\PengaturanAplikasi::find(1);
     $provinsi = App\Models\Provinsi::all();
+    $city = App\City::all();
     $auth = Auth::user();
 @endphp
 <style>
@@ -390,6 +391,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" id="kota_asal">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label for="provinsi-select">Pilih Kota Untuk Pengiriman <small class="text-success">*Harus dipilih</small></label>
+                                            <select class="form-control @error('kota_asal') is-invalid @enderror" id="provinsi-select" name="kota_asal">
+                                                <option value="">-- Pilih Disini --</option>
+                                                @foreach($city as $p)
+                                                <option value="{{$p->city_id}}">{{$p->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kota_asal')
+                                            <div class="invalid-feedback">
+                                                <i class="bx bx-radio-circle"></i>
+                                                {{{$message}}}
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -573,10 +595,18 @@
         if (role == 'pembeli') {
             $('.hide').removeClass('d-none');
             $('#anggota').addClass('d-none');
+            $('#kota_asal').addClass('d-none');
             $('#anggota').hide();
+        } else if(role == 'warung'){
+            $('.hide').removeClass('d-none');
+            $('#anggota').removeClass('d-none');
+            $('#kota_asal').removeClass('d-none');
+            $('#anggota').show();
+            $('#koperasi').hide();
         } else {
             $('.hide').removeClass('d-none');
             $('#anggota').removeClass('d-none');
+            $('#kota_asal').addClass('d-none');
             $('#anggota').show();
             $('#koperasi').hide();
         }

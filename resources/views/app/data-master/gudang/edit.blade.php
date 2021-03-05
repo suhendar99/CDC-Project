@@ -149,6 +149,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="kecamatan-select">Pilih Kota Untuk Penentuan Pengiriman <small class="text-success">*Harus dipilih</small></label>
+                                                <select class="form-control @error('kota_asal') is-invalid @enderror" name="kota_asal">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    @foreach ($city as $item)
+                                                        <option value="{{$item->city_id}}" @if($item->id == $data->city->city_id) selected @endif>{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('kota_asal')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-row">

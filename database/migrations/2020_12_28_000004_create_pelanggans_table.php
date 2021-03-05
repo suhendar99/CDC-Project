@@ -29,6 +29,8 @@ class CreatePelanggansTable extends Migration
             $table->text('foto')->nullable();
             $table->text('foto_ktp')->nullable();
             $table->text('foto_ktp_selfie')->nullable();
+            $table->unsignedInteger('kota_asal')->nullable();
+            $table->foreign('kota_asal')->references('city_id')->on('cities')->onDelete('cascade');
             $table->foreignId('desa_id')->nullable()->constrained('desas')->onDelete('set null');
             $table->foreignId('kecamatan_id')->nullable()->constrained('kecamatans')->onDelete('set null');
             $table->foreignId('kabupaten_id')->nullable()->constrained('kabupatens')->onDelete('set null');

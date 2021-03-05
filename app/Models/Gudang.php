@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\City;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gudang extends Model
 {
@@ -74,7 +76,7 @@ class Gudang extends Model
         // belongsTo(RelatedModel, foreignKey = akunGudang_id, keyOnRelatedModel = id)
         return $this->belongsToMany('App\Models\PengurusGudang', 'akun_gudangs', 'gudang_id', 'pengurus_id');
     }
-    
+
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -122,5 +124,15 @@ class Gudang extends Model
     {
         // hasMany(RelatedModel, foreignKeyOnRelatedModel = gudang_id, localKey = id)
         return $this->hasMany('App\Models\Kwitansi');
+    }
+
+    /**
+     * Get the city that owns the Gudang
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'kota_asal', 'city_id');
     }
 }

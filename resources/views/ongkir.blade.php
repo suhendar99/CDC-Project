@@ -12,15 +12,20 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Kota Asal:</label>
                             <div class="col-sm-12">
-                                <select class="form-control" id="kota_asal" name="kota_asal" required="">
+                                <select class="form-control" {{--id="kota_asal"--}} name="kota_asal" required="">
+                                    @foreach ($city as $item)
+                                        <option value="{{$item->city_id}}">{{$item->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-4">Kota Tujuan</label>
                             <div class="col-sm-12">
-                                <select class="form-control" id="kota_tujuan" name="kota_tujuan" required="">
-                                    <option></option>
+                                <select class="form-control" {{--id="kota_tujuan"--}} name="kota_tujuan" required="">
+                                    @foreach ($city as $item)
+                                        <option value="{{$item->city_id}}">{{$item->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -77,6 +82,7 @@
             dataType: "html",
             url: "{{ route('get.kota', 'kotaasal') }}",
             success: function (msg) {
+                console.log(msg);
                 $("select#kota_asal").html(msg);
             }
         });

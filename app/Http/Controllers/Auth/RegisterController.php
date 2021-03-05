@@ -91,6 +91,7 @@ class RegisterController extends Controller
                     'kecamatan_id' => $data['kecamatan_id'],
                     'desa_id' => $data['desa_id'],
                     'alamat' => $data['alamat'],
+                    'kota_asal' => $data['kota_asal'],
                 ]);
 
                 return User::create([

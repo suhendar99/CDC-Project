@@ -101,7 +101,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
     Route::get('pengaturan-akun-admin','PengaturanAkunController@showFormUpdateAkunAdmin')->name('setAdmin.show');
     Route::post('pengaturan-akun-admins','PengaturanAkunController@updateAkunAdmin')->name('setAdmin.action');
         // Pelanggan
-        Route::get('pengaturan-akun-pelanggan','PengaturanAkunController@showFormUpdateAkunPelanggan')->name('setPelanggan.show');
+    Route::get('pengaturan-akun-pelanggan','PengaturanAkunController@showFormUpdateAkunPelanggan')->name('setPelanggan.show');
     Route::post('pengaturan-akun-pelanggans','PengaturanAkunController@updateAkunPelanggan')->name('setPelanggan.action');
         // Pemasok
     Route::get('pengaturan-akun-pemasok','PengaturanAkunController@showFormUpdateAkunPemasok')->name('setPemasok.show');
@@ -109,12 +109,12 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1','middleware' => 'auth'], fun
         // Pengurus Gudang
     Route::get('pengaturan-akun-pengurusGudang','PengaturanAkunController@showFormUpdateAkunPengurusGudang')->name('setPengurusGudang.show');
     Route::post('pengaturan-akun-pengurusGudangs','PengaturanAkunController@updateAkunPengurusGudang')->name('setPengurusGudang.action');
-        // Pengurus Gudang Bulky
-        Route::get('pengaturan-akun-bulky','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
-        Route::post('pengaturan-akun-bulky','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
-        // Bank
-        Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
-        Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
+    // Pengurus Gudang Bulky
+    Route::get('pengaturan-akun-bulky','PengaturanAkunController@showFormUpdateAkunKaryawan')->name('setKaryawan.show');
+    Route::post('pengaturan-akun-bulky','PengaturanAkunController@updateAkunKaryawan')->name('setKaryawan.action');
+    // Bank
+    Route::get('pengaturan-akun-bank','PengaturanAkunController@showFormUpdateAkunBank')->name('setBank.show');
+    Route::post('pengaturan-akun-banks','PengaturanAkunController@updateAkunBank')->name('setBank.action');
 
     // Pembeli
     Route::get('pengaturan-akun-pembeli','PengaturanAkunController@showFormUpdateAkunPembeli')->name('setPembeli.show');

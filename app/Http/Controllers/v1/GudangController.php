@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\City;
 use App\Http\Controllers\Controller;
 use App\Models\Gudang;
 use Illuminate\Http\Request;
@@ -115,7 +116,8 @@ class GudangController extends Controller
     {
         $provinsi = Provinsi::all();
         $dataBank = Bank::all();
-        return view($this->path.'create', compact('provinsi','dataBank'));
+        $city = City::all();
+        return view($this->path.'create', compact('provinsi','dataBank','city'));
     }
 
     /**
@@ -140,6 +142,7 @@ class GudangController extends Controller
             'kapasitas_meter' => 'required|numeric|min:0',
             'kapasitas_berat' => 'required|numeric|min:0',
             'desa_id' => 'required',
+            'kota_asal' => 'required',
             'pemilik' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'no_rek' => 'required|numeric',
@@ -161,7 +164,7 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move("upload/foto/gudang", $foto);
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','kota_asal', 'desa_id', 'pemilik'),[
                     'kontak' => '62'.(int)$request->kontak,
                     'foto' => '/upload/foto/gudang/'.$foto,
                     'user_id' => $user_id,
@@ -174,7 +177,7 @@ class GudangController extends Controller
                     'gudang_id' => $gudang_id
                 ]));
             } else {
-                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari', 'desa_id', 'pemilik'),[
+                $createGudang = Gudang::create(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','kota_asal', 'desa_id', 'pemilik'),[
                     'kontak' => '62'.(int)$request->kontak,
                     'user_id' => $user_id,
                     'status' => 1,
@@ -221,7 +224,8 @@ class GudangController extends Controller
     {
         $data = Gudang::find($id);
         $provinsi = Provinsi::all();
-        return view($this->path.'edit',compact('data', 'provinsi'));
+        $city = City::all();
+        return view($this->path.'edit',compact('data', 'provinsi','city'));
     }
 
     /**
@@ -243,6 +247,7 @@ class GudangController extends Controller
             'kapasitas_berat' => 'required|numeric|min:0',
             'jam_buka' => 'required|',
             'jam_tutup' => 'required|',
+            'kota_asal' => 'required|',
             'hari' => 'required|',
             'desa_id' => 'required|exists:desas,id',
             'pemilik' => 'required|string',
@@ -257,13 +262,13 @@ class GudangController extends Controller
                 $name = $request->file('foto');
                 $foto = time()."_".$name->getClientOriginalName();
                 $request->foto->move("upload/foto/gudang", $foto);
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','kota_asal','desa_id','pemilik'),[
                     'kontak' => '62'.(int)$request->kontak,
                     'foto' => '/upload/foto/gudang/'.$foto
                 ]));
 
             } else {
-                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','desa_id','pemilik'),[
+                $data->update(array_merge($request->only('nama','lat','long','alamat','kapasitas_meter','kapasitas_berat','jam_buka','jam_tutup','hari','kota_asal','desa_id','pemilik'),[
                     'kontak' => '62'.(int)$request->kontak,
                 ]));
             }

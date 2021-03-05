@@ -143,7 +143,7 @@
                                             </div>
                                             <div class="col-md-7 col-6">
                                                 <div class="float-left">:</div>
-                                                <div class="float-left ml-2" id="penjual"><span>Rp. {{ number_format($biayaMerchant,0,',','.')}}</span></div>
+                                                <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                             </div>
                                             <div class="col-md-5 col-6">
                                                 <span>Jumlah Barang</span>
@@ -342,7 +342,7 @@
                                             </div>
                                             <div class="col-md-7 col-6">
                                                 <div class="float-left">:</div>
-                                                <div class="float-left ml-2" id="penjual"><span>Rp. {{ number_format($biayaMerchant,0,',','.')}}</span></div>
+                                                <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                             </div>
                                             <div class="col-md-5 col-6">
                                                 <span>Jumlah Barang</span>
@@ -542,7 +542,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-6">
                                                     <div class="float-left">:</div>
-                                                    <div class="float-left ml-2" id="penjual"><span>Rp. {{ number_format($biayaMerchant,0,',','.')}}</span></div>
+                                                    <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                                 </div>
                                                 <div class="col-md-5 col-6">
                                                     <span>Jumlah Barang</span>
@@ -770,7 +770,7 @@
                                                 </div>
                                                 <div class="col-md-7 col-6">
                                                     <div class="float-left">:</div>
-                                                    <div class="float-left ml-2" id="penjual"><span>Rp. {{ number_format($biayaMerchant,0,',','.')}}</span></div>
+                                                    <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                                 </div>
                                                 <div class="col-md-5 col-6">
                                                     <span>Jumlah Barang</span>
@@ -950,6 +950,8 @@
     var satuan = '{{ $satuan }}';
     var user = '{{ $user }}';
 
+    // console.log(biayaMerchant/100);
+
     $('#jumlah').on('keyup', function () {
         if (user == 'bulky') {
             if (satuan == 'Ton') {
@@ -966,7 +968,7 @@
         }
         // var biayaAdm = biayaAdmin * hargaTotal /100;
         var tot = $('#jumlah').val() * hargaTotal;
-        var total = parseInt(tot) + parseInt(biayaAdmin)+parseInt(biayaMerchant);
+        var total = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
         $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
         $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga').val(total);
@@ -974,7 +976,7 @@
 
     @if (isset($jumlah))
         var tot = $('#jumlah').val() * hargaTotal;
-        var total = parseInt(tot) + parseInt(biayaAdmin)+parseInt(biayaMerchant);
+        var total = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
         $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
         $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga').val(total);

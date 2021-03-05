@@ -201,6 +201,27 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label for="provinsi-select">Pilih Kota Untuk Pengiriman <small class="text-success">*Boleh tidak dipilih</small></label>
+                                                <select class="form-control @error('kota_asal') is-invalid @enderror" id="provinsi-select" name="kota_asal">
+                                                    <option value="">-- Pilih Disini --</option>
+                                                    @foreach($city as $p)
+                                                    <option value="{{$p->city_id}}"  {{$p->city_id == $auth->pelanggan->kota_asal ? 'selected' : ''}}>{{$p->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('kota_asal')
+                                                <div class="invalid-feedback">
+                                                    <i class="bx bx-radio-circle"></i>
+                                                    {{{$message}}}
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <label>Alamat <small class="text-success">*Harus diisi</small></label>
