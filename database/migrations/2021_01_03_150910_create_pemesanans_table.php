@@ -26,6 +26,7 @@ class CreatePemesanansTable extends Migration
             $table->text('foto_bukti')->nullable()->default(null);
             $table->dateTime('tanggal_pemesanan', 0);
             $table->string('metode_pembayaran', 50)->nullable();
+            $table->integer('ongkir')->nullable();
             $table->tinyInteger('status')->default(1);
             // 0 => Ditolak
             // 1 => Diproses

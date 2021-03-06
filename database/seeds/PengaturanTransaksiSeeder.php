@@ -15,7 +15,7 @@ class PengaturanTransaksiSeeder extends Seeder
         PengaturanTransaksi::create([
             'pajak' => 10,
             'biaya_admin' => 2500,
-            'biaya_merchant' => 2500
+            'biaya_merchant' => 3
         ]);
     }
 }

@@ -51,6 +51,20 @@
                                 <button type="submit" class="btn btn-success col-sm-8">Cek</button>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12" id="checkbox">
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="exportPdf">
+                                        <label class="custom-control-label" for="exportPdf">PDF</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="exportExcel">
+                                        <label class="custom-control-label" for="exportExcel">Excel</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

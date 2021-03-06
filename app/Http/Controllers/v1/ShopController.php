@@ -284,8 +284,9 @@ class ShopController extends Controller
 
         if (Auth::user()->pelanggan_id!= null) {
             $data = StockBarang::with('gudang')->find($id);
-            dd($data);
+            $city = City::all();
             $user = 'pelanggan';
+            return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user','city'));
         } elseif (Auth::user()->pembeli_id!= null) {
             $data = BarangWarung::find($id);
             $user = 'pembeli';
@@ -310,17 +311,43 @@ class ShopController extends Controller
 
     public function pemesanan(Request $request, $id)
     {
-        // dd($request->all());
-        $v = Validator::make($request->all(),[
-            'alamat_pemesan' => 'required',
-            'pembayaran' => 'required',
-            'telepon' => 'required',
-            'metode_pembayaran' => 'required_with:pembayaran.now',
-            'jumlah' => 'required|numeric|min:1',
-            'harga' => 'required'
-        ]);
-        if ($request->pembayaran == 'now' && $request->metode_pembayaran == null) {
-            return back()->with('error','Mohon Isi Metode Pembayaran!');
+        // dd($request->pengiriman == 'ambil');
+        if (Auth::user()->pelanggan_id !== null && Auth::user()->pembeli_id) {
+            if ($request->pengiriman == 'ambil') {
+                $v = Validator::make($request->all(),[
+                    'alamat_pemesan' => 'required',
+                    'pembayaran' => 'required',
+                    'telepon' => 'required',
+                    'metode_pembayaran' => 'required_with:pembayaran.now',
+                    'jumlah' => 'required|numeric|min:1',
+                    'harga' => 'required'
+                ]);
+            } else {
+                $v = Validator::make($request->all(),[
+                    'alamat_pemesan' => 'required',
+                    'pembayaran' => 'required',
+                    'telepon' => 'required',
+                    'metode_pembayaran' => 'required_with:pembayaran.now',
+                    'jumlah' => 'required|numeric|min:1',
+                    'kota_tujuan' => 'required|exists:gudangs,city_id',
+                    'kurir' => 'required',
+                    'harga' => 'required'
+                ]);
+            }
+
+        } else {
+            $v = Validator::make($request->all(),[
+                'alamat_pemesan' => 'required',
+                'pembayaran' => 'required',
+                'telepon' => 'required',
+                'metode_pembayaran' => 'required_with:pembayaran.now',
+                'jumlah' => 'required|numeric|min:1',
+                'harga' => 'required'
+            ]);
+        }
+
+        if ($request->pembayaran == 'now' && $request->metode_pembayaran == null && $request->kurir == null) {
+            return back()->with('error','Mohon Pilih / Isi Form dengan Lengkap !');
         }
         if ($v->fails()) {
             // return back()->withErrors($v)->withInput();
@@ -448,6 +475,7 @@ class ShopController extends Controller
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
                 'jumlah_barang' => $request->jumlah,
+                'ongkir' => $request->ongkir,
                 'harga' => $request->harga
             ]);
 
@@ -892,12 +920,17 @@ class ShopController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function cek_ongkir(Request $request) {
-        // dd($request->all());
+        // return response()->json([
+        //     $asal = $_POST['kota_asal'],
+        //     $tujuan = $_POST['kota_tujuan'],
+        //     $kur = $_POST['kurir'],
+        //     $ber = $_POST['berat'] * 1000
+        // ]);
         $kota_asal = $_POST['kota_asal'];
         $kota_tujuan = $_POST['kota_tujuan'];
         $kurir = $_POST['kurir'];
         $berat = $_POST['berat'] * 1000;
-
+        // dd($kota_asal,$kota_tujuan,$kurir,$berat);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "http://api.rajaongkir.com/starter/cost",
@@ -926,11 +959,6 @@ class ShopController extends Controller
         $provinsitujuan = $data['rajaongkir']['destination_details']['province'];
         $berat = $data['rajaongkir']['query']['weight'] / 1000;
 
-        echo '<div class="card">';
-        echo '<h5 class="card-header text-black" style="background-color: .bg-secondary;">';
-        echo '<b>Result:</b>';
-        echo '</h5>';
-        echo '<div class="card-body">';
         echo '<table width="100%">';
         echo '<tr>';
         echo '<td width="15%"><b>Kurir</b> </td>';
@@ -950,30 +978,22 @@ class ShopController extends Controller
         echo '</tr>';
 
         echo '</table><br>';
-        echo '<table class="table table-striped table-bordered ">';
-        echo '<thead>';
-        echo '<tr>';
-        echo '<th>Nama Layanan</th>';
-        echo '<th>Tarif</th>';
-        echo '<th>ETD(Estimates Days)</th>';
-        echo '</tr>';
-        echo '</thead>';
-        echo '<tbody>';
+        echo '<table width="100%" class="ml-4">';
+        echo '<label>Pilih Jenis Ongkir</label>';
+        $no = 1;
         foreach ($data['rajaongkir']['results'][0]['costs'] as $value) {
-            echo "<tr>";
-            echo "<td>" . $value['service'] . "</td>";
-            echo '';
+            // dd($value['cost'][0]->value);
             foreach ($value['cost'] as $tarif) {
-                echo "<td align='right'>Rp " . number_format($tarif['value'], 2, ',', '.') . "</td>";
-                echo "<td>" . $tarif['etd'] . " D</td>";
+                echo "<tr>";
+                echo "<td> <input class='form-check-input pr-4 rad-val' type='radio' name='pengiriman22' id='get_tarif' value='".$tarif['value']."'>" . $value['service'] . "</td>";
+                echo "<td>Rp " . number_format($tarif['value'], 2, ',', '.') ."(". $tarif['etd'] ." Hari)"."</td>";
+                // echo "<input type='hidden' name='ongkir_value' id='ongkir_value' value='".$tarif['value']."'>";
             }
             echo '';
             echo "</tr>";
         }
         echo '</tbody>';
         echo '</table>';
-        echo '</div>';
-        echo '</div>';
     }
     public function get_kota($q)
     {

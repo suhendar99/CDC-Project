@@ -90,11 +90,13 @@
                             <input type="hidden" name="pelanggan_id" value="{{Auth::user()->pelanggan_id}}">
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
+                            <input type="hidden" name="hargas" id="hargas" value="">
                             <input type="hidden" name="nama_barang" value="{{$data->stockBarangBulky->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->stockBarangBulky->barang_kode}}">
-                            {{-- <input type="hidden" name="pajak" value="{{$pajak}}"> --}}
+                            <input type="hidden" name="ongkir" value="" id="ongkir">
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
+                            <input type="hidden" name="kota_asal" value="{{$data->gudang->kota_asal}}" id="kota_asal">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -146,6 +148,13 @@
                                                 <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                             </div>
                                             <div class="col-md-5 col-6">
+                                                <span>Jumlah Biaya Ongkos Kirim</span>
+                                            </div>
+                                            <div class="col-md-7 col-6">
+                                                <div class="float-left">:</div>
+                                                <div class="float-left ml-2" id="ongkirr">Rp. 0</span></div>
+                                            </div>
+                                            <div class="col-md-5 col-6">
                                                 <span>Jumlah Barang</span>
                                             </div>
                                             <div class="col-md-7 col-6">
@@ -161,6 +170,9 @@
                                                 <div class="float-left ml-2" id="totBiaya"><span>Rp. 0</span></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12" id="response_ongkir">
+
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -209,9 +221,9 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    <div id="pilihMetode" class="col-md-4 col-12">
+                                    <div class="col-md-4 col-12">
                                         <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
-                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
+                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman" id="pengiriman" >
                                             {{-- <option value=""> Pilih Metode </option> --}}
                                             <option value="kirim">Barang Dikirim</option>
                                             <option value="ambil">Barang Diambil</option>
@@ -244,7 +256,41 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-3" id="kota_pengiriman">
+                                        <div class="form-group">
+                                            <label>Kota Pengiriman Barang <small class="text-success">*Harus dipilih</small></label>
+                                            <select name="kota_tujuan" id="kota_tujuan" class="form-control @error('kota_tujuan') is-invalid @enderror">
+                                                <option value="0">--Pilih Kota --</option>
+                                                @foreach ($city as $item)
+                                                    <option value="{{$item->city_id}}" {{ $item->city_id == Auth::user()->pelanggan->kota_asal ? 'selected' : '' }}>{{$item->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('telepon')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" id="kurir_pengiriman">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4">Kurir</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control @error('kurir') is-invalid @enderror" id="kurir" name="kurir">
+                                                    <option value="" selected="selected">--Pilih kurir--</option>
+                                                    <option value="jne">JNE</option>
+                                                    <option value="tiki">TIKI</option>
+                                                    <option value="pos">POS INDONESIA</option>
+                                                </select>
+                                                @error('kurir')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
                                             <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pelanggan->alamat }}">{{ Auth::user()->pelanggan->alamat }}</textarea>
@@ -259,8 +305,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col mt-2">
-                        <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
+                    <div class="col-md-4 col mt-2">
+                        <button type="button" id="cek_ongkir" class="btn btn-sm btn-primary btn-block">Cek Ongkir</button>
+                    </div>
+                    <div class="col-md-8 col mt-2">
+                        <button type="submit" class="btn btn-sm btn-primary btn-block" id="btn-pesan" disabled>Pesan Langsung</button>
                     </div>
                     {{-- <div class="col-md-6 col mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
@@ -943,6 +992,20 @@
             $('#pilihMetode').addClass('d-none')
         }
     })
+    $('#pengiriman').change(function () {
+        var pengiriman = $(this).val();
+        if (pengiriman == 'ambil') {
+            $('#kota_pengiriman').addClass('d-none')
+            $('#kurir_pengiriman').addClass('d-none')
+            $('#btn-pesan').removeAttr('disabled');
+            $('#harga').val($('#hargas').val());
+        } else {
+            $('#kota_pengiriman').removeClass('d-none')
+            $('#kurir_pengiriman').removeClass('d-none')
+            $('#btn-pesan').attr('disabled','disabled');
+        }
+
+    });
     // var jumlah = ;
     var biayaAdmin = '{{$biayaAdmin}}';
     var biayaMerchant = '{{$biayaMerchant}}';
@@ -966,17 +1029,32 @@
                 satuan = 'Kg';
             }
         }
+        if ($('#pengiriman').val() == 'ambil' ) {
+            $('#btn-pesan').removeAttr('disabled');
+        } else {
+            $('#btn-pesan').attr('disabled','disabled');
+        }
         // var biayaAdm = biayaAdmin * hargaTotal /100;
-        var tot = $('#jumlah').val() * hargaTotal;
-        var total = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
-        $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
-        $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
-        $('#harga').val(total);
+        var ongkir = $('#ongkir').val();
+        if (ongkir != '') {
+            var tot = $('#jumlah').val() * hargaTotal;
+            var totals = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
+            var totalll = parseInt(totals) +  + parseInt(ongkir)
+            $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
+            $('#totBiaya').text('Rp. '+(totalll.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+            $('#harga').val(totalll);
+        } else {
+            var tot = $('#jumlah').val() * hargaTotal;
+            var totals = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
+            $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
+            $('#totBiaya').text('Rp. '+(totals.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+            $('#hargas').val(totals);
+        }
     });
 
     @if (isset($jumlah))
         var tot = $('#jumlah').val() * hargaTotal;
-        var total = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100;
+        var total = parseInt(tot) + parseInt(biayaAdmin)*parseInt(biayaMerchant) / 100);
         $('#jumlahBarang').text($('#jumlah').val()+` `+satuan)
         $('#totBiaya').text('Rp. '+(total.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
         $('#harga').val(total);
@@ -1040,6 +1118,72 @@
         /* Act on the event */
         $('#id-gudang-bulky').val($('#select-gudang-bulky').val());
         $('#form-action').submit();
+    });
+</script>
+<script>
+    // var ongkir_value = $('#ongkir_value').val()
+    // $('#get_tarif').val(ongkir_value)
+
+    $(document).ready(function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $("#cek_ongkir").click(function (e) {
+            let har = parseInt($('#harga').val());
+            let onkir = $('#ongkir').val();
+
+            if (onkir !== "") {
+                let hit = har - onkir;
+                // var kir = onkir - onkir;
+                $('#harga').val(hit);
+                $('#ongkir').val(0);
+                $('#totBiaya').text('Rp. '+ (hit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+                $('#ongkirr').text('Rp. 0');
+            }
+
+            e.preventDefault();
+            $.post("{{route('cek.ongkir') }}", { kurir: $('#kurir').val(), kota_asal : $('#kota_asal').val(), kota_tujuan : $('#kota_tujuan').val(),berat : $('#jumlah').val()},
+                function(response){
+                document.getElementById("response_ongkir").innerHTML = response;
+
+                // parseInt($('#harga').val()) - parseInt($('#ongkir').val());
+            }).fail(function(){
+                console.log("error");
+            });
+            // console.log('HEHEHE');
+            // $.ajax({
+            //     url: "{{ route('cek.ongkir') }}",
+            //     type: 'post',
+            //     data: $(this).serialize(),
+            //     success: function (data) {
+            //         document.getElementById("response_ongkir").innerHTML = data;
+            //     }
+            // });
+        });
+        $("body").on('change','.rad-val', function (e) {
+            $('#btn-pesan').removeAttr('disabled');
+            e.preventDefault();
+            let har = parseInt($('#harga').val());
+            let onkir = parseInt($('#ongkir').val());
+            let refresh =  har - onkir;
+            console.log(refresh);
+            $('#harga').val(refresh);
+            var value_ongkir = $('.rad-val:checked').val();
+             $('#ongkir').val(value_ongkir)
+             if (parseInt($('#harga').val()) > parseInt($('#hargas').val())) {
+                 $('#harga').val(parseInt($('#harga').val()) + parseInt(value_ongkir));
+                 var totalis = parseInt($('#harga').val());
+             } else {
+                 $('#harga').val(parseInt($('#hargas').val()) + parseInt(value_ongkir));
+                 var totalis = parseInt($('#harga').val());
+             }
+
+            $('#totBiaya').text('Rp. '+(totalis.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")));
+            $('#ongkirr').text('Rp. '+(value_ongkir.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")))
+            // console.log($('.rad-val:checked').val());
+        });
     });
 </script>
 @endpush
