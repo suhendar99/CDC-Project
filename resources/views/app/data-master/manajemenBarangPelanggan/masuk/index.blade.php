@@ -52,7 +52,7 @@
                                 <th>Nama Barang</th>
                                 <th>Jumlah Barang Masuk</th>
                                 <th>Harga Beli</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -151,7 +151,7 @@
                 {data : 'storage_out.stock_barang_retail.nama_barang', name: 'nama_barang'},
                 {data : 'jumlah_barang', name: 'jumlah_barang'},
                 {data : 'harga_beli', name: 'harga_beli'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 

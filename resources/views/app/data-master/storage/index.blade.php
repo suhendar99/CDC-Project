@@ -120,7 +120,7 @@
                                                                 <th>Nama Barang</th>
                                                                 <th>Jumlah Barang Keluar</th>
                                                                 <th>No Pemesanan</th>
-                                                                <th>Action</th>
+                                                                {{-- <th>Action</th> --}}
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -508,7 +508,7 @@
                         return data.kode+' | '+data.nama_pemesan;
                     }
                 },
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 

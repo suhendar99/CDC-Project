@@ -57,7 +57,7 @@
                                 <th>Status Pesanan</th>
                                 <th>Bukti Pembayaran</th>
                                 <th>Aksi Pemesanan</th>
-                                <th>Aksi</th>
+                                {{-- <th>Aksi</th> --}}
                             </tr>
                         </thead>
                     </table>
@@ -214,7 +214,7 @@
                 {data : 'status_pemesanan', name: 'status_pemesanan'},
                 {data : 'bukti_pembayaran', name: 'bukti_pembayaran'},
                 {data : 'aksi_pemesanan', name: 'aksi_pemesanan'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ],
         });
 

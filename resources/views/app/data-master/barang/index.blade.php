@@ -64,7 +64,7 @@
                                                 <th>Satuan</th>
                                                 <th>Foto Barang</th>
                                                 <th>Atur Harga Barang</th>
-                                                <th>Action</th>
+                                                {{-- <th>Action</th> --}}
                                             </tr>
                                         </thead>
                                     </table>
@@ -101,7 +101,7 @@
                                                                 <th>Jumlah Barang</th>
                                                                 <th>Satuan</th>
                                                                 <th>No Pemesanan</th>
-                                                                <th>Action</th>
+                                                                {{-- <th>Action</th> --}}
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -326,7 +326,7 @@
                 {data : 'satuan', name: 'satuan'},
                 {data : 'foto', name: 'foto'},
                 {data : 'atur_harga', name: 'atur_harga'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
@@ -408,7 +408,7 @@
                 {data : 'jumlah', name: 'jumlah'},
                 {data : 'satuan.satuan', name: 'satuan'},
                 {data : 'pemesanan', name: 'pemesanan'},
-                {data : 'action', name: 'action'}
+                // {data : 'action', name: 'action'}
             ]
         });
 
