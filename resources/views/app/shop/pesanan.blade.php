@@ -91,12 +91,12 @@
                             <input type="hidden" name="gudang_id" value="{{$data->gudang->id}}">
                             <input type="hidden" name="harga" id="harga" value="">
                             <input type="hidden" name="hargas" id="hargas" value="">
+                            <input type="hidden" name="ongkir" value="" id="ongkir">
+                            <input type="hidden" name="kota_asal" value="{{$data->gudang->kota_asal}}" id="kota_asal">
                             <input type="hidden" name="nama_barang" value="{{$data->stockBarangBulky->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->stockBarangBulky->barang_kode}}">
-                            <input type="hidden" name="ongkir" value="" id="ongkir">
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
-                            <input type="hidden" name="kota_asal" value="{{$data->gudang->kota_asal}}" id="kota_asal">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -308,7 +308,7 @@
                     <div class="col-md-4 col mt-2">
                         <button type="button" id="cek_ongkir" class="btn btn-sm btn-primary btn-block">Cek Ongkir</button>
                     </div>
-                    <div class="col-md-8 col mt-2">
+                    <div class="col-md-8 col mt-2" id="pesan">
                         <button type="submit" class="btn btn-sm btn-primary btn-block" id="btn-pesan" disabled>Pesan Langsung</button>
                     </div>
                     {{-- <div class="col-md-6 col mt-2">
@@ -336,12 +336,14 @@
                             <input type="hidden" name="penerima_po" id="penerima" value="{{$data->pelanggan->nama}}">
                             <input type="hidden" name="pembeli_id" value="{{Auth::user()->pembeli_id}}">
                             <input type="hidden" name="pelanggan_id" value="{{$data->pelanggan->id}}">
-                            <input type="hidden" name="harga" id="harga" value="{{$totalBiayaPembeli}}">
+                            <input type="hidden" name="harga" id="harga" value="">
+                            <input type="hidden" name="hargas" id="hargas" value="">
+                            <input type="hidden" name="ongkir" value="" id="ongkir">
+                            <input type="hidden" name="kota_asal" value="{{$data->pelanggan->kota_asal}}" id="kota_asal">
                             <input type="hidden" name="nama_barang" value="{{$data->nama_barang}}">
                             <input type="hidden" name="satuan" value="{{$data->satuan}}">
                             <input type="hidden" name="barangKode" value="{{$data->storageOut->stockBarangRetail->stockBarangBulky->barang_kode}}">
                             <input type="hidden" name="barang_warung_kode" value="{{$data->kode}}">
-                            {{-- <input type="hidden" name="pajak" value="{{$pajakPembeli}}"> --}}
                             <input type="hidden" name="biaya_admin" value="{{$biayaAdmin}}">
                             <div class="card-body">
                                 <div class="row">
@@ -394,6 +396,13 @@
                                                 <div class="float-left ml-2" id="penjual"><span>{{ number_format($biayaMerchant,0,',','.')}} %</span></div>
                                             </div>
                                             <div class="col-md-5 col-6">
+                                                <span>Jumlah Biaya Ongkos Kirim</span>
+                                            </div>
+                                            <div class="col-md-7 col-6">
+                                                <div class="float-left">:</div>
+                                                <div class="float-left ml-2" id="ongkirr">Rp. 0</span></div>
+                                            </div>
+                                            <div class="col-md-5 col-6">
                                                 <span>Jumlah Barang</span>
                                             </div>
                                             <div class="col-md-7 col-6">
@@ -409,6 +418,9 @@
                                                 <div class="float-left ml-2" id="totBiaya"><span>Rp. 0</span></div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12" id="response_ongkir">
+
                                     </div>
                                 </div>
                                 <div class="row mt-4">
@@ -459,7 +471,7 @@
                                     </div>
                                     <div id="pilihMetode" class="col-md-4 col-12">
                                         <label>Metode Pengiriman <small class="text-success">*Harus dipilih</small></label>
-                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman"  >
+                                        <select class="form-control @error('pengiriman') is-invalid @enderror" name="pengiriman" id="pengiriman" >
                                             {{--  --}}
                                             <option value="kirim">Barang Dikirim</option>
                                             <option value="ambil">Barang Diambil</option>
@@ -492,7 +504,41 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                     <div class="col-md-3" id="kota_pengiriman">
+                                        <div class="form-group">
+                                            <label>Kota Pengiriman Barang <small class="text-success">*Harus dipilih</small></label>
+                                            <select name="kota_tujuan" id="kota_tujuan" class="form-control @error('kota_tujuan') is-invalid @enderror">
+                                                <option value="0">--Pilih Kota --</option>
+                                                @foreach ($city as $item)
+                                                    <option value="{{$item->city_id}}">{{$item->name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('telepon')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" id="kurir_pengiriman">
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4">Kurir</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control @error('kurir') is-invalid @enderror" id="kurir" name="kurir">
+                                                    <option value="" selected="selected">--Pilih kurir--</option>
+                                                    <option value="jne">JNE</option>
+                                                    <option value="tiki">TIKI</option>
+                                                    <option value="pos">POS INDONESIA</option>
+                                                </select>
+                                                @error('kurir')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Alamat<small class="text-success">*Harus diisi</small></label>
                                             <textarea id="alamat" class="form-control @error('alamat_pemesan') is-invalid @enderror" name="alamat_pemesan" value="{{ Auth::user()->pembeli->alamat }}">{{ Auth::user()->pembeli->alamat }}</textarea>
@@ -507,8 +553,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 mt-2">
-                        <button type="submit" class="btn btn-sm bg-my-primary btn-block">Pesan Langsung</button>
+                    <div class="col-md-4 col mt-2">
+                        <button type="button" id="cek_ongkir" class="btn btn-sm btn-primary btn-block">Cek Ongkir</button>
+                    </div>
+                    <div class="col-md-8 mt-2" id="pesan">
+                        <button type="submit" class="btn btn-sm btn-primary btn-block" id="btn-pesan" disabled>Pesan Langsung</button>
                     </div>
                     {{-- <div class="col-md-6 mt-2">
                         <button type="button" id="postKeranjang" class="btn btn-sm bg-my-primary btn-block">Masukan Ke Keranjang</button>
@@ -997,12 +1046,18 @@
         if (pengiriman == 'ambil') {
             $('#kota_pengiriman').addClass('d-none')
             $('#kurir_pengiriman').addClass('d-none')
+            $('#cek_ongkir').addClass('d-none')
+            $('#pesan').removeClass('col-md-8')
+            $('#pesan').addClass('col-md-12')
             $('#btn-pesan').removeAttr('disabled');
             $('#harga').val($('#hargas').val());
         } else {
             $('#kota_pengiriman').removeClass('d-none')
             $('#kurir_pengiriman').removeClass('d-none')
             $('#btn-pesan').attr('disabled','disabled');
+            $('#cek_ongkir').removeClass('d-none')
+            $('#pesan').removeClass('col-md-12')
+            $('#pesan').addClass('col-md-8')
         }
 
     });

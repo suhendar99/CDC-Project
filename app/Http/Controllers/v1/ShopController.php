@@ -288,8 +288,10 @@ class ShopController extends Controller
             $user = 'pelanggan';
             return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user','city'));
         } elseif (Auth::user()->pembeli_id!= null) {
-            $data = BarangWarung::find($id);
+            $data = BarangWarung::with('pelanggan')->find($id);
+            $city = City::all();
             $user = 'pembeli';
+            return view($this->shopPath.'pesanan',compact('id','data','biaya', 'user','city'));
         } elseif (Auth::user()->pengurus_gudang_bulky_id != null) {
             $user = 'bulky';
             if ($request->query('jumlah') != null) {
@@ -574,6 +576,7 @@ class ShopController extends Controller
                 'jumlah_barang' => $request->jumlah,
                 'pajak' => $request->pajak,
                 'biaya_admin' => $request->biaya_admin,
+                'ongkir' => $request->ongkir,
                 'harga' => $request->harga
             ]);
 

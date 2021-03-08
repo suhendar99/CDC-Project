@@ -25,6 +25,7 @@ class CreatePemesananPembeliItemsTable extends Migration
             $table->string('satuan', 20);
             $table->bigInteger('harga');
             $table->integer('pajak')->nullable()->delault(null);
+            $table->integer('ongkir')->nullable()->delault(null);
             $table->integer('biaya_admin')->nullable()->delault(null);
             $table->foreignId('pemesanan_pembeli_id')->constrained('pemesanan_pembelis')->onDelete('cascade');
             $table->timestamps();
